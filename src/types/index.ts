@@ -1,3 +1,6 @@
+
+import { z } from "zod";
+
 export interface Vehicle {
   id: string;
   make: string;
@@ -27,3 +30,12 @@ export type VehicleSortOption = {
   order: VehicleSortOrder;
   label: string;
 };
+
+// Contact Form Schema
+export const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+});
+
+export type ContactFormData = z.infer<typeof contactFormSchema>;

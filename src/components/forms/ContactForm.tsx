@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
@@ -16,7 +17,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { contactFormSchema, submitContactForm, type ContactFormState } from "@/lib/actions";
+import { submitContactForm, type ContactFormState } from "@/lib/actions";
+import { contactFormSchema } from "@/types";
 import { useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
