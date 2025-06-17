@@ -5,15 +5,16 @@ import Link from "next/link"
 import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, Sparkles } from "lucide-react" // Kept Sparkles for now, can be removed if AI Reply is definitely gone
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // SheetClose removed as it's usually handled by onNavigate or explicit close
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
-import React, { useEffect, useState, useRef } from "react" // Added useRef
+import React, { useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { AppSidebar } from "./AppSidebar"
+import { Separator } from "@/components/ui/separator"
 
 
 const tabItems = [
@@ -160,20 +161,27 @@ export function Header() {
         <div className="hidden md:flex flex-grow justify-center">
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-auto">
             <TabsList className="bg-transparent p-0">
-              {tabItems.map((item) => (
-                <TabsTrigger
-                  key={item.id}
-                  value={item.id}
-                  className={cn(
-                    "px-3 py-2 text-sm font-medium transition-colors rounded-md mx-1 flex items-center gap-1.5",
-                    "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
-                    "data-[state=inactive]:text-foreground/70 data-[state=inactive]:hover:bg-accent data-[state=inactive]:hover:text-accent-foreground",
-                    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              {tabItems.map((item, index) => (
+                <React.Fragment key={item.id}>
+                  <TabsTrigger
+                    value={item.id}
+                    className={cn(
+                      "px-3 py-2 text-sm font-medium transition-colors rounded-md mx-1 flex items-center gap-1.5",
+                      "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
+                      "data-[state=inactive]:text-foreground/70 data-[state=inactive]:hover:bg-accent data-[state=inactive]:hover:text-accent-foreground",
+                      "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    )}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.label}
+                  </TabsTrigger>
+                  {index < tabItems.length - 1 && (
+                    <Separator
+                      orientation="vertical"
+                      className="h-5 self-center" 
+                    />
                   )}
-                >
-                  <item.icon className="h-4 w-4" />
-                  {item.label}
-                </TabsTrigger>
+                </React.Fragment>
               ))}
             </TabsList>
           </Tabs>
@@ -226,4 +234,3 @@ export function Header() {
     </header>
   )
 }
-
