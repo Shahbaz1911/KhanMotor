@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, Sparkles } from "lucide-react"
+import { Car, MessageSquare, HomeIcon } from "lucide-react" // Removed Sparkles
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
@@ -16,7 +16,7 @@ const tabItems = [
   { id: "home", label: "Home", icon: HomeIcon, href: "/#home" },
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
-  { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" },
+  // { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" }, // Removed AI Reply item
 ];
 
 export function Header() {
@@ -37,29 +37,21 @@ export function Header() {
     handleHashChange(); 
     window.addEventListener("hashchange", handleHashChange, false);
     
-    // IntersectionObserver for scroll-based active tab
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.id;
             if (tabItems.some(item => item.id === sectionId)) {
-                 // Only update activeTab if not already set by hash or direct click
-                 // to avoid jitter during programmatic scroll
                  const currentHash = window.location.hash.replace("#", "");
                  if (currentHash !== sectionId) {
-                    // Update URL hash without triggering full navigation or re-render if possible
-                    // to keep URL in sync with scroll. For this, we might need more nuanced logic
-                    // or simply let hashchange handle activeTab if user scrolls to a new section
-                    // and we want the URL to update.
-                    // For now, just set activeTab, URL update on scroll is optional.
                     setActiveTab(sectionId);
                  }
             }
           }
         });
       },
-      { rootMargin: "-50% 0px -50% 0px", threshold: 0 } // Trigger when middle of section is in middle of viewport
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 } 
     );
 
     tabItems.forEach(item => {
@@ -155,3 +147,4 @@ export function Header() {
     </header>
   )
 }
+
