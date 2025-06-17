@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, Sparkles, HomeIcon } from "lucide-react"
+import { Car, MessageSquare, HomeIcon } from "lucide-react" // Removed Sparkles
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -13,7 +13,7 @@ const navItems = [
   { href: "/", label: "Home", icon: HomeIcon },
   { href: "/vehicles", label: "Vehicles", icon: Car },
   { href: "/contact", label: "Contact Us", icon: MessageSquare },
-  { href: "/ai-reply", label: "AI Reply Tool", icon: Sparkles },
+  // { href: "/ai-reply", label: "AI Reply Tool", icon: Sparkles }, // This line is removed
 ]
 
 export function Header() {
