@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users, Star, Quote } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState, useMemo, useEffect } from "react";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
@@ -13,10 +13,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Filter, RotateCcw, Search } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { ReplySuggester } from "@/components/ai/ReplySuggester";
+import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
+import { FeaturedCarGallery } from "@/components/custom/FeaturedCarGallery";
+import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
+import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 
 const initialVehicleFilters: VehicleFilters = {
   make: undefined,
@@ -107,64 +113,117 @@ export default function ConsolidatedPage() {
       });
   }, [vehicleFilters, debouncedVehicleSearchTerm, currentVehicleSort]);
 
+  const testimonials = [
+    {
+      name: "Sarah L.",
+      title: "Luxury Car Enthusiast",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "woman portrait",
+      quote: "Khan Motor provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
+      rating: 5,
+    },
+    {
+      name: "John B.",
+      title: "First Time Buyer",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "man portrait",
+      quote: "The team at Khan Motor made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
+      rating: 5,
+    },
+    {
+      name: "Emily K.",
+      title: "Collector",
+      avatar: "https://placehold.co/100x100.png",
+      aiHint: "person smiling",
+      quote: "As a collector, I appreciate Khan Motor's curated selection of rare and high-performance vehicles. A trusted partner.",
+      rating: 5,
+    },
+  ];
+
+
   return (
     <div className="flex flex-col">
-      <section id="home" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex flex-col justify-center">
-        <div className="text-center">
-          <h1 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-headline">
-            Welcome to Khan Motor
-          </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-            Discover our exclusive collection of premium vehicles. We offer the finest selection and unparalleled customer service.
-          </p>
-          <div className="relative mx-auto mb-12 h-64 w-full max-w-4xl overflow-hidden rounded-lg shadow-xl md:h-96">
+      <section id="home" className="w-full">
+        <HeroSpotlightBanner />
+      </section>
+
+      <FeaturedCarGallery />
+      <MarqueeBrandScroller />
+      <GlassHighlightGrid />
+      
+      <section id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
+              About Khan Motor
+            </h2>
+            <p className="mb-4 text-lg text-muted-foreground">
+              At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in [Year], we have curated a collection of the world&apos;s most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
+            </p>
+            <p className="mb-6 text-lg text-muted-foreground">
+              Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.
+            </p>
+            <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
+              Meet Our Team
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+          <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
             <Image
-              src="https://placehold.co/1200x600.png"
-              alt="Luxury cars showcase"
+              src="https://placehold.co/800x600.png"
+              alt="Khan Motor Dealership Interior"
               layout="fill"
               objectFit="cover"
-              priority
-              data-ai-hint="luxury cars"
+              data-ai-hint="luxury dealership interior"
+              className="rounded-lg"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-            <div className="absolute bottom-0 left-0 p-8">
-              <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">Find Your Dream Car</h2>
-            </div>
-          </div>
-          <Button size="lg" className="group" onClick={() => router.push('/#vehicles')}>
-            Explore Our Gallery
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </div>
-
-        <div className="mt-16 grid gap-8 md:mt-24 md:grid-cols-3">
-          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-            <h3 className="mb-3 text-2xl font-semibold font-headline">Premium Selection</h3>
-            <p className="text-muted-foreground">
-              Handpicked vehicles from the world&apos;s most prestigious brands. Quality and luxury guaranteed.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-            <h3 className="mb-3 text-2xl font-semibold font-headline">Expert Service</h3>
-            <p className="text-muted-foreground">
-              Our knowledgeable team is here to assist you every step of the way, ensuring a seamless experience.
-            </p>
-          </div>
-          <div className="rounded-lg border bg-card p-6 text-card-foreground shadow-sm">
-            <h3 className="mb-3 text-2xl font-semibold font-headline">AI-Powered Support</h3>
-            <p className="text-muted-foreground">
-              Get quick and personalized responses to your inquiries with our advanced AI reply assistant.
-            </p>
           </div>
         </div>
       </section>
+
+      <section id="testimonials" className="bg-secondary py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
+            What Our Clients Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="flex flex-col shadow-lg">
+                <CardHeader className="flex-row items-center gap-4">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.aiHint} />
+                    <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-xl font-headline">{testimonial.name}</CardTitle>
+                    <CardDescription>{testimonial.title}</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <Quote className="h-8 w-8 text-primary/50 mb-2 transform -scale-x-100" />
+                  <p className="text-muted-foreground italic mb-4">{testimonial.quote}</p>
+                  <div className="flex">
+                    {Array(testimonial.rating).fill(0).map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                    {Array(5 - testimonial.rating).fill(0).map((_, i) => (
+                         <Star key={i} className="h-5 w-5 text-muted-foreground/50" />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       <section id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
         <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline">
           Our Vehicle Collection
         </h1>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          <Card className="lg:col-span-1 h-fit sticky top-24"> {/* Adjusted sticky top */}
+          {/* <Card className="lg:col-span-1 h-fit sticky top-24">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline"><Filter size={24}/> Filters</CardTitle>
             </CardHeader>
@@ -259,8 +318,8 @@ export default function ConsolidatedPage() {
                 <RotateCcw size={16} className="mr-2" /> Reset Filters
               </Button>
             </CardContent>
-          </Card>
-          <div className="lg:col-span-3">
+          </Card> */}
+          <div className="lg:col-span-4"> {/* Changed from lg:col-span-3 */}
             {displayedVehicles.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {displayedVehicles.map((vehicle) => (
