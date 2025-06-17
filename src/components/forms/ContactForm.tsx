@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect, useRef } from "react"; // Changed from react-dom to react and useFormState to useActionState
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -19,10 +19,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm, type ContactFormState } from "@/lib/actions";
 import { contactFormSchema } from "@/types";
-import { useEffect, useRef } from "react";
+
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Loader2 } from "lucide-react";
+import { useFormStatus } from "react-dom";
+
 
 const initialState: ContactFormState = {
   message: "",
@@ -40,7 +42,7 @@ function SubmitButton() {
 }
 
 export function ContactForm() {
-  const [state, formAction] = useFormState(submitContactForm, initialState);
+  const [state, formAction] = useActionState(submitContactForm, initialState); // Changed from useFormState
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -60,9 +62,9 @@ export function ContactForm() {
           title: "Success!",
           description: state.message,
         });
-        form.reset(); // Reset form fields on successful submission
+        form.reset(); 
         if (formRef.current) {
-           formRef.current.reset(); // Also reset the native form element if wrapped by useFormState
+           formRef.current.reset(); 
         }
       } else {
         toast({
@@ -70,7 +72,7 @@ export function ContactForm() {
           description: state.message || "Failed to send message.",
           variant: "destructive",
         });
-        // Populate form errors if they exist
+        
         if (state.errors) {
           if (state.errors.name) form.setError("name", { type: "server", message: state.errors.name.join(", ") });
           if (state.errors.email) form.setError("email", { type: "server", message: state.errors.email.join(", ") });
