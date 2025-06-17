@@ -2,7 +2,7 @@
 "use server";
 
 import { z } from "zod";
-import { contactFormSchema } from "@/types";
+import { contactFormSchema, appointmentFormSchema } from "@/types";
 
 export type ContactFormState = {
   message: string;
@@ -34,23 +34,12 @@ export async function submitContactForm(
 
   const { name, email, message } = validatedFields.data;
 
-  // In a real application, you would send an email here.
-  // For this example, we'll just log it to the console.
   console.log("Contact Form Submission:");
   console.log("Name:", name);
   console.log("Email:", email);
   console.log("Message:", message);
 
-  // Simulate email sending delay
   await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // Simulate a possible error (e.g. 10% chance of failure)
-  // if (Math.random() < 0.1) {
-  //   return {
-  //     message: "An unexpected error occurred while sending your message. Please try again later.",
-  //     success: false,
-  //   };
-  // }
 
   return {
     message: "Thank you for your message! We will get back to you soon.",
@@ -58,4 +47,51 @@ export async function submitContactForm(
   };
 }
 
-    
+export type AppointmentFormState = {
+  message: string;
+  success: boolean;
+  errors?: z.infer<typeof appointmentFormSchema> extends Record<string, any> ? 
+    { [K in keyof z.infer<typeof appointmentFormSchema>]?: string[] } : 
+    Record<string, string[]>;
+};
+
+export async function submitAppointmentForm(
+  prevState: AppointmentFormState,
+  formData: FormData
+): Promise<AppointmentFormState> {
+  const rawFormData = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    preferredDate: formData.get("preferredDate") ? new Date(formData.get("preferredDate") as string) : undefined,
+    preferredTime: formData.get("preferredTime"),
+    vehicleOfInterest: formData.get("vehicleOfInterest"),
+  };
+  
+  const validatedFields = appointmentFormSchema.safeParse(rawFormData);
+
+  if (!validatedFields.success) {
+    return {
+      message: "Validation failed. Please check your input for the appointment.",
+      success: false,
+      errors: validatedFields.error.flatten().fieldErrors as AppointmentFormState["errors"],
+    };
+  }
+
+  const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
+
+  console.log("Appointment Form Submission:");
+  console.log("Name:", name);
+  console.log("Email:", email);
+  console.log("Phone:", phone);
+  console.log("Preferred Date:", preferredDate.toISOString().split('T')[0]);
+  console.log("Preferred Time:", preferredTime);
+  console.log("Vehicle of Interest:", vehicleOfInterest);
+
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  return {
+    message: "Thank you for your appointment request! We will contact you shortly to confirm.",
+    success: true,
+  };
+}

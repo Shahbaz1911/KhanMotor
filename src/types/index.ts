@@ -39,3 +39,18 @@ export const contactFormSchema = z.object({
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
+
+// Appointment Form Schema
+export const appointmentFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  phone: z.string().min(10, { message: "Please enter a valid phone number." }),
+  preferredDate: z.date({
+    required_error: "A preferred date is required.",
+    invalid_type_error: "That's not a valid date!",
+  }),
+  preferredTime: z.string({ required_error: "Please select a time slot."}).min(1, { message: "Please select a time slot." }),
+  vehicleOfInterest: z.string().optional(),
+});
+
+export type AppointmentFormData = z.infer<typeof appointmentFormSchema>;

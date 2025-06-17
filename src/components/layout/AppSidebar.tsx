@@ -8,12 +8,12 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star, ChevronRight } from "lucide-react"; 
+import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star, ChevronRight, CalendarClock } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
   className?: string;
-  onNavigate?: () => void; // Callback for when a navigation item is clicked
+  onNavigate?: () => void; 
 }
 
 const mainNavItems = [
@@ -21,6 +21,7 @@ const mainNavItems = [
   { id: "about-us", label: "About Us", icon: Users, href: "/#about-us" },
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
+  { id: "book-appointment", label: "Book Drive", icon: CalendarClock, href: "/book-appointment" },
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
 ];
 
@@ -45,8 +46,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   };
 
   return (
-    <div className={cn("flex h-full flex-col border-r bg-background md:hidden", className)}> {/* Added md:hidden */}
-      {/* Sidebar Header */}
+    <div className={cn("flex h-full flex-col border-r bg-background md:hidden", className)}>
       <div className="flex h-16 items-center justify-between border-b px-4">
         <Link href="/#home" className="flex items-center gap-2" onClick={handleLinkClick}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
@@ -56,7 +56,6 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
         </Link>
       </div>
 
-      {/* Navigation */}
       <ScrollArea className="flex-1">
         <nav className="flex flex-col gap-1 p-4">
           {mainNavItems.map((item) => (
@@ -78,7 +77,6 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
         </nav>
       </ScrollArea>
 
-      {/* Sidebar Footer: Auth & Theme Toggle */}
       <div className="mt-auto border-t p-4 space-y-4">
         {user ? (
           <DropdownMenu>
@@ -94,7 +92,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 mb-2" sideOffset={10} align="start"> {/* Adjusted sideOffset and align */}
+            <DropdownMenuContent className="w-56 mb-2" sideOffset={10} align="start"> 
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user.name}</p>
@@ -124,12 +122,10 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <LogIn className="mr-2 h-4 w-4" /> Login
           </Button>
         )}
-        <div className="flex justify-start"> {/* Ensure ThemeToggle is aligned to start */}
+        <div className="flex justify-start"> 
             <ThemeToggle />
         </div>
       </div>
     </div>
   );
 }
-
-    

@@ -2,12 +2,12 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut } from "lucide-react" 
+import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, CalendarClock } from "lucide-react" 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import React, { useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
@@ -22,11 +22,13 @@ const tabItems = [
   { id: "about-us", label: "About Us", icon: Users, href: "/#about-us" },
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
+  { id: "book-appointment", label: "Book Drive", icon: CalendarClock, href: "/book-appointment"},
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
 ];
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [activeTab, setActiveTab] = useState("home");
   const { user, login, logout } = useAuth();
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
@@ -47,28 +49,46 @@ export function Header() {
   }
 
   useEffect(() => {
-    const handleHashChange = () => {
-      // Only update activeTab if not a programmatic scroll, to avoid conflict
-      if (!isProgrammaticScroll.current) {
-        const hash = window.location.hash.replace("#", "");
-        const currentTab = tabItems.find(item => item.id === hash);
-        if (currentTab) {
-          setActiveTab(currentTab.id);
-        } else if (hash === "" && window.location.pathname === "/") {
-          setActiveTab("home");
+    const determineActiveTab = () => {
+      const currentPath = pathname;
+      const currentHash = window.location.hash.replace("#", "");
+
+      let newActiveTab = "home"; // Default
+
+      if (currentPath !== "/") {
+        // If on a sub-page, try to match its path
+        const pathTab = tabItems.find(item => item.href === currentPath);
+        if (pathTab) {
+          newActiveTab = pathTab.id;
         }
+      } else if (currentHash) {
+        // If on homepage and there's a hash, use the hash
+        const hashTab = tabItems.find(item => item.id === currentHash);
+        if (hashTab) {
+          newActiveTab = hashTab.id;
+        }
+      }
+      // Otherwise, it defaults to 'home' if on "/" with no hash
+
+      setActiveTab(newActiveTab);
+    };
+
+    determineActiveTab(); // Initial check
+
+    const handleHashChange = () => {
+      if (!isProgrammaticScroll.current) {
+        determineActiveTab();
       }
     };
 
-    handleHashChange();
     window.addEventListener("hashchange", handleHashChange, false);
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (isProgrammaticScroll.current) return;
+        if (isProgrammaticScroll.current || pathname !== "/") return; // Only observe on homepage
 
         const intersectingEntries = entries
-          .filter(entry => entry.isIntersecting && tabItems.some(item => item.id === entry.target.id))
+          .filter(entry => entry.isIntersecting && tabItems.some(item => item.id === entry.target.id && item.href.startsWith("/#")))
           .map(entry => ({
             id: entry.target.id,
             top: entry.boundingClientRect.top,
@@ -78,27 +98,31 @@ export function Header() {
           .sort((a, b) => a.top - b.top);
 
         if (intersectingEntries.length > 0) {
-            // Find the entry that is most visible or best candidate
-            // For simplicity, pick the first one (highest on screen) that is sufficiently visible
-            const bestCandidate = intersectingEntries.find(e => e.intersectionRatio > 0); // ensure it's actually visible
+            const bestCandidate = intersectingEntries.find(e => e.intersectionRatio > 0); 
             if (bestCandidate) {
                  setActiveTab(bestCandidate.id);
             }
         }
       },
-      { rootMargin: "-40% 0px -50% 0px", threshold: [0.01, 0.5] } // Adjust rootMargin to be slightly more generous at bottom. Multiple thresholds can help.
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0.01, 0.5] } 
     );
     
-    const currentObservedElements = new Set<Element>();
-    tabItems.forEach(item => {
-      const element = document.getElementById(item.id);
-      if (element) {
-        observer.observe(element);
-        currentObservedElements.add(element);
-      }
+    observedElementsRef.current.forEach(element => {
+      if (element) observer.unobserve(element);
     });
-    observedElementsRef.current = currentObservedElements;
+    observedElementsRef.current.clear();
 
+    if (pathname === "/") { // Only observe homepage sections
+      tabItems.forEach(item => {
+        if (item.href.startsWith("/#")) {
+          const element = document.getElementById(item.id);
+          if (element) {
+            observer.observe(element);
+            observedElementsRef.current.add(element);
+          }
+        }
+      });
+    }
 
     return () => {
       window.removeEventListener("hashchange", handleHashChange, false);
@@ -109,32 +133,36 @@ export function Header() {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, []); // Keep dependencies minimal for setup/teardown
+  }, [pathname]); // Re-run when pathname changes
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value); // Optimistically update UI
-    isProgrammaticScroll.current = true;
-    
-    router.push(`/#${value}`);
+    const targetTab = tabItems.find(item => item.id === value);
+    if (!targetTab) return;
+
+    setActiveTab(value); 
     setIsMobileSheetOpen(false);
 
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-    scrollTimeoutRef.current = setTimeout(() => {
-      isProgrammaticScroll.current = false;
-      // After scroll, re-evaluate hash just in case
-      const currentHash = window.location.hash.replace("#", "");
-      if (currentHash === value) {
-         setActiveTab(value); // Confirm active tab
+    if (targetTab.href.startsWith("/#")) {
+      isProgrammaticScroll.current = true;
+      router.push(targetTab.href);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
       }
-    }, 800); // Adjust delay as needed (e.g., scroll duration + buffer)
+      scrollTimeoutRef.current = setTimeout(() => {
+        isProgrammaticScroll.current = false;
+        const currentHash = window.location.hash.replace("#", "");
+        if (currentHash === value) {
+           setActiveTab(value);
+        }
+      }, 800); 
+    } else {
+      router.push(targetTab.href);
+    }
   };
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Left: Logo and Mobile Trigger */}
         <div className="flex items-center gap-4">
            <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
@@ -233,5 +261,3 @@ export function Header() {
     </header>
   )
 }
-
-    
