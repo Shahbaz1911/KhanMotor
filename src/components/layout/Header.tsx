@@ -2,13 +2,13 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, Sun, Moon } from "lucide-react"
+import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, Sparkles } from "lucide-react" // Kept Sparkles for now, can be removed if AI Reply is definitely gone
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet" // SheetClose removed as it's usually handled by onNavigate or explicit close
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useRouter } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react" // Added useRef
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/contexts/AuthContext"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -22,7 +22,7 @@ const tabItems = [
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
-  // { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" },
+  // { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" }, // Example of commented out item
 ];
 
 export function Header() {
@@ -31,61 +31,104 @@ export function Header() {
   const { user, login, logout } = useAuth();
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
 
+  const isProgrammaticScroll = useRef(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const observedElementsRef = useRef<Set<Element>>(new Set());
+
+
   const handleLogin = () => {
     login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://placehold.co/100x100.png?text=DU" });
+    setIsMobileSheetOpen(false);
   };
+
+  const handleLogout = () => {
+    logout();
+    setIsMobileSheetOpen(false);
+  }
 
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "");
-      const currentTab = tabItems.find(item => item.id === hash);
-      if (currentTab) {
-        setActiveTab(currentTab.id);
-      } else if (hash === "" && window.location.pathname === "/") {
-         setActiveTab("home");
+      // Only update activeTab if not a programmatic scroll, to avoid conflict
+      if (!isProgrammaticScroll.current) {
+        const hash = window.location.hash.replace("#", "");
+        const currentTab = tabItems.find(item => item.id === hash);
+        if (currentTab) {
+          setActiveTab(currentTab.id);
+        } else if (hash === "" && window.location.pathname === "/") {
+          setActiveTab("home");
+        }
       }
     };
 
-    handleHashChange(); 
+    handleHashChange();
     window.addEventListener("hashchange", handleHashChange, false);
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionId = entry.target.id;
-            if (tabItems.some(item => item.id === sectionId)) {
-                 const currentHash = window.location.hash.replace("#", "");
-                 // Only update if the intersecting section is different from current hash
-                 // to avoid jumpy behavior when multiple sections are in view.
-                 if (currentHash !== sectionId || (currentHash === "" && sectionId === "home")) {
-                    setActiveTab(sectionId);
-                 }
-            }
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -60% 0px", threshold: 0.1 } 
-    );
+        if (isProgrammaticScroll.current) return;
 
+        const intersectingEntries = entries
+          .filter(entry => entry.isIntersecting && tabItems.some(item => item.id === entry.target.id))
+          .map(entry => ({
+            id: entry.target.id,
+            top: entry.boundingClientRect.top,
+            isIntersecting: entry.isIntersecting,
+            intersectionRatio: entry.intersectionRatio,
+          }))
+          .sort((a, b) => a.top - b.top);
+
+        if (intersectingEntries.length > 0) {
+            // Find the entry that is most visible or best candidate
+            // For simplicity, pick the first one (highest on screen) that is sufficiently visible
+            const bestCandidate = intersectingEntries.find(e => e.intersectionRatio > 0); // ensure it's actually visible
+            if (bestCandidate) {
+                 setActiveTab(bestCandidate.id);
+            }
+        }
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0.01, 0.5] } // Adjust rootMargin to be slightly more generous at bottom. Multiple thresholds can help.
+    );
+    
+    const currentObservedElements = new Set<Element>();
     tabItems.forEach(item => {
       const element = document.getElementById(item.id);
-      if (element) observer.observe(element);
+      if (element) {
+        observer.observe(element);
+        currentObservedElements.add(element);
+      }
     });
+    observedElementsRef.current = currentObservedElements;
+
 
     return () => {
       window.removeEventListener("hashchange", handleHashChange, false);
-      tabItems.forEach(item => {
-        const element = document.getElementById(item.id);
+      observedElementsRef.current.forEach(element => {
         if (element) observer.unobserve(element);
       });
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
     };
-  }, []);
+  }, []); // Keep dependencies minimal for setup/teardown
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
+    setActiveTab(value); // Optimistically update UI
+    isProgrammaticScroll.current = true;
+    
     router.push(`/#${value}`);
-    setIsMobileSheetOpen(false); // Close mobile sheet on navigation
+    setIsMobileSheetOpen(false);
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+    scrollTimeoutRef.current = setTimeout(() => {
+      isProgrammaticScroll.current = false;
+      // After scroll, re-evaluate hash just in case
+      const currentHash = window.location.hash.replace("#", "");
+      if (currentHash === value) {
+         setActiveTab(value); // Confirm active tab
+      }
+    }, 800); // Adjust delay as needed (e.g., scroll duration + buffer)
   };
   
   return (
@@ -93,7 +136,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Left: Logo and Mobile Trigger */}
         <div className="flex items-center gap-4">
-           <div className="md:hidden"> {/* Sidebar trigger only on mobile */}
+           <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -101,7 +144,7 @@ export function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] p-0">
+              <SheetContent side="left" className="w-[300px] p-0" srTitle="Navigation Menu">
                 <AppSidebar onNavigate={() => setIsMobileSheetOpen(false)} />
               </SheetContent>
             </Sheet>
@@ -114,7 +157,6 @@ export function Header() {
           </Link>
         </div>
 
-        {/* Center: Navigation Tabs (Desktop Only) */}
         <div className="hidden md:flex flex-grow justify-center">
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-auto">
             <TabsList className="bg-transparent p-0">
@@ -137,7 +179,6 @@ export function Header() {
           </Tabs>
         </div>
         
-        {/* Right: Auth & Theme Toggle (Desktop Only) */}
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <DropdownMenu>
@@ -168,7 +209,7 @@ export function Header() {
                   <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
@@ -185,3 +226,4 @@ export function Header() {
     </header>
   )
 }
+
