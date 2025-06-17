@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star } from "lucide-react"; // Added Users, Star
+import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
@@ -22,7 +22,6 @@ const mainNavItems = [
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
-  // { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" },
 ];
 
 
@@ -129,3 +128,5 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
     </div>
   );
 }
+
+    

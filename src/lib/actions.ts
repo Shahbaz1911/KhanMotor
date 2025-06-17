@@ -2,7 +2,6 @@
 "use server";
 
 import { z } from "zod";
-import { suggestReply as suggestReplyFlow, type SuggestReplyInput } from "@/ai/flows/suggest-reply";
 import { contactFormSchema } from "@/types";
 
 export type ContactFormState = {
@@ -59,17 +58,4 @@ export async function submitContactForm(
   };
 }
 
-
-// AI Reply Suggestion Action
-export async function generateAiReply(input: SuggestReplyInput): Promise<{ reply?: string; error?: string }> {
-  try {
-    const result = await suggestReplyFlow(input);
-    if (result && result.reply) {
-      return { reply: result.reply };
-    }
-    return { error: "Failed to generate reply. The AI model did not provide a suggestion." };
-  } catch (error) {
-    console.error("Error generating AI reply:", error);
-    return { error: "An error occurred while generating the AI reply. Please try again." };
-  }
-}
+    

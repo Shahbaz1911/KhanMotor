@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, Sparkles } from "lucide-react" // Kept Sparkles for now, can be removed if AI Reply is definitely gone
+import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut } from "lucide-react" 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -23,7 +23,6 @@ const tabItems = [
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
   { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
-  // { id: "ai-reply", label: "AI Reply", icon: Sparkles, href: "/#ai-reply" }, // Example of commented out item
 ];
 
 export function Header() {
@@ -234,3 +233,5 @@ export function Header() {
     </header>
   )
 }
+
+    

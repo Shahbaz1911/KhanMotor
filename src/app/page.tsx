@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Filter, RotateCcw, Search } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
-import { ReplySuggester } from "@/components/ai/ReplySuggester";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
 import { FeaturedCarGallery } from "@/components/custom/FeaturedCarGallery";
 import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
@@ -343,9 +342,8 @@ export default function ConsolidatedPage() {
         <ContactForm />
       </section>
 
-      <section id="ai-reply" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
-        <ReplySuggester />
-      </section>
     </div>
   );
 }
+
+    
