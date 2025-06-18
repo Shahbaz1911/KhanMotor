@@ -26,7 +26,7 @@ export function HeroSpotlightBanner() {
       <div className="absolute inset-0 bg-black/60 z-1"></div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h1 className="font-kajiro mb-10 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-white drop-shadow-lg">
+        <h1 className="font-kajiro mb-10 scroll-m-20 text-6xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-white drop-shadow-lg mix-blend-screen md:mix-blend-normal">
           Experience Automotive Excellence
         </h1>
         {/* Paragraph text removed as per request */}
@@ -42,3 +42,4 @@ export function HeroSpotlightBanner() {
     </section>
   );
 }
+

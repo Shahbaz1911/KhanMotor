@@ -117,7 +117,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full font-kajiro">
+          <Button onClick={handleLogin} variant="outline" className="w-full text-4xl font-black font-kajiro">
             Login
           </Button>
         )}
