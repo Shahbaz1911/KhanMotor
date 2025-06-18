@@ -147,14 +147,17 @@ export default function ConsolidatedPage() {
 
   return (
     <div className="flex flex-col">
+      {/* Section 1: Home */}
       <section id="home" className="w-full">
         <HeroSpotlightBanner />
       </section>
 
-      <FeaturedCarGallery />
+      {/* These sections are part of the "Home" experience but don't have direct nav links */}
+      <FeaturedCarGallery /> 
       <MarqueeBrandScroller />
       <GlassHighlightGrid />
       
+      {/* Section 2: About Us */}
       <section id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
@@ -185,6 +188,43 @@ export default function ConsolidatedPage() {
         </div>
       </section>
 
+      {/* Section 3: Vehicles */}
+      <section id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
+        <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline">
+          Our Vehicle Collection
+        </h1>
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
+          {/* Filters Card (currently commented out)
+          <Card className="lg:col-span-1 h-fit sticky top-24">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 font-headline"><Filter size={24}/> Filters</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              ... (filter UI) ...
+            </CardContent>
+          </Card> 
+          */}
+          <div className="lg:col-span-4"> 
+            {displayedVehicles.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {displayedVehicles.map((vehicle) => (
+                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+                <div className="mb-4 text-5xl">🚗</div>
+                <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
+                <p className="text-muted-foreground">
+                  Try adjusting your filters or search term.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: Testimonials */}
       <section id="testimonials" className="bg-secondary py-16 md:py-24">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
@@ -221,6 +261,7 @@ export default function ConsolidatedPage() {
         </div>
       </section>
 
+      {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
       <section id="book-drive-cta" className="bg-background py-16 md:py-24">
         <div className="container mx-auto px-4">
           <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/5 via-background to-secondary/10">
@@ -254,42 +295,7 @@ export default function ConsolidatedPage() {
         </div>
       </section>
 
-
-      <section id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
-        <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline">
-          Our Vehicle Collection
-        </h1>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Filters Card (currently commented out)
-          <Card className="lg:col-span-1 h-fit sticky top-24">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 font-headline"><Filter size={24}/> Filters</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              ... (filter UI) ...
-            </CardContent>
-          </Card> 
-          */}
-          <div className="lg:col-span-4"> 
-            {displayedVehicles.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {displayedVehicles.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-                <div className="mb-4 text-5xl">🚗</div>
-                <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
-                <p className="text-muted-foreground">
-                  Try adjusting your filters or search term.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
+      {/* Section 6: Contact Us */}
       <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
         <ContactForm />
       </section>
