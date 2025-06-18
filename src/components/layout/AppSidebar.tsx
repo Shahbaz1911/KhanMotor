@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star, CalendarClock, ChevronLeft } from "lucide-react"; 
+import { User, Settings, LogOut, LogIn, ChevronLeft } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
@@ -17,12 +17,12 @@ interface AppSidebarProps {
 }
 
 const mainNavItems = [
-  { id: "home", label: "Home", icon: HomeIcon, href: "/#home" }, 
-  { id: "about-us", label: "About Us", icon: Users, href: "/#about-us" },
-  { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
-  { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
-  { id: "book-appointment", label: "Book Drive", icon: CalendarClock, href: "/book-appointment" },
-  { id: "contact", label: "Contact Us", icon: MessageSquare, href: "/#contact" },
+  { id: "home", label: "Home", href: "/#home" }, 
+  { id: "about-us", label: "About Us", href: "/#about-us" },
+  { id: "vehicles", label: "Vehicles", href: "/#vehicles" },
+  { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
+  { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
+  { id: "contact", label: "Contact Us", href: "/#contact" },
 ];
 
 
@@ -59,7 +59,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-start items-center gap-2 text-base font-black"
+              className="w-full justify-start items-center gap-2 text-base font-black font-kajiro"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
