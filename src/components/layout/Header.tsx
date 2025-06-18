@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Settings, LogOut, LogIn, Users, Star, CalendarClock } from "lucide-react" 
+import { Car, MessageSquare, HomeIcon, User, Settings, LogOut, LogIn, Users, Star, CalendarClock, Plus } from "lucide-react" 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -163,9 +163,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo */}
+        {/* Logo Link (now empty, no visible logo/text) */}
         <Link href="/#home" className="flex items-center gap-2" onClick={() => handleTabChange('home')}>
-          {/* Logo SVG and text removed as per request */}
+          {/* SVG and text removed */}
         </Link>
 
         {/* Desktop Nav Tabs */}
@@ -253,6 +253,7 @@ export function Header() {
                   variant="ghost"
                   className="text-muted-foreground text-base font-black" 
                 >
+                  <Plus />
                   MENU
                 </Button>
               </SheetTrigger>
@@ -266,4 +267,3 @@ export function Header() {
     </header>
   )
 }
-
