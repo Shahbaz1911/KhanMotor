@@ -252,7 +252,7 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-muted-foreground border border-input px-3 py-1.5 text-sm">
+                <Button variant="ghost" className="text-muted-foreground text-sm">
                   MENU
                 </Button>
               </SheetTrigger>
@@ -266,3 +266,4 @@ export function Header() {
     </header>
   )
 }
+
