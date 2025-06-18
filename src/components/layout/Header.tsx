@@ -254,7 +254,7 @@ export function Header() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="text-muted-foreground text-base font-medium"
+                  className="text-muted-foreground text-base font-extrabold" 
                 >
                   MENU
                 </Button>
