@@ -252,7 +252,7 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon"> {/* Changed variant to outline */}
+                <Button variant="outline" size="icon" className="text-muted-foreground">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
@@ -267,5 +267,3 @@ export function Header() {
     </header>
   )
 }
-
-    
