@@ -9,7 +9,7 @@ export function HeroSpotlightBanner() {
   const router = useRouter();
 
   return (
-    <section className="relative w-full h-[70vh] min-h-[500px] md:h-screen flex items-center justify-center overflow-hidden text-primary-foreground">
+    <section className="relative w-full h-[70vh] min-h-[500px] md:h-screen flex items-center justify-center overflow-hidden text-white">
       <video
         autoPlay
         loop
@@ -26,13 +26,13 @@ export function HeroSpotlightBanner() {
       <div className="absolute inset-0 bg-black/60 z-1"></div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h1 className="mb-10 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-primary-foreground drop-shadow-lg">
+        <h1 className="mb-10 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-white drop-shadow-lg">
           Experience Automotive Excellence
         </h1>
         {/* Paragraph text removed as per request */}
         <Button 
           size="lg" 
-          className="group bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-lg px-8 py-6 rounded-md shadow-lg transition-transform transform hover:scale-105"
+          className="group bg-primary-foreground text-primary hover:bg-primary-foreground/90 border-2 border-white text-lg px-8 py-6 rounded-md shadow-lg transition-transform transform hover:scale-105"
           onClick={() => router.push('/#featured-gallery')}
         >
           Explore Our Collection
@@ -42,4 +42,3 @@ export function HeroSpotlightBanner() {
     </section>
   );
 }
-
