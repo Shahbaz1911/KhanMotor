@@ -13,6 +13,7 @@ export default {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         headline: ['Inter', 'sans-serif'],
+        kajiro: ['Cinzel', 'serif'], // Added Kajiro (using Cinzel as placeholder)
         code: ['monospace'],
       },
       colors: {
