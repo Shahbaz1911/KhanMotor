@@ -59,7 +59,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-start items-center gap-2 text-lg font-black font-kajiro"
+              className="w-full justify-start items-center gap-2 text-xl font-black font-kajiro"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
