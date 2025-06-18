@@ -16,14 +16,14 @@ export function HeroSpotlightBanner() {
         muted
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+        src="https://media-alpha-green.vercel.app/video/car.mp4"
         data-ai-hint="dynamic car driving"
       >
         Your browser does not support the video tag.
       </video>
       
       {/* Overlay for text readability */}
-      <div className="absolute inset-0 bg-black/50 z-1"></div>
+      <div className="absolute inset-0 bg-black/60 z-1"></div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-primary-foreground drop-shadow-lg">
