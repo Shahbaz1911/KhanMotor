@@ -26,12 +26,10 @@ export function HeroSpotlightBanner() {
       <div className="absolute inset-0 bg-black/60 z-1"></div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h1 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-primary-foreground drop-shadow-lg">
+        <h1 className="mb-10 scroll-m-20 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-primary-foreground drop-shadow-lg">
           Experience Automotive Excellence
         </h1>
-        <p className="mx-auto mb-10 max-w-3xl text-lg text-primary-foreground/90 md:text-xl lg:text-2xl drop-shadow-md">
-          Discover a curated collection of the world&apos;s most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
-        </p>
+        {/* Paragraph text removed as per request */}
         <Button 
           size="lg" 
           className="group bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-lg px-8 py-6 rounded-md shadow-lg transition-transform transform hover:scale-105"
