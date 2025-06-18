@@ -63,7 +63,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                <ChevronLeft className="h-8 w-8" strokeWidth={4} />
+                <ChevronLeft className="h-8 w-8" strokeWidth={8} />
                 {item.label}
               </Link>
             </Button>
@@ -112,7 +112,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full">
+          <Button onClick={handleLogin} variant="outline" className="w-full font-kajiro">
             <LogIn className="mr-2 h-4 w-4" /> Login
           </Button>
         )}
