@@ -254,7 +254,7 @@ export function Header() {
                   className="text-muted-foreground text-base font-black" 
                 >
                   MENU
-                  <Plus />
+                  <Plus strokeWidth={3}/>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">
@@ -267,3 +267,4 @@ export function Header() {
     </header>
   )
 }
+
