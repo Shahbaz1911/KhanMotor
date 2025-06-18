@@ -32,7 +32,7 @@ export function HeroSpotlightBanner() {
         {/* Paragraph text removed as per request */}
         <Button 
           size="lg" 
-          className="group bg-primary-foreground text-primary hover:bg-primary-foreground/90 border-2 border-white text-lg px-8 py-6 rounded-md shadow-lg transition-transform transform hover:scale-105"
+          className="group bg-transparent text-white hover:bg-white/20 border-2 border-white text-lg px-8 py-6 rounded-md transition-transform transform hover:scale-105"
           onClick={() => router.push('/#featured-gallery')}
         >
           Explore Our Collection
