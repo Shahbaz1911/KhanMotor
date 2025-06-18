@@ -54,7 +54,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           onClick={handleLinkClick}
         >
           CLOSE
-          <X className="h-8 w-8" strokeWidth={4} />
+          <X className="h-12 w-12" strokeWidth={9} />
         </Button>
       </div>
 
