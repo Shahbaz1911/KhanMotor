@@ -252,7 +252,10 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-muted-foreground text-base font-medium" srTitle="Navigation Menu">
+                <Button
+                  variant="ghost"
+                  className="text-muted-foreground text-base font-medium"
+                >
                   MENU
                 </Button>
               </SheetTrigger>
