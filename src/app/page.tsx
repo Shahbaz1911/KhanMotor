@@ -9,12 +9,12 @@ import React, { useState, useMemo, useEffect } from "react";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { vehicles as allVehicles, vehicleMakes, vehicleModelsByMake, minPrice as globalMinPrice, maxPrice as globalMaxPrice, minYear as globalMinYear, maxYear as globalMaxYear, sortOptions } from "@/lib/vehiclesData";
 import type { Vehicle, VehicleFilters, VehicleSortKey, VehicleSortOrder, VehicleSortOption } from "@/types";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { Slider } from "@/components/ui/slider";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-// import { Filter, RotateCcw, Search } from "lucide-react";
+import { Filter, RotateCcw, Search } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
 import { FeaturedCarGallery } from "@/components/custom/FeaturedCarGallery";
@@ -35,58 +35,54 @@ const initialVehicleFilters: VehicleFilters = {
 export default function ConsolidatedPage() {
   const router = useRouter();
 
-  // State and logic for Vehicles section (currently filters are commented out)
-  // const [vehicleFilters, setVehicleFilters] = useState<VehicleFilters>(initialVehicleFilters);
-  // const [vehicleSearchTerm, setVehicleSearchTerm] = useState<string>("");
-  // const [currentVehicleSort, setCurrentVehicleSort] = useState<VehicleSortOption>(sortOptions[0]);
-  // const [filteredVehicleModels, setFilteredVehicleModels] = useState<string[]>([]);
-  // const [debouncedVehicleSearchTerm, setDebouncedVehicleSearchTerm] = useState(vehicleSearchTerm);
+  // State and logic for Vehicles section
+  const [vehicleFilters, setVehicleFilters] = useState<VehicleFilters>(initialVehicleFilters);
+  const [vehicleSearchTerm, setVehicleSearchTerm] = useState<string>("");
+  const [currentVehicleSort, setCurrentVehicleSort] = useState<VehicleSortOption>(sortOptions[0]);
+  const [filteredVehicleModels, setFilteredVehicleModels] = useState<string[]>([]);
+  const [debouncedVehicleSearchTerm, setDebouncedVehicleSearchTerm] = useState(vehicleSearchTerm);
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedVehicleSearchTerm(vehicleSearchTerm);
-  //   }, 300);
-  //   return () => clearTimeout(handler);
-  // }, [vehicleSearchTerm]);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedVehicleSearchTerm(vehicleSearchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [vehicleSearchTerm]);
 
-  // useEffect(() => {
-  //   if (vehicleFilters.make) {
-  //     const models = vehicleModelsByMake[vehicleFilters.make] || [];
-  //     setFilteredVehicleModels(models);
-  //     if (vehicleFilters.model && !models.includes(vehicleFilters.model)) {
-  //       setVehicleFilters(prev => ({ ...prev, model: undefined }));
-  //     }
-  //   } else {
-  //     setFilteredVehicleModels([]);
-  //     setVehicleFilters(prev => ({ ...prev, model: undefined }));
-  //   }
-  // }, [vehicleFilters.make, vehicleFilters.model]);
+  useEffect(() => {
+    if (vehicleFilters.make) {
+      const models = vehicleModelsByMake[vehicleFilters.make] || [];
+      setFilteredVehicleModels(models);
+      if (vehicleFilters.model && !models.includes(vehicleFilters.model)) {
+        setVehicleFilters(prev => ({ ...prev, model: undefined }));
+      }
+    } else {
+      setFilteredVehicleModels([]);
+      setVehicleFilters(prev => ({ ...prev, model: undefined }));
+    }
+  }, [vehicleFilters.make, vehicleFilters.model]);
 
-  // const handleVehicleFilterChange = (key: keyof VehicleFilters, value: any) => {
-  //   setVehicleFilters((prev) => ({ ...prev, [key]: value }));
-  // };
+  const handleVehicleFilterChange = (key: keyof VehicleFilters, value: any) => {
+    setVehicleFilters((prev) => ({ ...prev, [key]: value }));
+  };
   
-  // const handleVehiclePriceChange = (value: number[]) => {
-  //   handleVehicleFilterChange("minPrice", value[0]);
-  //   handleVehicleFilterChange("maxPrice", value[1]);
-  // };
+  const handleVehiclePriceChange = (value: number[]) => {
+    handleVehicleFilterChange("minPrice", value[0]);
+    handleVehicleFilterChange("maxPrice", value[1]);
+  };
 
-  // const handleVehicleYearChange = (value: number[]) => {
-  //   handleVehicleFilterChange("minYear", value[0]);
-  //   handleVehicleFilterChange("maxYear", value[1]);
-  // };
+  const handleVehicleYearChange = (value: number[]) => {
+    handleVehicleFilterChange("minYear", value[0]);
+    handleVehicleFilterChange("maxYear", value[1]);
+  };
 
-  // const resetVehicleFilters = () => {
-  //   setVehicleFilters(initialVehicleFilters);
-  //   setVehicleSearchTerm("");
-  //   setCurrentVehicleSort(sortOptions[0]);
-  // };
+  const resetVehicleFilters = () => {
+    setVehicleFilters(initialVehicleFilters);
+    setVehicleSearchTerm("");
+    setCurrentVehicleSort(sortOptions[0]);
+  };
 
-  // For now, displayedVehicles will show all vehicles without filtering/sorting if filters are off
   const displayedVehicles = useMemo(() => {
-    return allVehicles;
-    // Logic to integrate filters and sorting if they are re-enabled:
-    /*
     return allVehicles
       .filter((vehicle) => {
         const searchLower = debouncedVehicleSearchTerm.toLowerCase();
@@ -114,8 +110,7 @@ export default function ConsolidatedPage() {
         }
         return valA < valB ? 1 : -1;
       });
-    */
-  }, [/* vehicleFilters, debouncedVehicleSearchTerm, currentVehicleSort */]);
+  }, [vehicleFilters, debouncedVehicleSearchTerm, currentVehicleSort]);
 
   const testimonials = [
     {
@@ -194,17 +189,110 @@ export default function ConsolidatedPage() {
           Our Vehicle Collection
         </h1>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Filters Card (currently commented out)
           <Card className="lg:col-span-1 h-fit sticky top-24">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline"><Filter size={24}/> Filters</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              ... (filter UI) ...
+              <div>
+                <Label htmlFor="vehicle-search">Search</Label>
+                <div className="relative mt-1">
+                  <Input
+                    id="vehicle-search"
+                    type="text"
+                    placeholder="e.g., Audi R8, SUV, 2023"
+                    value={vehicleSearchTerm}
+                    onChange={(e) => setVehicleSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="vehicle-make">Make</Label>
+                <Select value={vehicleFilters.make} onValueChange={(value) => handleVehicleFilterChange("make", value === "all" ? undefined : value)}>
+                  <SelectTrigger id="vehicle-make">
+                    <SelectValue placeholder="All Makes" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Makes</SelectItem>
+                    {vehicleMakes.map((make) => (
+                      <SelectItem key={make} value={make}>{make}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {vehicleFilters.make && filteredVehicleModels.length > 0 && (
+                 <div>
+                  <Label htmlFor="vehicle-model">Model</Label>
+                  <Select value={vehicleFilters.model} onValueChange={(value) => handleVehicleFilterChange("model", value === "all" ? undefined : value)} disabled={!vehicleFilters.make}>
+                    <SelectTrigger id="vehicle-model">
+                      <SelectValue placeholder="All Models" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Models</SelectItem>
+                      {filteredVehicleModels.map((model) => (
+                        <SelectItem key={model} value={model}>{model}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+              
+              <div>
+                <Label>Price Range: ${vehicleFilters.minPrice?.toLocaleString()} - ${vehicleFilters.maxPrice?.toLocaleString()}</Label>
+                <Slider
+                  min={globalMinPrice}
+                  max={globalMaxPrice}
+                  step={1000}
+                  value={[vehicleFilters.minPrice ?? globalMinPrice, vehicleFilters.maxPrice ?? globalMaxPrice]}
+                  onValueChange={handleVehiclePriceChange}
+                  className="mt-2"
+                />
+              </div>
+
+              <div>
+                <Label>Year Range: {vehicleFilters.minYear} - {vehicleFilters.maxYear}</Label>
+                <Slider
+                  min={globalMinYear}
+                  max={globalMaxYear}
+                  step={1}
+                  value={[vehicleFilters.minYear ?? globalMinYear, vehicleFilters.maxYear ?? globalMaxYear]}
+                  onValueChange={handleVehicleYearChange}
+                  className="mt-2"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="vehicle-sort">Sort By</Label>
+                <Select 
+                  value={`${currentVehicleSort.key}-${currentVehicleSort.order}`} 
+                  onValueChange={(value) => {
+                    const [key, order] = value.split('-') as [VehicleSortKey, VehicleSortOrder];
+                    const selectedSortOption = sortOptions.find(opt => opt.key === key && opt.order === order);
+                    if (selectedSortOption) setCurrentVehicleSort(selectedSortOption);
+                  }}
+                >
+                  <SelectTrigger id="vehicle-sort">
+                    <SelectValue placeholder="Sort vehicles" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sortOptions.map((option) => (
+                      <SelectItem key={`${option.key}-${option.order}`} value={`${option.key}-${option.order}`}>{option.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button onClick={resetVehicleFilters} variant="outline" className="w-full">
+                <RotateCcw size={16} className="mr-2" /> Reset Filters
+              </Button>
             </CardContent>
           </Card> 
-          */}
-          <div className="lg:col-span-4"> 
+          
+          <div className="lg:col-span-3"> 
             {displayedVehicles.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {displayedVehicles.map((vehicle) => (
