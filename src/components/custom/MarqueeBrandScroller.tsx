@@ -16,6 +16,8 @@ const brands = [
 ];
 
 export function MarqueeBrandScroller() {
+  const duplicatedBrands = [...brands, ...brands]; // Duplicate for seamless loop
+
   return (
     <section id="brand-scroller" className="bg-background py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -27,11 +29,11 @@ export function MarqueeBrandScroller() {
             Collaborating with the best in the automotive industry.
           </p>
         </div>
-        <div className="relative">
-          <div className="flex w-full snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
-            {brands.map((brand, index) => (
-              <div key={index} className="flex-shrink-0 snap-center">
-                <Card className="w-48 overflow-hidden shadow-md transition-shadow hover:shadow-lg">
+        <div className="group w-full overflow-hidden">
+          <div className="flex animate-marquee motion-safe:group-hover:[animation-play-state:paused] whitespace-nowrap">
+            {duplicatedBrands.map((brand, index) => (
+              <div key={index} className="flex-shrink-0 mx-3">
+                <Card className="w-48 overflow-hidden shadow-md transition-shadow hover:shadow-lg inline-block">
                   <CardContent className="flex h-24 items-center justify-center p-4">
                     <div className="relative h-16 w-full">
                       <Image
@@ -47,9 +49,6 @@ export function MarqueeBrandScroller() {
               </div>
             ))}
           </div>
-          {/* Optional: Add gradient overlays for a fading effect at the edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent"></div>
         </div>
       </div>
     </section>
