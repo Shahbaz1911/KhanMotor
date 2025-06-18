@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star, ChevronRight, CalendarClock } from "lucide-react"; 
+import { HomeIcon, Car, MessageSquare, User, Settings, LogOut, LogIn, Users, Star, CalendarClock, ChevronLeft } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
@@ -17,7 +17,7 @@ interface AppSidebarProps {
 }
 
 const mainNavItems = [
-  { id: "home", label: "Home", icon: HomeIcon, href: "/#home" },
+  { id: "home", label: "Home", icon: HomeIcon, href: "/#home" }, // icon prop kept for potential future use, but not rendered
   { id: "about-us", label: "About Us", icon: Users, href: "/#about-us" },
   { id: "vehicles", label: "Vehicles", icon: Car, href: "/#vehicles" },
   { id: "testimonials", label: "Testimonials", icon: Star, href: "/#testimonials" },
@@ -62,15 +62,12 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-between items-center gap-2 text-base"
+              className="w-full justify-start items-center gap-2 text-base"
               asChild
             >
-              <Link href={item.href} onClick={handleLinkClick} className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                </div>
-                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              <Link href={item.href} onClick={handleLinkClick}>
+                <ChevronLeft className="h-5 w-5" />
+                {item.label}
               </Link>
             </Button>
           ))}

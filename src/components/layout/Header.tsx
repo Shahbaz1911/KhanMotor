@@ -259,7 +259,7 @@ export function Header() {
                   MENU
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] p-0" srTitle="Navigation Menu">
+              <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">
                 <AppSidebar onNavigate={() => setIsMobileSheetOpen(false)} />
               </SheetContent>
             </Sheet>
