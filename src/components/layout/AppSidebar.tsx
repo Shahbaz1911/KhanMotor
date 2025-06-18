@@ -59,11 +59,11 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-start items-center gap-2 text-xl font-black font-kajiro"
+              className="w-full justify-start items-center gap-2 text-4xl font-black font-kajiro"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                <ChevronLeft className="h-5 w-5" strokeWidth={4} />
+                <ChevronLeft className="h-8 w-8" strokeWidth={4} />
                 {item.label}
               </Link>
             </Button>
