@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut, LogIn, ChevronLeft } from "lucide-react"; 
+import { User, Settings, LogOut, ChevronLeft, X } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
@@ -47,10 +47,15 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
   return (
     <div className={cn("flex h-full flex-col border-r bg-background md:hidden", className)}>
-      <div className="flex h-16 items-center justify-between border-b px-4">
-        <Link href="/#home" className="flex items-center gap-2" onClick={handleLinkClick}>
-          {/* SVG and text removed based on previous request */}
-        </Link>
+      <div className="flex h-16 items-center justify-start border-b px-4">
+        <Button
+          variant="ghost"
+          className="w-full justify-start items-center gap-2 text-4xl font-black font-kajiro"
+          onClick={handleLinkClick}
+        >
+          CLOSE
+          <X className="h-8 w-8" strokeWidth={4} />
+        </Button>
       </div>
 
       <ScrollArea className="flex-1">
@@ -63,7 +68,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                <ChevronLeft className="h-8 w-8" strokeWidth={8} />
+                <ChevronLeft className="h-8 w-8" strokeWidth={4} />
                 {item.label}
               </Link>
             </Button>
@@ -113,7 +118,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           </DropdownMenu>
         ) : (
           <Button onClick={handleLogin} variant="outline" className="w-full font-kajiro">
-            <LogIn className="mr-2 h-4 w-4" /> Login
+            Login
           </Button>
         )}
         <div className="flex justify-start"> 
