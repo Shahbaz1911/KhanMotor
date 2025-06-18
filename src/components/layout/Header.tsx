@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Menu, Users, Star, LogIn, Settings, LogOut, CalendarClock } from "lucide-react" 
+import { Car, MessageSquare, HomeIcon, User, Settings, LogOut, LogIn, Users, Star, CalendarClock } from "lucide-react" 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -252,9 +252,8 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={isMobileSheetOpen} onOpenChange={setIsMobileSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-muted-foreground border border-input">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open menu</span>
+                <Button variant="ghost" className="text-muted-foreground border border-input px-3 py-1.5 text-sm">
+                  MENU
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] p-0" srTitle="Navigation Menu">
