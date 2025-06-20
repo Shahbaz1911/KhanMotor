@@ -248,7 +248,7 @@ export function Header() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="text-muted-foreground text-base font-black" 
+                  className="text-muted-foreground text-base font-black font-kajiro" 
                 >
                   MENU
                   <Plus strokeWidth={3}/>
@@ -264,3 +264,4 @@ export function Header() {
     </header>
   )
 }
+
