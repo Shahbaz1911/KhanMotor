@@ -187,7 +187,7 @@ export function Header() {
                     {item.label}
                   </TabsTrigger>
                   {index < tabItems.length - 1 && (
-                    <Separator orientation="vertical" className="h-6 bg-border/70 self-center" />
+                    <Separator orientation="vertical" className="h-6 bg-border self-center" />
                   )}
                 </React.Fragment>
               ))}
