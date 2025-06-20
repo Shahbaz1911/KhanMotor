@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { Car, MessageSquare, HomeIcon, User, Settings, LogOut, LogIn, Users, Star, CalendarClock, Plus } from "lucide-react" 
+import { Car, MessageSquare, HomeIcon, User, Settings, LogOut, LogIn, Users, Star, CalendarClock, Plus, X } from "lucide-react" 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -171,7 +171,7 @@ export function Header() {
         {/* Desktop Nav Tabs */}
         <div className="hidden md:flex flex-grow justify-center">
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-auto">
-            <TabsList className="bg-transparent p-0">
+            <TabsList className="bg-muted p-1 rounded-full">
               {tabItems.map((item, index) => (
                 <React.Fragment key={item.id}>
                   <TabsTrigger
@@ -186,12 +186,7 @@ export function Header() {
                     <item.icon className="h-4 w-4" />
                     {item.label}
                   </TabsTrigger>
-                  {index < tabItems.length - 1 && (
-                    <Separator
-                      orientation="vertical"
-                      className="h-5 self-center" 
-                    />
-                  )}
+                  {/* Separator removed for pill structure */}
                 </React.Fragment>
               ))}
             </TabsList>
@@ -251,10 +246,10 @@ export function Header() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="text-muted-foreground text-base font-black text-2xl" 
+                  className="text-muted-foreground text-base font-black" 
                 >
                   MENU
-                  <Plus strokeWidth={8}/>
+                  <Plus strokeWidth={3}/>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">
