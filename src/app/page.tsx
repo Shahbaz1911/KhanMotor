@@ -116,24 +116,21 @@ export default function ConsolidatedPage() {
     {
       name: "Sarah L.",
       title: "Luxury Car Enthusiast",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "woman portrait",
+      avatar: "https://source.unsplash.com/featured/100x100/?woman,portrait",
       quote: "Khan Motor provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
       rating: 5,
     },
     {
       name: "John B.",
       title: "First Time Buyer",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "man portrait",
+      avatar: "https://source.unsplash.com/featured/100x100/?man,portrait",
       quote: "The team at Khan Motor made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
       rating: 5,
     },
     {
       name: "Emily K.",
       title: "Collector",
-      avatar: "https://placehold.co/100x100.png",
-      aiHint: "person smiling",
+      avatar: "https://source.unsplash.com/featured/100x100/?person,smiling",
       quote: "As a collector, I appreciate Khan Motor's curated selection of rare and high-performance vehicles. A trusted partner.",
       rating: 5,
     },
@@ -172,11 +169,10 @@ export default function ConsolidatedPage() {
           </div>
           <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
             <Image
-              src="https://placehold.co/800x600.png"
+              src="https://source.unsplash.com/featured/800x600/?luxury,dealership,interior"
               alt="Khan Motor Dealership Interior"
               layout="fill"
               objectFit="cover"
-              data-ai-hint="luxury dealership interior"
               className="rounded-lg"
             />
           </div>
@@ -323,7 +319,7 @@ export default function ConsolidatedPage() {
               <Card key={index} className="flex flex-col shadow-lg">
                 <CardHeader className="flex-row items-center gap-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.aiHint} />
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                     <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
                   </Avatar>
                   <div>
@@ -369,11 +365,10 @@ export default function ConsolidatedPage() {
               </div>
               <div className="relative h-64 md:h-full min-h-[300px] order-first md:order-last">
                 <Image
-                  src="https://placehold.co/800x600.png" 
+                  src="https://source.unsplash.com/featured/800x600/?car,interior,driving" 
                   alt="Luxury car steering wheel view"
                   layout="fill"
                   objectFit="cover"
-                  data-ai-hint="car interior driving"
                   className="md:rounded-r-lg"
                 />
                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/50 md:via-transparent"></div>

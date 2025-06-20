@@ -30,7 +30,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   const { user, login, logout } = useAuth();
 
   const handleLogin = () => {
-    login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://placehold.co/100x100.png?text=DU" });
+    login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://source.unsplash.com/featured/100x100/?user,avatar" });
     if (onNavigate) onNavigate();
   };
 
@@ -82,7 +82,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex h-auto w-full items-center justify-start gap-3 p-2 text-left">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user avatar" />
+                  <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">

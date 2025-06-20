@@ -39,7 +39,7 @@ export function Header() {
 
 
   const handleLogin = () => {
-    login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://placehold.co/100x100.png?text=DU" });
+    login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://source.unsplash.com/featured/100x100/?user,avatar" });
     setIsMobileSheetOpen(false);
   };
 
@@ -204,7 +204,7 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user avatar" />
+                      <AvatarImage src={user.avatarUrl} alt={user.name} />
                       <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                   </Button>
@@ -248,7 +248,7 @@ export function Header() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="text-muted-foreground text-base font-black text-4xl font-kajiro" 
+                  className="text-muted-foreground text-base font-black font-kajiro" 
                 >
                   MENU
                   <Plus strokeWidth={9}/>
@@ -264,4 +264,3 @@ export function Header() {
     </header>
   )
 }
-
