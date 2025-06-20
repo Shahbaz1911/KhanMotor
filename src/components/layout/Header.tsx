@@ -177,7 +177,7 @@ export function Header() {
                   <TabsTrigger
                     value={item.id}
                     className={cn(
-                      "px-3 py-2 text-sm font-medium transition-colors rounded-md mx-1 flex items-center gap-1.5",
+                      "px-3 py-2 text-sm font-medium transition-colors rounded-md flex items-center gap-1.5",
                       "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm",
                       "data-[state=inactive]:text-foreground/70 data-[state=inactive]:hover:bg-accent data-[state=inactive]:hover:text-accent-foreground",
                       "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -186,7 +186,9 @@ export function Header() {
                     <item.icon className="h-4 w-4" />
                     {item.label}
                   </TabsTrigger>
-                  {/* Separator removed for pill structure */}
+                  {index < tabItems.length - 1 && (
+                    <Separator orientation="vertical" className="h-6 bg-border/70 self-center" />
+                  )}
                 </React.Fragment>
               ))}
             </TabsList>
@@ -262,4 +264,3 @@ export function Header() {
     </header>
   )
 }
-
