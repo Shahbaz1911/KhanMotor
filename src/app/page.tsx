@@ -156,7 +156,7 @@ export default function ConsolidatedPage() {
       <section id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
+            <h2 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
               About Khan Motor
             </h2>
             <p className="mb-4 text-lg text-muted-foreground">
@@ -185,13 +185,13 @@ export default function ConsolidatedPage() {
 
       {/* Section 3: Vehicles */}
       <section id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
-        <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline">
+        <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline">
           Our Vehicle Collection
         </h1>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           <Card className="lg:col-span-1 h-fit sticky top-24">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 font-headline"><Filter size={24}/> Filters</CardTitle>
+              <CardTitle className="flex items-center gap-2 font-kajiro md:font-headline"><Filter size={24}/> Filters</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
@@ -315,7 +315,7 @@ export default function ConsolidatedPage() {
       {/* Section 4: Testimonials */}
       <section id="testimonials" className="bg-secondary py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
+          <h2 className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
             What Our Clients Say
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -327,7 +327,7 @@ export default function ConsolidatedPage() {
                     <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <CardTitle className="text-xl font-headline">{testimonial.name}</CardTitle>
+                    <CardTitle className="text-xl font-kajiro md:font-headline">{testimonial.name}</CardTitle>
                     <CardDescription>{testimonial.title}</CardDescription>
                   </div>
                 </CardHeader>
@@ -356,7 +356,7 @@ export default function ConsolidatedPage() {
             <div className="grid md:grid-cols-2 items-center">
               <div className="p-8 md:p-12">
                 <CalendarClock className="h-16 w-16 text-primary mb-6" />
-                <h2 className="mb-4 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl font-headline text-primary">
+                <h2 className="mb-4 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl font-kajiro md:font-headline text-primary">
                   Ready for an Unforgettable Drive?
                 </h2>
                 <p className="mb-8 text-lg text-muted-foreground">

@@ -248,10 +248,10 @@ export function Header() {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="text-muted-foreground text-base font-black font-kajiro" 
+                  className="text-muted-foreground text-base font-black text-4xl font-kajiro" 
                 >
                   MENU
-                  <Plus strokeWidth={3}/>
+                  <Plus strokeWidth={9}/>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">

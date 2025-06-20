@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import type { Vehicle } from "@/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">{vehicle.make} {vehicle.model}</CardTitle>
+        <CardTitle className="font-kajiro md:font-headline text-2xl">{vehicle.make} {vehicle.model}</CardTitle>
         <CardDescription>{vehicle.year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">

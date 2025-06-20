@@ -15,7 +15,7 @@ export function FeaturedCarGallery() {
     <section id="featured-gallery" className="bg-background py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-headline text-primary">
+          <h2 className="mb-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
             Featured Luxury Cars
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl">
