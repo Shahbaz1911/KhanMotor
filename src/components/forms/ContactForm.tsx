@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useActionState, useEffect, useRef } from "react"; // Changed from react-dom to react and useFormState to useActionState
@@ -27,8 +26,6 @@ import { useFormStatus } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 
 const initialState: ContactFormState = {
   message: "",
@@ -52,6 +49,7 @@ export function ContactForm() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       if(cardRef.current) {
         gsap.from(cardRef.current, {

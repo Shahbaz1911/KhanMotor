@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,8 +5,6 @@ import { Car, ShieldCheck, Wrench, MessageSquareHeart } from "lucide-react"; // 
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const highlightItems = [
   {
@@ -43,6 +40,7 @@ export function GlassHighlightGrid() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {

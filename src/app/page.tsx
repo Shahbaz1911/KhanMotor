@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -23,8 +22,6 @@ import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const initialVehicleFilters: VehicleFilters = {
   make: undefined,
@@ -84,6 +81,7 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation useEffect
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       // About Us Animation
       const aboutTl = gsap.timeline({

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -6,8 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const brands = [
   { name: "Audi", logoUrl: "https://images.unsplash.com/photo-1597999641658-7b7a23edcb5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhdWRpJTIwbG9nb3xlbnwwfHx8fDE3NTAyNTE4MDR8MA&ixlib=rb-4.1.0&q=80&w=1080" },
@@ -25,6 +22,7 @@ export function MarqueeBrandScroller() {
   const sectionRef = useRef<HTMLElement>(null);
   
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       if (sectionRef.current) {
         gsap.from(sectionRef.current.children, {

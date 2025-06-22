@@ -1,4 +1,3 @@
-
 "use client";
 
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
@@ -10,8 +9,6 @@ import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export function FeaturedCarGallery() {
   const router = useRouter();
   const featuredVehicles = vehicles.slice(0, 3); // Display first 3 vehicles as featured
@@ -21,6 +18,7 @@ export function FeaturedCarGallery() {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {

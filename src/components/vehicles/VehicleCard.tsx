@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -10,8 +9,6 @@ import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
 interface VehicleCardProps {
   vehicle: Vehicle;
 }
@@ -20,6 +17,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       gsap.from(cardRef.current, {
         scrollTrigger: {
