@@ -24,6 +24,10 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Loader2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 
 const initialState: ContactFormState = {
@@ -45,6 +49,26 @@ export function ContactForm() {
   const [state, formAction] = useActionState(submitContactForm, initialState); // Changed from useFormState
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if(cardRef.current) {
+        gsap.from(cardRef.current, {
+            scrollTrigger: {
+                trigger: cardRef.current,
+                start: "top 85%",
+                toggleActions: "play none none none",
+            },
+            opacity: 0,
+            y: 100,
+            duration: 0.8,
+            ease: "power3.out",
+        });
+      }
+    }, cardRef);
+    return () => ctx.revert();
+  }, []);
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -83,7 +107,7 @@ export function ContactForm() {
   }, [state, toast, form]);
 
   return (
-    <Card className="w-full max-w-2xl mx-auto shadow-xl">
+    <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl">
       <CardHeader>
         <CardTitle className="text-3xl font-kajiro md:font-headline">Get in Touch</CardTitle>
         <CardDescription>

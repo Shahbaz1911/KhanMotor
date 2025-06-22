@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Star, Quote, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { vehicles as allVehicles, vehicleMakes, vehicleModelsByMake, minPrice as globalMinPrice, maxPrice as globalMaxPrice, minYear as globalMinYear, maxYear as globalMaxYear, sortOptions } from "@/lib/vehiclesData";
 import type { Vehicle, VehicleFilters, VehicleSortKey, VehicleSortOrder, VehicleSortOption } from "@/types";
@@ -21,7 +21,10 @@ import { FeaturedCarGallery } from "@/components/custom/FeaturedCarGallery";
 import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
 import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 
 const initialVehicleFilters: VehicleFilters = {
   make: undefined,
@@ -42,6 +45,23 @@ export default function ConsolidatedPage() {
   const [filteredVehicleModels, setFilteredVehicleModels] = useState<string[]>([]);
   const [debouncedVehicleSearchTerm, setDebouncedVehicleSearchTerm] = useState(vehicleSearchTerm);
 
+  // GSAP Animation Refs
+  const pageRef = useRef<HTMLDivElement>(null);
+  const aboutSectionRef = useRef<HTMLElement>(null);
+  const aboutContentRef = useRef<HTMLDivElement>(null);
+  const aboutImageRef = useRef<HTMLDivElement>(null);
+
+  const vehiclesSectionRef = useRef<HTMLElement>(null);
+  const vehiclesTitleRef = useRef<HTMLHeadingElement>(null);
+  const vehiclesFilterRef = useRef<HTMLDivElement>(null);
+
+  const testimonialsSectionRef = useRef<HTMLElement>(null);
+  const testimonialsTitleRef = useRef<HTMLHeadingElement>(null);
+  const testimonialsGridRef = useRef<HTMLDivElement>(null);
+
+  const ctaSectionRef = useRef<HTMLElement>(null);
+
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedVehicleSearchTerm(vehicleSearchTerm);
@@ -61,6 +81,85 @@ export default function ConsolidatedPage() {
       setVehicleFilters(prev => ({ ...prev, model: undefined }));
     }
   }, [vehicleFilters.make, vehicleFilters.model]);
+
+  // GSAP Animation useEffect
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // About Us Animation
+      const aboutTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: aboutSectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+      aboutTl
+        .from(aboutContentRef.current?.children, { opacity: 0, x: -50, stagger: 0.2, duration: 0.6 })
+        .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.5");
+
+      // Vehicles Section Animation
+      gsap.from(vehiclesTitleRef.current, {
+        scrollTrigger: {
+          trigger: vehiclesSectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.6,
+      });
+
+      gsap.from(vehiclesFilterRef.current, {
+        scrollTrigger: {
+          trigger: vehiclesFilterRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        x: -50,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
+      // Testimonials Animation
+      const testimonialsTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: testimonialsSectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+      testimonialsTl
+        .from(testimonialsTitleRef.current, { opacity: 0, y: 50, duration: 0.6 })
+        .from(
+          testimonialsGridRef.current?.children,
+          {
+            opacity: 0,
+            y: 50,
+            stagger: 0.2,
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        );
+
+      // CTA Animation
+      gsap.from(ctaSectionRef.current, {
+          scrollTrigger: {
+              trigger: ctaSectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+          },
+          opacity: 0,
+          scale: 0.95,
+          y: 50,
+          duration: 0.8,
+          ease: "power3.out",
+      });
+    }, pageRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleVehicleFilterChange = (key: keyof VehicleFilters, value: any) => {
     setVehicleFilters((prev) => ({ ...prev, [key]: value }));
@@ -138,7 +237,7 @@ export default function ConsolidatedPage() {
 
 
   return (
-    <div className="flex flex-col">
+    <div ref={pageRef} className="flex flex-col">
       {/* Section 1: Home */}
       <section id="home" className="w-full">
         <HeroSpotlightBanner />
@@ -150,9 +249,9 @@ export default function ConsolidatedPage() {
       <GlassHighlightGrid />
       
       {/* Section 2: About Us */}
-      <section id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
+      <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div ref={aboutContentRef}>
             <h2 className="mb-6 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
               About Khan Motor
             </h2>
@@ -167,7 +266,7 @@ export default function ConsolidatedPage() {
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </div>
-          <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
+          <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
             <Image
               src="https://source.unsplash.com/featured/800x600/?luxury,dealership,interior"
               alt="Khan Motor Dealership Interior"
@@ -180,12 +279,12 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* Section 3: Vehicles */}
-      <section id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
-        <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline">
+      <section ref={vehiclesSectionRef} id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
+        <h1 ref={vehiclesTitleRef} className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline">
           Our Vehicle Collection
         </h1>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          <Card className="lg:col-span-1 h-fit sticky top-24">
+          <Card ref={vehiclesFilterRef} className="lg:col-span-1 h-fit sticky top-24">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-kajiro md:font-headline"><Filter size={24}/> Filters</CardTitle>
             </CardHeader>
@@ -309,12 +408,12 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* Section 4: Testimonials */}
-      <section id="testimonials" className="bg-secondary py-16 md:py-24">
+      <section ref={testimonialsSectionRef} id="testimonials" className="bg-secondary py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
+          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
             What Our Clients Say
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div ref={testimonialsGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="flex flex-col shadow-lg">
                 <CardHeader className="flex-row items-center gap-4">
@@ -346,7 +445,7 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
-      <section id="book-drive-cta" className="bg-background py-16 md:py-24">
+      <section ref={ctaSectionRef} id="book-drive-cta" className="bg-background py-16 md:py-24">
         <div className="container mx-auto px-4">
           <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/5 via-background to-secondary/10">
             <div className="grid md:grid-cols-2 items-center">
