@@ -46,7 +46,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   };
 
   return (
-    <div className={cn("flex h-full flex-col border-r bg-background pt-8", className)}>
+    <div className={cn("flex h-screen flex-col bg-background pt-20", className)}>
       <ScrollArea className="flex-1">
         <nav className="flex flex-col gap-1 p-4">
           {mainNavItems.map((item) => (

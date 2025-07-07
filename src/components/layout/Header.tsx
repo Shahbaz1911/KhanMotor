@@ -33,7 +33,7 @@ export function Header() {
                 <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">
+            <SheetContent side="top" className="p-0" srTitle="Navigation Menu">
               <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
             </SheetContent>
           </Sheet>
