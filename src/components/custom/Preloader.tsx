@@ -9,7 +9,7 @@ interface PreloaderProps {
 }
 
 // A high-quality, landscape image for the preloader
-const preloaderImageUrl = "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1920&auto=format&fit=crop";
+const preloaderImageUrl = "https://images.unsplash.com/photo-1541348263662-e15a63608ae6?q=80&w=1920&auto=format&fit=crop";
 
 export function Preloader({ onLoaded }: PreloaderProps) {
   const preloaderRef = useRef<HTMLDivElement>(null);
