@@ -52,7 +52,7 @@ export default function ConsolidatedPage() {
         
         const setupVideoAnimation = () => {
             // Ensure we only set this up once
-            if (tl.getChildren().length === 0) {
+            if (tl.getChildren().length === 0 && video.duration) {
                 tl.to(video, {
                     currentTime: video.duration,
                 });
@@ -236,7 +236,7 @@ export default function ConsolidatedPage() {
           </div>
         </div>
       </section>
-
+      
       <FeaturedCarGallery /> 
 
       {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}

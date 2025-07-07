@@ -12,60 +12,75 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export function FeaturedCarGallery() {
   const router = useRouter();
-  const featuredVehicles = vehicles.slice(0, 3); // Display first 3 vehicles as featured
+  const featuredVehicles = vehicles.slice(0, 3);
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
+      const cards = cardsRef.current.filter(c => c !== null) as HTMLDivElement[];
+      
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
+          trigger: triggerRef.current,
+          start: "top top",
+          end: "+=1500",
+          scrub: true,
+          pin: true,
+          anticipatePin: 1,
+        }
       });
 
-      tl.from(titleRef.current, { opacity: 0, y: 50, duration: 0.5 })
-        .from(textRef.current, { opacity: 0, y: 50, duration: 0.5 }, "-=0.3")
-        .from(buttonRef.current, { opacity: 0, y: 20, duration: 0.4 });
+      tl.from(cards, {
+        y: (i) => (cards.length - 1 - i) * -10, // stack them visually
+        scale: (i) => 1 - (cards.length - 1 - i) * 0.05,
+        opacity: (i) => 1 - (cards.length - 1 - i) * 0.2,
+        stagger: 0.2,
+        ease: "power1.inOut"
+      });
+      
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
 
   return (
-    <section ref={sectionRef} id="featured-gallery" className="py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white">
-            Featured Luxury Cars
-          </h2>
-          <p ref={textRef} className="text-lg text-gray-300 md:text-xl">
-            Explore a curated selection of our most prestigious vehicles.
-          </p>
+    <section ref={sectionRef} id="featured-gallery" className="py-16 md:py-24 overflow-hidden">
+        <div className="container mx-auto px-4 mb-12 text-center">
+            <h2 className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
+                Featured Luxury Cars
+            </h2>
+            <p className="text-lg text-gray-300 md:text-xl">
+                Explore a curated selection of our most prestigious vehicles.
+            </p>
         </div>
-        {featuredVehicles.length > 0 ? (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {featuredVehicles.map((vehicle) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center text-muted-foreground">
-            <p>No featured vehicles available at the moment. Please check back later.</p>
-          </div>
-        )}
-        <div ref={buttonRef} className="mt-12 text-center">
-          <Button size="lg" className="group" onClick={() => router.push('/vehicles')}>
-            View All Vehicles
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Button>
+
+        <div ref={triggerRef} className="relative h-screen">
+          {featuredVehicles.length > 0 ? (
+            <div className="absolute inset-0 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 container mx-auto px-4 items-center">
+              {featuredVehicles.map((vehicle, i) => (
+                <div key={vehicle.id} ref={el => cardsRef.current[i] = el} className="w-full h-full">
+                    <VehicleCard vehicle={vehicle} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-muted-foreground">
+              <p>No featured vehicles available at the moment. Please check back later.</p>
+            </div>
+          )}
         </div>
-      </div>
+        
+        <div className="text-center -mt-16 relative z-10">
+            <Button size="lg" className="group" onClick={() => router.push('/vehicles')}>
+                View All Vehicles
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+        </div>
     </section>
   );
 }

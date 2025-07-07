@@ -37,6 +37,7 @@ export default function VehiclesPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+  const vehicleGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -55,10 +56,28 @@ export default function VehiclesPage() {
         ease: "power3.out",
         delay: 0.2
       });
+      
+      // Animate vehicle cards as they appear
+      if (vehicleGridRef.current) {
+         ScrollTrigger.batch(gsap.utils.toArray(".vehicle-card-animate"), {
+            start: "top 90%",
+            onEnter: batch => gsap.to(batch, {opacity: 1, y: 0, stagger: 0.15, duration: 0.5, ease: 'power3.out'}),
+         });
+      }
+
+
     }, pageRef);
 
-    return () => ctx.revert();
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert();
+    }
   }, []);
+
+  useEffect(() => {
+    // Refresh ScrollTrigger when vehicles change
+    ScrollTrigger.refresh();
+  }, [debouncedSearchTerm, filters, currentSort]);
 
 
   useEffect(() => {
@@ -139,14 +158,14 @@ export default function VehiclesPage() {
 
   return (
     <div ref={pageRef} className="container mx-auto px-4 py-16 md:py-24">
-      <h1 ref={titleRef} className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-kajiro md:font-headline">
+      <h1 ref={titleRef} className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
         Our Vehicle Collection
       </h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <Card ref={filterRef} className="lg:col-span-1 h-fit sticky top-24 bg-background/50 backdrop-blur-md border border-white/10 text-white">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 font-kajiro md:font-headline"><Filter size={24}/> Filters</CardTitle>
+            <CardTitle className="flex items-center gap-2 font-black"><Filter size={24}/> Filters</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
@@ -249,7 +268,7 @@ export default function VehiclesPage() {
 
         <div className="lg:col-span-3">
           {displayedVehicles.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div ref={vehicleGridRef} className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {displayedVehicles.map((vehicle) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}

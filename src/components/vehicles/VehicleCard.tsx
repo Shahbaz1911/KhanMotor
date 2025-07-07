@@ -6,37 +6,16 @@ import type { Vehicle } from "@/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tag } from "lucide-react";
-import React, { useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
 }
 
 export function VehicleCard({ vehicle }: VehicleCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      gsap.from(cardRef.current, {
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 90%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0,
-        y: 50,
-        duration: 0.6,
-        ease: "power3.out",
-      });
-    }, cardRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <Card ref={cardRef} className="flex h-full transform flex-col overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 bg-background/50 backdrop-blur-md border border-white/20">
+    // The parent component will handle the animation, so we add a class for GSAP to target
+    <Card className="flex h-full transform flex-col overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 bg-background/50 backdrop-blur-md border border-white/20 vehicle-card-animate opacity-0 translate-y-10">
       <div className="relative h-56 w-full">
         <Image
           src={vehicle.imageUrl}
@@ -46,7 +25,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-2xl text-white">{vehicle.make} {vehicle.model}</CardTitle>
+        <CardTitle className="text-2xl text-white font-black">{vehicle.make} {vehicle.model}</CardTitle>
         <CardDescription className="text-gray-300">{vehicle.year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -64,7 +43,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <button className="w-full rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <button className="w-full rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-black">
           View Details
         </button>
       </CardFooter>

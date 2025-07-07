@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
 
 const brands = [
   { name: "Audi", logoUrl: "https://images.unsplash.com/photo-1597999641658-7b7a23edcb5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhdWRpJTIwbG9nb3xlbnwwfHx8fDE3NTAyNTE4MDR8MA&ixlib=rb-4.1.0&q=80&w=1080" },
@@ -19,43 +20,45 @@ const brands = [
 ];
 
 export function MarqueeBrandScroller() {
-  const duplicatedBrands = [...brands, ...brands]; // Duplicate for seamless loop
   const sectionRef = useRef<HTMLElement>(null);
-  
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const duplicatedBrands = [...brands, ...brands];
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
-      if (sectionRef.current) {
-        gsap.from(sectionRef.current.children, {
+      if (marqueeRef.current) {
+        const marqueeWidth = marqueeRef.current.scrollWidth / 2;
+        gsap.to(marqueeRef.current, {
+          x: -marqueeWidth,
+          ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
           },
-          opacity: 0,
-          y: 50,
-          stagger: 0.2,
-          duration: 0.6,
-          ease: "power3.out",
         });
       }
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="brand-scroller" className="bg-black/20 backdrop-blur-sm py-16 md:py-24">
+    <section ref={sectionRef} id="brand-scroller" className="bg-black/20 backdrop-blur-sm py-16 md:py-24 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white">
+          <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-black">
             Our Trusted Automotive Partners
           </h2>
           <p className="text-md text-gray-300 md:text-lg">
             Collaborating with the best in the automotive industry.
           </p>
         </div>
-        <div className="group w-full overflow-hidden">
-          <div className="flex animate-marquee motion-safe:group-hover:[animation-play-state:paused] whitespace-nowrap">
+        <div className="w-full">
+          <div ref={marqueeRef} className="flex whitespace-nowrap">
             {duplicatedBrands.map((brand, index) => (
               <div key={index} className="flex-shrink-0 mx-3">
                 <Card className="w-48 overflow-hidden shadow-md transition-shadow hover:shadow-lg inline-block bg-white/90">
