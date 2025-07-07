@@ -44,13 +44,13 @@ export function MarqueeBrandScroller() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="brand-scroller" className="bg-background py-16 md:py-24">
+    <section ref={sectionRef} id="brand-scroller" className="bg-black/20 backdrop-blur-sm py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-primary">
+          <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white">
             Our Trusted Automotive Partners
           </h2>
-          <p className="text-md text-muted-foreground md:text-lg">
+          <p className="text-md text-gray-300 md:text-lg">
             Collaborating with the best in the automotive industry.
           </p>
         </div>
@@ -58,7 +58,7 @@ export function MarqueeBrandScroller() {
           <div className="flex animate-marquee motion-safe:group-hover:[animation-play-state:paused] whitespace-nowrap">
             {duplicatedBrands.map((brand, index) => (
               <div key={index} className="flex-shrink-0 mx-3">
-                <Card className="w-48 overflow-hidden shadow-md transition-shadow hover:shadow-lg inline-block">
+                <Card className="w-48 overflow-hidden shadow-md transition-shadow hover:shadow-lg inline-block bg-white/90">
                   <CardContent className="flex h-24 items-center justify-center p-4">
                     <div className="relative h-16 w-full">
                       <Image

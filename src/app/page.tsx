@@ -35,6 +35,7 @@ const initialVehicleFilters: VehicleFilters = {
 
 export default function ConsolidatedPage() {
   const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // State and logic for Vehicles section
   const [vehicleFilters, setVehicleFilters] = useState<VehicleFilters>(initialVehicleFilters);
@@ -83,6 +84,26 @@ export default function ConsolidatedPage() {
   // GSAP Animation useEffect
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    const video = videoRef.current;
+    if (video) {
+        video.pause();
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: pageRef.current,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true,
+            }
+        });
+        
+        video.onloadedmetadata = function() {
+            tl.to(video, {
+                currentTime: video.duration
+            });
+        };
+    }
+
     const ctx = gsap.context(() => {
       // About Us Animation
       const aboutTl = gsap.timeline({
@@ -236,7 +257,22 @@ export default function ConsolidatedPage() {
 
 
   return (
-    <div ref={pageRef} className="flex flex-col">
+    <div ref={pageRef} className="flex flex-col relative">
+       <div className="fixed inset-0 w-full h-screen z-[-1]">
+        <video
+          ref={videoRef}
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          src="https://media-alpha-green.vercel.app/video/car.mp4"
+          data-ai-hint="dynamic car driving"
+        >
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+
       {/* Section 1: Home */}
       <section id="home" className="w-full">
         <HeroSpotlightBanner />
@@ -251,13 +287,13 @@ export default function ConsolidatedPage() {
       <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div ref={aboutContentRef}>
-            <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-primary">
+            <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white">
               About Khan Motor
             </h2>
-            <p className="mb-4 text-lg text-muted-foreground">
+            <p className="mb-4 text-lg text-gray-300">
               At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world&apos;s most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
             </p>
-            <p className="mb-6 text-lg text-muted-foreground">
+            <p className="mb-6 text-lg text-gray-300">
               Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.
             </p>
             <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
@@ -279,11 +315,11 @@ export default function ConsolidatedPage() {
 
       {/* Section 3: Vehicles */}
       <section ref={vehiclesSectionRef} id="vehicles" className="container mx-auto min-h-screen px-4 py-16 md:py-24">
-        <h1 ref={vehiclesTitleRef} className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl">
+        <h1 ref={vehiclesTitleRef} className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white">
           Our Vehicle Collection
         </h1>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          <Card ref={vehiclesFilterRef} className="lg:col-span-1 h-fit sticky top-24">
+          <Card ref={vehiclesFilterRef} className="lg:col-span-1 h-fit sticky top-24 bg-background/50 backdrop-blur-md border border-white/10 text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Filter size={24}/> Filters</CardTitle>
             </CardHeader>
@@ -297,7 +333,7 @@ export default function ConsolidatedPage() {
                     placeholder="e.g., Audi R8, SUV, 2023"
                     value={vehicleSearchTerm}
                     onChange={(e) => setVehicleSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 bg-transparent text-white placeholder:text-gray-400"
                   />
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 </div>
@@ -306,7 +342,7 @@ export default function ConsolidatedPage() {
               <div>
                 <Label htmlFor="vehicle-make">Make</Label>
                 <Select value={vehicleFilters.make} onValueChange={(value) => handleVehicleFilterChange("make", value === "all" ? undefined : value)}>
-                  <SelectTrigger id="vehicle-make">
+                  <SelectTrigger id="vehicle-make" className="bg-transparent">
                     <SelectValue placeholder="All Makes" />
                   </SelectTrigger>
                   <SelectContent>
@@ -322,7 +358,7 @@ export default function ConsolidatedPage() {
                  <div>
                   <Label htmlFor="vehicle-model">Model</Label>
                   <Select value={vehicleFilters.model} onValueChange={(value) => handleVehicleFilterChange("model", value === "all" ? undefined : value)} disabled={!vehicleFilters.make}>
-                    <SelectTrigger id="vehicle-model">
+                    <SelectTrigger id="vehicle-model" className="bg-transparent">
                       <SelectValue placeholder="All Models" />
                     </SelectTrigger>
                     <SelectContent>
@@ -369,7 +405,7 @@ export default function ConsolidatedPage() {
                     if (selectedSortOption) setCurrentVehicleSort(selectedSortOption);
                   }}
                 >
-                  <SelectTrigger id="vehicle-sort">
+                  <SelectTrigger id="vehicle-sort" className="bg-transparent">
                     <SelectValue placeholder="Sort vehicles" />
                   </SelectTrigger>
                   <SelectContent>
@@ -380,7 +416,7 @@ export default function ConsolidatedPage() {
                 </Select>
               </div>
 
-              <Button onClick={resetVehicleFilters} variant="outline" className="w-full">
+              <Button onClick={resetVehicleFilters} variant="outline" className="w-full bg-transparent hover:bg-white/10">
                 <RotateCcw size={16} className="mr-2" /> Reset Filters
               </Button>
             </CardContent>
@@ -394,7 +430,7 @@ export default function ConsolidatedPage() {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+              <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-black/30 text-white">
                 <div className="mb-4 text-5xl">🚗</div>
                 <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
                 <p className="text-muted-foreground">
@@ -407,14 +443,14 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* Section 4: Testimonials */}
-      <section ref={testimonialsSectionRef} id="testimonials" className="bg-secondary py-16 md:py-24">
+      <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-primary">
+          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white">
             What Our Clients Say
           </h2>
           <div ref={testimonialsGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="flex flex-col shadow-lg">
+              <Card key={index} className="flex flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white">
                 <CardHeader className="flex-row items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
@@ -422,18 +458,18 @@ export default function ConsolidatedPage() {
                   </Avatar>
                   <div>
                     <CardTitle className="text-xl">{testimonial.name}</CardTitle>
-                    <CardDescription>{testimonial.title}</CardDescription>
+                    <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <Quote className="h-8 w-8 text-primary/50 mb-2 transform -scale-x-100" />
-                  <p className="text-muted-foreground italic mb-4">{testimonial.quote}</p>
+                  <Quote className="h-8 w-8 text-white/50 mb-2 transform -scale-x-100" />
+                  <p className="text-gray-300 italic mb-4">{testimonial.quote}</p>
                   <div className="flex">
                     {Array(testimonial.rating).fill(0).map((_, i) => (
                       <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     ))}
                     {Array(5 - testimonial.rating).fill(0).map((_, i) => (
-                         <Star key={i} className="h-5 w-5 text-muted-foreground/50" />
+                         <Star key={i} className="h-5 w-5 text-gray-500" />
                     ))}
                   </div>
                 </CardContent>
@@ -444,16 +480,16 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
-      <section ref={ctaSectionRef} id="book-drive-cta" className="bg-background py-16 md:py-24">
+      <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/5 via-background to-secondary/10">
+          <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 backdrop-blur-md text-white">
             <div className="grid md:grid-cols-2 items-center">
               <div className="p-8 md:p-12">
-                <CalendarClock className="h-16 w-16 text-primary mb-6" />
-                <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-primary">
+                <CalendarClock className="h-16 w-16 text-white mb-6" />
+                <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white">
                   Ready for an Unforgettable Drive?
                 </h2>
-                <p className="mb-8 text-lg text-muted-foreground">
+                <p className="mb-8 text-lg text-gray-300">
                   Experience the thrill and luxury of your dream car. Schedule a personalized test drive today and let our experts guide you through every feature.
                 </p>
                 <Button size="lg" className="group text-lg px-8 py-6" onClick={() => router.push('/book-appointment')}>

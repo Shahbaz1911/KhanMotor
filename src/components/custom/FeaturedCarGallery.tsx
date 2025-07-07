@@ -38,13 +38,13 @@ export function FeaturedCarGallery() {
 
 
   return (
-    <section ref={sectionRef} id="featured-gallery" className="bg-background py-16 md:py-24">
+    <section ref={sectionRef} id="featured-gallery" className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-primary">
+          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white">
             Featured Luxury Cars
           </h2>
-          <p ref={textRef} className="text-lg text-muted-foreground md:text-xl">
+          <p ref={textRef} className="text-lg text-gray-300 md:text-xl">
             Explore a curated selection of our most prestigious vehicles.
           </p>
         </div>

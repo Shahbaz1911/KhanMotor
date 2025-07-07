@@ -36,7 +36,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
   }, []);
 
   return (
-    <Card ref={cardRef} className="flex h-full transform flex-col overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+    <Card ref={cardRef} className="flex h-full transform flex-col overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 bg-background/50 backdrop-blur-md border border-white/20">
       <div className="relative h-56 w-full">
         <Image
           src={vehicle.imageUrl}
@@ -46,17 +46,17 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-2xl">{vehicle.make} {vehicle.model}</CardTitle>
-        <CardDescription>{vehicle.year}</CardDescription>
+        <CardTitle className="text-2xl text-white">{vehicle.make} {vehicle.model}</CardTitle>
+        <CardDescription className="text-gray-300">{vehicle.year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
-        <p className="mb-4 text-lg font-semibold text-primary">
+        <p className="mb-4 text-lg font-semibold text-white">
           ${vehicle.price.toLocaleString()}
         </p>
-        <p className="mb-4 text-sm text-muted-foreground line-clamp-3">{vehicle.description}</p>
+        <p className="mb-4 text-sm text-gray-300 line-clamp-3">{vehicle.description}</p>
         <div className="flex flex-wrap gap-2">
           {vehicle.features.slice(0, 3).map((feature) => (
-            <Badge key={feature} variant="secondary" className="flex items-center gap-1">
+            <Badge key={feature} variant="secondary" className="flex items-center gap-1 bg-white/20 text-white border-none">
               <Tag className="h-3 w-3" />
               {feature}
             </Badge>
