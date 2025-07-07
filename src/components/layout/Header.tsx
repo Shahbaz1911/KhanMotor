@@ -2,11 +2,11 @@
 "use client"
 
 import Link from "next/link"
-import { Plus } from "lucide-react" 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { AppSidebar } from "./AppSidebar"
+import { AnimatedMenuIcon } from "../custom/AnimatedMenuIcon"
 
 export function Header() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -27,10 +27,10 @@ export function Header() {
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
-                className="text-muted-foreground text-base font-kajiro" 
+                className="font-kajiro text-base text-muted-foreground"
               >
-                MENU
-                <Plus strokeWidth={9}/>
+                {isSheetOpen ? "CLOSE" : "MENU"}
+                <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] p-0" srTitle="Navigation Menu">

@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut, ChevronLeft, X } from "lucide-react"; 
+import { User, Settings, LogOut, ChevronLeft } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 
 interface AppSidebarProps {
@@ -46,18 +46,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   };
 
   return (
-    <div className={cn("flex h-full flex-col border-r bg-background", className)}>
-      <div className="flex h-16 items-center justify-start border-b px-4">
-        <Button
-          variant="ghost"
-          className="w-full justify-start items-center gap-2 text-4xl font-black"
-          onClick={handleLinkClick}
-        >
-          CLOSE
-          <X className="h-12 w-12" strokeWidth={9} />
-        </Button>
-      </div>
-
+    <div className={cn("flex h-full flex-col border-r bg-background pt-8", className)}>
       <ScrollArea className="flex-1">
         <nav className="flex flex-col gap-1 p-4">
           {mainNavItems.map((item) => (
