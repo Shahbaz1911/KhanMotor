@@ -167,7 +167,6 @@ export default function ConsolidatedPage() {
       </section>
 
       {/* These sections are part of the "Home" experience but don't have direct nav links */}
-      <FeaturedCarGallery /> 
       <MarqueeBrandScroller />
       <GlassHighlightGrid />
       
@@ -175,7 +174,7 @@ export default function ConsolidatedPage() {
       <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div ref={aboutContentRef}>
-            <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-kajiro md:font-headline">
+            <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
               About Khan Motor
             </h2>
             <p className="mb-4 text-lg text-gray-300">
@@ -204,7 +203,7 @@ export default function ConsolidatedPage() {
       {/* Section 4: Testimonials */}
       <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-kajiro md:font-headline">
+          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
             What Our Clients Say
           </h2>
           <div ref={testimonialsGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -216,7 +215,7 @@ export default function ConsolidatedPage() {
                     <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <CardTitle className="text-xl font-kajiro md:font-headline">{testimonial.name}</CardTitle>
+                    <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
                     <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
                   </div>
                 </CardHeader>
@@ -238,6 +237,8 @@ export default function ConsolidatedPage() {
         </div>
       </section>
 
+      <FeaturedCarGallery /> 
+
       {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
       <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
@@ -245,7 +246,7 @@ export default function ConsolidatedPage() {
             <div className="grid md:grid-cols-2 items-center">
               <div className="p-8 md:p-12">
                 <CalendarClock className="h-16 w-16 text-white mb-6" />
-                <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-kajiro md:font-headline">
+                <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-black">
                   Ready for an Unforgettable Drive?
                 </h2>
                 <p className="mb-8 text-lg text-gray-300">
