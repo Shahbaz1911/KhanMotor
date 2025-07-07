@@ -203,9 +203,9 @@ export default function ConsolidatedPage() {
       <div className="fixed top-4 right-4 z-50">
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black">
               {isSheetOpen ? "CLOSE" : "MENU"}
-              <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2" />
+              <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-6 w-6" />
             </Button>
           </SheetTrigger>
           <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
