@@ -46,11 +46,11 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   };
 
   return (
-    <div className={cn("flex h-full flex-col border-r bg-background md:hidden", className)}>
+    <div className={cn("flex h-full flex-col border-r bg-background", className)}>
       <div className="flex h-16 items-center justify-start border-b px-4">
         <Button
           variant="ghost"
-          className="w-full justify-start items-center gap-2 text-4xl"
+          className="w-full justify-start items-center gap-2 text-4xl font-black"
           onClick={handleLinkClick}
         >
           CLOSE
@@ -64,7 +64,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-start items-center gap-2 text-4xl"
+              className="w-full justify-start items-center gap-2 text-4xl font-black"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
@@ -117,7 +117,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full text-4xl">
+          <Button onClick={handleLogin} variant="outline" className="w-full text-4xl font-kajiro">
             Login
           </Button>
         )}
