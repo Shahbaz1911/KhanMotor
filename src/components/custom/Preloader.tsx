@@ -17,6 +17,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const bottomCurtainRef = useRef<HTMLDivElement>(null);
   const lineContainerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLDivElement>(null);
   const animationStartedRef = useRef(false);
 
   useEffect(() => {
@@ -43,14 +44,29 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           }
         }
       });
-
-      if (lineRef.current && lineContainerRef.current) {
+      
+      const counter = { value: 0 };
+      
+      // Animate counter and line together on the timeline
+      if (lineRef.current && lineContainerRef.current && counterRef.current) {
           tl.to(lineRef.current, {
               scaleX: 1,
               duration: 2.5,
               ease: 'power2.out'
-          })
-          .to(lineContainerRef.current, {
+          }, 0); 
+
+          tl.to(counter, {
+              value: 100,
+              duration: 2.5,
+              ease: 'power2.out',
+              onUpdate: () => {
+                  if (counterRef.current) {
+                      counterRef.current.textContent = `${Math.round(counter.value)}%`;
+                  }
+              }
+          }, 0);
+
+          tl.to([lineContainerRef.current, counterRef.current], {
               opacity: 0,
               duration: 0.3
           });
@@ -96,6 +112,10 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           ref={lineRef} 
           className="h-full origin-left-right scale-x-0 bg-white"
         ></div>
+      </div>
+
+      <div ref={counterRef} className="absolute bottom-4 left-4 text-xl font-black text-white mix-blend-difference">
+        0%
       </div>
     </div>
   );
