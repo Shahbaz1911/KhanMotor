@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -67,7 +68,7 @@ export function GlassHighlightGrid() {
     <section ref={sectionRef} id="highlights" className="bg-secondary py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
+          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-primary">
             Why Choose Khan Motor?
           </h2>
           <p ref={textRef} className="text-lg text-muted-foreground md:text-xl">
@@ -84,7 +85,7 @@ export function GlassHighlightGrid() {
                 <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
                   <item.icon className="h-10 w-10" />
                 </div>
-                <CardTitle className="font-kajiro md:font-headline text-xl">{item.title}</CardTitle>
+                <CardTitle className="text-xl">{item.title}</CardTitle>
               </CardHeader>
               <CardContent className="text-center text-sm text-muted-foreground">
                 <p>{item.description}</p>

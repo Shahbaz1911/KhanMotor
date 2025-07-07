@@ -1,3 +1,4 @@
+
 "use client";
 
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
@@ -40,7 +41,7 @@ export function FeaturedCarGallery() {
     <section ref={sectionRef} id="featured-gallery" className="bg-background py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline text-primary">
+          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-primary">
             Featured Luxury Cars
           </h2>
           <p ref={textRef} className="text-lg text-muted-foreground md:text-xl">

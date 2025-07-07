@@ -50,7 +50,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
       <div className="flex h-16 items-center justify-start border-b px-4">
         <Button
           variant="ghost"
-          className="w-full justify-start items-center gap-2 text-4xl font-black font-kajiro"
+          className="w-full justify-start items-center gap-2 text-4xl"
           onClick={handleLinkClick}
         >
           CLOSE
@@ -64,7 +64,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-start items-center gap-2 text-4xl font-black font-kajiro"
+              className="w-full justify-start items-center gap-2 text-4xl"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
@@ -86,7 +86,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                   <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <p className="text-sm font-medium">{user.name}</p>
+                  <p className="text-sm font-black">{user.name}</p>
                   <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
               </Button>
@@ -94,7 +94,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <DropdownMenuContent className="w-56 mb-2" sideOffset={10} align="start"> 
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-sm font-black leading-none">{user.name}</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>
@@ -117,7 +117,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full text-4xl font-black font-kajiro">
+          <Button onClick={handleLogin} variant="outline" className="w-full text-4xl">
             Login
           </Button>
         )}

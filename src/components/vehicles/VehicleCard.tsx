@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -45,7 +46,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         />
       </div>
       <CardHeader>
-        <CardTitle className="font-kajiro md:font-headline text-2xl">{vehicle.make} {vehicle.model}</CardTitle>
+        <CardTitle className="text-2xl">{vehicle.make} {vehicle.model}</CardTitle>
         <CardDescription>{vehicle.year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -63,7 +64,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        <button className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <button className="w-full rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           View Details
         </button>
       </CardFooter>

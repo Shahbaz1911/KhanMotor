@@ -109,14 +109,14 @@ export default function VehiclesPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl font-kajiro md:font-headline">
+      <h1 className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl">
         Our Vehicle Collection
       </h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         <Card className="lg:col-span-1 h-fit sticky top-20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 font-kajiro md:font-headline"><Filter size={24}/> Filters</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Filter size={24}/> Filters</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>

@@ -80,7 +80,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground font-body font-black antialiased;
     transition-property: background-color, color;
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;

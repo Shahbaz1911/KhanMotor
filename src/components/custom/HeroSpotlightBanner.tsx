@@ -73,7 +73,7 @@ export function HeroSpotlightBanner() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h1 ref={headingRef} className="font-kajiro mb-10 scroll-m-20 text-6xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-white drop-shadow-lg mix-blend-screen md:mix-blend-normal">
+        <h1 ref={headingRef} className="mb-10 scroll-m-20 text-6xl tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl text-white drop-shadow-lg mix-blend-screen md:mix-blend-normal">
           {headingText.split(" ").map((word, index) => (
             <span key={index} className="inline-block overflow-hidden pb-2">
               <span className="word-inner inline-block will-change-transform">

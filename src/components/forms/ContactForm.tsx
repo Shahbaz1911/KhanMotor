@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useActionState, useEffect, useRef } from "react"; // Changed from react-dom to react and useFormState to useActionState
@@ -107,7 +108,7 @@ export function ContactForm() {
   return (
     <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl">
       <CardHeader>
-        <CardTitle className="text-3xl font-kajiro md:font-headline">Get in Touch</CardTitle>
+        <CardTitle className="text-3xl">Get in Touch</CardTitle>
         <CardDescription>
           Have questions or need assistance? Fill out the form below, and we&apos;ll get back to you shortly.
         </CardDescription>

@@ -11,9 +11,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        kajiro: ['Cinzel', 'serif'], // Added Kajiro (using Cinzel as placeholder)
+        body: ['Cinzel', 'serif'],
+        headline: ['Cinzel', 'serif'],
+        kajiro: ['Cinzel', 'serif'],
         code: ['monospace'],
       },
       colors: {

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -46,7 +47,7 @@ export function MarqueeBrandScroller() {
     <section ref={sectionRef} id="brand-scroller" className="bg-background py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl font-kajiro md:font-headline text-primary">
+          <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-primary">
             Our Trusted Automotive Partners
           </h2>
           <p className="text-md text-muted-foreground md:text-lg">
