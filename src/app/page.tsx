@@ -80,27 +80,59 @@ export default function ConsolidatedPage() {
         .from(aboutContentRef.current?.children, { opacity: 0, x: -50, stagger: 0.2, duration: 0.6 })
         .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.5");
 
-      // Testimonials Animation
-      const testimonialsTl = gsap.timeline({
+      // Testimonials Vertical Stack Animation
+      gsap.from(testimonialsTitleRef.current, {
         scrollTrigger: {
-          trigger: testimonialsSectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
+            trigger: testimonialsTitleRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
         },
+        opacity: 0,
+        y: 50,
+        duration: 0.6
       });
-      testimonialsTl
-        .from(testimonialsTitleRef.current, { opacity: 0, y: 50, duration: 0.6 })
-        .from(
-          testimonialsGridRef.current?.children,
-          {
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            duration: 0.5,
-            ease: "power3.out",
-          },
-          "-=0.3"
-        );
+      
+      const testimonialCards = gsap.utils.toArray<HTMLElement>('.testimonial-card');
+
+      if (testimonialsSectionRef.current && testimonialCards.length) {
+          const pinContainer = testimonialsGridRef.current;
+
+          // Set initial positions
+          testimonialCards.forEach((card, i) => {
+              const zIndex = testimonialCards.length - i;
+              gsap.set(card, { zIndex });
+          });
+
+          const tl = gsap.timeline({
+              scrollTrigger: {
+                  trigger: testimonialsSectionRef.current,
+                  pin: pinContainer,
+                  scrub: true,
+                  start: 'center center',
+                  end: `+=${testimonialCards.length * 300}`,
+              },
+          });
+
+          // Animate cards
+          testimonialCards.forEach((card, i) => {
+              tl.from(card, {
+                  y: 80,
+                  scale: 0.8,
+                  autoAlpha: 0,
+                  ease: 'power2.out',
+              }, '<0.2');
+
+              if (i < testimonialCards.length - 1) {
+                  tl.to(card, {
+                      y: -150,
+                      autoAlpha: 0,
+                      scale: 0.85,
+                      ease: 'power2.in',
+                  }, '>');
+              }
+          });
+      }
+
 
       // CTA Animation
       gsap.from(ctaSectionRef.current, {
@@ -203,12 +235,12 @@ export default function ConsolidatedPage() {
       {/* Section 4: Testimonials */}
       <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 ref={testimonialsTitleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
+          <h2 ref={testimonialsTitleRef} className="mb-24 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
             What Our Clients Say
           </h2>
-          <div ref={testimonialsGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div ref={testimonialsGridRef} className="relative h-[400px] w-full">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="flex flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white">
+              <Card key={index} className="testimonial-card absolute flex w-full max-w-2xl flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white left-1/2 -translate-x-1/2">
                 <CardHeader className="flex-row items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
