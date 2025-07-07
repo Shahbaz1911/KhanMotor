@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { vehicles as allVehicles, vehicleMakes, vehicleModelsByMake, minPrice as globalMinPrice, maxPrice as globalMaxPrice, minYear as globalMinYear, maxYear as globalMaxYear, sortOptions } from "@/lib/vehiclesData";
 import type { Vehicle, VehicleFilters, VehicleSortKey, VehicleSortOrder, VehicleSortOption } from "@/types";
@@ -12,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Filter, RotateCcw, Search } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 
 const initialFilters: VehicleFilters = {
   make: undefined,
@@ -30,6 +33,33 @@ export default function VehiclesPage() {
   
   // Debounce search term
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+
+  const pageRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.from(titleRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 0.6,
+      });
+
+      gsap.from(filterRef.current, {
+        opacity: 0,
+        x: -50,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.2
+      });
+    }, pageRef);
+
+    return () => ctx.revert();
+  }, []);
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -108,15 +138,15 @@ export default function VehiclesPage() {
   }, [filters, debouncedSearchTerm, currentSort]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl">
+    <div ref={pageRef} className="container mx-auto px-4 py-16 md:py-24">
+      <h1 ref={titleRef} className="mb-8 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-kajiro md:font-headline">
         Our Vehicle Collection
       </h1>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-        <Card className="lg:col-span-1 h-fit sticky top-20">
+        <Card ref={filterRef} className="lg:col-span-1 h-fit sticky top-24 bg-background/50 backdrop-blur-md border border-white/10 text-white">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Filter size={24}/> Filters</CardTitle>
+            <CardTitle className="flex items-center gap-2 font-kajiro md:font-headline"><Filter size={24}/> Filters</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
@@ -128,7 +158,7 @@ export default function VehiclesPage() {
                   placeholder="e.g., Audi R8, SUV, 2023"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 bg-transparent text-white placeholder:text-gray-400"
                 />
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               </div>
@@ -137,7 +167,7 @@ export default function VehiclesPage() {
             <div>
               <Label htmlFor="make">Make</Label>
               <Select value={filters.make} onValueChange={(value) => handleFilterChange("make", value === "all" ? undefined : value)}>
-                <SelectTrigger id="make">
+                <SelectTrigger id="make" className="bg-transparent">
                   <SelectValue placeholder="All Makes" />
                 </SelectTrigger>
                 <SelectContent>
@@ -153,7 +183,7 @@ export default function VehiclesPage() {
                <div>
                 <Label htmlFor="model">Model</Label>
                 <Select value={filters.model} onValueChange={(value) => handleFilterChange("model", value === "all" ? undefined : value)} disabled={!filters.make}>
-                  <SelectTrigger id="model">
+                  <SelectTrigger id="model" className="bg-transparent">
                     <SelectValue placeholder="All Models" />
                   </SelectTrigger>
                   <SelectContent>
@@ -200,7 +230,7 @@ export default function VehiclesPage() {
                   if (selectedSortOption) setCurrentSort(selectedSortOption);
                 }}
               >
-                <SelectTrigger id="sort">
+                <SelectTrigger id="sort" className="bg-transparent">
                   <SelectValue placeholder="Sort vehicles" />
                 </SelectTrigger>
                 <SelectContent>
@@ -211,7 +241,7 @@ export default function VehiclesPage() {
               </Select>
             </div>
 
-            <Button onClick={resetFilters} variant="outline" className="w-full">
+            <Button onClick={resetFilters} variant="outline" className="w-full bg-transparent hover:bg-white/10">
               <RotateCcw size={16} className="mr-2" /> Reset Filters
             </Button>
           </CardContent>
@@ -225,7 +255,7 @@ export default function VehiclesPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
+            <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-black/30 text-white">
               <div className="mb-4 text-5xl">🚗</div>
               <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
               <p className="text-muted-foreground">

@@ -60,7 +60,7 @@ export function FeaturedCarGallery() {
           </div>
         )}
         <div ref={buttonRef} className="mt-12 text-center">
-          <Button size="lg" className="group" onClick={() => router.push('/#vehicles')}>
+          <Button size="lg" className="group" onClick={() => router.push('/vehicles')}>
             View All Vehicles
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>

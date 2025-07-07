@@ -14,7 +14,7 @@ export function Footer() {
 
   const quickLinks = [
     { href: '/#home', label: 'Home' },
-    { href: '/#vehicles', label: 'Vehicles' },
+    { href: '/vehicles', label: 'Vehicles' },
     { href: '/#about-us', label: 'About Us' },
     { href: '/#testimonials', label: 'Testimonials' },
     { href: '/#contact', label: 'Contact Us' },
