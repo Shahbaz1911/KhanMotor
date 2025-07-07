@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Quote, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
@@ -15,11 +15,16 @@ import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 
 
 export default function ConsolidatedPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
@@ -179,6 +184,20 @@ export default function ConsolidatedPage() {
 
   return (
     <div ref={pageRef} className="flex flex-col relative">
+      <div className="fixed top-4 right-4 z-50">
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+              {isSheetOpen ? "CLOSE" : "MENU"}
+              <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
+            <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+          </SheetContent>
+        </Sheet>
+      </div>
+
        <div className="fixed inset-0 w-full h-screen z-[-1]">
         <video
           ref={videoRef}
