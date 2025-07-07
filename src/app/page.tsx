@@ -18,12 +18,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
+import { cn } from "@/lib/utils";
+import { Preloader } from "@/components/custom/Preloader";
 
 
 export default function ConsolidatedPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
 
   // GSAP Animation Refs
@@ -42,6 +45,8 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation useEffect
   useEffect(() => {
+    if (!isLoaded) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const video = videoRef.current;
@@ -171,7 +176,7 @@ export default function ConsolidatedPage() {
     }, pageRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isLoaded]);
 
   const testimonials = [
     {
@@ -199,151 +204,154 @@ export default function ConsolidatedPage() {
 
 
   return (
-    <div ref={pageRef} className="flex flex-col relative">
-      <div className="fixed top-4 right-4 z-50">
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black">
-              {isSheetOpen ? "CLOSE" : "MENU"}
-              <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-6 w-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
-            <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
-          </SheetContent>
-        </Sheet>
-      </div>
-
-       <div className="fixed inset-0 w-full h-screen z-[-1]">
-        <video
-          ref={videoRef}
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          src="https://media-alpha-green.vercel.app/video/car.mp4"
-        >
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 bg-black/60"></div>
-      </div>
-
-      {/* Section 1: Home */}
-      <section ref={heroSectionRef} id="home" className="w-full">
-        <HeroSpotlightBanner />
-      </section>
-
-      {/* These sections are part of the "Home" experience but don't have direct nav links */}
-      <MarqueeBrandScroller />
-      <GlassHighlightGrid />
-      
-      {/* Section 2: About Us */}
-      <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div ref={aboutContentRef}>
-            <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
-              About Khan Motor
-            </h2>
-            <p className="mb-4 text-lg text-gray-300">
-              At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world&apos;s most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
-            </p>
-            <p className="mb-6 text-lg text-gray-300">
-              Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.
-            </p>
-            <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
-              Meet Our Team
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </div>
-          <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
-            <Image
-              src="https://source.unsplash.com/featured/800x600/?luxury,dealership,interior"
-              alt="Khan Motor Dealership Interior"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-lg"
-            />
-          </div>
+    <>
+      <Preloader onLoaded={() => setIsLoaded(true)} />
+      <div ref={pageRef} className={cn("flex flex-col relative", !isLoaded && "opacity-0 invisible")}>
+        <div className="fixed top-4 right-4 z-50">
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black">
+                {isSheetOpen ? "CLOSE" : "MENU"}
+                <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
+              <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+            </SheetContent>
+          </Sheet>
         </div>
-      </section>
 
-      {/* Section 4: Testimonials */}
-      <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <h2 ref={testimonialsTitleRef} className="mb-24 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
-            What Our Clients Say
-          </h2>
-          <div ref={testimonialsGridRef} className="relative h-[400px] w-full">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="testimonial-card absolute flex w-full max-w-2xl flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white left-1/2 -translate-x-1/2">
-                <CardHeader className="flex-row items-center gap-4">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
-                    <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <Quote className="h-8 w-8 text-white/50 mb-2 transform -scale-x-100" />
-                  <p className="text-gray-300 italic mb-4">{testimonial.quote}</p>
-                  <div className="flex">
-                    {Array(testimonial.rating).fill(0).map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    {Array(5 - testimonial.rating).fill(0).map((_, i) => (
-                         <Star key={i} className="h-5 w-5 text-gray-500" />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <div className="fixed inset-0 w-full h-screen z-[-1]">
+          <video
+            ref={videoRef}
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            src="https://media-alpha-green.vercel.app/video/car.mp4"
+          >
+            Your browser does not support the video tag.
+          </video>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
-      </section>
-      
-      <FeaturedCarGallery /> 
 
-      {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
-      <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 backdrop-blur-md text-white">
-            <div className="grid md:grid-cols-2 items-center">
-              <div className="p-8 md:p-12">
-                <CalendarClock className="h-16 w-16 text-white mb-6" />
-                <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-black">
-                  Ready for an Unforgettable Drive?
-                </h2>
-                <p className="mb-8 text-lg text-gray-300">
-                  Experience the thrill and luxury of your dream car. Schedule a personalized test drive today and let our experts guide you through every feature.
-                </p>
-                <Button size="lg" className="group text-lg px-8 py-6" onClick={() => router.push('/book-appointment')}>
-                  Book Your Test Drive
-                  <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </div>
-              <div className="relative h-64 md:h-full min-h-[300px] order-first md:order-last">
-                <Image
-                  src="https://source.unsplash.com/featured/800x600/?car,interior,driving" 
-                  alt="Luxury car steering wheel view"
-                  layout="fill"
-                  objectFit="cover"
-                  className="md:rounded-r-lg"
-                />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/50 md:via-transparent"></div>
-              </div>
+        {/* Section 1: Home */}
+        <section ref={heroSectionRef} id="home" className="w-full">
+          <HeroSpotlightBanner />
+        </section>
+
+        {/* These sections are part of the "Home" experience but don't have direct nav links */}
+        <MarqueeBrandScroller />
+        <GlassHighlightGrid />
+        
+        {/* Section 2: About Us */}
+        <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div ref={aboutContentRef}>
+              <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
+                About Khan Motor
+              </h2>
+              <p className="mb-4 text-lg text-gray-300">
+                At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
+              </p>
+              <p className="mb-6 text-lg text-gray-300">
+                Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.
+              </p>
+              <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
+                Meet Our Team
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
             </div>
-          </Card>
-        </div>
-      </section>
+            <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
+              <Image
+                src="https://source.unsplash.com/featured/800x600/?luxury,dealership,interior"
+                alt="Khan Motor Dealership Interior"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+              />
+            </div>
+          </div>
+        </section>
 
-      {/* Section 6: Contact Us */}
-      <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
-        <ContactForm />
-      </section>
+        {/* Section 4: Testimonials */}
+        <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <h2 ref={testimonialsTitleRef} className="mb-24 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
+              What Our Clients Say
+            </h2>
+            <div ref={testimonialsGridRef} className="relative h-[400px] w-full">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="testimonial-card absolute flex w-full max-w-2xl flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white left-1/2 -translate-x-1/2">
+                  <CardHeader className="flex-row items-center gap-4">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                      <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
+                      <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <Quote className="h-8 w-8 text-white/50 mb-2 transform -scale-x-100" />
+                    <p className="text-gray-300 italic mb-4">{testimonial.quote}</p>
+                    <div className="flex">
+                      {Array(testimonial.rating).fill(0).map((_, i) => (
+                        <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                      {Array(5 - testimonial.rating).fill(0).map((_, i) => (
+                           <Star key={i} className="h-5 w-5 text-gray-500" />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        <FeaturedCarGallery /> 
 
-    </div>
+        {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
+        <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 backdrop-blur-md text-white">
+              <div className="grid md:grid-cols-2 items-center">
+                <div className="p-8 md:p-12">
+                  <CalendarClock className="h-16 w-16 text-white mb-6" />
+                  <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-black">
+                    Ready for an Unforgettable Drive?
+                  </h2>
+                  <p className="mb-8 text-lg text-gray-300">
+                    Experience the thrill and luxury of your dream car. Schedule a personalized test drive today and let our experts guide you through every feature.
+                  </p>
+                  <Button size="lg" className="group text-lg px-8 py-6" onClick={() => router.push('/book-appointment')}>
+                    Book Your Test Drive
+                    <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </div>
+                <div className="relative h-64 md:h-full min-h-[300px] order-first md:order-last">
+                  <Image
+                    src="https://source.unsplash.com/featured/800x600/?car,interior,driving" 
+                    alt="Luxury car steering wheel view"
+                    layout="fill"
+                    objectFit="cover"
+                    className="md:rounded-r-lg"
+                  />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/50 md:via-transparent"></div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        {/* Section 6: Contact Us */}
+        <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
+          <ContactForm />
+        </section>
+
+      </div>
+    </>
   );
 }
