@@ -36,57 +36,71 @@ const highlightItems = [
 
 export function GlassHighlightGrid() {
   const sectionRef = useRef<HTMLElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
 
-      if (titleRef.current) {
-        tl.from(titleRef.current.children, {
-          y: 50,
-          opacity: 0,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: 'power3.out'
+    const ctx = gsap.context(() => {
+      // Horizontal scroll for the title
+      if (titleContainerRef.current && titleRef.current) {
+        gsap.to(titleRef.current, {
+          x: () => `-${titleRef.current!.scrollWidth - titleContainerRef.current!.offsetWidth}`,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
         });
       }
 
-      tl.from(textRef.current, { opacity: 0, y: 50, duration: 0.5 }, "+=0.2")
-        .from(gridRef.current?.children, {
+      // Animate subtitle
+      gsap.from(textRef.current, {
+        scrollTrigger: {
+          trigger: textRef.current,
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6
+      });
+      
+      // Animate grid items
+      if (gridRef.current) {
+        gsap.from(gridRef.current.children, {
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
           opacity: 0,
           y: 50,
           stagger: 0.2,
           duration: 0.5,
           ease: "power3.out",
         });
+      }
     }, sectionRef);
+    
     return () => ctx.revert();
   }, []);
-
-  const titleText = "Why Choose Khan Motor?";
 
   return (
     <section ref={sectionRef} id="highlights" className="py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
-            {titleText.split(" ").map((word, index) => (
-              <span key={index} className="inline-block">
-                {word}{index < titleText.split(" ").length - 1 ? "\u00A0" : ""}
-              </span>
-            ))}
-          </h2>
-          <p ref={textRef} className="text-lg text-gray-300 md:text-xl">
+        <div className="mb-12">
+          <div ref={titleContainerRef} className="overflow-hidden">
+             <h2 ref={titleRef} className="whitespace-nowrap py-4 text-4xl tracking-tight lg:text-5xl text-white font-black">
+                Why Choose Khan Motor?&nbsp;&mdash;&nbsp;Why Choose Khan Motor?&nbsp;&mdash;&nbsp;Why Choose Khan Motor?&nbsp;&mdash;&nbsp;
+             </h2>
+          </div>
+          <p ref={textRef} className="text-center text-lg text-gray-300 md:text-xl">
             Experience the difference of true automotive excellence.
           </p>
         </div>

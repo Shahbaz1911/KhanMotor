@@ -28,6 +28,7 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
   const aboutSectionRef = useRef<HTMLElement>(null);
   const aboutContentRef = useRef<HTMLDivElement>(null);
   const aboutImageRef = useRef<HTMLDivElement>(null);
@@ -73,6 +74,21 @@ export default function ConsolidatedPage() {
     }
 
     const ctx = gsap.context(() => {
+      // Hero fade up animation
+      if (heroSectionRef.current) {
+        gsap.to(heroSectionRef.current, {
+          scrollTrigger: {
+            trigger: pageRef.current,
+            start: "top top",
+            end: "center top",
+            scrub: true,
+          },
+          opacity: 0,
+          y: -100,
+          ease: "power1.out",
+        });
+      }
+      
       // About Us Animation
       const aboutTl = gsap.timeline({
         scrollTrigger: {
@@ -213,7 +229,7 @@ export default function ConsolidatedPage() {
       </div>
 
       {/* Section 1: Home */}
-      <section id="home" className="w-full">
+      <section ref={heroSectionRef} id="home" className="w-full">
         <HeroSpotlightBanner />
       </section>
 
