@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 
-export function HeroSpotlightBanner() {
+export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -16,13 +16,14 @@ export function HeroSpotlightBanner() {
   const headingText = "Experience Automotive Excellence";
 
   useEffect(() => {
-    if (headingRef.current && buttonRef.current) {
+    // Only run animation if isLoaded is true
+    if (isLoaded && headingRef.current && buttonRef.current) {
       const innerWords = headingRef.current.querySelectorAll(".word-inner");
       
       gsap.set(innerWords, { y: "110%" });
       gsap.set(buttonRef.current, { opacity: 0, y: 20 });
       
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.5 });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.2 });
 
       tl.to(
           innerWords,
@@ -38,7 +39,7 @@ export function HeroSpotlightBanner() {
           "-=0.5"
       );
     }
-  }, []);
+  }, [isLoaded]);
 
   return (
     <section ref={sectionRef} className="relative z-10 w-full h-[70vh] min-h-[500px] md:h-screen flex items-center justify-center overflow-hidden text-white">

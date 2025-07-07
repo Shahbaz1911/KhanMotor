@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 interface PreloaderProps {
@@ -9,53 +9,57 @@ interface PreloaderProps {
 }
 
 export function Preloader({ onLoaded }: PreloaderProps) {
-  const [progress, setProgress] = useState(0);
   const preloaderRef = useRef<HTMLDivElement>(null);
+  const topCurtainRef = useRef<HTMLDivElement>(null);
+  const bottomCurtainRef = useRef<HTMLDivElement>(null);
+  const lineContainerRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          if (preloaderRef.current) {
-            gsap.to(preloaderRef.current, {
-              opacity: 0,
-              duration: 1,
-              ease: 'power3.inOut',
-              onComplete: () => {
-                if(preloaderRef.current) preloaderRef.current.style.display = 'none';
-                onLoaded();
-              },
-            });
-          }
-          return 100;
+    const tl = gsap.timeline({
+      delay: 0.5, // Small delay before starting
+      onComplete: () => {
+        if (preloaderRef.current && topCurtainRef.current && bottomCurtainRef.current) {
+          const revealTl = gsap.timeline({
+            onComplete: () => {
+              if (preloaderRef.current) preloaderRef.current.style.display = 'none';
+              onLoaded();
+            }
+          });
+          
+          revealTl.to([topCurtainRef.current, bottomCurtainRef.current], {
+            y: (i) => (i === 0 ? '-100%' : '100%'),
+            duration: 1.2,
+            ease: 'power4.inOut'
+          });
         }
-        return prev + 1;
-      });
-    }, 40);
+      }
+    });
 
-    return () => clearInterval(interval);
+    if (lineRef.current && lineContainerRef.current) {
+        tl.to(lineRef.current, {
+            scaleX: 1,
+            duration: 2.5, // Loading duration
+            ease: 'power2.out'
+        })
+        .to(lineContainerRef.current, {
+            opacity: 0,
+            duration: 0.3
+        });
+    }
+
   }, [onLoaded]);
 
   return (
-    <div
-      ref={preloaderRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-white"
-    >
-      <div className="relative h-32 w-32">
-        <svg className="h-full w-full animate-spin" style={{ animationDuration: '2s' }} viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.3)" strokeWidth="8" fill="none" />
-            <path d="M14.2 14.2 L 21.3 21.3" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M14.2 85.8 L 21.3 78.7" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M85.8 14.2 L 78.7 21.3" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M85.8 85.8 L 78.7 78.7" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M50 10 L 50 20" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M50 90 L 50 80" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M10 50 L 20 50" stroke="white" strokeWidth="6" strokeLinecap="round" />
-            <path d="M90 50 L 80 50" stroke="white" strokeWidth="6" strokeLinecap="round" />
-        </svg>
+    <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden">
+      <div ref={topCurtainRef} className="absolute top-0 left-0 h-1/2 w-full bg-black"></div>
+      <div ref={bottomCurtainRef} className="absolute bottom-0 left-0 h-1/2 w-full bg-black"></div>
+      <div ref={lineContainerRef} className="absolute h-px w-[80vw] max-w-sm overflow-hidden bg-gray-800">
+        <div 
+          ref={lineRef} 
+          className="h-full origin-left-right scale-x-0 bg-white"
+        ></div>
       </div>
-      <p className="mt-8 text-3xl font-black tabular-nums text-white">{progress}%</p>
     </div>
   );
 }

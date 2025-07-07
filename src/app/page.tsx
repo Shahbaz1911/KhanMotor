@@ -237,7 +237,7 @@ export default function ConsolidatedPage() {
 
         {/* Section 1: Home */}
         <section ref={heroSectionRef} id="home" className="w-full">
-          <HeroSpotlightBanner />
+          <HeroSpotlightBanner isLoaded={isLoaded} />
         </section>
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
@@ -273,6 +273,8 @@ export default function ConsolidatedPage() {
             </div>
           </div>
         </section>
+        
+        <FeaturedCarGallery /> 
 
         {/* Section 4: Testimonials */}
         <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
@@ -310,8 +312,6 @@ export default function ConsolidatedPage() {
             </div>
           </div>
         </section>
-        
-        <FeaturedCarGallery /> 
 
         {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
         <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
