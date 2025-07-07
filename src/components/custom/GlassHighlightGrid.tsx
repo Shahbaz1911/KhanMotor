@@ -51,8 +51,17 @@ export function GlassHighlightGrid() {
         },
       });
 
-      tl.from(titleRef.current, { opacity: 0, y: 50, duration: 0.5 })
-        .from(textRef.current, { opacity: 0, y: 50, duration: 0.5 }, "-=0.3")
+      if (titleRef.current) {
+        tl.from(titleRef.current.children, {
+          y: 50,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.5,
+          ease: 'power3.out'
+        });
+      }
+
+      tl.from(textRef.current, { opacity: 0, y: 50, duration: 0.5 }, "+=0.2")
         .from(gridRef.current?.children, {
           opacity: 0,
           y: 50,
@@ -64,12 +73,18 @@ export function GlassHighlightGrid() {
     return () => ctx.revert();
   }, []);
 
+  const titleText = "Why Choose Khan Motor?";
+
   return (
     <section ref={sectionRef} id="highlights" className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white">
-            Why Choose Khan Motor?
+          <h2 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
+            {titleText.split(" ").map((word, index) => (
+              <span key={index} className="inline-block">
+                {word}{index < titleText.split(" ").length - 1 ? "\u00A0" : ""}
+              </span>
+            ))}
           </h2>
           <p ref={textRef} className="text-lg text-gray-300 md:text-xl">
             Experience the difference of true automotive excellence.
@@ -85,7 +100,7 @@ export function GlassHighlightGrid() {
                 <div className="mb-4 rounded-full bg-white/10 p-4 text-white">
                   <item.icon className="h-10 w-10" />
                 </div>
-                <CardTitle className="text-xl">{item.title}</CardTitle>
+                <CardTitle className="text-xl font-black">{item.title}</CardTitle>
               </CardHeader>
               <CardContent className="text-center text-sm text-gray-300">
                 <p>{item.description}</p>
