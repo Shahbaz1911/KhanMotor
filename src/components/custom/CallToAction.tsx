@@ -31,7 +31,7 @@ export function CallToAction() {
               trigger: sectionRef.current,
               start: "top bottom",
               end: "bottom top",
-              scrub: 1, // Smoother scrubbing
+              scrub: true, // Directly link animation to scroll
             },
           }
         );
