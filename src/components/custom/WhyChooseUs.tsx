@@ -61,13 +61,13 @@ export function WhyChooseUs() {
         >
             <motion.h2 
                 variants={titleVariants}
-                className="text-4xl tracking-tight lg:text-5xl text-white font-black"
+                className="text-4xl tracking-tight lg:text-5xl font-black"
             >
                 Why Choose Khan Motor?
             </motion.h2>
             <motion.p 
                 variants={textVariants}
-                className="text-lg text-gray-300 md:text-xl mt-4 max-w-3xl mx-auto"
+                className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto"
             >
                 Experience the difference of true automotive excellence, where every detail is crafted for your satisfaction.
             </motion.p>
@@ -86,9 +86,9 @@ export function WhyChooseUs() {
                   </div>
                 </div>
                 <div className="md:ml-[calc(50%+2rem)] md:pl-8">
-                    <Card className="bg-background/50 backdrop-blur-md border-white/20">
+                    <Card className="bg-card/50 backdrop-blur-md border-border">
                         <CardHeader>
-                            <CardTitle className="text-white text-xl font-black">{item.title}</CardTitle>
+                            <CardTitle className="text-xl font-black">{item.title}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">{item.description}</p>

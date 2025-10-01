@@ -147,7 +147,7 @@ export default function ConsolidatedPage() {
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
-              <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
+              <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
                 About Khan Motor
               </h2>
               <div className="gsap-reveal">
@@ -177,7 +177,7 @@ export default function ConsolidatedPage() {
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 overflow-hidden">
            <div className="container mx-auto px-4 mb-12">
-            <h2 className="scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
+            <h2 className="scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black">
               What Our Clients Say
             </h2>
            </div>

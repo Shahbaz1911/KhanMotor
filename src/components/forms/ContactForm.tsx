@@ -108,10 +108,10 @@ export function ContactForm() {
   }, [state, toast, form]);
 
   return (
-    <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl dark:bg-background/50 dark:backdrop-blur-md dark:border-white/20">
+    <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl bg-card/50 dark:bg-background/50 backdrop-blur-md border-border">
       <CardHeader>
         <CardTitle className="text-3xl">Get in Touch</CardTitle>
-        <CardDescription className="dark:text-gray-300">
+        <CardDescription>
           Have questions or need assistance? Fill out the form below, and we&apos;ll get back to you shortly.
         </CardDescription>
       </CardHeader>

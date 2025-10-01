@@ -39,7 +39,7 @@ export default function VehiclesPage() {
 
   return (
     <div ref={pageRef} className="container mx-auto px-4 py-16 md:py-24">
-      <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
+      <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black">
         Our Vehicle Collection
       </h1>
 
@@ -53,7 +53,7 @@ export default function VehiclesPage() {
             />
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-black/30 text-white">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
             <div className="mb-4 text-5xl">🚗</div>
             <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
             <p className="text-muted-foreground">

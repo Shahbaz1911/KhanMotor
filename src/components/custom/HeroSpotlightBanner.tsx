@@ -44,7 +44,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   return (
     <section ref={sectionRef} className="relative z-20 w-full h-full flex items-center justify-center overflow-hidden text-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <h1 ref={headingRef} className="mb-10 scroll-m-20 text-5xl tracking-tight sm:text-6xl md:text-7xl text-white drop-shadow-lg font-black">
+        <h1 ref={headingRef} className="mb-10 scroll-m-20 text-5xl tracking-tight sm:text-6xl md:text-7xl text-white drop-shadow-lg font-black" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
           {headingText.split(" ").map((word, index) => (
             <span key={index} className="inline-block overflow-hidden pb-2">
               <span className="word-inner inline-block will-change-transform">

@@ -75,12 +75,12 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         />
       </div>
 
-      <div ref={contentRef} className="text-white">
-        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-gray-400">{vehicle.year}</p>
+      <div ref={contentRef}>
+        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground">{vehicle.year}</p>
         <h3 className="gsap-reveal mt-2 text-3xl font-black tracking-tight md:text-4xl">
           {vehicle.make} {vehicle.model}
         </h3>
-        <p className="gsap-reveal mt-4 text-lg text-gray-300">
+        <p className="gsap-reveal mt-4 text-lg text-muted-foreground">
           {vehicle.description}
         </p>
 
