@@ -104,9 +104,9 @@ export default function ConsolidatedPage() {
         <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base">
+                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm">
                   MENU
-                  <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
+                  <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="bottom" className="h-full bg-black/80 backdrop-blur-lg border-t border-white/10 p-0" srTitle="Navigation Menu">
@@ -114,27 +114,27 @@ export default function ConsolidatedPage() {
                  <Button 
                     variant="ghost" 
                     onClick={() => setIsSheetOpen(false)} 
-                    className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white text-base"
+                    className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white text-sm"
                     aria-label="Close menu"
                   >
                     CLOSE
-                    <AnimatedMenuIcon isOpen={true} className="ml-3 h-5 w-5" />
+                    <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
                  </Button>
               </SheetContent>
             </Sheet>
 
-            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2 invisible">
+            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
                 <Image 
                     src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                     alt="Arman Autoxperts Logo"
-                    width={100}
-                    height={100}
-                    className="w-20 h-auto md:w-24"
+                    width={150}
+                    height={150}
+                    className="w-28 h-auto"
                 />
             </div>
           
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base" onClick={() => router.push('/vehicles')}>
-                <GalleryThumbnails className="mr-3 h-5 w-5" />
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm" onClick={() => router.push('/vehicles')}>
+                <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
         </div>
