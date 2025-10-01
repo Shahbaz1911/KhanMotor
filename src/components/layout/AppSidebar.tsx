@@ -66,6 +66,9 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
       </div>
 
       <div className="border-t border-white/10 p-4 space-y-4">
+        <div className="flex justify-start px-2"> 
+            <ThemeToggle />
+        </div>
         {user ? (
           <div className="flex justify-start">
             <DropdownMenu>
@@ -76,7 +79,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                     <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <p className="text-sm font-black">{user.name}</p>
+                    <p className="font-black">{user.name}</p>
                     <p className="text-xs text-white/70">{user.email}</p>
                   </div>
                 </Button>
@@ -109,14 +112,11 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           </div>
         ) : (
           <div className="flex justify-start">
-            <Button onClick={handleLogin} variant="outline" className="font-black bg-white text-black hover:bg-white/90 hover:text-black">
+            <Button onClick={handleLogin} variant="outline" className="font-black bg-white text-black hover:bg-white/90 hover:text-black w-full">
               Login
             </Button>
           </div>
         )}
-        <div className="flex justify-start px-2"> 
-            <ThemeToggle />
-        </div>
       </div>
     </div>
   );
