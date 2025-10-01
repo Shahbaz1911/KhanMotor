@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -113,10 +112,16 @@ export const TracingBeam = ({
               y1={y1}
               y2={y2}
             >
-              <stop stopColor="hsl(var(--primary))" stopOpacity="0" />
-              <stop stopColor="hsl(var(--primary))" />
-              <stop offset="0.325" stopColor="hsl(var(--primary))" />
-              <stop offset="1" stopColor="hsl(var(--accent))" stopOpacity="0" />
+              <stop stopColor="#18CCFC" stopOpacity="0" />
+              <stop stopColor="#18CCFC" />
+              <stop offset="0.125" stopColor="#6344F5" />
+              <stop offset="0.25" stopColor="#AE48FF" />
+              <stop offset="0.375" stopColor="#FF5C5C" />
+              <stop offset="0.5" stopColor="#FFB800" />
+              <stop offset="0.625" stopColor="#48FF57" />
+              <stop offset="0.75" stopColor="#54D5FF" />
+              <stop offset="0.875" stopColor="#18CCFC" />
+              <stop offset="1" stopColor="#18CCFC" stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>
