@@ -64,26 +64,22 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-bold text-white">Follow Us</h3>
             <p className="mt-4 text-sm text-gray-400">Stay connected for the latest arrivals and news.</p>
-            <div className="mt-4 flex space-x-2">
+            <ul className="mt-4 space-y-2">
               {socialLinks.map((social) => (
-                <Button
-                  key={social.label}
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  className="rounded-full bg-white/10 text-white/80 transition-all duration-300 hover:bg-white/20 hover:text-white hover:-translate-y-1 hover:scale-110"
-                >
+                <li key={social.label}>
                   <a
                     href={social.href}
                     aria-label={social.label}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="group flex items-center gap-2 text-sm text-gray-400 transition-all duration-300 hover:text-white"
                   >
-                    <social.icon className="h-5 w-5" />
+                    <social.icon className="h-5 w-5 transition-colors duration-300 group-hover:text-destructive" />
+                    <span>{social.label}</span>
                   </a>
-                </Button>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
         </div>
