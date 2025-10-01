@@ -63,20 +63,20 @@ export function ServicesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="services" className="py-16 md:py-24 bg-black/20 backdrop-blur-sm">
+    <section ref={sectionRef} id="services" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="text-4xl tracking-tight lg:text-5xl text-white font-black">
+          <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black">
             Our Services
           </h2>
-          <p className="text-lg text-gray-300 md:text-xl mt-4">
+          <p className="text-lg text-muted-foreground md:text-xl mt-4">
             Comprehensive care for your luxury vehicle.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => (
             <div key={index} ref={el => cardsRef.current[index] = el}>
-              <Card className="h-full flex flex-col items-center text-center bg-gradient-to-br from-card/80 to-card/60 dark:from-background/60 dark:to-background/20 backdrop-blur-md border border-border text-card-foreground shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-primary/30">
+              <Card className="h-full flex flex-col items-center text-center bg-card/50 backdrop-blur-md border-border shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-primary/30">
                 <CardHeader className="items-center">
                   <div className="p-4 bg-primary/20 rounded-full border border-primary/30 mb-4">
                     <service.icon className="h-8 w-8 text-primary" />
