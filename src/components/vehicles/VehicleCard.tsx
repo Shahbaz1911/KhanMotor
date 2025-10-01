@@ -3,10 +3,8 @@
 
 import Image from "next/image";
 import type { Vehicle } from "@/types";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tag } from "lucide-react";
-import React from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "../ui/button";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -14,39 +12,38 @@ interface VehicleCardProps {
 
 export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
-    // The parent component will handle the animation, so we add a class for GSAP to target
-    <Card className="flex h-full transform flex-col overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 bg-background/50 backdrop-blur-md border border-white/20 vehicle-card-animate opacity-0 translate-y-10">
-      <div className="relative h-56 w-full">
-        <Image
-          src={vehicle.imageUrl}
-          alt={`${vehicle.make} ${vehicle.model}`}
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
-      <CardHeader>
-        <CardTitle className="text-2xl text-white font-black">{vehicle.make} {vehicle.model}</CardTitle>
-        <CardDescription className="text-gray-300">{vehicle.year}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="mb-4 text-lg font-semibold text-white">
-          ${vehicle.price.toLocaleString()}
-        </p>
-        <p className="mb-4 text-sm text-gray-300 line-clamp-3">{vehicle.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {vehicle.features.slice(0, 3).map((feature) => (
-            <Badge key={feature} variant="secondary" className="flex items-center gap-1 bg-white/20 text-white border-none">
-              <Tag className="h-3 w-3" />
-              {feature}
-            </Badge>
-          ))}
+    // The parent component will handle the entry animation
+    <Card className="group relative flex h-96 transform flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-500 hover:shadow-2xl vehicle-card-animate opacity-0 translate-y-10 border-white/10">
+      <Image
+        src={vehicle.imageUrl}
+        alt={`${vehicle.make} ${vehicle.model}`}
+        fill
+        className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+      />
+      
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+      <div className="relative mt-auto flex flex-col p-6 text-white">
+        <div className="mb-4">
+          <p className="text-sm font-semibold uppercase tracking-widest text-gray-300">{vehicle.year}</p>
+          <h3 className="text-2xl font-black leading-tight tracking-tight md:text-3xl">
+            {vehicle.make} {vehicle.model}
+          </h3>
         </div>
-      </CardContent>
-      <CardFooter>
-        <button className="w-full rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-black">
-          View Details
-        </button>
-      </CardFooter>
+        
+        <div className="flex items-center justify-between">
+          <p className="text-2xl font-bold">
+            ${vehicle.price.toLocaleString()}
+          </p>
+          <Button
+            size="lg"
+            variant="outline"
+            className="translate-y-2 transform rounded-full border-2 border-white bg-transparent opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 hover:bg-white hover:text-black"
+          >
+            View Details
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 }

@@ -268,7 +268,7 @@ export default function VehiclesPage() {
 
         <div className="lg:col-span-3">
           {displayedVehicles.length > 0 ? (
-            <div ref={vehicleGridRef} className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div ref={vehicleGridRef} className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {displayedVehicles.map((vehicle) => (
                 <VehicleCard key={vehicle.id} vehicle={vehicle} />
               ))}
