@@ -48,13 +48,13 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
   return (
     <div className={cn("h-full flex flex-col", className)}>
-      <div className="flex-grow flex items-center justify-center">
-        <nav className="flex flex-col gap-2 p-4 text-center">
+      <div className="flex-grow flex items-center justify-start">
+        <nav className="flex flex-col gap-2 p-4 md:p-8 w-full">
           {mainNavItems.map((item) => (
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-center text-3xl md:text-4xl font-black text-white/80 hover:text-white relative group py-4"
+              className="w-full justify-start text-3xl md:text-4xl font-black text-white/80 hover:text-white relative group py-4"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
@@ -68,10 +68,10 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
       <div className="border-t border-white/10 p-4 space-y-4">
         {user ? (
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex h-auto items-center justify-center gap-3 p-2 text-left text-white">
+                <Button variant="ghost" className="flex h-auto items-center justify-start gap-3 p-2 text-left text-white w-full">
                   <Avatar className="h-10 w-10 border-2 border-white/20">
                     <AvatarImage src={user.avatarUrl} alt={user.name} />
                     <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
@@ -82,7 +82,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 mb-2" sideOffset={10} align="center"> 
+              <DropdownMenuContent className="w-56 mb-2" side="top" sideOffset={10} align="start"> 
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-black leading-none">{user.name}</p>
@@ -113,7 +113,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             Login
           </Button>
         )}
-        <div className="flex justify-center"> 
+        <div className="flex justify-start px-2"> 
             <ThemeToggle />
         </div>
       </div>
