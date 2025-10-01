@@ -24,10 +24,10 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-wrap justify-between gap-8">
           
           {/* Quick Links */}
-          <div>
+          <div className="w-full sm:w-auto">
             <h3 className="text-lg font-bold text-white">Quick Links</h3>
             <ul className="mt-4 space-y-2">
               {quickLinks.map((link) => (
@@ -42,7 +42,7 @@ export function Footer() {
           </div>
           
           {/* Contact Info */}
-          <div>
+          <div className="w-full sm:w-auto">
              <h3 className="text-lg font-bold text-white">Contact Us</h3>
              <ul className="mt-4 space-y-3 text-sm">
                 <li className="flex items-start gap-3">
@@ -61,7 +61,7 @@ export function Footer() {
           </div>
 
           {/* Social Media */}
-          <div>
+          <div className="w-full sm:w-auto">
             <h3 className="text-lg font-bold text-white">Follow Us</h3>
             <ul className="mt-4 space-y-2">
               {socialLinks.map((social) => (
