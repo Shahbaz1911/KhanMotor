@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import placeholderImages from '@/lib/placeholder-images.json';
 import { cn } from "@/lib/utils";
+import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const testimonials = [
   {
@@ -47,7 +50,7 @@ const testimonials = [
 
 const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] }) => {
   return (
-    <Card className="w-[350px] shrink-0 md:w-[450px] flex flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white">
+    <Card className="w-[350px] shrink-0 md:w-[450px] flex flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white mx-4">
       <CardHeader className="flex-row items-center gap-4">
         <Avatar className="h-16 w-16">
           <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
@@ -75,16 +78,60 @@ const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] 
 };
 
 export function TestimonialMarquee() {
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const repeatedTestimonials = [...testimonials, ...testimonials];
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const marqueeEl = marqueeRef.current;
+    if (!marqueeEl) return;
+
+    // Use the first child to calculate width for one set of testimonials
+    const firstSetWidth = marqueeEl.children[0].clientWidth;
+
+    const animation = gsap.to(marqueeEl, {
+      x: () => `-${firstSetWidth}px`,
+      ease: "none",
+      duration: 30, // Adjust for a comfortable base speed
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize(x => parseFloat(x) % firstSetWidth)
+      }
+    });
+
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: marqueeEl,
+      start: "top bottom",
+      end: "bottom top",
+      onUpdate: self => {
+        const velocity = self.getVelocity();
+        // A multiplier to make the speed change more noticeable.
+        // A negative velocity means scrolling up.
+        const speedMultiplier = Math.max(1, 1 + Math.abs(velocity) / 500);
+        
+        gsap.to(animation, {
+          timeScale: (velocity > 0 ? 1 : -1) * speedMultiplier,
+          duration: 0.1,
+          overwrite: true
+        });
+      },
+      onScrubComplete: () => {
+         gsap.to(animation, { timeScale: 1, duration: 0.5 }); // Return to normal speed when not scrubbing
+      },
+    });
+
+    return () => {
+      animation.kill();
+      scrollTrigger.kill();
+    }
+  }, []);
+
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]">
-      <div
-        className="flex w-max animate-marquee [--gap:1rem] hover:[animation-play-state:paused]"
-        style={{ animationDuration: '40s' }}
-      >
-        {[...testimonials, ...testimonials].map((testimonial, i) => (
-          <div key={i} className="px-[calc(var(--gap)/2)]">
-            <TestimonialCard testimonial={testimonial} />
-          </div>
+      <div ref={marqueeRef} className="flex w-max">
+        {repeatedTestimonials.map((testimonial, i) => (
+          <TestimonialCard key={i} testimonial={testimonial} />
         ))}
       </div>
     </div>
