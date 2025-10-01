@@ -9,7 +9,7 @@ interface AnimatedMenuIconProps {
 }
 
 export function AnimatedMenuIcon({ isOpen, className }: AnimatedMenuIconProps) {
-  const barClasses = "absolute h-0.5 w-full bg-current transition-all duration-300 ease-in-out";
+  const barClasses = "absolute h-px w-full bg-current transition-all duration-300 ease-in-out";
 
   return (
     <div className={cn("relative h-5 w-5", className)}>
