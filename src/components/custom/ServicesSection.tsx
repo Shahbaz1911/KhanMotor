@@ -76,10 +76,10 @@ export function ServicesSection() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => (
             <div key={index} ref={el => cardsRef.current[index] = el}>
-              <Card className="h-full flex flex-col items-center text-center bg-card/50 backdrop-blur-md border-border shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-primary/30">
+              <Card className="h-full flex flex-col items-center text-center bg-card/50 backdrop-blur-md border-border shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-destructive/30">
                 <CardHeader className="items-center">
-                  <div className="p-4 bg-primary/20 rounded-full border border-primary/30 mb-4">
-                    <service.icon className="h-8 w-8 text-primary" />
+                  <div className="p-4 bg-destructive/20 rounded-full border border-destructive/30 mb-4">
+                    <service.icon className="h-8 w-8 text-destructive" />
                   </div>
                   <CardTitle className="text-2xl font-black">{service.title}</CardTitle>
                 </CardHeader>
