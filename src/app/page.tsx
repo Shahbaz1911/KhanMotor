@@ -34,64 +34,40 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
-  const heroSectionRef = useRef<HTMLElement>(null);
   const headerControlsRef = useRef<HTMLDivElement>(null);
-  const aboutSectionRef = useRef<HTMLElement>(null);
-  const aboutContentRef = useRef<HTMLDivElement>(null);
-  const aboutImageRef = useRef<HTMLDivElement>(null);
-
-  const testimonialsSectionRef = useRef<HTMLElement>(null);
   
+  const aboutSectionRef = useRef<HTMLElement>(null);
   const ctaSectionRef = useRef<HTMLElement>(null);
-
 
   // GSAP Animation useEffect
   useEffect(() => {
     if (!isLoaded) return;
-
+    
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Header controls fade out on scroll
-      if (headerControlsRef.current) {
-        gsap.to(headerControlsRef.current, {
-          autoAlpha: 0, // Fades out and sets visibility to hidden
-          scrollTrigger: {
-            trigger: pageRef.current,
-            start: "top top", // When the top of the page is at the top of the viewport
-            end: "+=150", // Over 150px of scroll
-            scrub: true,
-          },
-        });
-      }
-
-      // Hero fade up animation
-      if (heroSectionRef.current) {
-        gsap.to(heroSectionRef.current, {
-          scrollTrigger: {
-            trigger: pageRef.current,
-            start: "top top",
-            end: "center top",
-            scrub: true,
-          },
-          opacity: 0,
-          y: -100,
-          ease: "power1.out",
-        });
-      }
-      
-      // About Us Animation
-      const aboutTl = gsap.timeline({
+       // Header controls fade out on scroll
+      gsap.to(headerControlsRef.current, {
+        autoAlpha: 0,
         scrollTrigger: {
-          trigger: aboutSectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
+          trigger: pageRef.current,
+          start: 'top top',
+          end: '+=150',
+          scrub: true,
         },
       });
-      aboutTl
-        .from(aboutContentRef.current?.querySelector('h2'), { opacity: 0, x: -50, duration: 0.6 })
-        .from(aboutContentRef.current?.querySelector('button'), { opacity: 0, x: -50, duration: 0.6 }, "-=0.3")
-        .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.8");
+
+      // About Us Animation
+      gsap.from(aboutSectionRef.current, {
+          scrollTrigger: {
+              trigger: aboutSectionRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+          },
+          opacity: 0,
+          y: 50,
+          duration: 0.8,
+      });
 
       // CTA Animation
       gsap.from(ctaSectionRef.current, {
@@ -136,7 +112,7 @@ export default function ConsolidatedPage() {
         </div>
 
         {/* Section 1: Home */}
-        <section ref={heroSectionRef} id="home" className="relative w-full h-[70vh] min-h-[500px] md:h-screen overflow-hidden">
+        <section id="home" className="relative w-full h-[70vh] min-h-[500px] md:h-screen overflow-hidden">
            <video
             autoPlay
             loop
@@ -158,7 +134,7 @@ export default function ConsolidatedPage() {
         {/* Section 2: About Us */}
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div ref={aboutContentRef}>
+            <div >
               <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
                 About Khan Motor
               </h2>
@@ -170,7 +146,7 @@ export default function ConsolidatedPage() {
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-            <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
+            <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
               <Image
                 src={placeholderImages.about.url}
                 alt="Khan Motor Dealership Interior"
@@ -183,7 +159,7 @@ export default function ConsolidatedPage() {
         </section>
         
         {/* Section 4: Testimonials */}
-        <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24 overflow-hidden">
+        <section id="testimonials" className="py-16 md:py-24 overflow-hidden">
            <div className="container mx-auto px-4 mb-12">
             <h2 className="scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
               What Our Clients Say

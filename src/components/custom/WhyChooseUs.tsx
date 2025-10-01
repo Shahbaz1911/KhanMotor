@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { TracingBeam } from "./TracingBeam";
 import {
   Car,
@@ -11,7 +11,9 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 
 const highlightItems = [
   {
@@ -37,27 +39,14 @@ const highlightItems = [
 ];
 
 function HighlightItem({ item, index }: { item: typeof highlightItems[0], index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
   const isEven = index % 2 === 0;
 
-  const variants = {
-    hidden: { opacity: 0, x: isEven ? 50 : -50 },
-    visible: { opacity: 1, x: 0 },
-  };
-
   return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={variants}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+    <div
       className={cn("relative md:pl-[52px]")}
     >
        <div className={cn(
         "absolute -translate-y-4 left-0 translate-x-0 !ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30",
-        "md:flex hidden" // Hide on mobile, show on md and up
         )}>
         <item.icon className="h-5 w-5" />
       </div>
@@ -78,14 +67,65 @@ function HighlightItem({ item, index }: { item: typeof highlightItems[0], index:
           <p className="text-muted-foreground">{item.description}</p>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
 
 
 export function WhyChooseUs() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      // Animate section title
+      gsap.from(sectionRef.current?.querySelector('h2'), {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+      });
+      gsap.from(sectionRef.current?.querySelector('p'), {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.2
+      });
+      
+      // Animate cards
+      const cards = sectionRef.current?.querySelectorAll('[data-highlight-item]');
+      cards?.forEach((card) => {
+        const isEven = card.getAttribute('data-index') ? parseInt(card.getAttribute('data-index')!) % 2 === 0 : false;
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+          opacity: 0,
+          x: isEven ? 50 : -50,
+          duration: 0.8,
+          ease: "power3.out",
+        });
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="highlights" className="py-16 md:py-24 bg-background">
+    <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="text-4xl tracking-tight lg:text-5xl text-white font-black">
@@ -118,7 +158,9 @@ export function WhyChooseUs() {
             <TracingBeam className="px-6">
             <div className="relative pt-4 antialiased space-y-12">
                 {highlightItems.map((item, index) => (
-                <HighlightItem key={`content-${index}`} item={item} index={index} />
+                    <div key={`content-${index}`} data-highlight-item data-index={index}>
+                        <HighlightItem item={item} index={index} />
+                    </div>
                 ))}
             </div>
             </TracingBeam>
