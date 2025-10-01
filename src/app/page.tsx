@@ -148,7 +148,7 @@ export default function ConsolidatedPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
               <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
-                About Arman Autoxperts
+                The Art of Automotive Excellence
               </h2>
               <div className="gsap-reveal">
                 <TextGenerateEffect words={aboutText1} className="mb-4" />
