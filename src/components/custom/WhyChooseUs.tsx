@@ -1,8 +1,7 @@
 
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { TracingBeam } from "./TracingBeam";
+import React, { useRef } from "react";
 import {
   Car,
   ShieldCheck,
@@ -11,9 +10,11 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import {
+  motion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
 const highlightItems = [
   {
@@ -38,18 +39,44 @@ const highlightItems = [
   },
 ];
 
-function HighlightItem({ item, index }: { item: typeof highlightItems[0], index: number }) {
+function HighlightItem({
+  item,
+  index,
+  totalItems,
+  scrollYProgress,
+}: {
+  item: typeof highlightItems[0];
+  index: number;
+  totalItems: number;
+  scrollYProgress: any;
+}) {
   const isEven = index % 2 === 0;
 
+  // Calculate the start and end points for this item's animation
+  const start = index / totalItems;
+  const end = (index + 1) / totalItems;
+
+  // Create transforms for opacity and position based on scroll progress
+  const opacity = useTransform(scrollYProgress, [start, (start + end) / 2], [0, 1]);
+  const x = useTransform(
+    scrollYProgress,
+    [start, (start + end) / 2],
+    [isEven ? 50 : -50, 0]
+  );
+  
+  const iconY = useTransform(scrollYProgress, [start, (start + end) / 2], [20, 0]);
+
+
   return (
-    <div
+    <motion.div
       className={cn("relative md:pl-[52px]")}
+      style={{ opacity, x }}
     >
-       <div className={cn(
+       <motion.div style={{ opacity, y: iconY }} className={cn(
         "absolute -translate-y-4 left-0 translate-x-0 !ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30",
         )}>
         <item.icon className="h-5 w-5" />
-      </div>
+      </motion.div>
       <Card className={cn(
         "mt-6 bg-background/50 backdrop-blur-md border-white/20",
         "w-full md:w-[calc(50%-2rem)]", 
@@ -57,8 +84,8 @@ function HighlightItem({ item, index }: { item: typeof highlightItems[0], index:
       )}>
         <CardHeader>
           <div className="flex items-center gap-4">
-             <div className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
-                <item.icon className="h-6 w-6" />
+            <div className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
+              <item.icon className="h-6 w-6" />
             </div>
             <CardTitle className="text-white text-2xl font-black">{item.title}</CardTitle>
           </div>
@@ -67,73 +94,47 @@ function HighlightItem({ item, index }: { item: typeof highlightItems[0], index:
           <p className="text-muted-foreground">{item.description}</p>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 
 
 export function WhyChooseUs() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"],
+  });
 
-    const ctx = gsap.context(() => {
-      // Animate section title
-      gsap.from(sectionRef.current?.querySelector('h2'), {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-      });
-      gsap.from(sectionRef.current?.querySelector('p'), {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 0.2
-      });
-      
-      // Animate cards
-      const cards = sectionRef.current?.querySelectorAll('[data-highlight-item]');
-      cards?.forEach((card) => {
-        const isEven = card.getAttribute('data-index') ? parseInt(card.getAttribute('data-index')!) % 2 === 0 : false;
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
-          opacity: 0,
-          x: isEven ? 50 : -50,
-          duration: 0.8,
-          ease: "power3.out",
-        });
-      });
+  const { scrollYProgress: titleProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
-    }, sectionRef);
+  const titleOpacity = useTransform(titleProgress, [0.1, 0.3], [0, 1]);
+  const titleY = useTransform(titleProgress, [0.1, 0.3], [20, 0]);
 
-    return () => ctx.revert();
-  }, []);
-
+  const pOpacity = useTransform(titleProgress, [0.2, 0.4], [0, 1]);
+  const pY = useTransform(titleProgress, [0.2, 0.4], [20, 0]);
+  
   return (
     <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="text-4xl tracking-tight lg:text-5xl text-white font-black">
-            Why Choose Khan Motor?
-          </h2>
-          <p className="text-lg text-gray-300 md:text-xl mt-4">
-            Experience the difference of true automotive excellence.
-          </p>
+            <motion.h2 
+                style={{ opacity: titleOpacity, y: titleY }}
+                className="text-4xl tracking-tight lg:text-5xl text-white font-black"
+            >
+                Why Choose Khan Motor?
+            </motion.h2>
+            <motion.p 
+                style={{ opacity: pOpacity, y: pY }}
+                className="text-lg text-gray-300 md:text-xl mt-4"
+            >
+                Experience the difference of true automotive excellence.
+            </motion.p>
         </div>
         
         <div className="md:hidden space-y-8">
@@ -155,15 +156,22 @@ export function WhyChooseUs() {
         </div>
         
         <div className="hidden md:block">
-            <TracingBeam className="px-6">
-            <div className="relative pt-4 antialiased space-y-12">
-                {highlightItems.map((item, index) => (
-                    <div key={`content-${index}`} data-highlight-item data-index={index}>
-                        <HighlightItem item={item} index={index} />
-                    </div>
-                ))}
+             <div ref={targetRef} className="relative w-full max-w-4xl mx-auto h-full">
+                <div className="absolute left-1/2 -translate-x-1/2 top-3 h-full w-px">
+                   {/* This is the static line */}
+                </div>
+                <div className="relative pt-4 antialiased space-y-12">
+                    {highlightItems.map((item, index) => (
+                        <HighlightItem 
+                            key={`content-${index}`} 
+                            item={item} 
+                            index={index}
+                            totalItems={highlightItems.length}
+                            scrollYProgress={scrollYProgress}
+                        />
+                    ))}
+                </div>
             </div>
-            </TracingBeam>
         </div>
 
       </div>
