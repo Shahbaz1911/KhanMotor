@@ -11,7 +11,6 @@ import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
 import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
 import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -21,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 
 
 export default function ConsolidatedPage() {
@@ -40,9 +40,7 @@ export default function ConsolidatedPage() {
   const aboutImageRef = useRef<HTMLDivElement>(null);
 
   const testimonialsSectionRef = useRef<HTMLElement>(null);
-  const testimonialsTitleRef = useRef<HTMLHeadingElement>(null);
-  const testimonialsGridRef = useRef<HTMLDivElement>(null);
-
+  
   const ctaSectionRef = useRef<HTMLElement>(null);
 
 
@@ -81,60 +79,6 @@ export default function ConsolidatedPage() {
         .from(aboutContentRef.current?.querySelector('button'), { opacity: 0, x: -50, duration: 0.6 }, "-=0.3")
         .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.8");
 
-      // Testimonials Vertical Stack Animation
-      gsap.from(testimonialsTitleRef.current, {
-        scrollTrigger: {
-            trigger: testimonialsTitleRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-        },
-        opacity: 0,
-        y: 50,
-        duration: 0.6
-      });
-      
-      const testimonialCards = gsap.utils.toArray<HTMLElement>('.testimonial-card');
-
-      if (testimonialsSectionRef.current && testimonialCards.length) {
-          const pinContainer = testimonialsGridRef.current;
-
-          // Set initial positions
-          testimonialCards.forEach((card, i) => {
-              const zIndex = testimonialCards.length - i;
-              gsap.set(card, { zIndex });
-          });
-
-          const tl = gsap.timeline({
-              scrollTrigger: {
-                  trigger: testimonialsSectionRef.current,
-                  pin: pinContainer,
-                  scrub: true,
-                  start: 'center center',
-                  end: `+=${testimonialCards.length * 300}`,
-              },
-          });
-
-          // Animate cards
-          testimonialCards.forEach((card, i) => {
-              tl.from(card, {
-                  y: 80,
-                  scale: 0.8,
-                  autoAlpha: 0,
-                  ease: 'power2.out',
-              }, '<0.2');
-
-              if (i < testimonialCards.length - 1) {
-                  tl.to(card, {
-                      y: -150,
-                      autoAlpha: 0,
-                      scale: 0.85,
-                      ease: 'power2.in',
-                  }, '>');
-              }
-          });
-      }
-
-
       // CTA Animation
       gsap.from(ctaSectionRef.current, {
           scrollTrigger: {
@@ -152,30 +96,6 @@ export default function ConsolidatedPage() {
 
     return () => ctx.revert();
   }, [isLoaded]);
-
-  const testimonials = [
-    {
-      name: "Sarah L.",
-      title: "Luxury Car Enthusiast",
-      avatar: placeholderImages.testimonial1.url,
-      quote: "Khan Motor provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
-      rating: 5,
-    },
-    {
-      name: "John B.",
-      title: "First Time Buyer",
-      avatar: placeholderImages.testimonial2.url,
-      quote: "The team at Khan Motor made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
-      rating: 5,
-    },
-    {
-      name: "Emily K.",
-      title: "Collector",
-      avatar: placeholderImages.testimonial3.url,
-      quote: "As a collector, I appreciate Khan Motor's curated selection of rare and high-performance vehicles. A trusted partner.",
-      rating: 5,
-    },
-  ];
 
 
   return (
@@ -244,40 +164,13 @@ export default function ConsolidatedPage() {
         </section>
         
         {/* Section 4: Testimonials */}
-        <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <h2 ref={testimonialsTitleRef} className="mb-24 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
+        <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24 overflow-hidden">
+           <div className="container mx-auto px-4 mb-12">
+            <h2 className="scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl text-white font-black">
               What Our Clients Say
             </h2>
-            <div ref={testimonialsGridRef} className="relative h-[400px] w-full">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="testimonial-card absolute flex w-full max-w-2xl flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white left-1/2 -translate-x-1/2">
-                  <CardHeader className="flex-row items-center gap-4">
-                    <Avatar className="h-16 w-16">
-                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                      <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
-                      <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <Quote className="h-8 w-8 text-white/50 mb-2 transform -scale-x-100" />
-                    <p className="text-gray-300 italic mb-4">{testimonial.quote}</p>
-                    <div className="flex">
-                      {Array(testimonial.rating).fill(0).map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                      ))}
-                      {Array(5 - testimonial.rating).fill(0).map((_, i) => (
-                           <Star key={i} className="h-5 w-5 text-gray-500" />
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+           </div>
+           <TestimonialMarquee />
         </section>
 
         {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
@@ -323,4 +216,3 @@ export default function ConsolidatedPage() {
   );
 }
 
-    
