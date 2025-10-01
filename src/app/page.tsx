@@ -24,6 +24,7 @@ import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
 import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
 import { CallToAction } from "@/components/custom/CallToAction";
+import { TextMarquee } from "@/components/custom/TextMarquee";
 
 
 export default function ConsolidatedPage() {
@@ -159,6 +160,7 @@ export default function ConsolidatedPage() {
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <AchievementsSection />
+        <TextMarquee />
         <ServicesSection />
         
         {/* Section 2: About Us */}
