@@ -176,7 +176,7 @@ export default function ConsolidatedPage() {
   return (
     <>
       <Preloader onLoaded={() => setIsLoaded(true)} />
-      <div ref={pageRef} className={cn("flex flex-col relative", !isLoaded && "opacity-0 invisible")}>
+      <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
         <div className="fixed top-4 left-4 z-50">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
@@ -191,22 +191,19 @@ export default function ConsolidatedPage() {
           </Sheet>
         </div>
 
-        <div className="fixed inset-0 w-full h-screen z-[-1]">
-          <video
+        {/* Section 1: Home */}
+        <section ref={heroSectionRef} id="home" className="relative w-full h-[70vh] min-h-[500px] md:h-screen overflow-hidden">
+           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover z-0"
             src="https://media-alpha-green.vercel.app/video/car.mp4"
           >
             Your browser does not support the video tag.
           </video>
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
-
-        {/* Section 1: Home */}
-        <section ref={heroSectionRef} id="home" className="w-full">
+          <div className="absolute inset-0 bg-black/60 z-10"></div>
           <HeroSpotlightBanner isLoaded={isLoaded} />
         </section>
 
@@ -325,7 +322,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
 
     

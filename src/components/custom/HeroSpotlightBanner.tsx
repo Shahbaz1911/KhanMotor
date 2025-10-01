@@ -42,7 +42,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   }, [isLoaded]);
 
   return (
-    <section ref={sectionRef} className="relative z-10 w-full h-[70vh] min-h-[500px] md:h-screen flex items-center justify-center overflow-hidden text-white">
+    <section ref={sectionRef} className="relative z-20 w-full h-full flex items-center justify-center overflow-hidden text-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 ref={headingRef} className="mb-10 scroll-m-20 text-4xl tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg font-black">
           {headingText.split(" ").map((word, index) => (
@@ -66,3 +66,5 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
     </section>
   );
 }
+
+    
