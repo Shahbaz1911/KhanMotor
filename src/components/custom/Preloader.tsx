@@ -12,21 +12,33 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const preloaderRef = useRef<HTMLDivElement>(null);
   const needleRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const speedNumberRef = useRef<HTMLSpanElement>(null);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
 
   useEffect(() => {
+    const speedCounter = { val: 0 };
     const tl = gsap.timeline({
       onComplete: () => {
         setIsAnimationComplete(true);
       },
     });
 
-    // Needle sweep from -90 to 90 degrees (0 to 180 on dial)
-    tl.to(needleRef.current, {
+    // Animate speed number and needle simultaneously
+    tl.to(speedCounter, {
+      val: 150,
+      duration: 1.5,
+      ease: 'power3.inOut',
+      onUpdate: () => {
+        if(speedNumberRef.current) {
+            speedNumberRef.current.textContent = Math.round(speedCounter.val).toString();
+        }
+      },
+    })
+    .to(needleRef.current, {
         rotation: 180,
         duration: 1.5,
         ease: 'power3.inOut',
-      })
+      }, 0) // Start at the same time as the number counter
       // Logo glow at peak
       .to(logoRef.current, {
         animation: 'logo-glow 0.5s ease-in-out',
@@ -34,12 +46,9 @@ export function Preloader({ onLoaded }: PreloaderProps) {
         repeat: 1,
         yoyo: true,
       }, '-=0.25')
-      // Needle sweep from 90 back to -90 degrees
-      .to(needleRef.current, {
-        rotation: 0,
-        duration: 1.2,
-        ease: 'power3.inOut',
-      }, '+=0.5');
+      // Hold for a moment
+      .to({}, {duration: 0.5});
+
 
   }, []);
 
@@ -71,7 +80,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   );
 
   return (
-    <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
+    <div ref={preloaderRef} className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-black">
       <div className="relative w-64 h-32 flex items-end justify-center">
         {/* Speedometer Dial */}
         <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive rounded-t-full"></div>
@@ -86,7 +95,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
         </div>
 
         {/* Logo in the center */}
-        <div ref={logoRef} className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div ref={logoRef} className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-[80%]">
              <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                 alt="Arman Autoxperts Logo"
@@ -114,6 +123,10 @@ export function Preloader({ onLoaded }: PreloaderProps) {
          {/* Center pin */}
         <div className="absolute w-4 h-4 bg-white rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
       </div>
+       <div className="mt-4 text-center text-white">
+            <span ref={speedNumberRef} className="text-6xl font-black tabular-nums">0</span>
+            <span className="ml-2 text-xl">mph</span>
+        </div>
     </div>
   );
 }
