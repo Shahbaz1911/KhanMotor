@@ -27,7 +27,7 @@ const TickMark = ({ rotation, large }: { rotation: number, large?: boolean }) =>
         className={`absolute left-1/2 -translate-x-1/2 bg-white/50 animate-tick`} 
         style={{
           width: '1px',
-          height: large ? '8px' : '4px',
+          height: large ? '6px' : '3px',
           animationDirection: 'alternate',
           animationIterationCount: 'infinite',
           ...animationStyle
@@ -103,7 +103,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       className="absolute w-full h-full text-center"
       style={{ transform: `rotate(${rotation}deg)` }}
     >
-      <span className="inline-block text-white text-xs -translate-y-2" style={{ transform: `rotate(${-rotation}deg) ` }}>
+      <span className="inline-block text-white text-[10px] -translate-y-1.5" style={{ transform: `rotate(${-rotation}deg) ` }}>
         {value}
       </span>
     </div>
@@ -122,21 +122,21 @@ export function Preloader({ onLoaded }: PreloaderProps) {
            <Image
               src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
               alt="Arman Autoxperts Logo"
-              width={120}
-              height={120}
-              className="w-28 h-auto"
+              width={150}
+              height={150}
+              className="w-36 h-auto"
               priority
           />
       </div>
 
-      <div className="relative w-80 h-40 flex items-end justify-center">
+      <div className="relative w-64 h-32 flex items-end justify-center">
         {/* Speedometer Dial - more layers for realism */}
-        <div className="absolute bottom-0 w-full h-[160px] border-[10px] border-b-0 border-destructive/50 rounded-t-full"></div>
-        <div className="absolute bottom-0 w-[calc(100%-20px)] h-[150px] border-[1px] border-b-0 border-white/20 rounded-t-full"></div>
-        <div className="absolute bottom-0 w-[calc(100%-40px)] h-[140px] border-[10px] border-b-0 border-black rounded-t-full"></div>
+        <div className="absolute bottom-0 w-full h-[128px] border-[8px] border-b-0 border-destructive/50 rounded-t-full"></div>
+        <div className="absolute bottom-0 w-[calc(100%-16px)] h-[120px] border-[1px] border-b-0 border-white/20 rounded-t-full"></div>
+        <div className="absolute bottom-0 w-[calc(100%-32px)] h-[112px] border-[8px] border-b-0 border-black rounded-t-full"></div>
         
         {/* Speed Markings */}
-        <div className="absolute bottom-0 w-[calc(100%-60px)] h-[130px]">
+        <div className="absolute bottom-0 w-[calc(100%-48px)] h-[104px]">
           {Array.from({length: totalMarks + 1}).map((_, i) => (
              <TickMark key={i} rotation={startAngle + (i * degreeStep)} large={i % 10 === 0} />
           ))}
@@ -152,24 +152,24 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
         {/* Needle - redesigned for realism */}
         <div
-          className="absolute bottom-0 w-40 h-40 origin-bottom-left"
-          style={{ transform: 'translateX(8px)' }}
+          className="absolute bottom-0 w-32 h-32 origin-bottom-left"
+          style={{ transform: 'translateX(6px)' }}
         >
           <div
             ref={needleRef}
-            className="absolute bottom-1/2 left-0 w-[45%] h-0.5 bg-destructive origin-right"
+            className="absolute bottom-1/2 left-0 w-[45%] h-px bg-destructive origin-right"
             style={{ transform: 'rotate(-135deg)' }}
           >
-              <div className="absolute -top-1.5 right-0 w-3 h-3 bg-destructive rounded-full border-2 border-black"></div>
+              <div className="absolute -top-1 right-0 w-2 h-2 bg-destructive rounded-full border border-black"></div>
           </div>
         </div>
 
          {/* Center pin */}
-        <div className="absolute w-5 h-5 bg-zinc-800 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-zinc-600"></div>
+        <div className="absolute w-4 h-4 bg-zinc-800 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-zinc-600"></div>
       </div>
        <div className="mt-4 text-center text-white">
-            <span ref={speedNumberRef} className="text-6xl font-black tabular-nums">0</span>
-            <span className="ml-2 text-xl">mph</span>
+            <span ref={speedNumberRef} className="text-5xl font-black tabular-nums">0</span>
+            <span className="ml-2 text-lg">mph</span>
         </div>
     </div>
   );
