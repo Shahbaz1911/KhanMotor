@@ -1,122 +1,71 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 
 interface PreloaderProps {
   onLoaded: () => void;
 }
 
-// A high-quality, landscape image for the preloader
-const preloaderImageUrl = "https://images.unsplash.com/photo-1541348263662-e15a63608ae6?q=80&w=1920&auto=format&fit=crop";
-
 export function Preloader({ onLoaded }: PreloaderProps) {
   const preloaderRef = useRef<HTMLDivElement>(null);
-  const topCurtainRef = useRef<HTMLDivElement>(null);
-  const bottomCurtainRef = useRef<HTMLDivElement>(null);
-  const lineContainerRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLDivElement>(null);
-  const animationStartedRef = useRef(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
 
   useEffect(() => {
-    const startAnimation = () => {
-      if (animationStartedRef.current) return;
-      animationStartedRef.current = true;
+    const counter = { value: 0 };
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setIsAnimationComplete(true);
+      }
+    });
 
-      const tl = gsap.timeline({
-        delay: 0.5,
-        onComplete: () => {
-          if (preloaderRef.current && topCurtainRef.current && bottomCurtainRef.current) {
-            const revealTl = gsap.timeline({
-              onComplete: () => {
-                if (preloaderRef.current) preloaderRef.current.style.display = 'none';
-                onLoaded();
-              }
-            });
-            
-            revealTl.to([topCurtainRef.current, bottomCurtainRef.current], {
-              y: (i) => (i === 0 ? '-100%' : '100%'),
-              duration: 1.2,
-              ease: 'power4.inOut'
-            });
+    tl.to(counter, {
+        value: 100,
+        duration: 2.5,
+        ease: 'power2.out',
+        onUpdate: () => {
+          if (counterRef.current) {
+            counterRef.current.textContent = `${Math.round(counter.value)}`;
           }
+        },
+      })
+      .to(contentRef.current, {
+        opacity: 0,
+        duration: 0.5,
+      }, "-=0.5");
+
+  }, []);
+
+  useEffect(() => {
+    if (isAnimationComplete) {
+      const revealTl = gsap.timeline({
+        onComplete: () => {
+            if (preloaderRef.current) preloaderRef.current.style.display = 'none';
+            onLoaded();
         }
       });
-      
-      const counter = { value: 0 };
-      
-      // Animate counter and line together on the timeline
-      if (lineRef.current && lineContainerRef.current && counterRef.current) {
-          tl.to(lineRef.current, {
-              scaleX: 1,
-              duration: 2.5,
-              ease: 'power2.out'
-          }, 0); 
-
-          tl.to(counter, {
-              value: 100,
-              duration: 2.5,
-              ease: 'power2.out',
-              onUpdate: () => {
-                  if (counterRef.current) {
-                      counterRef.current.textContent = `${Math.round(counter.value)}%`;
-                  }
-              }
-          }, 0);
-
-          tl.to([lineContainerRef.current, counterRef.current], {
-              opacity: 0,
-              duration: 0.3
-          });
-      }
-    };
-
-    const img = new Image();
-    img.src = preloaderImageUrl;
-    if (img.complete) {
-      startAnimation();
-    } else {
-      img.onload = startAnimation;
-      img.onerror = startAnimation; // Start animation even if image fails to load
+      revealTl.to(preloaderRef.current, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.inOut'
+      });
     }
-    
-  }, [onLoaded]);
+  }, [isAnimationComplete, onLoaded]);
 
   return (
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
-      <div 
-        ref={topCurtainRef} 
-        className="absolute top-0 left-0 h-1/2 w-full"
-        style={{
-          backgroundImage: `url(${preloaderImageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      ></div>
-      <div 
-        ref={bottomCurtainRef} 
-        className="absolute bottom-0 left-0 h-1/2 w-full"
-        style={{
-          backgroundImage: `url(${preloaderImageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      ></div>
-      
-      <div ref={lineContainerRef} className="absolute h-px w-[80vw] max-w-sm overflow-hidden bg-gray-800">
-        <div 
-          ref={lineRef} 
-          className="h-full origin-left-right scale-x-0 bg-white"
-        ></div>
-      </div>
-
-      <div ref={counterRef} className="absolute bottom-4 left-4 text-xl font-black text-white mix-blend-difference">
-        0%
-      </div>
+        <div ref={contentRef} className="flex flex-col items-center justify-center text-white">
+            <h1 className="text-4xl md:text-5xl font-black text-center mb-4">
+                Khan Motor
+            </h1>
+            <div className="flex items-end">
+                <span ref={counterRef} className="text-6xl md:text-8xl font-black tabular-nums">0</span>
+                <span className="text-2xl md:text-3xl font-black mb-2 ml-1">%</span>
+            </div>
+        </div>
     </div>
   );
 }
