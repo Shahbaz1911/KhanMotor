@@ -61,54 +61,51 @@ export function HappyCustomerGallery() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    let ctx = gsap.context(() => {});
-    
-    if (gridRef.current) {
-        ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
-                },
-            });
-    
-            tl.from(titleRef.current, {
-                opacity: 0,
-                y: 50,
-                duration: 0.8,
-                ease: "power3.out",
-            }).from(
-                gridRef.current?.children,
-                {
-                opacity: 0,
-                scale: 0.9,
-                y: 50,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: "power3.out",
-                },
-                "-=0.5"
-            );
 
-            const cards = Array.from(gridRef.current.children);
-            
-            cards.forEach(card => {
-                const otherCards = cards.filter(c => c !== card);
-                
-                card.addEventListener('mouseenter', () => {
-                    gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power3.out' });
-                    gsap.to(otherCards, { scale: 0.95, duration: 0.3, ease: 'power3.out' });
-                });
+    const ctx = gsap.context(() => {
+      if (!gridRef.current) return;
+      
+      const cards = Array.from(gridRef.current.children);
 
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(cards, { scale: 1, duration: 0.3, ease: 'power3.out' });
-                });
-            });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
 
+      tl.from(titleRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        ease: "power3.out",
+      }).from(
+        cards,
+        {
+          opacity: 0,
+          scale: 0.9,
+          y: 50,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+        "-=0.5"
+      );
 
-        }, sectionRef);
-    }
+      cards.forEach(card => {
+        const otherCards = cards.filter(c => c !== card);
+        
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power3.out', zIndex: 10 });
+          gsap.to(otherCards, { scale: 0.95, duration: 0.3, ease: 'power3.out' });
+        });
+
+        card.addEventListener('mouseleave', () => {
+          gsap.to(cards, { scale: 1, duration: 0.3, ease: 'power3.out', zIndex: 1 });
+        });
+      });
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
@@ -129,20 +126,19 @@ export function HappyCustomerGallery() {
           {galleryItems.map((item, index) => (
             <div
               key={index}
-              className="group relative block w-full overflow-hidden rounded-lg shadow-lg transition-all duration-300"
+              className="group relative block w-full overflow-hidden rounded-lg shadow-lg"
             >
               <Image
                 src={item.imageUrl}
                 alt={`Customer ${item.customerName}`}
                 width={600}
                 height={400}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 data-ai-hint={item.aiHint}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300"></div>
               <div className="absolute inset-0 flex flex-col justify-end p-6">
-                <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-                <div className="relative z-10 text-white">
+                 <div className="relative z-10 text-white">
                   <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     <h3 className="text-xl font-black">{item.customerName}</h3>
                     <div className="mt-1 flex">
@@ -153,7 +149,7 @@ export function HappyCustomerGallery() {
                         ))}
                     </div>
                   </div>
-                  <p className="mt-2 text-sm font-medium transition-opacity duration-300 group-hover:opacity-0">
+                  <p className="mt-2 text-sm font-medium opacity-100 transition-opacity duration-300 group-hover:opacity-0">
                     {item.caption}
                   </p>
                 </div>
