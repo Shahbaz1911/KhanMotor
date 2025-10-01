@@ -63,51 +63,61 @@ export function HappyCustomerGallery() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer || !triggerRef.current) return;
+    // Let the DOM settle before calculating widths
+    const timeoutId = setTimeout(() => {
+        const scrollContainer = scrollContainerRef.current;
+        const trigger = triggerRef.current;
+        if (!scrollContainer || !trigger) return;
 
-    const pin = gsap.fromTo(
-      scrollContainer,
-      { translateX: 0 },
-      {
-        translateX: `-${scrollContainer.scrollWidth - window.innerWidth}px`,
-        ease: "none",
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top top",
-          end: () => `+=${scrollContainer.scrollWidth - window.innerWidth}`,
-          scrub: 1,
-          pin: true,
-          invalidateOnRefresh: true,
-        },
-      }
-    );
+        const scrollWidth = scrollContainer.scrollWidth;
+        const triggerWidth = trigger.offsetWidth;
 
-    const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
+        const pin = gsap.fromTo(
+        scrollContainer,
+        { translateX: 0 },
+        {
+            translateX: `-${scrollWidth - triggerWidth}px`,
+            ease: "none",
+            duration: 1,
+            scrollTrigger: {
+            trigger: trigger,
+            start: "top top",
+            end: () => `+=${scrollWidth - triggerWidth}`,
+            scrub: 1,
+            pin: true,
+            invalidateOnRefresh: true,
+            },
+        }
+        );
 
-      tl.from(titleRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        ease: "power3.out",
-      });
+        const tl = gsap.timeline({
+            scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+            },
+        });
 
-    return () => {
-      pin.kill();
-      tl.kill();
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
+        tl.from(titleRef.current, {
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            ease: "power3.out",
+        });
+
+        return () => {
+            pin.kill();
+            tl.kill();
+            ScrollTrigger.getAll().forEach(t => t.kill());
+        };
+    }, 100); // Small delay to ensure accurate width calculation
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
-    <section ref={sectionRef} id="customer-gallery" className="bg-background relative">
-      <div className="container mx-auto px-4 py-16 md:py-24">
+    <section ref={sectionRef} id="customer-gallery" className="bg-background relative py-16 md:py-24">
+      <div className="container mx-auto px-4">
         <div ref={titleRef} className="mb-12 text-center">
           <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black">
             Happy Customers, Happy Cars
@@ -118,9 +128,9 @@ export function HappyCustomerGallery() {
         </div>
       </div>
 
-      <div ref={triggerRef} className="relative h-[450px]">
-        <div ref={scrollContainerRef} className="absolute top-0 left-0 flex items-center h-full w-max pl-4 md:pl-24">
-          <div className="flex gap-6">
+      <div ref={triggerRef} className="relative h-[450px] w-full overflow-hidden">
+        <div ref={scrollContainerRef} className="absolute top-0 left-0 flex items-center h-full w-max">
+          <div className="flex gap-6 pl-4 md:pl-12">
             {galleryItems.map((item, index) => (
               <div
                 key={index}
@@ -154,6 +164,8 @@ export function HappyCustomerGallery() {
                 </div>
               </div>
             ))}
+             {/* Padding element at the end */}
+             <div className="w-4 md:w-12 flex-shrink-0"></div>
           </div>
         </div>
       </div>
