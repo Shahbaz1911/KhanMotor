@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import Image from 'next/image';
 
 interface PreloaderProps {
   onLoaded: () => void;
@@ -58,9 +58,14 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   return (
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
         <div ref={contentRef} className="flex flex-col items-center justify-center text-white">
-            <h1 className="text-4xl md:text-5xl font-black text-center mb-4">
-                Arman Autoxperts
-            </h1>
+            <Image
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                alt="Arman Autoxperts Logo"
+                width={200}
+                height={200}
+                className="w-48 h-auto mb-4"
+                priority
+            />
             <div className="flex items-end">
                 <span ref={counterRef} className="text-6xl md:text-8xl font-black tabular-nums">0</span>
                 <span className="text-2xl md:text-3xl font-black mb-2 ml-1">mph</span>
