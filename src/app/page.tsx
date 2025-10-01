@@ -177,7 +177,7 @@ export default function ConsolidatedPage() {
     <>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative", !isLoaded && "opacity-0 invisible")}>
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 left-4 z-50">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black">
@@ -325,5 +325,7 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
 
     
