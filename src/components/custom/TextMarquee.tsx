@@ -1,7 +1,9 @@
+
 "use client";
 
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import { Star } from 'lucide-react';
 
 const marqueeTexts = ["Excellence", "Performance", "Luxury"];
 
@@ -31,13 +33,18 @@ export function TextMarquee() {
   return (
     <section className="py-12 md:py-16 bg-background overflow-hidden">
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-        <div ref={marqueeRef} className="flex w-max">
+        <div ref={marqueeRef} className="flex w-max items-center">
           {repeatedTexts.map((text, i) => (
-            <div key={i} className="mx-8">
-              <h2 className="text-6xl md:text-8xl font-black text-foreground/80 whitespace-nowrap">
-                {text}
-              </h2>
-            </div>
+            <React.Fragment key={i}>
+              <div className="mx-8">
+                <h2 className="text-6xl md:text-8xl font-black text-foreground/80 whitespace-nowrap">
+                  {text}
+                </h2>
+              </div>
+              {i < repeatedTexts.length - 1 && (
+                <Star className="h-8 w-8 text-foreground/30 flex-shrink-0" fill="currentColor" />
+              )}
+            </React.Fragment>
           ))}
         </div>
       </div>
