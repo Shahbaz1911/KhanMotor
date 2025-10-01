@@ -36,7 +36,12 @@ const initialState: ContactFormState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full md:w-auto transform transition-transform duration-200 hover:scale-105">
+    <Button 
+      type="submit" 
+      disabled={pending} 
+      variant="outline"
+      className="w-full md:w-auto bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive hover:text-destructive"
+    >
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
       Send Message
     </Button>
