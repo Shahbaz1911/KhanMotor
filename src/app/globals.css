@@ -101,3 +101,12 @@
     box-shadow: 0 0 30px 10px hsla(var(--destructive), 0.7);
   }
 }
+
+@keyframes tick {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.8;
+  }
+}

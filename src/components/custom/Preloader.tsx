@@ -25,7 +25,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
     // Animate speed number and needle simultaneously
     tl.to(speedCounter, {
-      val: 150,
+      val: 350,
       duration: 1.5,
       ease: 'power3.inOut',
       onUpdate: () => {
@@ -35,7 +35,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       },
     })
     .to(needleRef.current, {
-        rotation: 180,
+        rotation: 270, // -90 (start) + 270 = 180 deg (end)
         duration: 1.5,
         ease: 'power3.inOut',
       }, 0) // Start at the same time as the number counter
@@ -78,6 +78,29 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       </span>
     </div>
   );
+  
+  const TickMark = ({ rotation, large }: { rotation: number, large?: boolean }) => (
+    <div
+      className="absolute w-full h-full"
+      style={{ transform: `rotate(${rotation}deg)` }}
+    >
+      <div className={`absolute left-1/2 -translate-x-1/2 bg-white/50 animate-tick`} style={{
+          width: '1px',
+          height: large ? '8px' : '4px',
+          animationDuration: `${Math.random() * 0.5 + 0.5}s`,
+          animationDelay: `${Math.random() * 0.5}s`,
+          animationDirection: 'alternate',
+          animationIterationCount: 'infinite'
+      }}></div>
+    </div>
+  )
+
+
+  const totalMarks = 70;
+  const totalDegrees = 240;
+  const degreeStep = totalDegrees / totalMarks;
+  const startAngle = -120;
+
 
   return (
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-black">
@@ -93,29 +116,35 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           />
       </div>
 
-      <div className="relative w-64 h-32 flex items-end justify-center">
+      <div className="relative w-80 h-40 flex items-end justify-center">
         {/* Speedometer Dial - more layers for realism */}
-        <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive/50 rounded-t-full"></div>
-        <div className="absolute bottom-0 w-[calc(100%-20px)] h-[118px] border-[1px] border-b-0 border-white/20 rounded-t-full"></div>
-        <div className="absolute bottom-0 w-[calc(100%-40px)] h-[108px] border-[10px] border-b-0 border-black rounded-t-full"></div>
+        <div className="absolute bottom-0 w-full h-[160px] border-[10px] border-b-0 border-destructive/50 rounded-t-full"></div>
+        <div className="absolute bottom-0 w-[calc(100%-20px)] h-[150px] border-[1px] border-b-0 border-white/20 rounded-t-full"></div>
+        <div className="absolute bottom-0 w-[calc(100%-40px)] h-[140px] border-[10px] border-b-0 border-black rounded-t-full"></div>
         
         {/* Speed Markings */}
-        <div className="absolute bottom-0 w-[calc(100%-60px)] h-[98px]">
-          <SpeedMark value={0} rotation={-80} />
-          <SpeedMark value={50} rotation={-40} />
-          <SpeedMark value={100} rotation={0} />
-          <SpeedMark value={150} rotation={40} />
+        <div className="absolute bottom-0 w-[calc(100%-60px)] h-[130px]">
+          {Array.from({length: totalMarks + 1}).map((_, i) => (
+             <TickMark key={i} rotation={startAngle + (i * degreeStep)} large={i % 10 === 0} />
+          ))}
+          <SpeedMark value={0} rotation={-120} />
+          <SpeedMark value={50} rotation={-85} />
+          <SpeedMark value={100} rotation={-50} />
+          <SpeedMark value={150} rotation={-15} />
+          <SpeedMark value={200} rotation={20} />
+          <SpeedMark value={250} rotation={55} />
+          <SpeedMark value={300} rotation={90} />
         </div>
 
         {/* Needle - redesigned for realism */}
         <div
-          className="absolute bottom-0 w-32 h-32 origin-bottom-left"
+          className="absolute bottom-0 w-40 h-40 origin-bottom-left"
           style={{ transform: 'translateX(8px)' }}
         >
           <div
             ref={needleRef}
             className="absolute bottom-1/2 left-0 w-[45%] h-0.5 bg-destructive origin-right"
-            style={{ transform: 'rotate(-90deg)' }}
+            style={{ transform: 'rotate(-135deg)' }}
           >
               <div className="absolute -top-1.5 right-0 w-3 h-3 bg-destructive rounded-full border-2 border-black"></div>
           </div>
