@@ -36,6 +36,7 @@ export default function ConsolidatedPage() {
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
   const heroSectionRef = useRef<HTMLElement>(null);
+  const headerControlsRef = useRef<HTMLDivElement>(null);
   const aboutSectionRef = useRef<HTMLElement>(null);
   const aboutContentRef = useRef<HTMLDivElement>(null);
   const aboutImageRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,19 @@ export default function ConsolidatedPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
+      // Header controls fade out on scroll
+      if (headerControlsRef.current) {
+        gsap.to(headerControlsRef.current, {
+          autoAlpha: 0, // Fades out and sets visibility to hidden
+          scrollTrigger: {
+            trigger: pageRef.current,
+            start: "top top", // When the top of the page is at the top of the viewport
+            end: "+=150", // Over 150px of scroll
+            scrub: true,
+          },
+        });
+      }
+
       // Hero fade up animation
       if (heroSectionRef.current) {
         gsap.to(heroSectionRef.current, {
@@ -103,21 +117,19 @@ export default function ConsolidatedPage() {
     <>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <div className="fixed top-4 left-4 z-50">
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base">
-                MENU
-                <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
-              <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
-            </SheetContent>
-          </Sheet>
-        </div>
-        
-        <div className="fixed top-4 right-4 z-50">
+        <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base">
+                  MENU
+                  <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
+                <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+              </SheetContent>
+            </Sheet>
+          
             <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base" onClick={() => router.push('/vehicles')}>
                 <GalleryThumbnails className="mr-3 h-5 w-5" />
                 GALLERY
@@ -224,5 +236,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
