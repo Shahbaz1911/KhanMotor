@@ -38,7 +38,7 @@ const services = [
 
 export function ServicesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement[]>([]);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -75,11 +75,11 @@ export function ServicesSection() {
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => (
-            <div key={index} ref={el => cardsRef.current[index] = el!}>
-              <Card className="h-full flex flex-col items-center text-center bg-background/50 backdrop-blur-md border border-white/20 text-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-primary/30">
+            <div key={index} ref={el => cardsRef.current[index] = el}>
+              <Card className="h-full flex flex-col items-center text-center bg-gradient-to-br from-background/60 to-background/20 backdrop-blur-md border border-white/10 text-white shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-primary/30">
                 <CardHeader className="items-center">
                   <div className="p-4 bg-primary/20 rounded-full border border-primary/30 mb-4">
-                    <service.icon className="h-8 w-8 text-primary" />
+                    <service.icon className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-2xl font-black">{service.title}</CardTitle>
                 </CardHeader>
