@@ -21,6 +21,7 @@ import placeholderImages from '@/lib/placeholder-images.json';
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 import { ServicesSection } from "@/components/custom/ServicesSection";
+import { AchievementsSection } from "@/components/custom/AchievementsSection";
 
 
 export default function ConsolidatedPage() {
@@ -37,7 +38,6 @@ export default function ConsolidatedPage() {
   const headerControlsRef = useRef<HTMLDivElement>(null);
   
   const aboutSectionRef = useRef<HTMLElement>(null);
-  const ctaSectionRef = useRef<HTMLElement>(null);
 
   // GSAP Animation useEffect
   useEffect(() => {
@@ -69,19 +69,6 @@ export default function ConsolidatedPage() {
           duration: 0.8,
       });
 
-      // CTA Animation
-      gsap.from(ctaSectionRef.current, {
-          scrollTrigger: {
-              trigger: ctaSectionRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none none',
-          },
-          opacity: 0,
-          scale: 0.95,
-          y: 50,
-          duration: 0.8,
-          ease: "power3.out",
-      });
     }, pageRef);
 
     return () => ctx.revert();
@@ -167,6 +154,8 @@ export default function ConsolidatedPage() {
           </div>
         </section>
         
+        <AchievementsSection />
+
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 overflow-hidden">
            <div className="container mx-auto px-4 mb-12">
@@ -175,39 +164,6 @@ export default function ConsolidatedPage() {
             </h2>
            </div>
            <TestimonialMarquee />
-        </section>
-
-        {/* Section 5: Book Drive CTA (This section promotes booking, not the booking page itself) */}
-        <section ref={ctaSectionRef} id="book-drive-cta" className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <Card className="overflow-hidden shadow-xl border-primary/20 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 backdrop-blur-md text-white">
-              <div className="grid md:grid-cols-2 items-center">
-                <div className="p-8 md:p-12">
-                  <CalendarClock className="h-16 w-16 text-white mb-6" />
-                  <h2 className="mb-4 scroll-m-20 text-3xl tracking-tight lg:text-4xl text-white font-black">
-                    Ready for an Unforgettable Drive?
-                  </h2>
-                  <p className="mb-8 text-lg text-gray-300">
-                    Experience the thrill and luxury of your dream car. Schedule a personalized test drive today and let our experts guide you through every feature.
-                  </p>
-                  <Button size="lg" className="group text-lg px-8 py-6" onClick={() => router.push('/book-appointment')}>
-                    Book Your Test Drive
-                    <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </div>
-                <div className="relative h-64 md:h-full min-h-[300px] order-first md:order-last">
-                  <Image
-                    src={placeholderImages.cta.url}
-                    alt="Luxury car steering wheel view"
-                    fill
-                    className="md:rounded-r-lg object-cover"
-                    data-ai-hint={placeholderImages.cta.aiHint}
-                  />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/50 md:via-transparent"></div>
-                </div>
-              </div>
-            </Card>
-          </div>
         </section>
 
         {/* Section 6: Contact Us */}
