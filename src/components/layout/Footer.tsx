@@ -84,8 +84,8 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 border-t border-white/10 pt-8 text-center">
-           <div className="mb-8 flex justify-center">
+        <div className="mt-12 border-t border-white/10 pt-8">
+           <div className="mb-4 flex justify-center">
             <Link href="/#home">
               <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
@@ -96,7 +96,7 @@ export function Footer() {
               />
             </Link>
           </div>
-          <p className="text-sm text-gray-400">&copy; {new Date().getFullYear()} Arman Autoxperts. All Rights Reserved.</p>
+          <p className="text-sm text-gray-400 text-center">&copy; {new Date().getFullYear()} Arman Autoxperts. All Rights Reserved.</p>
           <div className="mt-4 flex justify-center gap-4 text-sm">
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Privacy Policy</Link>
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Terms of Service</Link>
