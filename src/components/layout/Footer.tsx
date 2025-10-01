@@ -28,15 +28,7 @@ export function Footer() {
           
           {/* Brand Info */}
           <div>
-            <Link href="/#home">
-              <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
-                alt="Arman Autoxperts Logo"
-                width={150}
-                height={150}
-                className="w-32 h-auto"
-              />
-            </Link>
+            <h3 className="text-lg font-bold text-white">Arman Autoxperts</h3>
             <p className="mt-4 max-w-xs text-sm text-gray-400">
               Your premier destination for luxury and performance vehicles, offering an unparalleled automotive experience.
             </p>
@@ -112,6 +104,17 @@ export function Footer() {
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Privacy Policy</Link>
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Terms of Service</Link>
             </div>
+          </div>
+           <div className="mt-8 flex justify-center">
+            <Link href="/#home">
+              <Image
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                alt="Arman Autoxperts Logo"
+                width={150}
+                height={150}
+                className="w-32 h-auto"
+              />
+            </Link>
           </div>
         </div>
 
