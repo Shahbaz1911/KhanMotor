@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Quote, CalendarClock } from "lucide-react";
+import { ArrowRight, Star, Quote, CalendarClock, GalleryHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -116,6 +116,13 @@ export default function ConsolidatedPage() {
             </SheetContent>
           </Sheet>
         </div>
+        
+        <div className="fixed top-4 right-4 z-50">
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black" onClick={() => router.push('/vehicles')}>
+                <GalleryHorizontal className="mr-3 h-5 w-5" />
+                GALLERY
+            </Button>
+        </div>
 
         {/* Section 1: Home */}
         <section ref={heroSectionRef} id="home" className="relative w-full h-[70vh] min-h-[500px] md:h-screen overflow-hidden">
@@ -217,3 +224,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
