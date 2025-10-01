@@ -9,7 +9,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
-import { FeaturedCarGallery } from "@/components/custom/FeaturedCarGallery";
 import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
 import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -244,8 +243,6 @@ export default function ConsolidatedPage() {
           </div>
         </section>
         
-        <FeaturedCarGallery /> 
-
         {/* Section 4: Testimonials */}
         <section ref={testimonialsSectionRef} id="testimonials" className="py-16 md:py-24">
           <div className="container mx-auto px-4">
@@ -325,3 +322,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
