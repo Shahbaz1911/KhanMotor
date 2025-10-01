@@ -10,21 +10,21 @@ import { cn } from "@/lib/utils";
 const stats = [
   {
     icon: Car,
-    value: 1200,
+    value: 50000,
     label: "Cars Serviced",
     suffix: "+",
   },
   {
     icon: Smile,
-    value: 850,
+    value: 25000,
     label: "Happy Customers",
     suffix: "+",
   },
   {
     icon: Calendar,
-    value: 14,
+    value: 30,
     label: "Years in Business",
-    suffix: "",
+    suffix: "+",
   },
 ];
 

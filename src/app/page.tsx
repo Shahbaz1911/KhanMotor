@@ -126,6 +126,7 @@ export default function ConsolidatedPage() {
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <WhyChooseUs />
         <ServicesSection />
+        <AchievementsSection />
         
         {/* Section 2: About Us */}
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
@@ -154,8 +155,6 @@ export default function ConsolidatedPage() {
           </div>
         </section>
         
-        <AchievementsSection />
-
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 overflow-hidden">
            <div className="container mx-auto px-4 mb-12">
