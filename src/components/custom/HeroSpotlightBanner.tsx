@@ -58,7 +58,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
           ref={buttonRef}
           size="lg" 
           variant="outline"
-          className="group bg-transparent hover:bg-destructive hover:text-destructive-foreground border-2 border-destructive text-lg text-white px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black animate-border-glow"
+          className="group bg-transparent hover:bg-destructive hover:text-destructive-foreground border-2 border-destructive text-lg text-white px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black"
           onClick={() => router.push('/#featured-gallery')}
         >
           DISCOVER
