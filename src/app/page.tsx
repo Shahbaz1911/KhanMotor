@@ -36,6 +36,7 @@ export default function ConsolidatedPage() {
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
   const headerControlsRef = useRef<HTMLDivElement>(null);
+  const headerLogoRef = useRef<HTMLDivElement>(null);
   
   const aboutSectionRef = useRef<HTMLElement>(null);
   const aboutContentRef = useRef<HTMLDivElement>(null);
@@ -57,6 +58,15 @@ export default function ConsolidatedPage() {
           end: '+=150',
           scrub: true,
         },
+      });
+
+      // Header logo fade in
+      gsap.from(headerLogoRef.current, {
+        opacity: 0,
+        y: -20,
+        duration: 0.8,
+        delay: 0.2, // Match HeroSpotlightBanner animation
+        ease: "power3.out"
       });
 
       // About Us Animation
@@ -115,6 +125,16 @@ export default function ConsolidatedPage() {
                  </Button>
               </SheetContent>
             </Sheet>
+
+            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
+                <Image 
+                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    alt="Arman Autoxperts Logo"
+                    width={100}
+                    height={100}
+                    className="w-20 h-auto md:w-24 opacity-0" // Start with opacity 0 for GSAP
+                />
+            </div>
           
             <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base" onClick={() => router.push('/vehicles')}>
                 <GalleryThumbnails className="mr-3 h-5 w-5" />
