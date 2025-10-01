@@ -92,3 +92,12 @@
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
+
+@keyframes logo-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 30px 10px hsla(var(--destructive), 0.7);
+  }
+}
