@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Quote, CalendarClock, GalleryHorizontal } from "lucide-react";
+import { ArrowRight, Star, Quote, CalendarClock, GalleryThumbnails } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -119,7 +119,7 @@ export default function ConsolidatedPage() {
         
         <div className="fixed top-4 right-4 z-50">
             <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base" onClick={() => router.push('/vehicles')}>
-                <GalleryHorizontal className="mr-3 h-5 w-5" />
+                <GalleryThumbnails className="mr-3 h-5 w-5" />
                 GALLERY
             </Button>
         </div>
@@ -224,3 +224,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
