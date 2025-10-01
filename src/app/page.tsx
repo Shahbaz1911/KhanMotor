@@ -9,7 +9,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
-import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
 import { WhyChooseUs } from "@/components/custom/WhyChooseUs";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -153,7 +152,6 @@ export default function ConsolidatedPage() {
         </section>
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
-        <MarqueeBrandScroller />
         <WhyChooseUs />
         <ServicesSection />
         
