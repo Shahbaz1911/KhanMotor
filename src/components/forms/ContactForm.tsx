@@ -36,7 +36,7 @@ const initialState: ContactFormState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full md:w-auto">
+    <Button type="submit" disabled={pending} className="w-full md:w-auto transform transition-transform duration-200 hover:scale-105">
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
       Send Message
     </Button>
@@ -74,6 +74,7 @@ export function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       message: "",
     },
   });
@@ -99,6 +100,7 @@ export function ContactForm() {
         if (state.errors) {
           if (state.errors.name) form.setError("name", { type: "server", message: state.errors.name.join(", ") });
           if (state.errors.email) form.setError("email", { type: "server", message: state.errors.email.join(", ") });
+          if (state.errors.phone) form.setError("phone", { type: "server", message: state.errors.phone.join(", ") });
           if (state.errors.message) form.setError("message", { type: "server", message: state.errors.message.join(", ") });
         }
       }
@@ -137,6 +139,19 @@ export function ContactForm() {
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="john.doe@example.com" {...field} className="bg-transparent placeholder:text-gray-400"/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="(123) 456-7890" {...field} className="bg-transparent placeholder:text-gray-400" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -10,6 +10,7 @@ export type ContactFormState = {
   errors?: {
     name?: string[];
     email?: string[];
+    phone?: string[];
     message?: string[];
   };
 };
@@ -21,6 +22,7 @@ export async function submitContactForm(
   const validatedFields = contactFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     message: formData.get("message"),
   });
 
@@ -32,11 +34,12 @@ export async function submitContactForm(
     };
   }
 
-  const { name, email, message } = validatedFields.data;
+  const { name, email, phone, message } = validatedFields.data;
 
   console.log("Contact Form Submission:");
   console.log("Name:", name);
   console.log("Email:", email);
+  console.log("Phone:", phone);
   console.log("Message:", message);
 
   await new Promise(resolve => setTimeout(resolve, 1000));
