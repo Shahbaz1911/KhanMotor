@@ -71,19 +71,21 @@ export function GlassHighlightGrid() {
         duration: 0.6
       });
       
-      // Animate grid items
+      // Animate grid items one by one
       if (gridRef.current) {
-        gsap.from(gridRef.current.children, {
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          opacity: 0,
-          y: 50,
-          stagger: 0.2,
-          duration: 0.5,
-          ease: "power3.out",
+        const cards = gsap.utils.toArray(gridRef.current.children);
+        cards.forEach((card, i) => {
+          gsap.from(card as HTMLElement, {
+            scrollTrigger: {
+              trigger: card as HTMLElement,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+            opacity: 0,
+            y: 50,
+            duration: 0.5,
+            ease: "power3.out",
+          });
         });
       }
     }, sectionRef);
@@ -104,21 +106,19 @@ export function GlassHighlightGrid() {
             Experience the difference of true automotive excellence.
           </p>
         </div>
-        <div ref={gridRef} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div ref={gridRef} className="grid grid-cols-1 gap-8 sm:grid-cols-2">
           {highlightItems.map((item, index) => (
             <Card
               key={index}
-              className="transform transition-all duration-300 hover:scale-105 bg-background/50 dark:bg-foreground/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden text-white"
+              className="transform transition-all duration-300 hover:scale-105 bg-background/50 dark:bg-foreground/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden text-white flex flex-col sm:flex-row items-center p-6"
             >
-              <CardHeader className="items-center text-center">
-                <div className="mb-4 rounded-full bg-white/10 p-4 text-white">
-                  <item.icon className="h-10 w-10" />
-                </div>
-                <CardTitle className="text-xl font-black">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center text-sm text-gray-300">
-                <p>{item.description}</p>
-              </CardContent>
+              <div className="mb-4 sm:mb-0 sm:mr-6 rounded-full bg-white/10 p-4 text-white shrink-0">
+                <item.icon className="h-10 w-10" />
+              </div>
+              <div className="text-center sm:text-left">
+                <CardTitle className="text-xl font-black mb-2">{item.title}</CardTitle>
+                <p className="text-sm text-gray-300">{item.description}</p>
+              </div>
             </Card>
           ))}
         </div>
