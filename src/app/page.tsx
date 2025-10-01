@@ -106,7 +106,7 @@ export default function ConsolidatedPage() {
         <div className="fixed top-4 left-4 z-50">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base font-black">
+              <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base">
                 MENU
                 <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
               </Button>
@@ -118,7 +118,7 @@ export default function ConsolidatedPage() {
         </div>
         
         <div className="fixed top-4 right-4 z-50">
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base font-black" onClick={() => router.push('/vehicles')}>
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-base" onClick={() => router.push('/vehicles')}>
                 <GalleryHorizontal className="mr-3 h-5 w-5" />
                 GALLERY
             </Button>
