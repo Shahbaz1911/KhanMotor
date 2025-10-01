@@ -23,6 +23,7 @@ import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
 import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
+import { CallToAction } from "@/components/custom/CallToAction";
 
 
 export default function ConsolidatedPage() {
@@ -207,6 +208,7 @@ export default function ConsolidatedPage() {
            <TestimonialMarquee />
         </section>
 
+        <CallToAction />
         <HappyCustomerGallery />
 
         {/* Section 6: Contact Us */}
