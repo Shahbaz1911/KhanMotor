@@ -32,8 +32,8 @@ export default function ConsolidatedPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const aboutText1 = "At Arman Autoxperts, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.";
-  const aboutText2 = "Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.";
+  const aboutText1 = "Driven by a passion for excellence since 2010, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
+  const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
 
 
   // GSAP Animation Refs
@@ -160,11 +160,9 @@ export default function ConsolidatedPage() {
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <AchievementsSection />
-        <TextMarquee />
-        <ServicesSection />
         
         {/* Section 2: About Us */}
-        <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
+        <section ref={aboutSectionRef} id="about-us" className="container mx-auto px-4 py-16 md:py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
               <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
@@ -198,6 +196,9 @@ export default function ConsolidatedPage() {
             </div>
           </div>
         </section>
+        
+        <TextMarquee />
+        <ServicesSection />
 
         <WhyChooseUs />
         
