@@ -24,7 +24,6 @@ import { Preloader } from "@/components/custom/Preloader";
 
 export default function ConsolidatedPage() {
   const router = useRouter();
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -48,35 +47,6 @@ export default function ConsolidatedPage() {
     if (!isLoaded) return;
 
     gsap.registerPlugin(ScrollTrigger);
-
-    const video = videoRef.current;
-    if (video) {
-        video.pause();
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: pageRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-            }
-        });
-        
-        const setupVideoAnimation = () => {
-            // Ensure we only set this up once
-            if (tl.getChildren().length === 0 && video.duration) {
-                tl.to(video, {
-                    currentTime: video.duration,
-                });
-            }
-        };
-
-        // If metadata is already loaded, run setup. Otherwise, wait for the event.
-        if (video.readyState > 0) {
-            setupVideoAnimation();
-        } else {
-            video.onloadedmetadata = setupVideoAnimation;
-        }
-    }
 
     const ctx = gsap.context(() => {
       // Hero fade up animation
@@ -223,7 +193,7 @@ export default function ConsolidatedPage() {
 
         <div className="fixed inset-0 w-full h-screen z-[-1]">
           <video
-            ref={videoRef}
+            autoPlay
             loop
             muted
             playsInline
@@ -355,3 +325,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
