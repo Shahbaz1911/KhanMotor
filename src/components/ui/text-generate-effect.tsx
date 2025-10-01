@@ -24,8 +24,8 @@ export const TextGenerateEffect = ({
         filter: filter ? "blur(0px)" : "none",
       },
       {
-        duration: duration ? duration : 1,
-        delay: stagger(0.02), // faster stagger
+        duration: duration,
+        delay: stagger(0.04), // Slightly slower for a more premium feel
       }
     );
   }, [scope.current]);
@@ -37,7 +37,8 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className="dark:text-gray-300 text-gray-700 opacity-0" // Adjusted for theme
+              // Use muted-foreground for better theme integration
+              className="text-muted-foreground opacity-0"
               style={{
                 filter: filter ? "blur(10px)" : "none",
               }}
@@ -53,7 +54,8 @@ export const TextGenerateEffect = ({
   return (
     <div className={cn("font-normal", className)}>
       <div className="mt-4">
-        <div className="text-lg text-gray-300">
+        {/* The text size and color will be inherited from the parent */}
+        <div className="text-lg"> 
           {renderWords()}
         </div>
       </div>
