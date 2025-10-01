@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Twitter, Instagram, Facebook, Linkedin, MapPin, Phone, Mail } from 'lucide-react';
+import { Twitter, Instagram, Facebook, Linkedin, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
 
 export function Footer() {
   const socialLinks = [
@@ -43,8 +43,9 @@ export function Footer() {
             <ul className="mt-4 space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-400 transition-colors hover:text-white hover:underline">
-                    {link.label}
+                  <Link href={link.href} className="group flex items-center gap-2 text-sm text-gray-400 transition-all duration-300 hover:text-white hover:translate-x-2">
+                    <ArrowRight className="h-4 w-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <span>{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -81,7 +82,7 @@ export function Footer() {
                   variant="ghost"
                   size="icon"
                   asChild
-                  className="rounded-full bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
+                  className="rounded-full bg-white/10 text-white/80 transition-all duration-300 hover:bg-white/20 hover:text-white hover:-translate-y-1 hover:scale-110"
                 >
                   <a
                     href={social.href}
@@ -103,8 +104,8 @@ export function Footer() {
           <div className="flex flex-col items-center justify-between text-sm sm:flex-row">
             <p className="text-gray-400">&copy; {new Date().getFullYear()} Khan Motor. All Rights Reserved.</p>
             <div className="mt-4 flex gap-4 sm:mt-0">
-              <Link href="#" className="text-gray-400 hover:text-white hover:underline">Privacy Policy</Link>
-              <Link href="#" className="text-gray-400 hover:text-white hover:underline">Terms of Service</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-primary hover:underline">Privacy Policy</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-primary hover:underline">Terms of Service</Link>
             </div>
           </div>
         </div>
