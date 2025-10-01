@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/AuthContext"; // Added AuthProvider imp
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SmoothScroll } from '@/components/custom/SmoothScroll';
+import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
 
 export const metadata: Metadata = {
   title: 'Khan Motor',
@@ -37,6 +38,7 @@ export default function RootLayout({
                 <main className="flex-grow">{children}</main>
                 <Footer />
               </div>
+              <WhatsAppButton />
               <Toaster />
             </SmoothScroll>
           </ThemeProvider>
