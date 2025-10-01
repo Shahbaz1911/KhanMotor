@@ -58,8 +58,8 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                <ArrowRight className="absolute left-0 h-8 w-8 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-                <span>{item.label}</span>
+                <span className="group-hover:translate-x-10 transition-transform duration-300">{item.label}</span>
+                <ArrowRight className="absolute right-0 h-8 w-8 opacity-0 translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </Link>
             </Button>
           ))}
