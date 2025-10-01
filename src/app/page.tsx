@@ -121,7 +121,7 @@ export default function ConsolidatedPage() {
         </div>
 
         {/* Section 1: Home */}
-        <section id="home" className="relative w-full h-[70vh] min-h-[500px] md:h-screen overflow-hidden">
+        <section id="home" className="relative w-full h-screen overflow-hidden">
            <video
             autoPlay
             loop
