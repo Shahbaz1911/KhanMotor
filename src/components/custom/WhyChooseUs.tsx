@@ -53,13 +53,15 @@ function HighlightItem({ item, index }: { item: typeof highlightItems[0], index:
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative"
+      className="relative md:pl-[52px]" // Add padding for the beam line on desktop
     >
-      <div className="absolute left-1/2 -translate-x-1/2 -translate-y-4 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30">
+      <div className="absolute left-1/2 -translate-x-1/2 -translate-y-4 md:left-0 md:translate-x-0 md:!ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30">
         <item.icon className="h-5 w-5" />
       </div>
       <Card className={cn(
         "mt-6 bg-background/50 backdrop-blur-md border-white/20",
+        // On desktop, alternate alignment
+        "md:w-[calc(50%-2rem)]", // Set width to be less than 50% to fit
         isEven ? "md:ml-[calc(50%+2rem)]" : "md:mr-[calc(50%+2rem)]"
       )}>
         <CardHeader>
@@ -86,13 +88,36 @@ export function WhyChooseUs() {
             Experience the difference of true automotive excellence.
           </p>
         </div>
-        <TracingBeam className="px-6">
-          <div className="relative pt-4 antialiased space-y-12">
-            {highlightItems.map((item, index) => (
-              <HighlightItem key={`content-${index}`} item={item} index={index} />
-            ))}
-          </div>
-        </TracingBeam>
+        {/* Hide TracingBeam on mobile */}
+        <div className="hidden md:block">
+          <TracingBeam className="px-6">
+            <div className="relative pt-4 antialiased space-y-12">
+              {highlightItems.map((item, index) => (
+                <HighlightItem key={`content-${index}`} item={item} index={index} />
+              ))}
+            </div>
+          </TracingBeam>
+        </div>
+
+        {/* Show a simpler stacked layout on mobile */}
+        <div className="md:hidden relative pt-4 antialiased space-y-12">
+          {highlightItems.map((item, index) => (
+             <div key={`mobile-content-${index}`} className="relative">
+                <div className="absolute left-1/2 -translate-x-1/2 -translate-y-4 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <Card className="mt-6 bg-background/50 backdrop-blur-md border-white/20">
+                  <CardHeader>
+                    <CardTitle className="text-white text-center text-2xl font-black">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-center">{item.description}</p>
+                  </CardContent>
+                </Card>
+             </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );
