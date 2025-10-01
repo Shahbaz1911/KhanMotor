@@ -21,12 +21,16 @@ import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 
 export default function ConsolidatedPage() {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const aboutText1 = "At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.";
+  const aboutText2 = "Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.";
 
 
   // GSAP Animation Refs
@@ -74,8 +78,9 @@ export default function ConsolidatedPage() {
         },
       });
       aboutTl
-        .from(aboutContentRef.current?.children, { opacity: 0, x: -50, stagger: 0.2, duration: 0.6 })
-        .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.5");
+        .from(aboutContentRef.current?.querySelector('h2'), { opacity: 0, x: -50, duration: 0.6 })
+        .from(aboutContentRef.current?.querySelector('button'), { opacity: 0, x: -50, duration: 0.6 }, "-=0.3")
+        .from(aboutImageRef.current, { opacity: 0, x: 50, duration: 0.8 }, "-=0.8");
 
       // Testimonials Vertical Stack Animation
       gsap.from(testimonialsTitleRef.current, {
@@ -182,7 +187,7 @@ export default function ConsolidatedPage() {
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-2xl font-black">
-                {isSheetOpen ? "CLOSE" : "MENU"}
+                MENU
                 <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
               </Button>
             </SheetTrigger>
@@ -219,12 +224,9 @@ export default function ConsolidatedPage() {
               <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
                 About Khan Motor
               </h2>
-              <p className="mb-4 text-lg text-gray-300">
-                At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.
-              </p>
-              <p className="mb-6 text-lg text-gray-300">
-                Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.
-              </p>
+              <TextGenerateEffect words={aboutText1} className="mb-4" />
+              <TextGenerateEffect words={aboutText2} className="mb-6" />
+
               <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
                 Meet Our Team
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -323,5 +325,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
