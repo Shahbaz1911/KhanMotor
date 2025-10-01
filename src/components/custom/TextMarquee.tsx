@@ -31,8 +31,9 @@ export function TextMarquee() {
   }, []);
 
   return (
-    <section className="py-12 md:py-16 bg-background overflow-hidden">
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+    <section className="bg-background overflow-hidden">
+      <div className="w-full h-px bg-border" />
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-12 md:py-16">
         <div ref={marqueeRef} className="flex w-max items-center">
           {repeatedTexts.map((text, i) => (
             <React.Fragment key={i}>
@@ -48,6 +49,7 @@ export function TextMarquee() {
           ))}
         </div>
       </div>
+      <div className="w-full h-px bg-border" />
     </section>
   );
 }
