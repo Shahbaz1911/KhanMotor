@@ -122,9 +122,9 @@ export function Preloader({ onLoaded }: PreloaderProps) {
            <Image
               src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
               alt="Arman Autoxperts Logo"
-              width={150}
-              height={150}
-              className="w-36 h-auto"
+              width={200}
+              height={200}
+              className="w-48 h-auto"
               priority
           />
       </div>
