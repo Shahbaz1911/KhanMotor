@@ -21,6 +21,7 @@ import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
+import { ServicesSection } from "@/components/custom/ServicesSection";
 
 
 export default function ConsolidatedPage() {
@@ -135,6 +136,7 @@ export default function ConsolidatedPage() {
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <MarqueeBrandScroller />
         <WhyChooseUs />
+        <ServicesSection />
         
         {/* Section 2: About Us */}
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
