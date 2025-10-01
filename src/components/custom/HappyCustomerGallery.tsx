@@ -57,62 +57,39 @@ const galleryItems = [
 export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Let the DOM settle before calculating widths
-    const timeoutId = setTimeout(() => {
-        const scrollContainer = scrollContainerRef.current;
-        const trigger = triggerRef.current;
-        if (!scrollContainer || !trigger) return;
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
 
-        const scrollWidth = scrollContainer.scrollWidth;
-        const triggerWidth = trigger.offsetWidth;
-
-        const pin = gsap.fromTo(
-        scrollContainer,
-        { translateX: 0 },
+      tl.from(titleRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        ease: "power3.out",
+      }).from(
+        gridRef.current?.children || [],
         {
-            translateX: `-${scrollWidth - triggerWidth}px`,
-            ease: "none",
-            duration: 1,
-            scrollTrigger: {
-            trigger: trigger,
-            start: "top top",
-            end: () => `+=${scrollWidth - triggerWidth}`,
-            scrub: 1,
-            pin: true,
-            invalidateOnRefresh: true,
-            },
-        }
-        );
+          opacity: 0,
+          y: 50,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      );
+    }, sectionRef);
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-            },
-        });
-
-        tl.from(titleRef.current, {
-            opacity: 0,
-            y: 50,
-            duration: 0.8,
-            ease: "power3.out",
-        });
-
-        return () => {
-            pin.kill();
-            tl.kill();
-            ScrollTrigger.getAll().forEach(t => t.kill());
-        };
-    }, 100); // Small delay to ensure accurate width calculation
-
-    return () => clearTimeout(timeoutId);
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -126,47 +103,40 @@ export function HappyCustomerGallery() {
             Join our community of satisfied clients and their stunning vehicles.
           </p>
         </div>
-      </div>
 
-      <div ref={triggerRef} className="relative h-[450px] w-full overflow-hidden">
-        <div ref={scrollContainerRef} className="absolute top-0 left-0 flex items-center h-full w-max">
-          <div className="flex gap-6 pl-4 md:pl-12">
-            {galleryItems.map((item, index) => (
-              <div
-                key={index}
-                className="group relative block w-[600px] h-[400px] overflow-hidden rounded-lg shadow-lg"
-              >
-                <Image
-                  src={item.imageUrl}
-                  alt={`Customer ${item.customerName}`}
-                  width={600}
-                  height={400}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  data-ai-hint={item.aiHint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-300"></div>
-                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                  <div className="relative z-10 text-white">
-                    <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      <h3 className="text-xl font-black">{item.customerName}</h3>
-                      <div className="mt-1 flex">
-                        {Array(item.rating)
-                          .fill(0)
-                          .map((_, i) => (
-                            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                          ))}
-                      </div>
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {galleryItems.map((item, index) => (
+            <div
+              key={index}
+              className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
+            >
+              <Image
+                src={item.imageUrl}
+                alt={`Customer ${item.customerName}`}
+                fill
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                data-ai-hint={item.aiHint}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <div className="relative z-10 text-white">
+                  <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <h3 className="text-xl font-black">{item.customerName}</h3>
+                    <div className="mt-1 flex">
+                      {Array(item.rating)
+                        .fill(0)
+                        .map((_, i) => (
+                          <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                        ))}
                     </div>
-                    <p className="mt-2 text-sm font-medium opacity-100 transition-opacity duration-300 group-hover:opacity-0">
-                      {item.caption}
-                    </p>
                   </div>
+                  <p className="mt-2 text-sm font-medium opacity-100 transition-opacity duration-300 group-hover:opacity-0">
+                    {item.caption}
+                  </p>
                 </div>
               </div>
-            ))}
-             {/* Padding element at the end */}
-             <div className="w-4 md:w-12 flex-shrink-0"></div>
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
