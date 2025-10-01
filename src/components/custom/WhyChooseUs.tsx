@@ -9,12 +9,8 @@ import {
   MessageSquareHeart,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { cn } from "@/lib/utils";
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { TracingBeam } from "./TracingBeam";
+import { motion } from "framer-motion";
 
 const highlightItems = [
   {
@@ -39,141 +35,70 @@ const highlightItems = [
   },
 ];
 
-function HighlightItem({
-  item,
-  index,
-  totalItems,
-  scrollYProgress,
-}: {
-  item: typeof highlightItems[0];
-  index: number;
-  totalItems: number;
-  scrollYProgress: any;
-}) {
-  const isEven = index % 2 === 0;
-
-  // Calculate the start and end points for this item's animation
-  const start = index / totalItems;
-  const end = (index + 1) / totalItems;
-
-  // Create transforms for opacity and position based on scroll progress
-  const opacity = useTransform(scrollYProgress, [start, (start + end) / 2], [0, 1]);
-  const x = useTransform(
-    scrollYProgress,
-    [start, (start + end) / 2],
-    [isEven ? 50 : -50, 0]
-  );
-  
-  const iconY = useTransform(scrollYProgress, [start, (start + end) / 2], [20, 0]);
-
-
-  return (
-    <motion.div
-      className={cn("relative md:pl-[52px]")}
-      style={{ opacity, x }}
-    >
-       <motion.div style={{ opacity, y: iconY }} className={cn(
-        "absolute -translate-y-4 left-0 translate-x-0 !ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30",
-        )}>
-        <item.icon className="h-5 w-5" />
-      </motion.div>
-      <Card className={cn(
-        "mt-6 bg-background/50 backdrop-blur-md border-white/20",
-        "w-full md:w-[calc(50%-2rem)]", 
-        isEven ? "md:ml-[calc(50%+2rem)]" : "md:mr-[calc(50%+2rem)]"
-      )}>
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <div className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
-              <item.icon className="h-6 w-6" />
-            </div>
-            <CardTitle className="text-white text-2xl font-black">{item.title}</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">{item.description}</p>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-}
-
-
 export function WhyChooseUs() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const targetRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start end", "end start"],
-  });
+  const titleVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
 
-  const { scrollYProgress: titleProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
+  };
 
-  const titleOpacity = useTransform(titleProgress, [0.1, 0.3], [0, 1]);
-  const titleY = useTransform(titleProgress, [0.1, 0.3], [20, 0]);
 
-  const pOpacity = useTransform(titleProgress, [0.2, 0.4], [0, 1]);
-  const pY = useTransform(titleProgress, [0.2, 0.4], [20, 0]);
-  
   return (
     <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
+        <motion.div 
+            className="mb-16 text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.5 }}
+            variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+        >
             <motion.h2 
-                style={{ opacity: titleOpacity, y: titleY }}
+                variants={titleVariants}
                 className="text-4xl tracking-tight lg:text-5xl text-white font-black"
             >
                 Why Choose Khan Motor?
             </motion.h2>
             <motion.p 
-                style={{ opacity: pOpacity, y: pY }}
-                className="text-lg text-gray-300 md:text-xl mt-4"
+                variants={textVariants}
+                className="text-lg text-gray-300 md:text-xl mt-4 max-w-3xl mx-auto"
             >
-                Experience the difference of true automotive excellence.
+                Experience the difference of true automotive excellence, where every detail is crafted for your satisfaction.
             </motion.p>
-        </div>
+        </motion.div>
         
-        <div className="md:hidden space-y-8">
+        <TracingBeam className="px-6">
+          <div className="space-y-12">
             {highlightItems.map((item, index) => (
-                <Card key={`mobile-highlight-${index}`} className="bg-background/50 backdrop-blur-md border-white/20">
-                    <CardHeader>
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
-                                <item.icon className="h-6 w-6" />
-                            </div>
+              <div key={`content-${index}`} className="relative">
+                 <div className="absolute -left-1.5 h-full w-px bg-border md:left-1/2 md:-translate-x-1/2"></div>
+                <div className="flex items-center gap-4 mb-4 md:mb-0">
+                  <div className="md:absolute md:left-1/2 md:-translate-x-1/2 md:-translate-y-4">
+                    <div className="z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 p-2 border border-primary/30 text-primary">
+                       <item.icon className="h-5 w-5" />
+                    </div>
+                  </div>
+                </div>
+                <div className="md:ml-[calc(50%+2rem)] md:pl-8">
+                    <Card className="bg-background/50 backdrop-blur-md border-white/20">
+                        <CardHeader>
                             <CardTitle className="text-white text-xl font-black">{item.title}</CardTitle>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">{item.description}</p>
-                    </CardContent>
-                </Card>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">{item.description}</p>
+                        </CardContent>
+                    </Card>
+                </div>
+              </div>
             ))}
-        </div>
-        
-        <div className="hidden md:block">
-             <div ref={targetRef} className="relative w-full max-w-4xl mx-auto h-full">
-                <div className="absolute left-1/2 -translate-x-1/2 top-3 h-full w-px">
-                   {/* This is the static line */}
-                </div>
-                <div className="relative pt-4 antialiased space-y-12">
-                    {highlightItems.map((item, index) => (
-                        <HighlightItem 
-                            key={`content-${index}`} 
-                            item={item} 
-                            index={index}
-                            totalItems={highlightItems.length}
-                            scrollYProgress={scrollYProgress}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
-
+          </div>
+        </TracingBeam>
       </div>
     </section>
   );

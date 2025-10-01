@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -50,7 +51,7 @@ export const TracingBeam = ({
       ref={ref}
       className={cn("relative w-full max-w-4xl mx-auto h-full", className)}
     >
-      <div className="absolute left-1/2 -translate-x-1/2 top-3 h-full w-px">
+      <div className="absolute -left-4 md:left-1/2 md:-translate-x-1/2 top-3">
         <motion.div
           transition={{
             duration: 0.2,
@@ -62,7 +63,7 @@ export const TracingBeam = ({
                 ? "none"
                 : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
-          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center absolute top-0 -translate-y-4 -translate-x-1/2"
+          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center absolute top-0 -translate-y-4"
         >
           <motion.div
             transition={{
@@ -81,14 +82,14 @@ export const TracingBeam = ({
           viewBox={`0 0 20 ${svgHeight}`}
           width="20"
           height={svgHeight} 
-          className="block absolute top-0 -translate-x-1/2"
+          className="ml-4 block"
           aria-hidden="true"
         >
           <motion.path
             d={`M 1 0V -36 l 18 -24 V ${svgHeight * 0.8} l -18 24V ${svgHeight}`}
             fill="none"
-            stroke="hsl(var(--primary))"
-            strokeOpacity="0.2"
+            stroke="hsl(var(--border))"
+            strokeOpacity="0.5"
             transition={{
               duration: 10,
             }}
@@ -112,12 +113,10 @@ export const TracingBeam = ({
               y1={y1}
               y2={y2}
             >
-              <stop stopColor="#18CCFC" stopOpacity="0" />
-              <stop stopColor="#18CCFC" />
-              <stop offset="0.325" stopColor="#6344F5" />
-              <stop offset="0.6" stopColor="#AE48FF" />
-              <stop offset="0.8" stopColor="#FF8686" />
-              <stop offset="1" stopColor="#F9F871" stopOpacity="0" />
+              <stop stopColor="hsl(var(--primary))" stopOpacity="0" />
+              <stop stopColor="hsl(var(--primary))" />
+              <stop offset="0.325" stopColor="hsl(var(--primary))" />
+              <stop offset="1" stopColor="hsl(var(--accent))" stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>
