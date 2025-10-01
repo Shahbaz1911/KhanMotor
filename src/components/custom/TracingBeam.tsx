@@ -109,13 +109,15 @@ export const TracingBeam = ({
               gradientUnits="userSpaceOnUse"
               x1="0"
               x2="0"
-              y1={y1} 
-              y2={y2} 
+              y1={y1}
+              y2={y2}
             >
-              <stop stopColor="hsl(var(--primary))" stopOpacity="0"></stop>
-              <stop stopColor="hsl(var(--primary))"></stop>
-              <stop offset="0.325" stopColor="hsl(var(--secondary))"></stop>
-              <stop offset="1" stopColor="hsl(var(--secondary))" stopOpacity="0"></stop>
+              <stop stopColor="#18CCFC" stopOpacity="0" />
+              <stop stopColor="#18CCFC" />
+              <stop offset="0.325" stopColor="#6344F5" />
+              <stop offset="0.6" stopColor="#AE48FF" />
+              <stop offset="0.8" stopColor="#FF8686" />
+              <stop offset="1" stopColor="#F9F871" stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>
