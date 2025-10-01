@@ -38,6 +38,8 @@ export default function ConsolidatedPage() {
   const headerControlsRef = useRef<HTMLDivElement>(null);
   
   const aboutSectionRef = useRef<HTMLElement>(null);
+  const aboutContentRef = useRef<HTMLDivElement>(null);
+  const aboutImageRef = useRef<HTMLDivElement>(null);
 
   // GSAP Animation useEffect
   useEffect(() => {
@@ -58,16 +60,29 @@ export default function ConsolidatedPage() {
       });
 
       // About Us Animation
-      gsap.from(aboutSectionRef.current, {
-          scrollTrigger: {
-              trigger: aboutSectionRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none none',
-          },
+      const aboutTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: aboutSectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        }
+      });
+      
+      aboutTl
+        .from(aboutContentRef.current?.querySelectorAll(".gsap-reveal"), {
+          opacity: 0,
+          y: 50,
+          stagger: 0.2,
+          duration: 0.8,
+          ease: "power3.out",
+        })
+        .from(aboutImageRef.current, {
           opacity: 0,
           y: 50,
           duration: 0.8,
-      });
+          ease: "power3.out",
+        }, "-=0.6");
+
 
     }, pageRef);
 
@@ -131,19 +146,23 @@ export default function ConsolidatedPage() {
         {/* Section 2: About Us */}
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div >
-              <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
+            <div ref={aboutContentRef}>
+              <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl text-white font-black">
                 About Khan Motor
               </h2>
-              <TextGenerateEffect words={aboutText1} className="mb-4" />
-              <TextGenerateEffect words={aboutText2} className="mb-6" />
+              <div className="gsap-reveal">
+                <TextGenerateEffect words={aboutText1} className="mb-4" />
+              </div>
+              <div className="gsap-reveal">
+                <TextGenerateEffect words={aboutText2} className="mb-6" />
+              </div>
 
-              <Button size="lg" className="group" onClick={() => router.push('/#contact')}>
+              <Button size="lg" className="group gsap-reveal" onClick={() => router.push('/#contact')}>
                 Meet Our Team
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-            <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
+            <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
               <Image
                 src={placeholderImages.about.url}
                 alt="Khan Motor Dealership Interior"
