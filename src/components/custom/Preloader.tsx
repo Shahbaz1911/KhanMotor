@@ -8,6 +8,36 @@ interface PreloaderProps {
   onLoaded: () => void;
 }
 
+const TickMark = ({ rotation, large }: { rotation: number, large?: boolean }) => {
+  const [animationStyle, setAnimationStyle] = useState({});
+
+  useEffect(() => {
+    setAnimationStyle({
+      animationDuration: `${Math.random() * 0.5 + 0.5}s`,
+      animationDelay: `${Math.random() * 0.5}s`,
+    });
+  }, []);
+
+  return (
+    <div
+      className="absolute w-full h-full"
+      style={{ transform: `rotate(${rotation}deg)` }}
+    >
+      <div 
+        className={`absolute left-1/2 -translate-x-1/2 bg-white/50 animate-tick`} 
+        style={{
+          width: '1px',
+          height: large ? '8px' : '4px',
+          animationDirection: 'alternate',
+          animationIterationCount: 'infinite',
+          ...animationStyle
+        }}
+      ></div>
+    </div>
+  );
+};
+
+
 export function Preloader({ onLoaded }: PreloaderProps) {
   const preloaderRef = useRef<HTMLDivElement>(null);
   const needleRef = useRef<HTMLDivElement>(null);
@@ -79,23 +109,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     </div>
   );
   
-  const TickMark = ({ rotation, large }: { rotation: number, large?: boolean }) => (
-    <div
-      className="absolute w-full h-full"
-      style={{ transform: `rotate(${rotation}deg)` }}
-    >
-      <div className={`absolute left-1/2 -translate-x-1/2 bg-white/50 animate-tick`} style={{
-          width: '1px',
-          height: large ? '8px' : '4px',
-          animationDuration: `${Math.random() * 0.5 + 0.5}s`,
-          animationDelay: `${Math.random() * 0.5}s`,
-          animationDirection: 'alternate',
-          animationIterationCount: 'infinite'
-      }}></div>
-    </div>
-  )
-
-
   const totalMarks = 70;
   const totalDegrees = 270;
   const degreeStep = totalDegrees / totalMarks;
