@@ -21,7 +21,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       },
     });
 
-    // Needle sweep from 0 to 150 (0 to 180 degrees)
+    // Needle sweep from -90 to 90 degrees (0 to 180 on dial)
     tl.to(needleRef.current, {
         rotation: 180,
         duration: 1.5,
@@ -34,7 +34,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
         repeat: 1,
         yoyo: true,
       }, '-=0.25')
-      // Needle sweep from 150 to 0 (180 to 0 degrees)
+      // Needle sweep from 90 back to -90 degrees
       .to(needleRef.current, {
         rotation: 0,
         duration: 1.2,
@@ -64,7 +64,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       className="absolute w-full h-full text-center"
       style={{ transform: `rotate(${rotation}deg)` }}
     >
-      <span className="inline-block text-white text-xs -translate-y-1" style={{ transform: `rotate(${-rotation}deg) ` }}>
+      <span className="inline-block text-white text-xs -translate-y-2" style={{ transform: `rotate(${-rotation}deg) ` }}>
         {value}
       </span>
     </div>
@@ -72,21 +72,21 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
   return (
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
-      <div className="relative w-64 h-32 flex items-center justify-center">
+      <div className="relative w-64 h-32 flex items-end justify-center">
         {/* Speedometer Dial */}
         <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive rounded-t-full"></div>
         <div className="absolute bottom-0 w-[calc(100%-40px)] h-[108px] border-[10px] border-b-0 border-black rounded-t-full"></div>
         
         {/* Speed Markings */}
-        <div className="absolute bottom-0 w-full h-32">
-          <SpeedMark value={0} rotation={-90} />
-          <SpeedMark value={50} rotation={-45} />
+        <div className="absolute bottom-0 w-[calc(100%-40px)] h-[108px]">
+          <SpeedMark value={0} rotation={-80} />
+          <SpeedMark value={50} rotation={-40} />
           <SpeedMark value={100} rotation={0} />
-          <SpeedMark value={150} rotation={45} />
+          <SpeedMark value={150} rotation={40} />
         </div>
 
         {/* Logo in the center */}
-        <div ref={logoRef} className="absolute z-20">
+        <div ref={logoRef} className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
              <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                 alt="Arman Autoxperts Logo"
@@ -99,15 +99,20 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
         {/* Needle */}
         <div
-          ref={needleRef}
-          className="absolute bottom-0 w-px h-16 bg-destructive origin-bottom"
-          style={{ transform: 'rotate(-90deg)' }}
+          className="absolute bottom-0 w-32 h-32 origin-bottom-left"
+          style={{ transform: 'translateX(8px)' }}
         >
-            <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-destructive rounded-full"></div>
+          <div
+            ref={needleRef}
+            className="absolute bottom-1/2 left-0 w-1/2 h-0.5 bg-destructive origin-right"
+            style={{ transform: 'rotate(-90deg)' }}
+          >
+              <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-destructive rounded-full"></div>
+          </div>
         </div>
 
          {/* Center pin */}
-        <div className="absolute w-4 h-4 bg-white rounded-full z-10"></div>
+        <div className="absolute w-4 h-4 bg-white rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
       </div>
     </div>
   );
