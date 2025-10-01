@@ -21,7 +21,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-white/10 bg-black/50 text-gray-300">
+    <footer className="border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           
@@ -104,8 +104,8 @@ export function Footer() {
           <div className="flex flex-col items-center justify-between text-sm sm:flex-row">
             <p className="text-gray-400">&copy; {new Date().getFullYear()} Khan Motor. All Rights Reserved.</p>
             <div className="mt-4 flex gap-4 sm:mt-0">
-              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-primary hover:underline">Privacy Policy</Link>
-              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-primary hover:underline">Terms of Service</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Privacy Policy</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Terms of Service</Link>
             </div>
           </div>
         </div>
