@@ -91,8 +91,8 @@ export default {
           },
         },
         'border-glow': {
-          '0%, 100%': { 'box-shadow': '0 0 5px rgba(255, 255, 255, 0.4)' },
-          '50%': { 'box-shadow': '0 0 20px rgba(255, 255, 255, 0.8)' },
+          '0%, 100%': { 'box-shadow': '0 0 5px hsl(var(--destructive) / 0.4)' },
+          '50%': { 'box-shadow': '0 0 20px hsl(var(--destructive) / 0.8)' },
         },
       },
       animation: {
