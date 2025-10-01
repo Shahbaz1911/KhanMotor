@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut } from "lucide-react"; 
+import { User, Settings, LogOut, ArrowRight } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 import placeholderImages from '@/lib/placeholder-images.json';
 
@@ -58,8 +58,8 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
+                <ArrowRight className="absolute left-0 h-8 w-8 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                 <span>{item.label}</span>
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-white w-0 group-hover:w-1/4 transition-all duration-300"></span>
               </Link>
             </Button>
           ))}
