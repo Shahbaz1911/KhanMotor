@@ -3,7 +3,6 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -109,9 +108,11 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenu>
           </div>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full text-lg font-black bg-white text-black hover:bg-white/90 hover:text-black">
-            Login
-          </Button>
+          <div className="flex justify-start">
+            <Button onClick={handleLogin} variant="outline" className="font-black bg-white text-black hover:bg-white/90 hover:text-black">
+              Login
+            </Button>
+          </div>
         )}
         <div className="flex justify-start px-2"> 
             <ThemeToggle />
