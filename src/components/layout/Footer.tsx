@@ -112,7 +112,7 @@ export function Footer() {
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}
-                className="w-48 h-auto"
+                className="w-96 h-auto"
               />
             </Link>
           </div>
