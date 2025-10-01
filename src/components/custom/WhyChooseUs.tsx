@@ -9,6 +9,8 @@ import {
   Wrench,
   MessageSquareHeart,
 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 const highlightItems = [
   {
@@ -46,21 +48,23 @@ export function WhyChooseUs() {
           </p>
         </div>
         <TracingBeam className="px-6">
-          <div className="relative pt-4 antialiased">
+          <div className="relative pt-4 antialiased space-y-12">
             {highlightItems.map((item, index) => (
-              <div key={`content-${index}`} className="mb-10">
-                 <div className="flex items-center gap-4 mb-4">
-                    <div className="flex-shrink-0 rounded-full bg-primary/20 text-primary p-3 border border-primary/30">
-                        <item.icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-2xl font-black text-white">
-                        {item.title}
-                    </h3>
+              <div key={`content-${index}`} className="relative">
+                <div className="absolute left-1/2 -translate-x-1/2 -translate-y-4 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30">
+                    <item.icon className="h-5 w-5" />
                 </div>
-
-                <div className="text-lg prose prose-sm dark:prose-invert text-muted-foreground ml-16">
-                    {item.description}
-                </div>
+                 <Card className={cn(
+                   "mt-6 bg-background/50 backdrop-blur-md border-white/20",
+                   index % 2 === 0 ? "md:ml-[calc(50%+2rem)]" : "md:mr-[calc(50%+2rem)]"
+                 )}>
+                    <CardHeader>
+                      <CardTitle className="text-white text-2xl font-black">{item.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">{item.description}</p>
+                    </CardContent>
+                 </Card>
               </div>
             ))}
           </div>

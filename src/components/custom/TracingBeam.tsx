@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -51,7 +50,7 @@ export const TracingBeam = ({
       ref={ref}
       className={cn("relative w-full max-w-4xl mx-auto h-full", className)}
     >
-      <div className="absolute left-0 top-0">
+      <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px">
         <motion.div
           transition={{
             duration: 0.2,
@@ -63,7 +62,7 @@ export const TracingBeam = ({
                 ? "none"
                 : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
-          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center"
+          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center absolute top-0 -translate-x-1/2"
         >
           <motion.div
             transition={{
@@ -82,7 +81,7 @@ export const TracingBeam = ({
           viewBox={`0 0 20 ${svgHeight}`}
           width="20"
           height={svgHeight} 
-          className=" ml-4 block"
+          className="block absolute top-0 -translate-x-1/2"
           aria-hidden="true"
         >
           <motion.path
@@ -125,4 +124,3 @@ export const TracingBeam = ({
     </motion.div>
   );
 };
-
