@@ -24,16 +24,8 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           
-          {/* Brand Info */}
-          <div>
-            <h3 className="text-lg font-bold text-white">Arman Autoxperts</h3>
-            <p className="mt-4 max-w-xs text-sm text-gray-400">
-              Your premier destination for luxury and performance vehicles, offering an unparalleled automotive experience.
-            </p>
-          </div>
-
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-bold text-white">Quick Links</h3>
