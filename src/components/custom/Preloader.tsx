@@ -63,7 +63,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
             </h1>
             <div className="flex items-end">
                 <span ref={counterRef} className="text-6xl md:text-8xl font-black tabular-nums">0</span>
-                <span className="text-2xl md:text-3xl font-black mb-2 ml-1">%</span>
+                <span className="text-2xl md:text-3xl font-black mb-2 ml-1">mph</span>
             </div>
         </div>
     </div>
