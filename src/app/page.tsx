@@ -32,7 +32,7 @@ export default function ConsolidatedPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const aboutText1 = "Driven by a passion for excellence since 2010, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
+  const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
   const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
 
 
@@ -166,7 +166,7 @@ export default function ConsolidatedPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
               <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
-                The Art of Automotive Excellence
+                About Us
               </h2>
               <div className="gsap-reveal">
                 <TextGenerateEffect words={aboutText1} className="mb-4" />
