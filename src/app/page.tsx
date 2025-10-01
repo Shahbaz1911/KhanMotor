@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ContactForm } from "@/components/forms/ContactForm";
 import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
 import { MarqueeBrandScroller } from "@/components/custom/MarqueeBrandScroller";
-import { GlassHighlightGrid } from "@/components/custom/GlassHighlightGrid";
+import { WhyChooseUs } from "@/components/custom/WhyChooseUs";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -134,7 +134,7 @@ export default function ConsolidatedPage() {
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <MarqueeBrandScroller />
-        <GlassHighlightGrid />
+        <WhyChooseUs />
         
         {/* Section 2: About Us */}
         <section ref={aboutSectionRef} id="about-us" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center">
@@ -215,4 +215,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
