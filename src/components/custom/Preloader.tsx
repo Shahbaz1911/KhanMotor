@@ -35,7 +35,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       },
     })
     .to(needleRef.current, {
-        rotation: 270, // -90 (start) + 270 = 180 deg (end)
+        rotation: 270, // -135 (start) + 270 = 135 deg (end)
         duration: 1.5,
         ease: 'power3.inOut',
       }, 0) // Start at the same time as the number counter
@@ -97,9 +97,9 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
 
   const totalMarks = 70;
-  const totalDegrees = 240;
+  const totalDegrees = 270;
   const degreeStep = totalDegrees / totalMarks;
-  const startAngle = -120;
+  const startAngle = -135;
 
 
   return (
@@ -128,12 +128,13 @@ export function Preloader({ onLoaded }: PreloaderProps) {
              <TickMark key={i} rotation={startAngle + (i * degreeStep)} large={i % 10 === 0} />
           ))}
           <SpeedMark value={0} rotation={-120} />
-          <SpeedMark value={50} rotation={-85} />
-          <SpeedMark value={100} rotation={-50} />
-          <SpeedMark value={150} rotation={-15} />
-          <SpeedMark value={200} rotation={20} />
-          <SpeedMark value={250} rotation={55} />
-          <SpeedMark value={300} rotation={90} />
+          <SpeedMark value={50} rotation={-81.4} />
+          <SpeedMark value={100} rotation={-42.8} />
+          <SpeedMark value={150} rotation={-4.2} />
+          <SpeedMark value={200} rotation={34.4} />
+          <SpeedMark value={250} rotation={73} />
+          <SpeedMark value={300} rotation={111.6} />
+          <SpeedMark value={350} rotation={150.2} />
         </div>
 
         {/* Needle - redesigned for realism */}
