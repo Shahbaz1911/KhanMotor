@@ -81,7 +81,7 @@ export function TestimonialMarquee() {
         className="flex w-max animate-marquee [--gap:1rem] hover:[animation-play-state:paused]"
         style={{ animationDuration: '60s' }}
       >
-        {[...testimonials, ...testimonials].map((testimonial, i) => (
+        {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
           <div key={i} className="px-[calc(var(--gap)/2)]">
             <TestimonialCard testimonial={testimonial} />
           </div>
