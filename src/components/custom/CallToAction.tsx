@@ -20,18 +20,16 @@ export function CallToAction() {
 
     const ctx = gsap.context(() => {
       if (textRef.current) {
-        const textWidth = textRef.current.offsetWidth;
-        // Start from off-screen right and move to off-screen left
         gsap.fromTo(
           textRef.current,
           { x: "100vw" },
           {
-            x: `-${textWidth}px`,
+            x: "-200%",
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top bottom",
               end: "bottom top",
-              scrub: true, // Directly link animation to scroll
+              scrub: 1, 
             },
           }
         );
