@@ -53,18 +53,26 @@ function HighlightItem({ item, index }: { item: typeof highlightItems[0], index:
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative pl-[52px]" 
+      className={cn("relative md:pl-[52px]")}
     >
-      <div className="absolute -translate-y-4 left-0 translate-x-0 !ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30">
+       <div className={cn(
+        "absolute -translate-y-4 left-0 translate-x-0 !ml-0 h-8 w-8 rounded-full bg-primary/20 text-primary p-2 flex items-center justify-center border border-primary/30",
+        "md:flex hidden" // Hide on mobile, show on md and up
+        )}>
         <item.icon className="h-5 w-5" />
       </div>
       <Card className={cn(
         "mt-6 bg-background/50 backdrop-blur-md border-white/20",
-        "w-[calc(50%-2rem)]", 
-        isEven ? "ml-[calc(50%+2rem)]" : "mr-[calc(50%+2rem)]"
+        "w-full md:w-[calc(50%-2rem)]", 
+        isEven ? "md:ml-[calc(50%+2rem)]" : "md:mr-[calc(50%+2rem)]"
       )}>
         <CardHeader>
-          <CardTitle className="text-white text-2xl font-black">{item.title}</CardTitle>
+          <div className="flex items-center gap-4">
+             <div className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
+                <item.icon className="h-6 w-6" />
+            </div>
+            <CardTitle className="text-white text-2xl font-black">{item.title}</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">{item.description}</p>
@@ -88,13 +96,33 @@ export function WhyChooseUs() {
           </p>
         </div>
         
-        <TracingBeam className="px-6">
-          <div className="relative pt-4 antialiased space-y-12">
+        <div className="md:hidden space-y-8">
             {highlightItems.map((item, index) => (
-              <HighlightItem key={`content-${index}`} item={item} index={index} />
+                <Card key={`mobile-highlight-${index}`} className="bg-background/50 backdrop-blur-md border-white/20">
+                    <CardHeader>
+                        <div className="flex items-center gap-4">
+                            <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/20 text-primary p-2 border border-primary/30">
+                                <item.icon className="h-6 w-6" />
+                            </div>
+                            <CardTitle className="text-white text-xl font-black">{item.title}</CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">{item.description}</p>
+                    </CardContent>
+                </Card>
             ))}
-          </div>
-        </TracingBeam>
+        </div>
+        
+        <div className="hidden md:block">
+            <TracingBeam className="px-6">
+            <div className="relative pt-4 antialiased space-y-12">
+                {highlightItems.map((item, index) => (
+                <HighlightItem key={`content-${index}`} item={item} index={index} />
+                ))}
+            </div>
+            </TracingBeam>
+        </div>
 
       </div>
     </section>
