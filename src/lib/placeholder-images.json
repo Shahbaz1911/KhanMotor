@@ -54,5 +54,29 @@
   "vehicle8": {
     "url": "https://picsum.photos/seed/v8/1080/810",
     "aiHint": "white sedan"
+  },
+  "customer1": {
+    "url": "https://picsum.photos/seed/customer1/600/400",
+    "aiHint": "man with sportscar"
+  },
+  "customer2": {
+    "url": "https://picsum.photos/seed/customer2/600/400",
+    "aiHint": "woman with suv"
+  },
+  "customer3": {
+    "url": "https://picsum.photos/seed/customer3/600/400",
+    "aiHint": "couple with sedan"
+  },
+  "customer4": {
+    "url": "https://picsum.photos/seed/customer4/600/400",
+    "aiHint": "family with van"
+  },
+  "customer5": {
+    "url": "https://picsum.photos/seed/customer5/600/400",
+    "aiHint": "man with classic car"
+  },
+  "customer6": {
+    "url": "https://picsum.photos/seed/customer6/600/400",
+    "aiHint": "woman with convertible"
   }
 }

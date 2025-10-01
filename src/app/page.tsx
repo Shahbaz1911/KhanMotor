@@ -22,6 +22,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
+import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
 
 
 export default function ConsolidatedPage() {
@@ -205,6 +206,8 @@ export default function ConsolidatedPage() {
            </div>
            <TestimonialMarquee />
         </section>
+
+        <HappyCustomerGallery />
 
         {/* Section 6: Contact Us */}
         <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
