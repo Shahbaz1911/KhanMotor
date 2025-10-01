@@ -56,15 +56,13 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
         <Button 
           ref={buttonRef}
           size="lg" 
-          className="group bg-white text-black hover:bg-white/90 border-2 border-white text-lg px-8 py-6 rounded-md transition-transform transform hover:scale-105 font-black"
+          variant="outline"
+          className="group bg-transparent hover:bg-white hover:text-black border-2 border-white text-lg px-8 py-6 rounded-full transition-transform transform hover:scale-105 font-black"
           onClick={() => router.push('/#featured-gallery')}
         >
-          Explore Our Collection
-          <ArrowRight className="ml-3 h-6 w-6 transition-transform group-hover:translate-x-1" />
+          DISCOVER
         </Button>
       </div>
     </section>
   );
 }
-
-    
