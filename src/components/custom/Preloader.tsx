@@ -94,34 +94,35 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       </div>
 
       <div className="relative w-64 h-32 flex items-end justify-center">
-        {/* Speedometer Dial */}
-        <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive rounded-t-full"></div>
+        {/* Speedometer Dial - more layers for realism */}
+        <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive/50 rounded-t-full"></div>
+        <div className="absolute bottom-0 w-[calc(100%-20px)] h-[118px] border-[1px] border-b-0 border-white/20 rounded-t-full"></div>
         <div className="absolute bottom-0 w-[calc(100%-40px)] h-[108px] border-[10px] border-b-0 border-black rounded-t-full"></div>
         
         {/* Speed Markings */}
-        <div className="absolute bottom-0 w-[calc(100%-40px)] h-[108px]">
+        <div className="absolute bottom-0 w-[calc(100%-60px)] h-[98px]">
           <SpeedMark value={0} rotation={-80} />
           <SpeedMark value={50} rotation={-40} />
           <SpeedMark value={100} rotation={0} />
           <SpeedMark value={150} rotation={40} />
         </div>
 
-        {/* Needle */}
+        {/* Needle - redesigned for realism */}
         <div
           className="absolute bottom-0 w-32 h-32 origin-bottom-left"
           style={{ transform: 'translateX(8px)' }}
         >
           <div
             ref={needleRef}
-            className="absolute bottom-1/2 left-0 w-1/2 h-0.5 bg-destructive origin-right"
+            className="absolute bottom-1/2 left-0 w-[45%] h-0.5 bg-destructive origin-right"
             style={{ transform: 'rotate(-90deg)' }}
           >
-              <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-destructive rounded-full"></div>
+              <div className="absolute -top-1.5 right-0 w-3 h-3 bg-destructive rounded-full border-2 border-black"></div>
           </div>
         </div>
 
          {/* Center pin */}
-        <div className="absolute w-4 h-4 bg-white rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute w-5 h-5 bg-zinc-800 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-zinc-600"></div>
       </div>
        <div className="mt-4 text-center text-white">
             <span ref={speedNumberRef} className="text-6xl font-black tabular-nums">0</span>
