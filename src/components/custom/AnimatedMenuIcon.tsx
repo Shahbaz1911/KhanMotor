@@ -9,22 +9,20 @@ interface AnimatedMenuIconProps {
 }
 
 export function AnimatedMenuIcon({ isOpen, className }: AnimatedMenuIconProps) {
-  const barClasses = "absolute h-px w-full bg-current transition-all duration-300 ease-in-out";
+  const barClasses = "absolute h-px w-full bg-current transition-all duration-300 ease-in-out left-0";
 
   return (
     <div className={cn("relative h-5 w-5", className)}>
       <span
         className={cn(
           barClasses,
-          "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-          isOpen ? "rotate-45" : "rotate-0"
+          isOpen ? "top-1/2 rotate-45" : "top-[35%]"
         )}
       />
       <span
         className={cn(
           barClasses,
-          "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-          isOpen ? "-rotate-45" : "rotate-90"
+           isOpen ? "top-1/2 -rotate-45" : "top-[65%]"
         )}
       />
     </div>
