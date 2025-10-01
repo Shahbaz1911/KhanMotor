@@ -47,37 +47,38 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   };
 
   return (
-    <div className={cn("flex h-auto flex-col bg-background p-4 pt-8", className)}>
-      <ScrollArea className="flex-1">
+    <div className={cn("h-full flex flex-col", className)}>
+      <div className="flex-grow flex items-center justify-center">
         <nav className="flex flex-col gap-2 p-4 text-center">
           {mainNavItems.map((item) => (
             <Button
               key={item.id}
               variant="ghost"
-              className="w-full justify-center text-2xl font-black"
+              className="w-full justify-center text-3xl md:text-4xl font-black text-white/80 hover:text-white relative group py-4"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                {item.label}
+                <span>{item.label}</span>
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-white w-0 group-hover:w-1/4 transition-all duration-300"></span>
               </Link>
             </Button>
           ))}
         </nav>
-      </ScrollArea>
+      </div>
 
-      <div className="border-t p-4 space-y-4 pt-6">
+      <div className="border-t border-white/10 p-4 space-y-4">
         {user ? (
           <div className="flex justify-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex h-auto items-center justify-center gap-3 p-2 text-left">
-                  <Avatar className="h-10 w-10">
+                <Button variant="ghost" className="flex h-auto items-center justify-center gap-3 p-2 text-left text-white">
+                  <Avatar className="h-10 w-10 border-2 border-white/20">
                     <AvatarImage src={user.avatarUrl} alt={user.name} />
                     <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
                     <p className="text-sm font-black">{user.name}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                    <p className="text-xs text-white/70">{user.email}</p>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
@@ -108,7 +109,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenu>
           </div>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full text-lg font-kajiro">
+          <Button onClick={handleLogin} variant="outline" className="w-full text-lg font-black bg-transparent text-white hover:bg-white hover:text-black">
             Login
           </Button>
         )}
@@ -119,5 +120,3 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
     </div>
   );
 }
-
-    

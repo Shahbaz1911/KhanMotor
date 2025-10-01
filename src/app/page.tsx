@@ -12,7 +12,7 @@ import { HeroSpotlightBanner } from "@/components/custom/HeroSpotlightBanner";
 import { WhyChooseUs } from "@/components/custom/WhyChooseUs";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
@@ -100,8 +100,17 @@ export default function ConsolidatedPage() {
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-3 h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="bottom" className="p-0" srTitle="Navigation Menu">
+              <SheetContent side="bottom" className="h-full bg-black/80 backdrop-blur-lg border-t border-white/10 p-0" srTitle="Navigation Menu">
                 <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+                 <Button 
+                    variant="ghost" 
+                    onClick={() => setIsSheetOpen(false)} 
+                    className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white text-base"
+                    aria-label="Close menu"
+                  >
+                    CLOSE
+                    <AnimatedMenuIcon isOpen={true} className="ml-3 h-5 w-5" />
+                 </Button>
               </SheetContent>
             </Sheet>
           
