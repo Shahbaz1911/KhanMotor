@@ -11,9 +11,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Cinzel', 'serif'],
-        headline: ['Cinzel', 'serif'],
-        kajiro: ['Cinzel', 'serif'],
+        body: ['"Inter Tight"', 'sans-serif'],
+        headline: ['"Inter Tight"', 'sans-serif'],
+        kajiro: ['"Inter Tight"', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
