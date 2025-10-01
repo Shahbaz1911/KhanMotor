@@ -1,0 +1,58 @@
+{
+  "about": {
+    "url": "https://picsum.photos/seed/about/800/600",
+    "aiHint": "dealership interior"
+  },
+  "cta": {
+    "url": "https://picsum.photos/seed/cta/800/600",
+    "aiHint": "car interior driving"
+  },
+  "testimonial1": {
+    "url": "https://picsum.photos/seed/testimonial1/100/100",
+    "aiHint": "woman portrait"
+  },
+  "testimonial2": {
+    "url": "https://picsum.photos/seed/testimonial2/100/100",
+    "aiHint": "man portrait"
+  },
+  "testimonial3": {
+    "url": "https://picsum.photos/seed/testimonial3/100/100",
+    "aiHint": "person smiling"
+  },
+  "userAvatar": {
+    "url": "https://picsum.photos/seed/avatar/100/100",
+    "aiHint": "user avatar"
+  },
+  "vehicle1": {
+    "url": "https://picsum.photos/seed/v1/1080/810",
+    "aiHint": "blue sportscar"
+  },
+  "vehicle2": {
+    "url": "https://picsum.photos/seed/v2/1080/810",
+    "aiHint": "green coupe"
+  },
+  "vehicle3": {
+    "url": "https://picsum.photos/seed/v3/1080/810",
+    "aiHint": "black suv"
+  },
+  "vehicle4": {
+    "url": "https://picsum.photos/seed/v4/1080/810",
+    "aiHint": "yellow sportscar"
+  },
+  "vehicle5": {
+    "url": "https://picsum.photos/seed/v5/1080/810",
+    "aiHint": "red sedan"
+  },
+  "vehicle6": {
+    "url": "https://picsum.photos/seed/v6/1080/810",
+    "aiHint": "silver suv"
+  },
+  "vehicle7": {
+    "url": "https://picsum.photos/seed/v7/1080/810",
+    "aiHint": "blue suv"
+  },
+  "vehicle8": {
+    "url": "https://picsum.photos/seed/v8/1080/810",
+    "aiHint": "white sedan"
+  }
+}

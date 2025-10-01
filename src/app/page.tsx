@@ -20,6 +20,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
+import placeholderImages from '@/lib/placeholder-images.json';
 
 
 export default function ConsolidatedPage() {
@@ -152,21 +153,21 @@ export default function ConsolidatedPage() {
     {
       name: "Sarah L.",
       title: "Luxury Car Enthusiast",
-      avatar: "https://source.unsplash.com/featured/100x100/?woman,portrait",
+      avatar: placeholderImages.testimonial1.url,
       quote: "Khan Motor provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
       rating: 5,
     },
     {
       name: "John B.",
       title: "First Time Buyer",
-      avatar: "https://source.unsplash.com/featured/100x100/?man,portrait",
+      avatar: placeholderImages.testimonial2.url,
       quote: "The team at Khan Motor made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
       rating: 5,
     },
     {
       name: "Emily K.",
       title: "Collector",
-      avatar: "https://source.unsplash.com/featured/100x100/?person,smiling",
+      avatar: placeholderImages.testimonial3.url,
       quote: "As a collector, I appreciate Khan Motor's curated selection of rare and high-performance vehicles. A trusted partner.",
       rating: 5,
     },
@@ -231,11 +232,11 @@ export default function ConsolidatedPage() {
             </div>
             <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
               <Image
-                src="https://source.unsplash.com/featured/800x600/?luxury,dealership,interior"
+                src={placeholderImages.about.url}
                 alt="Khan Motor Dealership Interior"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
+                fill
+                className="rounded-lg object-cover"
+                data-ai-hint={placeholderImages.about.aiHint}
               />
             </div>
           </div>
@@ -300,11 +301,11 @@ export default function ConsolidatedPage() {
                 </div>
                 <div className="relative h-64 md:h-full min-h-[300px] order-first md:order-last">
                   <Image
-                    src="https://source.unsplash.com/featured/800x600/?car,interior,driving" 
+                    src={placeholderImages.cta.url}
                     alt="Luxury car steering wheel view"
-                    layout="fill"
-                    objectFit="cover"
-                    className="md:rounded-r-lg"
+                    fill
+                    className="md:rounded-r-lg object-cover"
+                    data-ai-hint={placeholderImages.cta.aiHint}
                   />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/50 md:via-transparent"></div>
                 </div>

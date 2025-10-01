@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { User, Settings, LogOut } from "lucide-react"; 
 import { cn } from "@/lib/utils";
+import placeholderImages from '@/lib/placeholder-images.json';
 
 interface AppSidebarProps {
   className?: string;
@@ -30,7 +31,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   const { user, login, logout } = useAuth();
 
   const handleLogin = () => {
-    login({ name: "Demo User", email: "demo@example.com", avatarUrl: "https://source.unsplash.com/featured/100x100/?user,avatar" });
+    login({ name: "Demo User", email: "demo@example.com", avatarUrl: placeholderImages.userAvatar.url });
     if (onNavigate) onNavigate();
   };
 
@@ -118,3 +119,5 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
     </div>
   );
 }
+
+    
