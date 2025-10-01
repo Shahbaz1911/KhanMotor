@@ -6,10 +6,12 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
+import Image from "next/image";
 
 export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -17,21 +19,27 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
 
   useEffect(() => {
     // Only run animation if isLoaded is true
-    if (isLoaded && headingRef.current && buttonRef.current) {
+    if (isLoaded && logoRef.current && headingRef.current && buttonRef.current) {
       const innerWords = headingRef.current.querySelectorAll(".word-inner");
       
+      gsap.set(logoRef.current, { opacity: 0, y: -20 });
       gsap.set(innerWords, { y: "110%" });
       gsap.set(buttonRef.current, { opacity: 0, y: 20 });
       
       const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.2 });
 
       tl.to(
+          logoRef.current,
+          { opacity: 1, y: 0, duration: 0.8 }
+        )
+        .to(
           innerWords,
           {
               y: "0%",
               stagger: 0.05,
               duration: 0.8,
-          }
+          },
+          "-=0.5"
       )
       .to(
           buttonRef.current,
@@ -44,6 +52,15 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   return (
     <section ref={sectionRef} className="relative z-20 w-full h-full flex items-center justify-center overflow-hidden text-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
+        <div ref={logoRef} className="flex justify-center mb-8">
+            <Image 
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                alt="Arman Autoxperts Logo"
+                width={200}
+                height={200}
+                className="w-40 h-auto md:w-52"
+            />
+        </div>
         <h1 ref={headingRef} className="mb-10 scroll-m-20 text-5xl tracking-tight sm:text-6xl md:text-7xl text-white drop-shadow-lg font-black" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
           {headingText.split(" ").map((word, index) => (
             <span key={index} className="inline-block overflow-hidden pb-2">

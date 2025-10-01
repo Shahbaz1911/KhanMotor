@@ -59,7 +59,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black">
         <div ref={contentRef} className="flex flex-col items-center justify-center text-white">
             <h1 className="text-4xl md:text-5xl font-black text-center mb-4">
-                Khan Motor
+                Arman Autoxperts
             </h1>
             <div className="flex items-end">
                 <span ref={counterRef} className="text-6xl md:text-8xl font-black tabular-nums">0</span>

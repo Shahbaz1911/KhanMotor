@@ -36,6 +36,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'logo.clearbit.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'armanautoxperts-in.vercel.app',
       }
     ],
   },

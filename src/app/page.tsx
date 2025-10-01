@@ -29,7 +29,7 @@ export default function ConsolidatedPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const aboutText1 = "At Khan Motor, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.";
+  const aboutText1 = "At Arman Autoxperts, we are driven by a passion for excellence and a commitment to providing an unparalleled automotive experience. Established in 2010, we have curated a collection of the world's most prestigious vehicles, handpicked for their quality, performance, and timeless appeal.";
   const aboutText2 = "Our mission is to connect discerning enthusiasts with extraordinary automobiles. We believe that purchasing a luxury vehicle should be as exceptional as owning one. Our knowledgeable team offers personalized service, expert advice, and a transparent process, ensuring your journey with us is memorable from start to finish.";
 
 
@@ -148,7 +148,7 @@ export default function ConsolidatedPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
               <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
-                About Khan Motor
+                About Arman Autoxperts
               </h2>
               <div className="gsap-reveal">
                 <TextGenerateEffect words={aboutText1} className="mb-4" />
@@ -165,7 +165,7 @@ export default function ConsolidatedPage() {
             <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
               <Image
                 src={placeholderImages.about.url}
-                alt="Khan Motor Dealership Interior"
+                alt="Arman Autoxperts Dealership Interior"
                 fill
                 className="rounded-lg object-cover"
                 data-ai-hint={placeholderImages.about.aiHint}
