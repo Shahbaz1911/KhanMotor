@@ -124,8 +124,8 @@ export default function ConsolidatedPage() {
         </section>
 
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
-        <ServicesSection />
         <AchievementsSection />
+        <ServicesSection />
         <WhyChooseUs />
         
         {/* Section 2: About Us */}
