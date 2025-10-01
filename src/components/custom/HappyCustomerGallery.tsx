@@ -61,33 +61,54 @@ export function HappyCustomerGallery() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
+    let ctx = gsap.context(() => {});
+    
+    if (gridRef.current) {
+        ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 80%",
+                toggleActions: "play none none none",
+                },
+            });
+    
+            tl.from(titleRef.current, {
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+            }).from(
+                gridRef.current?.children,
+                {
+                opacity: 0,
+                scale: 0.9,
+                y: 50,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power3.out",
+                },
+                "-=0.5"
+            );
 
-      tl.from(titleRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        ease: "power3.out",
-      }).from(
-        gridRef.current?.children,
-        {
-          opacity: 0,
-          scale: 0.9,
-          y: 50,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power3.out",
-        },
-        "-=0.5"
-      );
-    }, sectionRef);
+            const cards = Array.from(gridRef.current.children);
+            
+            cards.forEach(card => {
+                const otherCards = cards.filter(c => c !== card);
+                
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, { scale: 1.05, duration: 0.3, ease: 'power3.out' });
+                    gsap.to(otherCards, { scale: 0.95, duration: 0.3, ease: 'power3.out' });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(cards, { scale: 1, duration: 0.3, ease: 'power3.out' });
+                });
+            });
+
+
+        }, sectionRef);
+    }
 
     return () => ctx.revert();
   }, []);
@@ -108,14 +129,14 @@ export function HappyCustomerGallery() {
           {galleryItems.map((item, index) => (
             <div
               key={index}
-              className="group relative block w-full overflow-hidden rounded-lg shadow-lg"
+              className="group relative block w-full overflow-hidden rounded-lg shadow-lg transition-all duration-300"
             >
               <Image
                 src={item.imageUrl}
                 alt={`Customer ${item.customerName}`}
                 width={600}
                 height={400}
-                className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                className="h-full w-full object-cover"
                 data-ai-hint={item.aiHint}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent opacity-100 transition-opacity duration-300"></div>
