@@ -81,6 +81,18 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
   return (
     <div ref={preloaderRef} className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-black">
+      {/* Logo above the speedometer */}
+      <div ref={logoRef} className="mb-8">
+           <Image
+              src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+              alt="Arman Autoxperts Logo"
+              width={120}
+              height={120}
+              className="w-28 h-auto"
+              priority
+          />
+      </div>
+
       <div className="relative w-64 h-32 flex items-end justify-center">
         {/* Speedometer Dial */}
         <div className="absolute bottom-0 w-full h-[128px] border-[10px] border-b-0 border-destructive rounded-t-full"></div>
@@ -92,18 +104,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           <SpeedMark value={50} rotation={-40} />
           <SpeedMark value={100} rotation={0} />
           <SpeedMark value={150} rotation={40} />
-        </div>
-
-        {/* Logo in the center */}
-        <div ref={logoRef} className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-[80%]">
-             <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
-                alt="Arman Autoxperts Logo"
-                width={100}
-                height={100}
-                className="w-20 h-auto"
-                priority
-            />
         </div>
 
         {/* Needle */}
