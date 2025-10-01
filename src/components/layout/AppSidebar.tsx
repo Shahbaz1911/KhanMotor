@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut, ArrowRight } from "lucide-react"; 
+import { User, Settings, LogOut, MoveRight } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 import placeholderImages from '@/lib/placeholder-images.json';
 
@@ -59,7 +59,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             >
               <Link href={item.href} onClick={handleLinkClick}>
                 <span className="group-hover:translate-x-10 transition-transform duration-300">{item.label}</span>
-                <ArrowRight className="absolute right-0 h-8 w-8 opacity-0 translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                <MoveRight className="absolute right-0 h-8 w-8 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </Link>
             </Button>
           ))}
@@ -109,7 +109,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenu>
           </div>
         ) : (
-          <Button onClick={handleLogin} variant="outline" className="w-full text-lg font-black bg-transparent text-white hover:bg-white hover:text-black">
+          <Button onClick={handleLogin} variant="outline" className="w-full text-lg font-black bg-white text-black hover:bg-white/90 hover:text-black">
             Login
           </Button>
         )}
