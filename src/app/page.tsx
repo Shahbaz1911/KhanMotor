@@ -61,13 +61,10 @@ export default function ConsolidatedPage() {
       });
 
       // Header logo fade in
-      gsap.from(headerLogoRef.current, {
-        opacity: 0,
-        y: -20,
-        duration: 0.8,
-        delay: 0.2, // Match HeroSpotlightBanner animation
-        ease: "power3.out"
-      });
+      gsap.fromTo(headerLogoRef.current, 
+        { autoAlpha: 0, y: -20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
+      );
 
       // About Us Animation
       const aboutTl = gsap.timeline({
@@ -126,13 +123,13 @@ export default function ConsolidatedPage() {
               </SheetContent>
             </Sheet>
 
-            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
+            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2 invisible">
                 <Image 
                     src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                     alt="Arman Autoxperts Logo"
                     width={100}
                     height={100}
-                    className="w-20 h-auto md:w-24 opacity-0" // Start with opacity 0 for GSAP
+                    className="w-20 h-auto md:w-24"
                 />
             </div>
           
