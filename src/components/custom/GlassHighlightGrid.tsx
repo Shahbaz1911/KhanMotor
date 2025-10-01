@@ -71,7 +71,7 @@ export function GlassHighlightGrid() {
         duration: 0.6
       });
       
-      // Animate grid items one by one
+      // Animate grid items from alternating sides
       if (gridRef.current) {
         const cards = gsap.utils.toArray(gridRef.current.children);
         cards.forEach((card, i) => {
@@ -82,8 +82,8 @@ export function GlassHighlightGrid() {
               toggleActions: "play none none none",
             },
             opacity: 0,
-            y: 50,
-            duration: 0.5,
+            x: i % 2 === 0 ? 100 : -100, // Animate from right for even, left for odd
+            duration: 0.8,
             ease: "power3.out",
           });
         });
