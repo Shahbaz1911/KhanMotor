@@ -108,10 +108,10 @@ export function ContactForm() {
   }, [state, toast, form]);
 
   return (
-    <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl bg-background/50 backdrop-blur-md border border-white/20 text-white">
+    <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl dark:bg-background/50 dark:backdrop-blur-md dark:border-white/20">
       <CardHeader>
         <CardTitle className="text-3xl">Get in Touch</CardTitle>
-        <CardDescription className="text-gray-300">
+        <CardDescription className="dark:text-gray-300">
           Have questions or need assistance? Fill out the form below, and we&apos;ll get back to you shortly.
         </CardDescription>
       </CardHeader>
@@ -125,7 +125,7 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} className="bg-transparent placeholder:text-gray-400" />
+                    <Input placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,7 +138,7 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="john.doe@example.com" {...field} className="bg-transparent placeholder:text-gray-400"/>
+                    <Input type="email" placeholder="john.doe@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,7 +151,7 @@ export function ContactForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(123) 456-7890" {...field} className="bg-transparent placeholder:text-gray-400" />
+                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,7 +166,7 @@ export function ContactForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Tell us how we can help you..."
-                      className="min-h-[120px] bg-transparent placeholder:text-gray-400"
+                      className="min-h-[120px]"
                       {...field}
                     />
                   </FormControl>

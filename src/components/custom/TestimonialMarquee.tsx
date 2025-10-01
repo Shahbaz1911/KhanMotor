@@ -50,7 +50,7 @@ const testimonials = [
 
 const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] }) => {
   return (
-    <Card className="w-[350px] shrink-0 md:w-[450px] flex flex-col shadow-lg bg-background/50 backdrop-blur-md border border-white/20 text-white mx-4">
+    <Card className="w-[350px] shrink-0 md:w-[450px] flex flex-col shadow-lg dark:bg-background/50 dark:backdrop-blur-md dark:border-white/20 mx-4">
       <CardHeader className="flex-row items-center gap-4">
         <Avatar className="h-16 w-16">
           <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
@@ -58,18 +58,18 @@ const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] 
         </Avatar>
         <div>
           <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
-          <CardDescription className="text-gray-300">{testimonial.title}</CardDescription>
+          <CardDescription className="dark:text-gray-300">{testimonial.title}</CardDescription>
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
-        <Quote className="h-8 w-8 text-white/50 mb-2 transform -scale-x-100" />
-        <p className="text-gray-300 italic mb-4">{testimonial.quote}</p>
+        <Quote className="h-8 w-8 text-foreground/50 mb-2 transform -scale-x-100" />
+        <p className="text-muted-foreground italic mb-4">{testimonial.quote}</p>
         <div className="flex">
           {Array(testimonial.rating).fill(0).map((_, i) => (
             <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
           ))}
           {Array(5 - testimonial.rating).fill(0).map((_, i) => (
-            <Star key={i} className="h-5 w-5 text-gray-500" />
+            <Star key={i} className="h-5 w-5 text-muted-foreground/50" />
           ))}
         </div>
       </CardContent>
