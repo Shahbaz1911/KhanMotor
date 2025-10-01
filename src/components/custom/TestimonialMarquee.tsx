@@ -79,9 +79,9 @@ export function TestimonialMarquee() {
     <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]">
       <div
         className="flex w-max animate-marquee [--gap:1rem] hover:[animation-play-state:paused]"
-        style={{ animationDuration: '60s' }}
+        style={{ animationDuration: '40s' }}
       >
-        {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, i) => (
+        {[...testimonials, ...testimonials].map((testimonial, i) => (
           <div key={i} className="px-[calc(var(--gap)/2)]">
             <TestimonialCard testimonial={testimonial} />
           </div>
