@@ -63,7 +63,6 @@ export function Footer() {
           {/* Social Media */}
           <div>
             <h3 className="text-lg font-bold text-white">Follow Us</h3>
-            <p className="mt-4 text-sm text-gray-400">Stay connected for the latest arrivals and news.</p>
             <ul className="mt-4 space-y-2">
               {socialLinks.map((social) => (
                 <li key={social.label}>
