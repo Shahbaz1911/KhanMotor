@@ -42,14 +42,17 @@ export default function ContactPage() {
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
 
-      // Header fade out on scroll
-      gsap.to(headerRef.current, {
-        autoAlpha: 0,
-        scrollTrigger: {
-          trigger: pageRef.current,
-          start: 'top top',
-          end: '+=150',
-          scrub: true,
+      // Header fade out on scroll, reappear only at top
+      ScrollTrigger.create({
+        trigger: pageRef.current,
+        start: 'top top',
+        end: 'max',
+        onUpdate: (self) => {
+          if (self.scroll() > 100) {
+            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: 'power2.out' });
+          } else {
+            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.in' });
+          }
         },
       });
 
@@ -134,7 +137,7 @@ export default function ContactPage() {
                 </Button>
 
               <div className="mt-12">
-                <h3 className="text-xl font-bold mb-4">Follow Our Journey</h3>
+                <h3 className="text-xl font-bold mb-4">Connect</h3>
                  <div className="flex gap-4">
                     {socialLinks.map((social) => (
                         <Button key={social.label} variant="outline" size="icon" asChild>
@@ -165,5 +168,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
-    
