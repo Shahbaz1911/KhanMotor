@@ -5,13 +5,6 @@ import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
 import { v2 as cloudinary } from "cloudinary";
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true
-});
-
 export type ContactFormState = {
   message: string;
   success: boolean;
@@ -115,8 +108,17 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
   }
   
   if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      return { success: false, error: 'Cloudinary environment variables are not configured.' };
+      console.error("Cloudinary environment variables are not configured.");
+      return { success: false, error: 'Server configuration error: Image hosting is not set up.' };
   }
+
+  // Configure Cloudinary inside the function to ensure env vars are loaded.
+  cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+  });
 
   try {
     const fileBuffer = await file.arrayBuffer();
