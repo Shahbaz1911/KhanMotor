@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -8,6 +7,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 interface GalleryItem {
   id: string;
@@ -32,16 +33,23 @@ export function HappyCustomerGallery() {
     if (!firestore) return;
 
     const galleryCollection = collection(firestore, "gallery");
-    const unsubscribe = onSnapshot(galleryCollection, (snapshot) => {
-        const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
-        setGalleryItems(galleryData);
-        setLoading(false);
-         // Refresh ScrollTrigger after data is loaded
-        ScrollTrigger.refresh();
-    }, (error) => {
-        console.error("Error fetching gallery items:", error);
-        setLoading(false);
-    });
+    const unsubscribe = onSnapshot(galleryCollection, 
+        (snapshot) => {
+            const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
+            setGalleryItems(galleryData);
+            setLoading(false);
+            // Refresh ScrollTrigger after data is loaded
+            ScrollTrigger.refresh();
+        }, 
+        (error) => {
+            const permissionError = new FirestorePermissionError({
+                path: galleryCollection.path,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            setLoading(false);
+        }
+    );
     
     return () => unsubscribe();
   }, [firestore]);
@@ -142,3 +150,4 @@ export function HappyCustomerGallery() {
     </section>
   );
 }
+    

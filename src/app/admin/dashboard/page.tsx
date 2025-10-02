@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,9 +16,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
-import { collection, addDoc, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import type { Vehicle } from "@/types";
 import { uploadToCloudinary } from "@/lib/actions";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
+
 
 interface GalleryItem {
     id: string;
@@ -59,15 +61,35 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     if (!firestore) return;
 
-    const vehiclesUnsubscribe = onSnapshot(collection(firestore, "vehicles"), (snapshot) => {
-        const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
-        setVehicles(vehiclesData);
-    });
+    const vehiclesCollection = collection(firestore, "vehicles");
+    const vehiclesUnsubscribe = onSnapshot(vehiclesCollection, 
+        (snapshot) => {
+            const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+            setVehicles(vehiclesData);
+        },
+        async (error) => {
+            const permissionError = new FirestorePermissionError({
+                path: vehiclesCollection.path,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+    );
 
-    const galleryUnsubscribe = onSnapshot(collection(firestore, "gallery"), (snapshot) => {
-        const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
-        setGalleryItems(galleryData);
-    });
+    const galleryCollection = collection(firestore, "gallery");
+    const galleryUnsubscribe = onSnapshot(galleryCollection, 
+        (snapshot) => {
+            const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
+            setGalleryItems(galleryData);
+        },
+        async (error) => {
+            const permissionError = new FirestorePermissionError({
+                path: galleryCollection.path,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        }
+    );
     
     return () => {
         vehiclesUnsubscribe();
@@ -143,24 +165,33 @@ export default function AdminDashboardPage() {
         toast({ title: "Image upload failed", description: "Could not add vehicle without a valid image URL.", variant: "destructive" });
         return;
     }
-
-    try {
-        await addDoc(collection(firestore, "vehicles"), {
-            ...newVehicle,
-            year: Number(newVehicle.year),
-            price: Number(newVehicle.price),
-            features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
-            imageUrl: uploadedImageUrl,
-            aiHint: 'new vehicle'
+    
+    const vehicleData = {
+        ...newVehicle,
+        year: Number(newVehicle.year),
+        price: Number(newVehicle.price),
+        features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
+        imageUrl: uploadedImageUrl,
+        aiHint: 'new vehicle',
+        createdAt: serverTimestamp(),
+    };
+    
+    const vehiclesCollection = collection(firestore, "vehicles");
+    addDoc(vehiclesCollection, vehicleData)
+        .then(() => {
+            toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
+            setNewVehicle({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
+            setVehicleImageFile(null);
+            setVehicleImageUrl(null);
+        })
+        .catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: vehiclesCollection.path,
+                operation: 'create',
+                requestResourceData: vehicleData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
         });
-        toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
-        setNewVehicle({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
-        setVehicleImageFile(null);
-        setVehicleImageUrl(null);
-    } catch (error) {
-        console.error("Error adding vehicle: ", error);
-        toast({ title: "Error", description: "Could not add vehicle.", variant: "destructive" });
-    }
   }
   
   const handleAddGalleryItem = async (e: React.FormEvent) => {
@@ -178,31 +209,46 @@ export default function AdminDashboardPage() {
         return;
     }
 
-    try {
-        await addDoc(collection(firestore, "gallery"), {
-            caption: newGalleryItem.caption,
-            imageUrl: uploadedImageUrl,
+    const galleryData = {
+        caption: newGalleryItem.caption,
+        imageUrl: uploadedImageUrl,
+        createdAt: serverTimestamp(),
+    };
+
+    const galleryCollection = collection(firestore, "gallery");
+    addDoc(galleryCollection, galleryData)
+        .then(() => {
+            toast({ title: "Gallery Item Added", description: `A new photo has been added to the gallery.` });
+            setNewGalleryItem({ caption: "" });
+            setCustomerImageFile(null);
+            setCustomerImageUrl(null);
+        })
+        .catch(async (serverError) => {
+             const permissionError = new FirestorePermissionError({
+                path: galleryCollection.path,
+                operation: 'create',
+                requestResourceData: galleryData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
         });
-        toast({ title: "Gallery Item Added", description: `A new photo has been added to the gallery.` });
-        setNewGalleryItem({ caption: "" });
-        setCustomerImageFile(null);
-        setCustomerImageUrl(null);
-    } catch (error) {
-        console.error("Error adding gallery item: ", error);
-        toast({ title: "Error", description: "Could not add gallery item.", variant: "destructive" });
-    }
   }
 
   const handleDelete = async (collectionName: string, id: string) => {
     if (!firestore) return;
     if (!window.confirm("Are you sure you want to delete this item?")) return;
-    try {
-        await deleteDoc(doc(firestore, collectionName, id));
-        toast({ title: "Item Deleted", description: "The item has been removed successfully." });
-    } catch (error) {
-         console.error("Error deleting item: ", error);
-         toast({ title: "Error", description: "Could not delete item.", variant: "destructive" });
-    }
+    
+    const docRef = doc(firestore, collectionName, id);
+    deleteDoc(docRef)
+        .then(() => {
+             toast({ title: "Item Deleted", description: "The item has been removed successfully." });
+        })
+        .catch(async (serverError) => {
+            const permissionError = new FirestorePermissionError({
+                path: docRef.path,
+                operation: 'delete',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+        });
   }
 
   const renderContent = () => {
@@ -482,6 +528,4 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-
     

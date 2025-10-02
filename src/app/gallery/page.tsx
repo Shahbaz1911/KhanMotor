@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -15,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import type { Vehicle } from "@/types";
+import { errorEmitter } from "@/firebase/error-emitter";
+import { FirestorePermissionError } from "@/firebase/errors";
 
 export default function GalleryPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -30,18 +31,28 @@ export default function GalleryPage() {
   useEffect(() => {
     if (!firestore) return;
     setLoading(true);
-    const unsubscribe = onSnapshot(collection(firestore, "vehicles"), (snapshot) => {
-        const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
-        setVehicles(vehiclesData);
-        setLoading(false);
-        // Using a timeout to ensure DOM is updated before refreshing ScrollTrigger
-        setTimeout(() => {
-            ScrollTrigger.refresh();
-        }, 100);
-    }, (error) => {
-        console.error("Error fetching vehicles:", error);
-        setLoading(false);
-    });
+
+    const vehiclesCollection = collection(firestore, "vehicles");
+    const unsubscribe = onSnapshot(vehiclesCollection, 
+        (snapshot) => {
+            const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+            setVehicles(vehiclesData);
+            setLoading(false);
+            // Using a timeout to ensure DOM is updated before refreshing ScrollTrigger
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 100);
+        }, 
+        (error) => {
+            console.error("Error fetching vehicles:", error);
+            const permissionError = new FirestorePermissionError({
+                path: vehiclesCollection.path,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            setLoading(false);
+        }
+    );
     
     return () => unsubscribe();
   }, [firestore]);
@@ -168,5 +179,4 @@ export default function GalleryPage() {
     </>
   );
 }
-
     

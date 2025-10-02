@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from "@/components/theme-provider";
@@ -8,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SmoothScroll } from '@/components/custom/SmoothScroll';
 import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
 import { FirebaseProvider } from '@/firebase/provider';
+import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
   title: 'Khan Motor',
@@ -37,6 +37,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <SmoothScroll>
+                <FirebaseErrorListener />
                 <div className="flex min-h-screen flex-col">
                   <main className="flex-grow">{children}</main>
                   <Footer />
@@ -51,3 +52,4 @@ export default function RootLayout({
     </html>
   );
 }
+    
