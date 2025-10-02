@@ -10,6 +10,7 @@ import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
+import { Badge } from "../ui/badge";
 
 
 interface VehicleShowcaseCardProps {
@@ -73,6 +74,17 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
           className="rounded-lg object-cover"
           data-ai-hint={vehicle.aiHint}
         />
+         {vehicle.status && (
+             <Badge 
+                variant={vehicle.status === 'available' ? 'secondary' : 'destructive'} 
+                className={cn(
+                    "absolute top-4 right-4 capitalize",
+                    vehicle.status === 'available' && "bg-green-600/90 text-white border-green-700"
+                )}
+            >
+                {vehicle.status}
+            </Badge>
+        )}
       </div>
 
       <div ref={contentRef}>
@@ -117,8 +129,8 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
             ₹{vehicle.price.toLocaleString()}
             {vehicle.priceType === 'negotiable' && <span className="text-sm font-normal text-muted-foreground"> (Negotiable)</span>}
           </p>
-          <Button size="lg" className="group mt-4 sm:mt-0" onClick={() => router.push('/book-appointment')}>
-            Book Test Drive
+          <Button size="lg" className="group mt-4 sm:mt-0" onClick={() => router.push('/book-appointment')} disabled={vehicle.status === 'sold'}>
+            {vehicle.status === 'sold' ? 'Sold Out' : 'Book Test Drive'}
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>
         </div>
