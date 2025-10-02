@@ -1,45 +1,19 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Twitter, Instagram, Facebook, Linkedin, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import { Instagram, Facebook, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 
 export function Footer() {
   const socialLinks = [
-    { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  ];
-
-  const quickLinks = [
-    { href: '/#home', label: 'Home' },
-    { href: '/#about-us', label: 'About Us' },
-    { href: '/vehicles', label: 'Vehicles' },
-    { href: '/#testimonials', label: 'Testimonials' },
-    { href: '/book-appointment', label: 'Book a Drive' },
-    { href: '/#contact', label: 'Contact' },
   ];
 
   return (
     <footer className="border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-wrap justify-between gap-8">
-          
-          {/* Quick Links */}
-          <div className="w-full sm:w-auto">
-            <h3 className="text-lg font-bold text-white">Quick Links</h3>
-            <ul className="mt-4 space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="group flex items-center gap-2 text-sm text-gray-400 transition-all duration-300 hover:text-white hover:translate-x-2">
-                    <ArrowRight className="h-4 w-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <span>{link.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
           
           {/* Contact Info */}
           <div className="w-full sm:w-auto">
