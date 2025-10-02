@@ -100,8 +100,12 @@ export default function AdminDashboardPage() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 dark:bg-black">
       <header className="bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 sticky top-0 z-30">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center gap-4">
+              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Admin Dashboard</h1>
+            </div>
+            
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Link href="/">
                 <Image 
                     src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
@@ -111,8 +115,8 @@ export default function AdminDashboardPage() {
                     className="w-28 h-auto"
                 />
               </Link>
-              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Admin Dashboard</h1>
             </div>
+
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -224,4 +228,3 @@ export default function AdminDashboardPage() {
   );
 }
 
-    
