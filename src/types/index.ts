@@ -19,6 +19,7 @@ export interface Vehicle {
   description: string;
   features: string[];
   aiHint: string;
+  createdAt?: any;
 }
 
 export type VehicleFilters = {

@@ -45,9 +45,10 @@
         "description": { "type": "string" },
         "features": { "type": "array", "items": { "type": "string" } },
         "imageUrls": { "type": "array", "items": { "type": "string", "format": "uri" }, "maxItems": 8 },
-        "aiHint": { "type": "string" }
+        "aiHint": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrls", "variant", "color", "priceType", "mileage", "fuelType", "transmission", "ownership"]
+      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrls", "variant", "color", "priceType", "mileage", "fuelType", "transmission", "ownership", "createdAt"]
     },
     "galleryItem": {
       "title": "Gallery Item",
@@ -85,5 +86,4 @@
     "rules": "rules/storage.rules"
   }
 }
-
     

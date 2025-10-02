@@ -6,24 +6,29 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
-import { collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { collection, onSnapshot, doc, deleteDoc, query, orderBy, Timestamp } from "firebase/firestore";
 import type { Vehicle } from "@/types";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { format } from "date-fns";
+
+interface VehicleWithTimestamp extends Vehicle {
+    createdAt?: Timestamp;
+}
 
 export default function InventoryPage() {
     const { user, logout, loading: authLoading } = useAuth();
     const router = useRouter();
     const { toast } = useToast();
-    const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+    const [vehicles, setVehicles] = useState<VehicleWithTimestamp[]>([]);
     const [loading, setLoading] = useState(true);
     
     const firestore = useFirestore();
@@ -39,19 +44,29 @@ export default function InventoryPage() {
 
         setLoading(true);
         const vehiclesCollection = collection(firestore, "vehicles");
-        const vehiclesUnsubscribe = onSnapshot(vehiclesCollection, 
+        const q = query(vehiclesCollection, orderBy("createdAt", "desc"));
+        const vehiclesUnsubscribe = onSnapshot(q, 
             (snapshot) => {
-                const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+                const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as VehicleWithTimestamp));
                 setVehicles(vehiclesData);
                 setLoading(false);
             },
             async (error) => {
-                const permissionError = new FirestorePermissionError({
-                    path: vehiclesCollection.path,
-                    operation: 'list',
+                // Fallback for collections without 'createdAt' field yet
+                console.warn("Could not query by 'createdAt', fetching without sorting. Add a 'createdAt' field to all vehicle documents.");
+                const fallbackUnsubscribe = onSnapshot(vehiclesCollection, (snapshot) => {
+                    const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as VehicleWithTimestamp));
+                    setVehicles(vehiclesData);
+                    setLoading(false);
+                }, async (fallbackError) => {
+                     const permissionError = new FirestorePermissionError({
+                        path: vehiclesCollection.path,
+                        operation: 'list',
+                    });
+                    errorEmitter.emit('permission-error', permissionError);
+                    setLoading(false);
                 });
-                errorEmitter.emit('permission-error', permissionError);
-                setLoading(false);
+                return fallbackUnsubscribe;
             }
         );
         
@@ -76,7 +91,7 @@ export default function InventoryPage() {
         }
     }
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = (id: string) => {
         if (!firestore || !user) return;
         if (!window.confirm("Are you sure you want to delete this vehicle? This action cannot be undone.")) return;
         
@@ -157,7 +172,7 @@ export default function InventoryPage() {
                     <div>
                         <CardTitle>Current Inventory</CardTitle>
                         <CardDescription>
-                            Manage your existing vehicle listings.
+                            Manage your existing vehicle listings. Newest vehicles are shown first.
                         </CardDescription>
                     </div>
                     <Button onClick={() => router.push('/admin/inventory/add')}>
@@ -192,7 +207,7 @@ export default function InventoryPage() {
                                         </CarouselContent>
                                     </Carousel>
                                     <CardContent className="p-4">
-                                            <div className="flex justify-between items-start">
+                                        <div className="flex justify-between items-start">
                                             <div>
                                                 <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
                                                 <p className="text-sm text-muted-foreground">{vehicle.year}</p>
@@ -200,8 +215,14 @@ export default function InventoryPage() {
                                             <Badge variant={vehicle.status === 'available' ? "secondary" : "destructive"} className="capitalize">
                                                 {vehicle.status || 'N/A'}
                                             </Badge>
-                                            </div>
+                                        </div>
                                         <p className="font-semibold text-lg mt-2">₹{vehicle.price.toLocaleString()}</p>
+                                        {vehicle.createdAt && (
+                                            <div className="flex items-center text-xs text-muted-foreground mt-2">
+                                                <CalendarDays className="mr-2 h-4 w-4" />
+                                                <span>{format(vehicle.createdAt.toDate(), "PPP p")}</span>
+                                            </div>
+                                        )}
                                         <div className="flex justify-end gap-2 mt-4">
                                             <Button variant="outline" size="icon" onClick={() => router.push(`/admin/edit-vehicle/${vehicle.id}`)}>
                                                 <Edit className="h-4 w-4" />
