@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo, useEffect, useRef, useState } from "react";
@@ -33,15 +34,19 @@ export default function GalleryPage() {
       );
       
       // Header fade out on scroll
-      gsap.to(headerControlsRef.current, {
-        autoAlpha: 0,
-        scrollTrigger: {
-          trigger: pageRef.current,
-          start: "top top",
-          end: "+=150",
-          scrub: true,
+      ScrollTrigger.create({
+        trigger: pageRef.current,
+        start: "top top",
+        end: "max",
+        onUpdate: (self) => {
+          if (self.scroll() > 100) { // Start hiding after scrolling 100px
+            gsap.to(headerControlsRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
+          } else {
+            gsap.to(headerControlsRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
+          }
         },
       });
+
 
       gsap.from(titleRef.current, {
         opacity: 0,
