@@ -20,8 +20,9 @@ const socialLinks = [
 ];
 
 const contactDetails = [
-    { icon: MapPin, text: '123 Luxury Drive, Prestige City, 12345', href: 'https://maps.google.com' },
-    { icon: Phone, text: '(123) 456-7890', href: 'tel:1234567890' },
+    { icon: MapPin, text: 'Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill,Rithala, Rohini, Delhi, 110085', href: 'https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085' },
+    { icon: Phone, text: '+91 8595853918', href: 'tel:+918595853918' },
+    { icon: Phone, text: '+91 9871358670', href: 'tel:+919871358670' },
     { icon: Mail, text: 'contact@khanmotor.com', href: 'mailto:contact@khanmotor.com' },
 ]
 
@@ -163,5 +164,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
-    

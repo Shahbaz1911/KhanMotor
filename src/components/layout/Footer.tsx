@@ -15,31 +15,22 @@ export function Footer() {
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-y-10 md:gap-8">
           
-          {/* Logo and About */}
-          <div className="lg:col-span-2 text-center md:text-left order-3 md:order-1 flex flex-col items-center md:items-start">
-             <Link href="/#home" className="mb-4 inline-block">
-              <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
-                alt="Arman Autoxperts Logo"
-                width={150}
-                height={150}
-                className="w-48 h-auto"
-              />
-            </Link>
-          </div>
-
-          <div className="flex flex-col sm:flex-row md:flex-col gap-y-10 md:gap-8 order-1 md:order-2 w-full md:w-auto lg:col-span-2">
+          <div className="flex flex-col sm:flex-row md:flex-col gap-y-10 md:gap-8 order-2 md:order-1 w-full md:w-auto lg:col-span-2">
             {/* Contact Info */}
             <div className="w-full sm:w-1/2 md:w-full text-left">
               <h3 className="text-lg font-bold text-white">Contact Us</h3>
               <ul className="mt-4 space-y-3 text-sm">
                   <li className="flex items-start justify-start gap-3">
                       <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-destructive" />
-                      <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">123 Luxury Drive, Prestige City, 12345</a>
+                      <a href="https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill,Rithala, Rohini, Delhi, 110085</a>
                   </li>
                   <li className="flex items-center justify-start gap-3">
                       <Phone className="h-5 w-5 text-destructive" />
-                      <a href="tel:1234567890" className="hover:text-white transition-colors">(123) 456-7890</a>
+                      <a href="tel:+918595853918" className="hover:text-white transition-colors">+91 8595853918</a>
+                  </li>
+                   <li className="flex items-center justify-start gap-3">
+                      <Phone className="h-5 w-5 text-destructive" />
+                      <a href="tel:+919871358670" className="hover:text-white transition-colors">+91 9871358670</a>
                   </li>
                   <li className="flex items-center justify-start gap-3">
                       <Mail className="h-5 w-5 text-destructive" />
@@ -67,6 +58,18 @@ export function Footer() {
                 ))}
               </div>
             </div>
+          </div>
+            {/* Logo and About */}
+          <div className="lg:col-span-2 text-center md:text-left order-1 md:order-2 flex flex-col items-center md:items-start">
+             <Link href="/#home" className="mb-4 inline-block">
+              <Image
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                alt="Arman Autoxperts Logo"
+                width={150}
+                height={150}
+                className="w-48 h-auto"
+              />
+            </Link>
           </div>
 
         </div>
