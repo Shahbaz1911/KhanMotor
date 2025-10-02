@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, ArrowLeft, Upload, X } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, X, Check } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
@@ -18,6 +18,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { motion } from "framer-motion";
 
 const initialVehicleState = {
     make: "", model: "", year: "", variant: "", color: "", 
@@ -36,6 +37,7 @@ export default function AddVehiclePage() {
     const [vehicleImageFiles, setVehicleImageFiles] = useState<File[]>([]);
     const [vehicleImageUrls, setVehicleImageUrls] = useState<string[]>([]);
     const [isVehicleUploading, setIsVehicleUploading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -94,10 +96,10 @@ export default function AddVehiclePage() {
 
         setIsVehicleUploading(true);
         const uploadedUrls = await Promise.all(vehicleImageFiles.map(handleFileUpload));
-        setIsVehicleUploading(false);
         
         if (uploadedUrls.some(url => url === null)) {
             toast({ title: "Image upload failed", description: "One or more images failed to upload. Could not add vehicle.", variant: "destructive" });
+            setIsVehicleUploading(false);
             return;
         }
         
@@ -116,10 +118,10 @@ export default function AddVehiclePage() {
         addDoc(vehiclesCollection, vehicleData)
             .then(() => {
                 toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
-                setNewVehicle(initialVehicleState);
-                setVehicleImageFiles([]);
-                setVehicleImageUrls([]);
-                router.push('/admin/inventory');
+                setIsSuccess(true);
+                setTimeout(() => {
+                    router.push('/admin/inventory');
+                }, 2000); 
             })
             .catch(async (serverError) => {
                 const permissionError = new FirestorePermissionError({
@@ -128,6 +130,9 @@ export default function AddVehiclePage() {
                     requestResourceData: vehicleData,
                 });
                 errorEmitter.emit('permission-error', permissionError);
+            })
+            .finally(() => {
+                setIsVehicleUploading(false);
             });
     }
 
@@ -151,7 +156,23 @@ export default function AddVehiclePage() {
                 </div>
             </header>
             <main className="flex-grow p-4 md:p-8">
-                 <div className="mx-auto max-w-3xl">
+                 <div className="mx-auto max-w-3xl relative">
+                    {isSuccess && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg"
+                        >
+                            <motion.div
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1, transition: { type: "spring", stiffness: 260, damping: 20 } }}
+                                className="flex h-24 w-24 items-center justify-center rounded-full bg-green-500"
+                            >
+                                <Check className="h-16 w-16 text-white" />
+                            </motion.div>
+                            <p className="mt-4 text-lg font-semibold">Vehicle Added Successfully!</p>
+                        </motion.div>
+                    )}
                      <Card className="shadow-lg">
                         <CardHeader>
                             <CardTitle>Add New Vehicle</CardTitle>
