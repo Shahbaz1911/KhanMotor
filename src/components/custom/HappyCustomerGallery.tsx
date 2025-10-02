@@ -12,6 +12,7 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface GalleryItem {
   id: string;
@@ -112,10 +113,13 @@ export function HappyCustomerGallery() {
             </div>
         ) : (
             <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.length > 0 ? galleryItems.map((item) => (
+            {galleryItems.length > 0 ? galleryItems.map((item, index) => (
                 <div
                 key={item.id}
-                className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
+                className={cn(
+                    "group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
+                    index % 2 === 0 ? "hover:-rotate-2" : "hover:rotate-2"
+                )}
                 >
                 <Image
                     src={item.imageUrl}

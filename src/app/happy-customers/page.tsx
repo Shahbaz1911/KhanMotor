@@ -16,6 +16,7 @@ import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface GalleryItem {
   id: string;
@@ -170,8 +171,11 @@ export default function HappyCustomersPage() {
                 </div>
             ) : (
                 <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {galleryItems.length > 0 ? galleryItems.map((item) => (
-                        <Card key={item.id} className="group relative block overflow-hidden rounded-lg shadow-lg border-0">
+                    {galleryItems.length > 0 ? galleryItems.map((item, index) => (
+                        <Card key={item.id} className={cn(
+                          "group relative block overflow-hidden rounded-lg shadow-lg border-0 transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
+                          index % 2 === 0 ? "hover:-rotate-2" : "hover:rotate-2"
+                        )}>
                             <CardContent className="p-0">
                                 <div className="h-[400px] w-full">
                                 <Image
