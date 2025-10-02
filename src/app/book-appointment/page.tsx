@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function BookAppointmentPage() {
+  const pageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -34,23 +35,27 @@ export default function BookAppointmentPage() {
         delay: 0.2,
       });
 
-      // Header fade-in on load, then hide on scroll
-      const showAnim = gsap.from(headerRef.current, {
-        autoAlpha: 0,
-        yPercent: -100,
-        paused: true,
-        duration: 0.2,
-      }).progress(1);
+      // Header fade-in on load
+      gsap.fromTo(headerRef.current, 
+        { autoAlpha: 0, y: -20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
+      );
 
+      // Header fade out on scroll, reappear only at top
       ScrollTrigger.create({
-        start: "top top-=-100", // Start hiding after scrolling 100px
-        end: 99999,
+        trigger: pageRef.current,
+        start: 'top top',
+        end: 'max',
         onUpdate: (self) => {
-          self.direction === -1 ? showAnim.play() : showAnim.reverse();
+          if (self.scroll() > 100) {
+            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: 'power2.out' });
+          } else {
+            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.in' });
+          }
         },
       });
 
-    }, cardRef);
+    }, pageRef);
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -59,7 +64,7 @@ export default function BookAppointmentPage() {
   }, []);
 
   return (
-    <div className="bg-background">
+    <div ref={pageRef} className="bg-background">
         <div ref={headerRef} className="fixed top-4 w-full px-4 z-50">
           <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -117,5 +122,3 @@ export default function BookAppointmentPage() {
     </div>
   );
 }
-
-    
