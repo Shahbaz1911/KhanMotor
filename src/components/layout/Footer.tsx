@@ -70,7 +70,7 @@ export function Footer() {
               />
             </Link>
           </div>
-          <p className="text-sm text-gray-400 text-center">&copy; {new Date().getFullYear()} Arman Autoxperts. All Rights Reserved.</p>
+          <p className="text-sm text-gray-400 text-center">&copy; {new Date().getFullYear()} ArmanAutoXperts. All Rights Reserved.</p>
           <div className="mt-4 flex justify-center gap-4 text-sm">
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Privacy Policy</Link>
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Terms of Service</Link>
