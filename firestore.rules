@@ -1,0 +1,68 @@
+/**
+ * @file Firebase Security Rules for Firestore.
+ * @corePhilosophy This ruleset provides open read access to vehicle and gallery data, while strictly enforcing user-ownership for user profiles.
+ * @dataStructure The database contains three top-level collections: `/users/{userId}`, `/vehicles/{vehicleId}`, and `/gallery/{galleryItemId}`.
+ * @keySecurityDecisions User profiles are private and only accessible to the owning user. Vehicle and gallery data is publicly readable, but write access is not granted in this prototype.
+ * @denormalization None.
+ * @structuralSegregation The app uses top level collections to store different types of data.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Controls access to user profile documents.
+     * @path /users/{userId}
+     * @allow (create) - Authenticated user creates their profile with matching UID.
+     * @allow (get, update, delete) - Authenticated user accesses their own profile data.
+     * @deny (create) - Unauthenticated user attempts to create a profile.
+     * @deny (get, update, delete) - Authenticated user attempts to access another user's profile.
+     * @principle Enforces document ownership for user profiles.
+     */
+    match /users/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.uid == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.uid == resource.data.uid;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to vehicle documents.
+     * @path /vehicles/{vehicleId}
+     * @allow (get, list) - Anyone can read vehicle data.
+     * @deny (create, update, delete) - No write operations allowed in this prototype.
+     * @principle Provides public read access with no write access.
+     */
+    match /vehicles/{vehicleId} {
+      allow get, list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Controls access to gallery items.
+     * @path /gallery/{galleryItemId}
+     * @allow (get, list) - Anyone can read gallery items.
+     * @deny (create, update, delete) - No write operations allowed in this prototype.
+     * @principle Provides public read access with no write access.
+     */
+    match /gallery/{galleryItemId} {
+      allow get, list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
