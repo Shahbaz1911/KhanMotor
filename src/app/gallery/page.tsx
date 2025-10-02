@@ -22,7 +22,7 @@ import Link from "next/link";
 export default function GalleryPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const headerControlsRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const router = useRouter();
 
@@ -67,7 +67,7 @@ export default function GalleryPage() {
 
     const ctx = gsap.context(() => {
       // Header fade in
-       gsap.fromTo(headerControlsRef.current, 
+       gsap.fromTo(headerRef.current, 
         { autoAlpha: 0, y: -20 },
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
@@ -79,9 +79,9 @@ export default function GalleryPage() {
         end: "max",
         onUpdate: (self) => {
           if (self.scroll() > 100) { // Start hiding after scrolling 100px
-            gsap.to(headerControlsRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
+            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
           } else {
-            gsap.to(headerControlsRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
+            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
           }
         },
       });
@@ -109,7 +109,7 @@ export default function GalleryPage() {
   return (
     <>
         <div ref={pageRef}>
-          <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
+          <div ref={headerRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
@@ -183,5 +183,3 @@ export default function GalleryPage() {
     </>
   );
 }
-
-    
