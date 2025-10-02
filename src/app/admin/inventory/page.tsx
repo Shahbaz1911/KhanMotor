@@ -169,21 +169,23 @@ export default function InventoryPage() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {vehicles.map(vehicle => (
                                 <Card key={vehicle.id} className="overflow-hidden">
-                                    <div className="relative h-48 w-full">
-                                        <Carousel>
-                                            <CarouselContent>
-                                            {vehicle.imageUrls?.length > 0 ? vehicle.imageUrls.map((url, i) => (
-                                                <CarouselItem key={i}>
+                                    <Carousel>
+                                        <CarouselContent>
+                                        {vehicle.imageUrls?.length > 0 ? vehicle.imageUrls.map((url, i) => (
+                                            <CarouselItem key={i}>
+                                                <div className="relative aspect-video w-full">
                                                     <Image src={url} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
-                                                </CarouselItem>
-                                            )) : (
-                                                <CarouselItem>
+                                                </div>
+                                            </CarouselItem>
+                                        )) : (
+                                            <CarouselItem>
+                                                <div className="relative aspect-video w-full">
                                                     <Image src="https://picsum.photos/seed/placeholder/600/400" alt="Placeholder" fill objectFit="cover" />
-                                                </CarouselItem>
-                                            )}
-                                            </CarouselContent>
-                                        </Carousel>
-                                    </div>
+                                                </div>
+                                            </CarouselItem>
+                                        )}
+                                        </CarouselContent>
+                                    </Carousel>
                                     <CardContent className="p-4">
                                             <div className="flex justify-between items-start">
                                             <div>
