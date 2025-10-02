@@ -30,26 +30,22 @@ export default function BookAppointmentPage() {
         y: 50,
         duration: 0.8,
         ease: "power3.out",
-        delay: 0.2, // Delay to let header animate in first
+        delay: 0.2,
       });
 
-      // Header fade-in on load
-      gsap.fromTo(headerRef.current, 
-        { autoAlpha: 0, y: -20 },
-        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power3.out" }
-      );
+      // Header fade-in on load, then hide on scroll
+      const showAnim = gsap.from(headerRef.current, {
+        autoAlpha: 0,
+        yPercent: -100,
+        paused: true,
+        duration: 0.2,
+      }).progress(1);
 
-      // Header hide/show on scroll
       ScrollTrigger.create({
-        trigger: "body",
-        start: "top top",
-        end: "max",
+        start: "top top-=-100", // Start hiding after scrolling 100px
+        end: 99999,
         onUpdate: (self) => {
-          if (self.scroll() > 50) {
-            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
-          } else {
-            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
-          }
+          self.direction === -1 ? showAnim.play() : showAnim.reverse();
         },
       });
 
