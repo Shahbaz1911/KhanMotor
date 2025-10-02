@@ -179,7 +179,7 @@ export default function ConsolidatedPage() {
                 variant="outline" 
                 size="lg" 
                 className="group gsap-reveal bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive" 
-                onClick={() => router.push('/#contact')}
+                onClick={() => router.push('/contact')}
               >
                 Meet Our Team
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />

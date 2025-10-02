@@ -28,7 +28,7 @@ export default function ContactPage() {
         <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "power3.out" }}
+            transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
             className="flex flex-col justify-center"
         >
           <h1 className="text-4xl lg:text-5xl font-black mb-4">Connect With Us</h1>
@@ -74,7 +74,7 @@ export default function ContactPage() {
         <motion.div
              initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "power3.out" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
         >
              <ContactForm />
         </motion.div>
