@@ -67,7 +67,7 @@ export default function AdminDashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <form className="grid gap-6">
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="make">Make</Label>
                                     <Input id="make" placeholder="e.g., Audi" />
@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
                                     <Input id="year" type="number" placeholder="e.g., 2023" />
                                 </div>
                             </div>
-                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="price">Price ($)</Label>
                                     <Input id="price" type="number" placeholder="e.g., 180000" />
@@ -116,8 +116,8 @@ export default function AdminDashboardPage() {
                                     <Label htmlFor="car-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
                                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                             <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
-                                            <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 5MB)</p>
+                                            <p className="mb-2 text-sm text-muted-foreground text-center"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p className="text-xs text-muted-foreground text-center">PNG, JPG, or WEBP (MAX. 5MB)</p>
                                         </div>
                                         <Input id="car-image-upload" type="file" className="hidden" />
                                     </Label>
@@ -201,8 +201,8 @@ export default function AdminDashboardPage() {
                                 <Label htmlFor="customer-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
-                                        <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 5MB)</p>
+                                        <p className="mb-2 text-sm text-muted-foreground text-center"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                        <p className="text-xs text-muted-foreground text-center">PNG, JPG, or WEBP (MAX. 5MB)</p>
                                     </div>
                                     <Input id="customer-image-upload" type="file" className="hidden" />
                                 </Label>
@@ -254,7 +254,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 dark:bg-black">
       <header className="bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 sticky top-0 z-30">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Admin Dashboard</h1>
             <div className="flex items-center gap-4">
               <DropdownMenu>
@@ -295,14 +295,14 @@ export default function AdminDashboardPage() {
         </div>
       </header>
       <main className="flex-grow p-4 md:p-8">
-        <div className="mx-auto grid max-w-6xl gap-8">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:px-8">
             <Card className="mb-4">
                 <CardContent className="p-4">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                          <Button
                             variant={activeSection === 'inventory' ? 'default' : 'outline'}
                             onClick={() => setActiveSection('inventory')}
-                            className="flex-1"
+                            className="flex-1 w-full"
                         >
                             <Car className="mr-2 h-4 w-4" />
                             Manage Inventory
@@ -310,7 +310,7 @@ export default function AdminDashboardPage() {
                          <Button
                             variant={activeSection === 'customers' ? 'default' : 'outline'}
                             onClick={() => setActiveSection('customers')}
-                            className="flex-1"
+                            className="flex-1 w-full"
                         >
                             <Users className="mr-2 h-4 w-4" />
                             Manage Customer Gallery
