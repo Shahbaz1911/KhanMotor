@@ -55,9 +55,10 @@
       "type": "object",
       "properties": {
         "caption": { "type": "string" },
-        "imageUrl": { "type": "string", "format": "uri" }
+        "imageUrl": { "type": "string", "format": "uri" },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["caption", "imageUrl"]
+      "required": ["caption", "imageUrl", "createdAt"]
     }
   },
   "auth": {
@@ -84,3 +85,5 @@
     "rules": "rules/storage.rules"
   }
 }
+
+    

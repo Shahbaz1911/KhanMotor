@@ -9,22 +9,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle, CalendarDays } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
-import { collection, onSnapshot, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, Timestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { format } from "date-fns";
 
 
 interface GalleryItem {
     id: string;
     imageUrl: string;
     caption: string;
+    createdAt?: Timestamp;
 }
 
 export default function AdminDashboardPage() {
@@ -53,7 +55,8 @@ export default function AdminDashboardPage() {
     if (!firestore || !user) return;
     setLoadingGallery(true);
     const galleryCollection = collection(firestore, "gallery");
-    const galleryUnsubscribe = onSnapshot(galleryCollection, 
+    const q = query(galleryCollection, orderBy("createdAt", "desc"));
+    const galleryUnsubscribe = onSnapshot(q, 
         (snapshot) => {
             const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
             setGalleryItems(galleryData);
@@ -165,7 +168,7 @@ export default function AdminDashboardPage() {
         });
   }
 
-  const handleDeleteGalleryItem = async (id: string) => {
+  const handleDeleteGalleryItem = (id: string) => {
     if (!firestore || !user) return;
     if (!window.confirm("Are you sure you want to delete this gallery item? This action cannot be undone.")) return;
     
@@ -174,7 +177,7 @@ export default function AdminDashboardPage() {
         .then(() => {
              toast({ title: "Item Deleted", description: "The gallery item has been successfully removed." });
         })
-        .catch(async (serverError) => {
+        .catch((serverError) => {
             const permissionError = new FirestorePermissionError({
                 path: docRef.path,
                 operation: 'delete',
@@ -296,6 +299,12 @@ export default function AdminDashboardPage() {
                                     </div>
                                     <CardContent className="p-4">
                                         <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
+                                        {item.createdAt && (
+                                            <div className="flex items-center text-xs text-muted-foreground mt-2">
+                                                <CalendarDays className="mr-2 h-4 w-4" />
+                                                <span>{format(item.createdAt.toDate(), "PPP p")}</span>
+                                            </div>
+                                        )}
                                         <div className="flex justify-end gap-2 mt-4">
                                             <Button variant="outline" size="icon" onClick={() => openGalleryEditDialog(item)}>
                                                 <Edit className="h-4 w-4" />
