@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,6 +23,7 @@ import type { Vehicle } from "@/types";
 import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 
 interface GalleryItem {
@@ -48,8 +50,8 @@ export default function AdminDashboardPage() {
   // State for vehicle form
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [newVehicle, setNewVehicle] = useState(initialVehicleState);
-  const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
-  const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
+  const [vehicleImageFiles, setVehicleImageFiles] = useState<File[]>([]);
+  const [vehicleImageUrls, setVehicleImageUrls] = useState<string[]>([]);
   const [isVehicleUploading, setIsVehicleUploading] = useState(false);
 
   // State for customer gallery form
@@ -120,14 +122,27 @@ export default function AdminDashboardPage() {
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vehicle' | 'customer' | 'edit-gallery') => {
+  const handleVehicleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (vehicleImageFiles.length + files.length > 8) {
+      toast({ title: "Too many files", description: "You can upload a maximum of 8 images.", variant: "destructive" });
+      return;
+    }
+    setVehicleImageFiles(prev => [...prev, ...files]);
+    const newUrls = files.map(file => URL.createObjectURL(file));
+    setVehicleImageUrls(prev => [...prev, ...newUrls]);
+  };
+  
+  const removeVehicleImage = (index: number) => {
+    setVehicleImageFiles(prev => prev.filter((_, i) => i !== index));
+    setVehicleImageUrls(prev => prev.filter((_, i) => i !== index));
+  };
+
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'customer' | 'edit-gallery') => {
     const file = e.target.files?.[0] || null;
 
-    if (type === 'vehicle') {
-        setVehicleImageFile(file);
-        if (file) setVehicleImageUrl(URL.createObjectURL(file));
-        else setVehicleImageUrl(null);
-    } else if (type === 'customer') {
+    if (type === 'customer') {
         setCustomerImageFile(file);
         if(file) setCustomerImageUrl(URL.createObjectURL(file));
         else setCustomerImageUrl(null)
@@ -137,16 +152,12 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleFileUpload = async (type: 'vehicle' | 'customer') => {
-    const file = type === 'vehicle' ? vehicleImageFile : customerImageFile;
-    const setIsUploading = type === 'vehicle' ? setIsVehicleUploading : setIsCustomerUploading;
-
+  const handleFileUpload = async (file: File) => {
     if (!file) {
       toast({ title: "No file selected", description: "Please select a file to upload.", variant: "destructive" });
       return null;
     }
 
-    setIsUploading(true);
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -154,7 +165,6 @@ export default function AdminDashboardPage() {
       const result = await uploadToCloudinary(formData);
 
       if (result.success && result.url) {
-        toast({ title: "Upload Successful!", description: "Image is ready to be saved." });
         return result.url;
       } else {
         throw new Error(result.error || "Cloudinary upload failed.");
@@ -164,23 +174,23 @@ export default function AdminDashboardPage() {
       const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
       toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
       return null;
-    } finally {
-      setIsUploading(false);
     }
   };
 
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore || !user) return;
-    if (!vehicleImageFile) {
-        toast({ title: "Image required", description: "Please upload a vehicle image.", variant: "destructive" });
+    if (vehicleImageFiles.length === 0) {
+        toast({ title: "Image required", description: "Please upload at least one vehicle image.", variant: "destructive" });
         return;
     }
 
-    const uploadedImageUrl = await handleFileUpload('vehicle');
+    setIsVehicleUploading(true);
+    const uploadedUrls = await Promise.all(vehicleImageFiles.map(handleFileUpload));
+    setIsVehicleUploading(false);
     
-    if (!uploadedImageUrl) {
-        toast({ title: "Image upload failed", description: "Could not add vehicle without a valid image URL.", variant: "destructive" });
+    if (uploadedUrls.some(url => url === null)) {
+        toast({ title: "Image upload failed", description: "One or more images failed to upload. Could not add vehicle.", variant: "destructive" });
         return;
     }
     
@@ -190,7 +200,7 @@ export default function AdminDashboardPage() {
         price: Number(newVehicle.price),
         mileage: Number(newVehicle.mileage),
         features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
-        imageUrl: uploadedImageUrl,
+        imageUrls: uploadedUrls as string[],
         aiHint: 'new vehicle',
         createdAt: serverTimestamp(),
     };
@@ -200,8 +210,8 @@ export default function AdminDashboardPage() {
         .then(() => {
             toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
             setNewVehicle(initialVehicleState);
-            setVehicleImageFile(null);
-            setVehicleImageUrl(null);
+            setVehicleImageFiles([]);
+            setVehicleImageUrls([]);
         })
         .catch(async (serverError) => {
             const permissionError = new FirestorePermissionError({
@@ -215,16 +225,16 @@ export default function AdminDashboardPage() {
 
   const handleAddGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore || !user) return;
-     if (!customerImageFile) {
+    if (!firestore || !user || !customerImageFile) {
         toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
         return;
     }
-
-    const uploadedImageUrl = await handleFileUpload('customer');
+    setIsCustomerUploading(true);
+    const uploadedImageUrl = await handleFileUpload(customerImageFile);
+    setIsCustomerUploading(false);
     
     if (!uploadedImageUrl) {
-        toast({ title: "Image upload failed", description: "Could not add gallery item without a valid image URL.", variant: "destructive" });
+        toast({ title: "Image upload failed", description: "Could not add gallery item.", variant: "destructive" });
         return;
     }
 
@@ -258,7 +268,9 @@ export default function AdminDashboardPage() {
 
     let uploadedImageUrl = editingGalleryItem.imageUrl;
     if (customerImageFile) { // Check if a new file was selected for the gallery item
-        const newUrl = await handleFileUpload('customer');
+        setIsCustomerUploading(true);
+        const newUrl = await handleFileUpload(customerImageFile);
+        setIsCustomerUploading(false);
         if (newUrl) {
             uploadedImageUrl = newUrl;
         } else {
@@ -438,23 +450,33 @@ export default function AdminDashboardPage() {
                             </div>
                             
                            <div className="space-y-2">
-                                <Label>Car Image</Label>
-                                <div className="flex items-center gap-4">
-                                    {vehicleImageUrl && !isVehicleUploading && <Image src={vehicleImageUrl} alt="Uploaded vehicle" width={120} height={90} className="rounded-lg object-cover" />}
-                                    {isVehicleUploading && (
-                                        <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
-                                            <Loader2 className="h-5 w-5 animate-spin" />
-                                        </div>
-                                    )}
-                                    <div className="flex-1 space-y-2">
-                                        <Label htmlFor="car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                            <Upload className="h-5 w-5" />
-                                            <span>{vehicleImageFile ? "Change file" : "Click to upload"}</span>
-                                        </Label>
-                                        <Input id="car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'vehicle')} className="sr-only" />
-                                        <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB).</p>
+                                <Label>Car Images (up to 8)</Label>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                  {vehicleImageUrls.map((url, index) => (
+                                    <div key={index} className="relative group">
+                                      <Image src={url} alt={`Uploaded vehicle ${index + 1}`} width={120} height={90} className="w-full h-auto aspect-video rounded-lg object-cover" />
+                                      <Button type="button" size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100" onClick={() => removeVehicleImage(index)}>
+                                        <X className="h-4 w-4" />
+                                      </Button>
                                     </div>
+                                  ))}
                                 </div>
+                                {isVehicleUploading && (
+                                    <div className="flex items-center gap-2 text-muted-foreground">
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <span>Uploading images... Please wait.</span>
+                                    </div>
+                                )}
+                                {vehicleImageFiles.length < 8 && (
+                                  <div className="flex-1 space-y-2">
+                                      <Label htmlFor="car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                          <Upload className="h-5 w-5" />
+                                          <span>{vehicleImageFiles.length > 0 ? "Add more files" : "Click to upload"}</span>
+                                      </Label>
+                                      <Input id="car-image-upload" type="file" accept="image/*" multiple onChange={handleVehicleFilesChange} className="sr-only" disabled={isVehicleUploading} />
+                                      <p className="text-xs text-muted-foreground">You can upload up to {8 - vehicleImageFiles.length} more images.</p>
+                                  </div>
+                                )}
                             </div>
                             
                             <div className="space-y-2">
@@ -493,7 +515,19 @@ export default function AdminDashboardPage() {
                                 {vehicles.map(vehicle => (
                                     <Card key={vehicle.id} className="overflow-hidden">
                                         <div className="relative h-48 w-full">
-                                            <Image src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
+                                            <Carousel>
+                                              <CarouselContent>
+                                                {vehicle.imageUrls?.length > 0 ? vehicle.imageUrls.map((url, i) => (
+                                                  <CarouselItem key={i}>
+                                                      <Image src={url} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
+                                                  </CarouselItem>
+                                                )) : (
+                                                   <CarouselItem>
+                                                      <Image src="https://picsum.photos/seed/placeholder/600/400" alt="Placeholder" fill objectFit="cover" />
+                                                  </CarouselItem>
+                                                )}
+                                              </CarouselContent>
+                                            </Carousel>
                                         </div>
                                         <CardContent className="p-4">
                                              <div className="flex justify-between items-start">

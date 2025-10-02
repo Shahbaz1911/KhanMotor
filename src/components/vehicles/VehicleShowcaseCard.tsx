@@ -4,13 +4,14 @@
 import Image from "next/image";
 import type { Vehicle } from "@/types";
 import { Button } from "../ui/button";
-import { ArrowRight, CheckCircle, Car, Gauge, Fuel, Cog } from "lucide-react";
+import { ArrowRight, Car, Gauge, Fuel, Cog } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel";
 
 
 interface VehicleShowcaseCardProps {
@@ -63,22 +64,46 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
       <div 
         ref={imageRef} 
         className={cn(
-          "relative h-80 w-full overflow-hidden rounded-lg shadow-xl md:h-[450px]",
+          "relative w-full overflow-hidden rounded-lg shadow-xl",
           align === 'right' && "md:order-last"
         )}
       >
-        <Image
-          src={vehicle.imageUrl}
-          alt={`${vehicle.make} ${vehicle.model}`}
-          fill
-          className="rounded-lg object-cover"
-          data-ai-hint={vehicle.aiHint}
-        />
+        <Carousel className="w-full">
+            <CarouselContent>
+                {vehicle.imageUrls?.length > 0 ? (
+                    vehicle.imageUrls.map((url, index) => (
+                        <CarouselItem key={index}>
+                             <div className="relative h-80 w-full md:h-[450px]">
+                                <Image
+                                    src={url}
+                                    alt={`${vehicle.make} ${vehicle.model} image ${index + 1}`}
+                                    fill
+                                    className="rounded-lg object-cover"
+                                    data-ai-hint={vehicle.aiHint}
+                                />
+                            </div>
+                        </CarouselItem>
+                    ))
+                ) : (
+                    <CarouselItem>
+                        <div className="relative h-80 w-full md:h-[450px]">
+                            <Image
+                                src="https://picsum.photos/seed/placeholder/1080/810"
+                                alt="Placeholder image"
+                                fill
+                                className="rounded-lg object-cover"
+                            />
+                        </div>
+                     </CarouselItem>
+                )}
+            </CarouselContent>
+            {vehicle.imageUrls && vehicle.imageUrls.length > 1 && <CarouselDots />}
+        </Carousel>
          {vehicle.status && (
              <Badge 
                 variant={vehicle.status === 'available' ? 'secondary' : 'destructive'} 
                 className={cn(
-                    "absolute top-4 right-4 capitalize",
+                    "absolute top-4 right-4 z-10 capitalize",
                     vehicle.status === 'available' && "bg-green-600/90 text-white border-green-700"
                 )}
             >
@@ -98,7 +123,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         </p>
 
         <div className="gsap-reveal mt-6 grid grid-cols-2 gap-4 text-sm">
-            {typeof vehicle.mileage === 'number' && (
+            {vehicle.mileage !== undefined && (
               <div className="flex items-center gap-2">
                   <Gauge className="h-5 w-5 text-muted-foreground" />
                   <span>{vehicle.mileage.toLocaleString()} km</span>

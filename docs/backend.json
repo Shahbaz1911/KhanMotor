@@ -44,10 +44,10 @@
         "status": { "type": "string", "enum": ["available", "sold"] },
         "description": { "type": "string" },
         "features": { "type": "array", "items": { "type": "string" } },
-        "imageUrl": { "type": "string", "format": "uri" },
+        "imageUrls": { "type": "array", "items": { "type": "string", "format": "uri" }, "maxItems": 8 },
         "aiHint": { "type": "string" }
       },
-      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrl", "variant", "color", "priceType", "mileage", "fuelType", "transmission", "ownership"]
+      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrls", "variant", "color", "priceType", "mileage", "fuelType", "transmission", "ownership"]
     },
     "galleryItem": {
       "title": "Gallery Item",

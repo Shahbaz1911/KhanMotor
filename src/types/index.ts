@@ -15,7 +15,7 @@ export interface Vehicle {
   transmission: 'manual' | 'automatic';
   ownership: 'first' | 'second' | 'third' | 'fourth';
   status: 'available' | 'sold';
-  imageUrl: string;
+  imageUrls: string[];
   description: string;
   features: string[];
   aiHint: string;

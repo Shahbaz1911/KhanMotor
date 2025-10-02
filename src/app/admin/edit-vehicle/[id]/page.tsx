@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, ArrowLeft, Upload } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
@@ -33,8 +34,8 @@ export default function EditVehiclePage() {
     const [vehicle, setVehicle] = useState<EditableVehicle | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isUploading, setIsUploading] = useState(false);
-    const [imageFile, setImageFile] = useState<File | null>(null);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [imageUrls, setImageUrls] = useState<string[]>([]);
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -56,7 +57,7 @@ export default function EditVehiclePage() {
                     ...data,
                     features: Array.isArray(data.features) ? data.features.join('\n') : '',
                 });
-                setImageUrl(data.imageUrl);
+                setImageUrls(data.imageUrls || []);
             } else {
                 toast({
                     title: "Error",
@@ -71,40 +72,51 @@ export default function EditVehiclePage() {
         fetchVehicle();
     }, [firestore, id, router, toast]);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] || null;
-        setImageFile(file);
-        if (file) {
-            const tempUrl = URL.createObjectURL(file);
-            setImageUrl(tempUrl);
+    const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        if (imageUrls.length + imageFiles.length + files.length > 8) {
+          toast({ title: "Too many files", description: "You can upload a maximum of 8 images.", variant: "destructive" });
+          return;
         }
+        setImageFiles(prev => [...prev, ...files]);
+        const newUrls = files.map(file => URL.createObjectURL(file));
+        setImageUrls(prev => [...prev, ...newUrls]);
+    };
+  
+    const removeImage = (index: number, isExisting: boolean) => {
+      if (isExisting) {
+        setImageUrls(prev => prev.filter((_, i) => i !== index));
+      } else {
+        const fileIndex = index - (vehicle?.imageUrls?.length || 0);
+        setImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
+        setImageUrls(prev => prev.filter((_, i) => i !== index));
+      }
     };
     
     const handleUpdateVehicle = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!firestore || !vehicle || !user) return;
 
-        let uploadedImageUrl = vehicle.imageUrl;
-        if (imageFile) {
+        let finalImageUrls = imageUrls.slice(0, vehicle.imageUrls?.length || 0);
+
+        if (imageFiles.length > 0) {
             setIsUploading(true);
-            try {
-                const formData = new FormData();
-                formData.append('file', imageFile);
-                const result = await uploadToCloudinary(formData);
-                if (result.success && result.url) {
-                    uploadedImageUrl = result.url;
-                } else {
-                    throw new Error(result.error || "Cloudinary upload failed.");
-                }
-            } catch (error) {
-                console.error("Upload failed:", error);
-                const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
-                toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+            const uploadedUrls = await Promise.all(
+                imageFiles.map(async (file) => {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    const result = await uploadToCloudinary(formData);
+                    return result.url;
+                })
+            );
+
+            if (uploadedUrls.some(url => !url)) {
+                toast({ title: "Image upload failed", description: "One or more new images failed to upload.", variant: "destructive" });
                 setIsUploading(false);
                 return;
-            } finally {
-                setIsUploading(false);
             }
+            finalImageUrls = [...finalImageUrls, ...uploadedUrls.filter(Boolean) as string[]];
+            setIsUploading(false);
         }
         
         const vehicleData = {
@@ -113,7 +125,7 @@ export default function EditVehiclePage() {
             price: Number(vehicle.price),
             mileage: Number(vehicle.mileage),
             features: typeof vehicle.features === 'string' ? vehicle.features.split('\n').filter(f => f.trim() !== "") : [],
-            imageUrl: uploadedImageUrl,
+            imageUrls: finalImageUrls,
         };
         
         const vehicleRef = doc(firestore, "vehicles", vehicle.id);
@@ -269,23 +281,33 @@ export default function EditVehiclePage() {
                                     <Textarea id="features" value={vehicle.features} onChange={e => setVehicle({...vehicle, features: e.target.value})} required/>
                                 </div>
                                <div className="space-y-2">
-                                    <Label>Car Image</Label>
-                                    <div className="flex items-center gap-4">
-                                        {imageUrl && !isUploading && <Image src={imageUrl} alt="Current vehicle" width={120} height={90} className="rounded-lg object-cover" />}
-                                        {isUploading && (
-                                            <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
-                                                <Loader2 className="h-5 w-5 animate-spin" />
-                                            </div>
-                                        )}
-                                        <div className="flex-1 space-y-2">
-                                            <Label htmlFor="edit-car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                                <Upload className="h-5 w-5" />
-                                                <span>Replace file</span>
-                                            </Label>
-                                            <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={handleFileChange} className="sr-only" />
-                                            <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
+                                    <Label>Car Images (up to 8)</Label>
+                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                      {imageUrls.map((url, index) => (
+                                        <div key={index} className="relative group">
+                                          <Image src={url} alt={`Uploaded vehicle ${index + 1}`} width={120} height={90} className="w-full h-auto aspect-video rounded-lg object-cover" />
+                                          <Button type="button" size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100" onClick={() => removeImage(index, index < (vehicle.imageUrls?.length || 0))}>
+                                            <X className="h-4 w-4" />
+                                          </Button>
                                         </div>
+                                      ))}
                                     </div>
+                                    {isUploading && (
+                                        <div className="flex items-center gap-2 text-muted-foreground">
+                                            <Loader2 className="h-5 w-5 animate-spin" />
+                                            <span>Uploading images... Please wait.</span>
+                                        </div>
+                                    )}
+                                    {imageUrls.length < 8 && (
+                                      <div className="flex-1 space-y-2">
+                                          <Label htmlFor="edit-car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                              <Upload className="h-5 w-5" />
+                                              <span>{imageUrls.length > 0 ? "Add more files" : "Click to upload"}</span>
+                                          </Label>
+                                          <Input id="edit-car-image-upload" type="file" accept="image/*" multiple onChange={handleFilesChange} className="sr-only" disabled={isUploading} />
+                                          <p className="text-xs text-muted-foreground">You can upload up to {8 - imageUrls.length} more images.</p>
+                                      </div>
+                                    )}
                                 </div>
                                 <div className="flex justify-end gap-2">
                                      <Button type="button" variant="secondary" onClick={() => router.push('/admin/dashboard')}>Cancel</Button>
