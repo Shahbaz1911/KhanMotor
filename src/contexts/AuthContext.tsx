@@ -5,10 +5,8 @@ import type { ReactNode } from 'react';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { useFirebaseApp } from '@/firebase';
+import { useFirebase } from '@/firebase/provider'; // Updated import
 
-// This is the user object we'll use throughout the app.
-// It can be a simplified version of the Firebase user.
 interface AppUser {
   uid: string;
   email: string | null;
@@ -26,7 +24,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { app } = useFirebaseApp();
+  const { app } = useFirebase(); // Use useFirebase from provider
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -69,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }

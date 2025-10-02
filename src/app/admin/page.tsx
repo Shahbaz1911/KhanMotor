@@ -42,14 +42,14 @@ export default function AdminLoginPage() {
       });
       router.push("/admin/dashboard");
     } catch (err: any) {
-       console.error(err);
        let errorMessage = "An unknown error occurred.";
+       // Check for Firebase-specific error codes
        if (err.code) {
            switch (err.code) {
                case 'auth/user-not-found':
                case 'auth/wrong-password':
                case 'auth/invalid-credential':
-                   errorMessage = 'Invalid email or password. Please try again.';
+                   errorMessage = 'Invalid email or password. Please check your credentials or create an account in the Firebase console.';
                    break;
                case 'auth/invalid-email':
                    errorMessage = 'Please enter a valid email address.';
@@ -126,4 +126,3 @@ export default function AdminLoginPage() {
     </div>
   );
 }
-
