@@ -168,14 +168,14 @@ export default function InventoryPage() {
       <main className="flex-grow p-4 md:p-8">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:px-8">
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <CardTitle>Current Inventory</CardTitle>
                         <CardDescription>
                             Manage your existing vehicle listings. Newest vehicles are shown first.
                         </CardDescription>
                     </div>
-                    <Button onClick={() => router.push('/admin/inventory/add')}>
+                    <Button onClick={() => router.push('/admin/inventory/add')} className="w-full sm:w-auto">
                         <PlusCircle className="mr-2 h-4 w-4" />
                         Add New Vehicle
                     </Button>
