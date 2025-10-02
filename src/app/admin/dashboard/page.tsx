@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,7 +31,7 @@ interface GalleryItem {
 }
 
 export default function AdminDashboardPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("inventory");
@@ -53,13 +54,13 @@ export default function AdminDashboardPage() {
 
 
   useEffect(() => {
-    if (!user) {
+    if (!authLoading && !user) {
       router.push("/admin");
     }
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   useEffect(() => {
-    if (!firestore) return;
+    if (!firestore || !user) return;
 
     const vehiclesCollection = collection(firestore, "vehicles");
     const vehiclesUnsubscribe = onSnapshot(vehiclesCollection, 
@@ -95,10 +96,23 @@ export default function AdminDashboardPage() {
         vehiclesUnsubscribe();
         galleryUnsubscribe();
     };
-  }, [firestore]);
+  }, [firestore, user]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/admin');
+    } catch (error) {
+      toast({
+        title: "Logout Failed",
+        description: "Could not log out. Please try again.",
+        variant: "destructive"
+      })
+    }
+  }
 
 
-  if (!user || !firestore) {
+  if (authLoading || !user || !firestore) {
     return (
         <div className="flex min-h-screen items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />
@@ -463,15 +477,15 @@ export default function AdminDashboardPage() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={user.avatarUrl} alt={user.name} />
-                      <AvatarFallback>{user.name?.substring(0,2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={user.avatarUrl} alt={user.displayName || 'Admin'} />
+                      <AvatarFallback>{user.displayName?.substring(0,2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.name}</p>
+                      <p className="text-sm font-medium leading-none">{user.displayName}</p>
                       <p className="text-xs leading-none text-muted-foreground">
                         {user.email}
                       </p>
@@ -487,7 +501,7 @@ export default function AdminDashboardPage() {
                     <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
+                  <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
@@ -528,4 +542,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-    

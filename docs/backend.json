@@ -55,7 +55,8 @@
   },
   "auth": {
     "providers": [
-      "anonymous"
+      "anonymous",
+      "email-password"
     ]
   },
   "firestore": {
@@ -76,5 +77,3 @@
     "rules": "rules/storage.rules"
   }
 }
-
-    

@@ -11,6 +11,7 @@ import { User, Settings, LogOut, MoveRight, Instagram, Facebook } from "lucide-r
 import { cn } from "@/lib/utils";
 import placeholderImages from '@/lib/placeholder-images.json';
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface AppSidebarProps {
   className?: string;
@@ -33,16 +34,12 @@ const socialLinks = [
 
 
 export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
-  const handleLogin = () => {
-    login({ name: "Demo User", email: "demo@example.com", avatarUrl: placeholderImages.userAvatar.url });
+  const handleLogout = async () => {
+    await logout();
     if (onNavigate) onNavigate();
-  };
-
-  const handleLogout = () => {
-    logout();
-     if (onNavigate) onNavigate();
   }
 
   const handleLinkClick = () => {
@@ -104,11 +101,11 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex h-auto items-center justify-start gap-3 p-2 text-left text-black dark:text-white w-full">
                   <Avatar className="h-10 w-10 border-2 border-black/20 dark:border-white/20">
-                    <AvatarImage src={user.avatarUrl} alt={user.name} />
-                    <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    <AvatarImage src={user.avatarUrl} alt={user.displayName || 'User'} />
+                    <AvatarFallback>{user.displayName?.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <p className="font-black">{user.name}</p>
+                    <p className="font-black">{user.displayName}</p>
                     <p className="text-xs text-black/70 dark:text-white/70">{user.email}</p>
                   </div>
                 </Button>
@@ -116,18 +113,18 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               <DropdownMenuContent className="w-56 mb-2" side="top" sideOffset={10} align="start"> 
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-black leading-none">{user.name}</p>
+                    <p className="text-sm font-black leading-none">{user.displayName}</p>
                     <p className="text-xs leading-none text-muted-foreground">
                       {user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLinkClick}>
+                <DropdownMenuItem onClick={() => { router.push('/admin/dashboard'); handleLinkClick(); }}>
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
+                  <span>Dashboard</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLinkClick}>
+                <DropdownMenuItem disabled>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </DropdownMenuItem>
@@ -147,3 +144,4 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
     </div>
   );
 }
+

@@ -11,16 +11,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 
 
 export default function AdminLoginPage() {
   const { user, login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("shahbazkhan19111@gmail.com");
+  const [password, setPassword] = useState("Dream@7866");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -28,22 +29,39 @@ export default function AdminLoginPage() {
     }
   }, [user, router]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
-    if (email === "shahbazkhan19111@gmail.com" && password === "Dream@7866") {
+    try {
+      await login(email, password);
       toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-      login({
-        name: "Admin User",
-        email: "shahbazkhan19111@gmail.com",
-        avatarUrl: "https://picsum.photos/seed/admin/100/100",
-      });
-    } else {
-      setError("Invalid email or password. Please try again.");
+      router.push("/admin/dashboard");
+    } catch (err: any) {
+       console.error(err);
+       let errorMessage = "An unknown error occurred.";
+       if (err.code) {
+           switch (err.code) {
+               case 'auth/user-not-found':
+               case 'auth/wrong-password':
+               case 'auth/invalid-credential':
+                   errorMessage = 'Invalid email or password. Please try again.';
+                   break;
+               case 'auth/invalid-email':
+                   errorMessage = 'Please enter a valid email address.';
+                   break;
+               default:
+                   errorMessage = 'Login failed. Please try again later.';
+                   break;
+           }
+       }
+       setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,8 +116,9 @@ export default function AdminLoginPage() {
                 <Button
                     type="submit"
                     className="w-full"
+                    disabled={loading}
                 >
-                    Sign In
+                    {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Sign In'}
                 </Button>
             </form>
         </CardContent>
@@ -107,3 +126,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+
