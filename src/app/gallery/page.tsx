@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useMemo, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VehicleShowcaseCard } from "@/components/vehicles/VehicleShowcaseCard";
@@ -12,7 +12,6 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
 import { GalleryThumbnails, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { initializeFirebase } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import type { Vehicle } from "@/types";

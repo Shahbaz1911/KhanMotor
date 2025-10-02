@@ -102,7 +102,7 @@ export function HappyCustomerGallery() {
             <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {galleryItems.length > 0 ? galleryItems.map((item, index) => (
                 <div
-                key={index}
+                key={item.id}
                 className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
                 >
                 <Image
@@ -132,8 +132,8 @@ export function HappyCustomerGallery() {
                 </div>
                 </div>
             )) : (
-                 <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground">
-                    No customer photos yet. Be the first!
+                 <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg">
+                    No customer photos have been uploaded yet. Be the first!
                 </div>
             )}
             </div>
@@ -142,5 +142,3 @@ export function HappyCustomerGallery() {
     </section>
   );
 }
-
-    

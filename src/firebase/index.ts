@@ -16,21 +16,23 @@ let firestore: Firestore;
 let storage: FirebaseStorage;
 
 function initializeFirebase() {
-  if (IS_CLIENT && !getApps().length) {
-    try {
-      app = initializeApp(firebaseConfig);
+  if (IS_CLIENT) {
+    if (!getApps().length) {
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        firestore = getFirestore(app);
+        storage = getStorage(app);
+      } catch (e) {
+        console.error("Firebase initialization error", e);
+        // Avoid throwing an error that could crash the app, just log it.
+      }
+    } else {
+      app = getApp();
       auth = getAuth(app);
       firestore = getFirestore(app);
       storage = getStorage(app);
-    } catch (e) {
-      console.error("Firebase initialization error", e);
-      throw e;
     }
-  } else if (IS_CLIENT && getApps().length) {
-    app = getApp();
-    auth = getAuth(app);
-    firestore = getFirestore(app);
-    storage = getStorage(app);
   }
 
   return { app, auth, firestore, storage };
@@ -38,8 +40,3 @@ function initializeFirebase() {
 
 // Export the initialized services
 export { initializeFirebase };
-
-// You can also export the individual services if you prefer
-export { app, auth, firestore, storage };
-
-    

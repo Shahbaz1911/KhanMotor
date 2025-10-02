@@ -10,15 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UploadCloud, LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { Progress } from "@/components/ui/progress";
 import { initializeFirebase } from "@/firebase";
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import type { Vehicle } from "@/types";
 import { uploadToCloudinary } from "@/lib/actions";
 
@@ -106,7 +105,7 @@ export default function AdminDashboardPage() {
 
     if (!file) {
       toast({ title: "No file selected", description: "Please select a file to upload.", variant: "destructive" });
-      return;
+      return null;
     }
 
     setIsUploading(true);
@@ -126,6 +125,7 @@ export default function AdminDashboardPage() {
       console.error("Upload failed:", error);
       const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
       toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+      return null;
     } finally {
       setIsUploading(false);
     }
@@ -134,20 +134,15 @@ export default function AdminDashboardPage() {
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore) return;
-    if (!vehicleImageFile && !vehicleImageUrl) {
+    if (!vehicleImageFile) {
         toast({ title: "Image required", description: "Please upload a vehicle image.", variant: "destructive" });
         return;
     }
 
-    let uploadedImageUrl = vehicleImageUrl;
-    if (vehicleImageFile) {
-        const url = await handleFileUpload('vehicle');
-        if (!url) return;
-        uploadedImageUrl = url;
-    }
+    const uploadedImageUrl = await handleFileUpload('vehicle');
     
     if (!uploadedImageUrl) {
-        toast({ title: "Image URL missing", description: "Failed to get image URL after upload.", variant: "destructive" });
+        toast({ title: "Image upload failed", description: "Could not add vehicle without a valid image URL.", variant: "destructive" });
         return;
     }
 
@@ -156,7 +151,7 @@ export default function AdminDashboardPage() {
             ...newVehicle,
             year: Number(newVehicle.year),
             price: Number(newVehicle.price),
-            features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
+            features: newVehicle.features.split('\\n').filter(f => f.trim() !== ""),
             imageUrl: uploadedImageUrl,
             aiHint: 'new vehicle'
         });
@@ -173,20 +168,15 @@ export default function AdminDashboardPage() {
   const handleAddGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore) return;
-     if (!customerImageFile && !customerImageUrl) {
+     if (!customerImageFile) {
         toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
         return;
     }
 
-    let uploadedImageUrl = customerImageUrl;
-    if (customerImageFile) {
-        const url = await handleFileUpload('customer');
-        if (!url) return;
-        uploadedImageUrl = url;
-    }
+    const uploadedImageUrl = await handleFileUpload('customer');
     
     if (!uploadedImageUrl) {
-        toast({ title: "Image URL missing", description: "Failed to get image URL after upload.", variant: "destructive" });
+        toast({ title: "Image upload failed", description: "Could not add gallery item without a valid image URL.", variant: "destructive" });
         return;
     }
 
@@ -291,7 +281,7 @@ export default function AdminDashboardPage() {
 
                             <div className="flex justify-end">
                                 <Button type="submit" disabled={isVehicleUploading}>
-                                    {isVehicleUploading ? 'Uploading...' : 'Add Vehicle'}
+                                    {isVehicleUploading ? 'Please wait...' : 'Add Vehicle'}
                                 </Button>
                             </div>
                         </form>
@@ -376,7 +366,7 @@ export default function AdminDashboardPage() {
                         </div>
                         <div className="flex justify-end">
                             <Button type="submit" disabled={isCustomerUploading}>
-                                {isCustomerUploading ? 'Uploading...' : 'Add to Gallery'}
+                                {isCustomerUploading ? 'Please wait...' : 'Add to Gallery'}
                             </Button>
                         </div>
                     </form>
