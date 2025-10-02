@@ -7,6 +7,7 @@ import { Instagram, Facebook, MapPin, Phone, Mail, ArrowRight } from 'lucide-rea
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -20,6 +21,7 @@ const contactDetails = [
 ]
 
 export default function ContactPage() {
+  const router = useRouter();
   return (
     <div className="container mx-auto px-4 py-16 md:py-24 min-h-screen flex items-center justify-center">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
@@ -43,6 +45,11 @@ export default function ContactPage() {
                   </Link>
               ))}
           </div>
+
+           <Button onClick={() => router.push('/#contact')} size="lg" className="group mt-8">
+                Get in Touch
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
 
           <div className="mt-12">
             <h3 className="text-xl font-bold mb-4">Follow Our Journey</h3>
