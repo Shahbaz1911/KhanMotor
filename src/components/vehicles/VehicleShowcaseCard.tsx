@@ -4,14 +4,14 @@
 import Image from "next/image";
 import type { Vehicle } from "@/types";
 import { Button } from "../ui/button";
-import { ArrowRight, Car, Gauge, Fuel, Cog } from "lucide-react";
+import { ArrowRight, Car, Gauge, Fuel, Cog, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
-import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 
 interface VehicleShowcaseCardProps {
@@ -68,7 +68,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
           align === 'right' && "md:order-last"
         )}
       >
-        <Carousel className="w-full">
+        <Carousel className="w-full group">
             <CarouselContent>
                 {vehicle.imageUrls?.length > 0 ? (
                     vehicle.imageUrls.map((url, index) => (
@@ -97,7 +97,16 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
                      </CarouselItem>
                 )}
             </CarouselContent>
-            {vehicle.imageUrls && vehicle.imageUrls.length > 1 && <CarouselDots />}
+           {vehicle.imageUrls && vehicle.imageUrls.length > 1 && (
+              <>
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 text-white border-none hover:bg-black/75">
+                  <ArrowLeft className="h-6 w-6" />
+                </CarouselPrevious>
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 text-white border-none hover:bg-black/75">
+                  <ArrowRight className="h-6 w-6" />
+                </CarouselNext>
+              </>
+            )}
         </Carousel>
          {vehicle.status && (
              <Badge 
@@ -163,3 +172,5 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
     </div>
   );
 }
+
+    
