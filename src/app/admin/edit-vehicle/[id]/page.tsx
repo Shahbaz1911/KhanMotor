@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -10,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Upload } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
@@ -205,12 +204,24 @@ export default function EditVehiclePage() {
                                     <Label htmlFor="edit-features">Features (one per line)</Label>
                                     <Textarea id="edit-features" value={vehicle.features} onChange={e => setVehicle({...vehicle, features: e.target.value})} required/>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-car-image">Car Image</Label>
-                                    {imageUrl && !isUploading && <div className="mt-2"><Image src={imageUrl} alt="Current vehicle" width={150} height={100} className="rounded-lg object-cover" /></div>}
-                                    {isUploading && <div className="flex items-center gap-2 mt-2"><Loader2 className="h-5 w-5 animate-spin" /><span>Uploading...</span></div>}
-                                    <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={handleFileChange} className="mt-2" />
-                                    <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
+                               <div className="space-y-2">
+                                    <Label>Car Image</Label>
+                                    <div className="flex items-center gap-4">
+                                        {imageUrl && !isUploading && <Image src={imageUrl} alt="Current vehicle" width={120} height={90} className="rounded-lg object-cover" />}
+                                        {isUploading && (
+                                            <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
+                                                <Loader2 className="h-5 w-5 animate-spin" />
+                                            </div>
+                                        )}
+                                        <div className="flex-1 space-y-2">
+                                            <Label htmlFor="edit-car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                                <Upload className="h-5 w-5" />
+                                                <span>Replace file</span>
+                                            </Label>
+                                            <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={handleFileChange} className="sr-only" />
+                                            <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="flex justify-end gap-2">
                                      <Button type="button" variant="secondary" onClick={() => router.push('/admin/dashboard')}>Cancel</Button>
@@ -224,4 +235,3 @@ export default function EditVehiclePage() {
         </div>
     );
 }
-

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -372,19 +371,24 @@ export default function AdminDashboardPage() {
                                 <Textarea id="features" placeholder="e.g., V10 Engine\nConvertible\nBang & Olufsen Sound" value={newVehicle.features} onChange={e => setNewVehicle({...newVehicle, features: e.target.value})} required/>
                             </div>
                             
-                            <div className="space-y-2">
-                                <Label htmlFor="car-image">Car Image</Label>
-                                {vehicleImageUrl && !isVehicleUploading && <div className="mt-4"><Image src={vehicleImageUrl} alt="Uploaded vehicle" width={200} height={150} className="rounded-lg object-cover" /></div>}
-                                {isVehicleUploading && (
-                                    <div className="flex items-center gap-2 mt-4">
-                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                        <span>Uploading...</span>
+                           <div className="space-y-2">
+                                <Label>Car Image</Label>
+                                <div className="flex items-center gap-4">
+                                    {vehicleImageUrl && !isVehicleUploading && <Image src={vehicleImageUrl} alt="Uploaded vehicle" width={120} height={90} className="rounded-lg object-cover" />}
+                                    {isVehicleUploading && (
+                                        <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
+                                            <Loader2 className="h-5 w-5 animate-spin" />
+                                        </div>
+                                    )}
+                                    <div className="flex-1 space-y-2">
+                                        <Label htmlFor="car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                            <Upload className="h-5 w-5" />
+                                            <span>{vehicleImageFile ? "Change file" : "Click to upload"}</span>
+                                        </Label>
+                                        <Input id="car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'vehicle')} className="sr-only" />
+                                        <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB).</p>
                                     </div>
-                                )}
-                                <div className="flex items-center gap-4 mt-2">
-                                    <Input id="car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'vehicle')} className="flex-1" />
                                 </div>
-                                <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 10MB).</p>
                             </div>
 
                             <div className="flex justify-end">
@@ -459,18 +463,23 @@ export default function AdminDashboardPage() {
                             <Input id="caption" placeholder="e.g., Mr. Khan with his new Honda City" value={newGalleryItem.caption} onChange={e => setNewGalleryItem({ caption: e.target.value})} required/>
                         </div>
                         <div className="space-y-2">
-                             <Label htmlFor="customer-image">Customer Photo</Label>
-                             {customerImageUrl && !isCustomerUploading && <div className="mt-4"><Image src={customerImageUrl} alt="Uploaded customer" width={200} height={150} className="rounded-lg object-cover" /></div>}
-                             {isCustomerUploading && (
-                                <div className="flex items-center gap-2 mt-4">
-                                    <Loader2 className="h-5 w-5 animate-spin" />
-                                    <span>Uploading...</span>
+                            <Label>Customer Photo</Label>
+                             <div className="flex items-center gap-4">
+                                {customerImageUrl && !isCustomerUploading && <Image src={customerImageUrl} alt="Uploaded customer" width={120} height={90} className="rounded-lg object-cover" />}
+                                {isCustomerUploading && (
+                                    <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                    </div>
+                                )}
+                                <div className="flex-1 space-y-2">
+                                     <Label htmlFor="customer-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                        <Upload className="h-5 w-5" />
+                                        <span>{customerImageFile ? "Change file" : "Click to upload"}</span>
+                                    </Label>
+                                    <Input id="customer-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'customer')} className="sr-only" />
+                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB).</p>
                                 </div>
-                            )}
-                            <div className="flex items-center gap-4 mt-2">
-                                <Input id="customer-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'customer')} className="flex-1" />
                             </div>
-                             <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 10MB).</p>
                         </div>
                         <div className="flex justify-end">
                             <Button type="submit" disabled={isCustomerUploading}>
@@ -600,10 +609,18 @@ export default function AdminDashboardPage() {
                                 <Input id="edit-caption" value={editingGalleryItem.caption} onChange={e => setEditingGalleryItem({...editingGalleryItem, caption: e.target.value})} required/>
                             </div>
                              <div className="space-y-2">
-                                <Label htmlFor="edit-gallery-image">Gallery Image</Label>
-                                {editingGalleryItem.imageUrl && !isCustomerUploading && <div className="mt-2"><Image src={editingGalleryItem.imageUrl} alt="Current gallery item" width={150} height={100} className="rounded-lg object-cover" /></div>}
-                                {isCustomerUploading && <div className="flex items-center gap-2 mt-2"><Loader2 className="h-5 w-5 animate-spin" /><span>Uploading...</span></div>}
-                                <Input id="edit-gallery-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-gallery')} className="mt-2" />
+                                <Label>Gallery Image</Label>
+                                 <div className="flex items-center gap-4">
+                                    {editingGalleryItem.imageUrl && !isCustomerUploading && <Image src={editingGalleryItem.imageUrl} alt="Current gallery item" width={120} height={90} className="rounded-lg object-cover" />}
+                                    {isCustomerUploading && <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted"><Loader2 className="h-5 w-5 animate-spin" /></div>}
+                                     <div className="flex-1 space-y-2">
+                                         <Label htmlFor="edit-gallery-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                                            <Upload className="h-5 w-5" />
+                                            <span>Replace file</span>
+                                        </Label>
+                                        <Input id="edit-gallery-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-gallery')} className="sr-only" />
+                                    </div>
+                                </div>
                                 <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
                             </div>
                             <DialogFooter>
