@@ -15,6 +15,8 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import type { Vehicle } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
 
 
 export default function AdminDashboardPage() {
@@ -99,7 +101,18 @@ export default function AdminDashboardPage() {
     <div className="flex min-h-screen flex-col bg-gray-100 dark:bg-black">
       <header className="bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 sticky top-0 z-30">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-            <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Admin Dashboard</h1>
+            <div className="flex items-center gap-4">
+              <Link href="/">
+                <Image 
+                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    alt="Arman Autoxperts Logo"
+                    width={150}
+                    height={150}
+                    className="w-28 h-auto"
+                />
+              </Link>
+              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Admin Dashboard</h1>
+            </div>
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

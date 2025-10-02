@@ -25,6 +25,7 @@ import { AchievementsSection } from "@/components/custom/AchievementsSection";
 import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
 import { CallToAction } from "@/components/custom/CallToAction";
 import { TextMarquee } from "@/components/custom/TextMarquee";
+import Link from "next/link";
 
 
 export default function ConsolidatedPage() {
@@ -127,6 +128,7 @@ export default function ConsolidatedPage() {
             </Sheet>
 
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
+              <Link href="/">
                 <Image 
                     src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                     alt="Arman Autoxperts Logo"
@@ -134,6 +136,7 @@ export default function ConsolidatedPage() {
                     height={150}
                     className="w-28 h-auto"
                 />
+              </Link>
             </div>
           
             <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm" onClick={() => router.push('/gallery')}>
@@ -225,3 +228,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    

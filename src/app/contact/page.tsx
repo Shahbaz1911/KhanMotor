@@ -86,6 +86,7 @@ export default function ContactPage() {
             </Sheet>
 
             <div className="absolute left-1/2 -translate-x-1/2">
+              <Link href="/">
                 <Image 
                     src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                     alt="Arman Autoxperts Logo"
@@ -93,6 +94,7 @@ export default function ContactPage() {
                     height={150}
                     className="w-28 h-auto"
                 />
+              </Link>
             </div>
           
             <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
@@ -161,3 +163,5 @@ export default function ContactPage() {
     </div>
   );
 }
+
+    
