@@ -112,56 +112,58 @@ export function HappyCustomerGallery() {
                 <Loader2 className="h-8 w-8 animate-spin" />
             </div>
         ) : (
-            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.length > 0 ? galleryItems.map((item, index) => (
-                <div
-                key={item.id}
-                className={cn(
-                    "group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
-                    index % 2 === 0 ? "hover:-rotate-2" : "hover:rotate-2"
+            <>
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {galleryItems.length > 0 ? galleryItems.map((item, index) => (
+                    <div
+                    key={item.id}
+                    className={cn(
+                        "group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
+                        index % 2 === 0 ? "hover:-rotate-2" : "hover:rotate-2"
+                    )}
+                    >
+                    <Image
+                        src={item.imageUrl}
+                        alt={`Customer photo: ${item.caption}`}
+                        fill
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        data-ai-hint={item.aiHint || 'customer car'}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 flex flex-col justify-end p-6">
+                        <div className="relative z-10 text-white">
+                        <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                            {item.customerName && <h3 className="text-xl font-black">{item.customerName}</h3>}
+                            {item.rating && <div className="mt-1 flex">
+                            {Array(item.rating)
+                                .fill(0)
+                                .map((_, i) => (
+                                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                ))}
+                            </div>}
+                        </div>
+                        <p className="mt-2 text-sm font-medium">
+                            {item.caption}
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                )) : (
+                    <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg">
+                        No customer photos have been uploaded yet. Be the first!
+                    </div>
                 )}
-                >
-                <Image
-                    src={item.imageUrl}
-                    alt={`Customer photo: ${item.caption}`}
-                    fill
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    data-ai-hint={item.aiHint || 'customer car'}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
-                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                    <div className="relative z-10 text-white">
-                    <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                        {item.customerName && <h3 className="text-xl font-black">{item.customerName}</h3>}
-                        {item.rating && <div className="mt-1 flex">
-                        {Array(item.rating)
-                            .fill(0)
-                            .map((_, i) => (
-                            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                            ))}
-                        </div>}
-                    </div>
-                    <p className="mt-2 text-sm font-medium">
-                        {item.caption}
-                    </p>
-                    </div>
                 </div>
+                 <div className="mt-12 text-center">
+                    <Button size="lg" variant="outline" onClick={() => router.push('/happy-customers')} className="group">
+                        View Full Gallery
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
                 </div>
-            )) : (
-                 <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg">
-                    No customer photos have been uploaded yet. Be the first!
-                </div>
-            )}
-            </div>
+            </>
         )}
-
-        <div className="mt-12 text-center">
-            <Button size="lg" variant="outline" onClick={() => router.push('/happy-customers')} className="group">
-                View Full Gallery
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-        </div>
       </div>
     </section>
   );
 }
+
