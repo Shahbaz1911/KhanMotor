@@ -34,18 +34,24 @@ export default function ContactPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Animate header in
+      // Fade header in on load
       gsap.fromTo(headerRef.current, 
         { autoAlpha: 0, y: -20 },
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
       
-      // Animate header out on scroll
-      ScrollTrigger.create({
-        trigger: pageRef.current,
-        start: "top top",
-        onLeave: () => gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" }),
-        onEnterBack: () => gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" }),
+      // Animate header out on scroll down, and in on scroll up to top
+      gsap.to(headerRef.current, {
+        autoAlpha: 0,
+        y: -20,
+        duration: 0.3,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          end: "top -100px",
+          scrub: true,
+        },
       });
 
     }, pageRef);
