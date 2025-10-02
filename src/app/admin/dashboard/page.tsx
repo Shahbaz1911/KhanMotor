@@ -3,13 +3,13 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle, CalendarDays } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle, CalendarDays, ShieldCheck, CircleDollarSign } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -20,6 +20,7 @@ import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { format } from "date-fns";
+import type { Vehicle } from "@/types";
 
 
 interface GalleryItem {
@@ -43,6 +44,10 @@ export default function AdminDashboardPage() {
   const [isGalleryEditDialogOpen, setIsGalleryEditDialogOpen] = useState(false);
   const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
   const [isCustomerUploading, setIsCustomerUploading] = useState(false);
+  
+  // State for vehicle stats
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loadingVehicles, setLoadingVehicles] = useState(true);
 
 
   useEffect(() => {
@@ -71,11 +76,38 @@ export default function AdminDashboardPage() {
             setLoadingGallery(false);
         }
     );
+
+     setLoadingVehicles(true);
+    const vehiclesCollection = collection(firestore, "vehicles");
+    const vehiclesUnsubscribe = onSnapshot(vehiclesCollection, 
+        (snapshot) => {
+            const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+            setVehicles(vehiclesData);
+            setLoadingVehicles(false);
+        },
+        async (error) => {
+            const permissionError = new FirestorePermissionError({
+                path: vehiclesCollection.path,
+                operation: 'list',
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            setLoadingVehicles(false);
+        }
+    );
     
     return () => {
         galleryUnsubscribe();
+        vehiclesUnsubscribe();
     };
   }, [firestore, user]);
+
+  const inventoryStats = useMemo(() => {
+    const total = vehicles.length;
+    const sold = vehicles.filter(v => v.status === 'sold').length;
+    const available = total - sold;
+    return { total, sold, available };
+  }, [vehicles]);
+
 
   const handleLogout = async () => {
     try {
@@ -271,6 +303,45 @@ export default function AdminDashboardPage() {
                     </div>
                 </CardContent>
             </Card>
+
+            <section>
+              <h2 className="text-2xl font-bold mb-4">Inventory Stats</h2>
+                {loadingVehicles ? (
+                    <div className="flex justify-center items-center h-24">
+                        <Loader2 className="h-8 w-8 animate-spin" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Total Vehicles</CardTitle>
+                                <Car className="h-4 w-4 text-muted-foreground" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{inventoryStats.total}</div>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Available</CardTitle>
+                                <ShieldCheck className="h-4 w-4 text-green-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{inventoryStats.available}</div>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Sold</CardTitle>
+                                <CircleDollarSign className="h-4 w-4 text-red-500" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">{inventoryStats.sold}</div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                )}
+            </section>
            
            <Card className="shadow-lg">
                 <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -376,3 +447,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    
