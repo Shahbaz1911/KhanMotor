@@ -2,8 +2,8 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft, CalendarDays } from "lucide-react";
@@ -19,6 +19,7 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface VehicleWithTimestamp extends Vehicle {
     createdAt?: Timestamp;
@@ -27,11 +28,14 @@ interface VehicleWithTimestamp extends Vehicle {
 export default function InventoryPage() {
     const { user, logout, loading: authLoading } = useAuth();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { toast } = useToast();
     const [vehicles, setVehicles] = useState<VehicleWithTimestamp[]>([]);
     const [loading, setLoading] = useState(true);
     
     const firestore = useFirestore();
+
+    const statusFilter = searchParams.get('status') as 'available' | 'sold' | null;
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -72,6 +76,20 @@ export default function InventoryPage() {
         
         return () => vehiclesUnsubscribe();
     }, [firestore, user]);
+
+    const filteredVehicles = useMemo(() => {
+        if (!statusFilter) return vehicles;
+        return vehicles.filter(vehicle => vehicle.status === statusFilter);
+    }, [vehicles, statusFilter]);
+
+    const handleFilterChange = (status: 'available' | 'sold' | null) => {
+        if (status) {
+            router.push(`/admin/inventory?status=${status}`);
+        } else {
+            router.push('/admin/inventory');
+        }
+    };
+
 
     const handleLogout = async () => {
         try {
@@ -180,14 +198,19 @@ export default function InventoryPage() {
                         Add New Vehicle
                     </Button>
                 </CardHeader>
-                <CardContent>
+                 <CardContent>
+                    <div className="flex flex-wrap items-center gap-2 mb-6">
+                        <Button variant={statusFilter === null ? 'default' : 'outline'} onClick={() => handleFilterChange(null)}>All ({vehicles.length})</Button>
+                        <Button variant={statusFilter === 'available' ? 'default' : 'outline'} onClick={() => handleFilterChange('available')}>Available ({vehicles.filter(v => v.status === 'available').length})</Button>
+                        <Button variant={statusFilter === 'sold' ? 'default' : 'outline'} onClick={() => handleFilterChange('sold')}>Sold ({vehicles.filter(v => v.status === 'sold').length})</Button>
+                    </div>
                     {loading ? (
                          <div className="flex justify-center items-center h-64">
                             <Loader2 className="h-8 w-8 animate-spin" />
                         </div>
-                    ) : vehicles.length > 0 ? (
+                    ) : filteredVehicles.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {vehicles.map(vehicle => (
+                            {filteredVehicles.map(vehicle => (
                                 <Card key={vehicle.id} className="overflow-hidden">
                                     <Carousel>
                                         <CarouselContent>
@@ -212,7 +235,7 @@ export default function InventoryPage() {
                                                 <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
                                                 <p className="text-sm text-muted-foreground">{vehicle.year}</p>
                                             </div>
-                                            <Badge variant={vehicle.status === 'available' ? "secondary" : "destructive"} className="capitalize">
+                                            <Badge variant={vehicle.status === 'available' ? "secondary" : "destructive"} className={cn("capitalize", vehicle.status === 'available' && "bg-green-600/90 text-white border-green-700")}>
                                                 {vehicle.status || 'N/A'}
                                             </Badge>
                                         </div>
@@ -240,12 +263,19 @@ export default function InventoryPage() {
                     ) : (
                         <div className="text-center py-16">
                             <Car className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <h3 className="mt-4 text-lg font-medium">No vehicles in inventory</h3>
-                            <p className="mt-1 text-sm text-muted-foreground">Get started by adding a new vehicle.</p>
-                            <Button className="mt-6" onClick={() => router.push('/admin/inventory/add')}>
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                Add New Vehicle
-                            </Button>
+                            <h3 className="mt-4 text-lg font-medium">No vehicles match filter</h3>
+                             <p className="mt-1 text-sm text-muted-foreground">
+                                {statusFilter === null 
+                                    ? "Get started by adding a new vehicle."
+                                    : `There are no ${statusFilter} vehicles in your inventory.`
+                                }
+                            </p>
+                            {statusFilter === null &&
+                                <Button className="mt-6" onClick={() => router.push('/admin/inventory/add')}>
+                                    <PlusCircle className="mr-2 h-4 w-4" />
+                                    Add New Vehicle
+                                </Button>
+                            }
                         </div>
                     )}
                 </CardContent>
@@ -255,3 +285,5 @@ export default function InventoryPage() {
     </div>
   )
 }
+
+    

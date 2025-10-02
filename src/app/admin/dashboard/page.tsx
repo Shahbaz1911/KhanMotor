@@ -312,7 +312,7 @@ export default function AdminDashboardPage() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <Card>
+                        <Card onClick={() => router.push('/admin/inventory')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Total Vehicles</CardTitle>
                                 <Car className="h-4 w-4 text-muted-foreground" />
@@ -321,7 +321,7 @@ export default function AdminDashboardPage() {
                                 <div className="text-2xl font-bold">{inventoryStats.total}</div>
                             </CardContent>
                         </Card>
-                         <Card>
+                         <Card onClick={() => router.push('/admin/inventory?status=available')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Available</CardTitle>
                                 <ShieldCheck className="h-4 w-4 text-green-500" />
@@ -330,7 +330,7 @@ export default function AdminDashboardPage() {
                                 <div className="text-2xl font-bold">{inventoryStats.available}</div>
                             </CardContent>
                         </Card>
-                         <Card>
+                         <Card onClick={() => router.push('/admin/inventory?status=sold')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Sold</CardTitle>
                                 <CircleDollarSign className="h-4 w-4 text-red-500" />
