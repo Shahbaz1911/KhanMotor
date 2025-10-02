@@ -1,35 +1,31 @@
 /**
- * @file Firestore Security Rules
- * @version 2
+ * @fileoverview Firestore Security Rules for the application.
  *
- * @Core Philosophy
- * This ruleset prioritizes security by enforcing strict ownership for user data and public read access for vehicle and gallery data while ensuring only authenticated users can modify it.
+ * Core Philosophy:
+ * This ruleset prioritizes security by enforcing a strict owner-only access model for user data
+ * and restricting write access to the gallery. Read access to the gallery is public.
  *
- * @Data Structure
- * - Users: User profiles are stored under `/users/{userId}`, accessible only to the authenticated user with matching UID.
- * - Vehicles: Vehicle inventory data is stored under `/vehicles/{vehicleId}`. It is publicly readable, but write access is restricted to authenticated users.
- * - Gallery: Customer gallery items are stored under `/gallery/{galleryItemId}`. It is publicly readable, but write access is restricted to authenticated users.
+ * Data Structure:
+ * - /users/{userId}: Stores individual user profiles.
+ * - /vehicles/{vehicleId}: Stores vehicle information (make, model, etc.). Write access is denied.
+ * - /gallery/{galleryItemId}: Stores gallery images with captions. Write access is denied.
  *
- * @Key Security Decisions
- * - User data is strictly private; listing all users is disallowed.
- * - Public collections (`vehicles`, `gallery`) allow anyone to read but require authentication to modify.
- * - Data validation is relaxed in this prototype, focusing on ownership and relational integrity where critical.
- *
- * @Denormalization for Authorization
- *  -The current design already enforces ownership by requiring the `userId` in the path `/users/{userId}` to match the authenticated user's UID. For `vehicles` and `gallery`, the rules will check if the user is authenticated before allowing write operations.
- *
- * @Structural Segregation
- *  -Private user data is stored in a user-specific collection (`/users/{userId}`), while public data (`vehicles`, `gallery`) is stored in top-level collections.
+ * Key Security Decisions:
+ * - User data is strictly private; only the owner can read or write it.
+ * - Listing of users is disallowed.
+ * - The gallery collection is read-only from the client; all writes are denied.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Secures user profile data, allowing only the authenticated user to read and write their own profile.
+     * @description Controls access to user profile information.
      * @path /users/{userId}
-     * @allow (get, create, update, delete) - Authenticated user with UID matching {userId}.
-     * @deny (get, create, update, delete) - Any other user.
+     * @allow (create) User with matching UID can create their profile.
+     * @allow (get, update, delete) User with matching UID can read, update, and delete their profile.
+     * @deny (create) User cannot create a profile with a mismatched UID.
+     * @deny (list) Listing users is not allowed.
      * @principle Enforces document ownership for all operations.
      */
     match /users/{userId} {
@@ -41,58 +37,35 @@ service cloud.firestore {
         return request.auth.uid == userId;
       }
 
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
       allow get: if isSignedIn() && isOwner(userId);
-      allow list: if false; // Listing all users is not permitted
-
+      allow list: if false;
       allow create: if isSignedIn() && isOwner(userId);
       allow update: if isSignedIn() && isOwner(userId);
       allow delete: if isSignedIn() && isOwner(userId);
     }
 
     /**
-     * @description Manages vehicle inventory data, allowing public read access and authenticated write access.
+     * @description Controls access to vehicle inventory data.
      * @path /vehicles/{vehicleId}
-     * @allow (get, list) - Any user (public read).
-     * @allow (create, update, delete) - Authenticated users only.
-     * @deny (create, update, delete) - Unauthenticated users.
-     * @principle Allows public read access while enforcing authentication for writes.
+     * @allow (get, list) Public read access to vehicle data.
+     * @deny (create, update, delete) No client-side write access to vehicle data.
+     * @principle Restricts client-side modifications to vehicle data.
      */
     match /vehicles/{vehicleId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      allow get: if true;
-      allow list: if true;
-
-      allow create: if isSignedIn();
-      allow update: if isSignedIn();
-      allow delete: if isSignedIn();
+      allow get, list: if true;
+      allow create, update, delete: if false;
     }
 
     /**
-     * @description Manages customer gallery items, allowing public read access and authenticated write access.
+     * @description Controls access to gallery images and captions.
      * @path /gallery/{galleryItemId}
-     * @allow (get, list) - Any user (public read).
-     * @allow (create, update, delete) - Authenticated users only.
-     * @deny (create, update, delete) - Unauthenticated users.
-     * @principle Allows public read access while enforcing authentication for writes.
+     * @allow (get, list) Public read access to gallery data.
+     * @deny (create, update, delete) No client-side write access to gallery data.
+     * @principle Restricts client-side modifications to gallery data.
      */
     match /gallery/{galleryItemId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      allow get: if true;
-      allow list: if true;
-
-      allow create: if isSignedIn();
-      allow update: if isSignedIn();
-      allow delete: if isSignedIn();
+      allow get, list: if true;
+      allow create, update, delete: if false;
     }
   }
 }
