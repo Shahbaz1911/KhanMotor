@@ -29,24 +29,24 @@ export default function ContactPage() {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
-  const headerControlsRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Header fade in
-       gsap.fromTo(headerControlsRef.current, 
+      // Animate header in
+      gsap.fromTo(headerRef.current, 
         { autoAlpha: 0, y: -20 },
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
       
-      // Header fade out on scroll
+      // Animate header out on scroll
       ScrollTrigger.create({
         trigger: pageRef.current,
         start: "top top",
-        onLeave: () => gsap.to(headerControlsRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" }),
-        onEnterBack: () => gsap.to(headerControlsRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" }),
+        onLeave: () => gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" }),
+        onEnterBack: () => gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" }),
       });
 
     }, pageRef);
@@ -60,7 +60,7 @@ export default function ContactPage() {
 
   return (
     <div ref={pageRef} className="bg-background">
-        <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
+        <div ref={headerRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
