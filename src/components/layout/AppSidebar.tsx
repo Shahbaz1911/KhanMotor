@@ -140,6 +140,9 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenu>
           </div>
         ) : null}
+        <p className="text-xs text-muted-foreground px-2 text-start">
+            Copyright © {new Date().getFullYear()} ArmanAutoXperts | All rights reserved
+        </p>
       </div>
     </div>
   );
