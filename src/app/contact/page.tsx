@@ -64,6 +64,24 @@ export default function ContactPage() {
     }
   }, []);
 
+  const listVariants = {
+    visible: { 
+      opacity: 1, 
+      transition: { 
+        when: "beforeChildren", 
+        staggerChildren: 0.1 
+      } 
+    },
+    hidden: { 
+      opacity: 0 
+    },
+  };
+
+  const itemVariants = {
+    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: -20 },
+  };
+
 
   return (
     <div ref={pageRef} className="bg-background">
@@ -111,32 +129,36 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 py-16 md:py-24 min-h-screen flex items-center justify-center mt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
             <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+                initial="hidden"
+                animate="visible"
+                variants={listVariants}
                 className="flex flex-col justify-center"
             >
-              <h1 className="text-4xl lg:text-5xl font-black mb-4">Connect With Us</h1>
-              <p className="text-lg text-muted-foreground mb-8">
+              <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4">Connect With Us</motion.h1>
+              <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8">
                 We&apos;re here to help with all your automotive needs. Reach out today and let us know how we can assist you.
-              </p>
-              <div className="space-y-6">
+              </motion.p>
+              <motion.div variants={listVariants} className="space-y-6">
                   {contactDetails.map((item, index) => (
-                      <Link key={index} href={item.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-lg">
-                          <div className="flex-shrink-0 bg-primary/10 text-primary p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                             <item.icon className="h-6 w-6" />
-                          </div>
-                          <span className="group-hover:underline">{item.text}</span>
-                      </Link>
+                      <motion.div key={index} variants={itemVariants}>
+                        <Link href={item.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-lg">
+                            <div className="flex-shrink-0 bg-primary/10 text-primary p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                               <item.icon className="h-6 w-6" />
+                            </div>
+                            <span className="group-hover:underline">{item.text}</span>
+                        </Link>
+                      </motion.div>
                   ))}
-              </div>
+              </motion.div>
 
-               <Button onClick={() => router.push('/#contact')} size="lg" className="group mt-8">
-                    Get in Touch
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </Button>
+               <motion.div variants={itemVariants}>
+                 <Button onClick={() => router.push('/#contact')} size="lg" className="group mt-8">
+                      Get in Touch
+                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </Button>
+               </motion.div>
 
-              <div className="mt-12">
+              <motion.div variants={itemVariants} className="mt-12">
                 <h3 className="text-xl font-bold mb-4">Connect</h3>
                  <div className="flex gap-4">
                     {socialLinks.map((social) => (
@@ -153,7 +175,7 @@ export default function ContactPage() {
                         </Button>
                     ))}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
 
             <motion.div
