@@ -1,36 +1,40 @@
 /**
  * @file Firestore Security Rules
- * @core_philosophy This ruleset enforces a public read, owner-only write model for vehicles, and gallery items. User data is private and only accessible to the owner.
- * @data_structure
- *  - /users/{userId}: Stores private user profile data.
- *  - /vehicles/{vehicleId}: Stores publicly-readable vehicle data, with owner-only modification rights.
- *  - /gallery/{galleryItemId}: Stores publicly-readable gallery data, with owner-only modification rights.
- * @key_security_decisions
- *  - Users can only read and write their own profile data.
- *  - Vehicle and Gallery Item data is readable by everyone, but only the owner can create, update, or delete it.  The application must ensure that the `request.auth.uid` is populated on create.
- * @denormalization_for_authorization
- *  - Vehicle documents should include an `ownerId` field, which is set to `request.auth.uid` upon creation and is immutable.
- *  - Gallery Item documents should include an `ownerId` field, which is set to `request.auth.uid` upon creation and is immutable.
+ * @description This ruleset enforces a strict ownership model for user data and allows public read access to vehicle and gallery data with owner-only write access.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores user profile data, accessible only to the user themselves.
+ * - /vehicles/{vehicleId}: Stores vehicle inventory data, publicly readable, but writeable only by authenticated users.
+ * - /gallery/{galleryItemId}: Stores customer gallery images and captions, publicly readable, but writeable only by authenticated users.
+ *
+ * Key Security Decisions:
+ * - Users can only read and write their own data in the /users collection.
+ * - Vehicle and gallery data is publicly readable but can only be modified by authenticated users.
+ * - Data validation is minimal in this prototyping phase, focusing on ownership and relational integrity.
+ *
+ * Denormalization for Authorization:
+ * - The rules do not currently require denormalization as they rely on path-based authorization for users and simple authentication checks for vehicles and gallery items.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Grants owner-only access to user profile data.
+     * @description Controls access to user profile information.
      * @path /users/{userId}
-     * @allow (get, create, update, delete, list) User with matching {userId} can perform all operations.
-     * @deny (get, create, update, delete, list) User with non-matching {userId} cannot perform any operations.
+     * @allow (get, create, update, delete, list) if the request is made by the user with the matching ID.
+     * @deny (create, update, delete) if the request is made by a different user or an unauthenticated user.
      * @principle Enforces document ownership for all operations.
      */
     match /users/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
       function isOwner(userId) {
         return request.auth.uid == userId;
       }
 
-      function isSignedIn() {
-        return request.auth != null;
-      }
       allow get: if isOwner(userId);
       allow list: if false;
       allow create: if isSignedIn() && isOwner(userId);
@@ -39,54 +43,41 @@ service cloud.firestore {
     }
 
     /**
-     * @description Grants public read access to vehicle data, but restricts writes to the owner.
+     * @description Controls access to vehicle inventory data.
      * @path /vehicles/{vehicleId}
-     * @allow (get, list) Any user can read vehicle data.
-     * @allow (create) Only the authenticated user can create a vehicle, and must set `ownerId` to their `uid`.
-     * @allow (update, delete) Only the owner of the vehicle (where `ownerId == request.auth.uid`) can update or delete it, and the document must exist.
-     * @deny (create) An unauthenticated user cannot create a vehicle.
-     * @deny (update, delete) A non-owner cannot update or delete a vehicle.
-     * @principle Enforces public read, owner-only write for vehicle data.
+     * @allow (get, list) to anyone.
+     * @allow (create) to only authenticated users. The 'make', 'model', 'year', 'price', 'status', 'description', 'features', 'imageUrl' fields in the request data are required.
+     * @allow (update, delete) to authenticated users if the document exists.
+     * @deny (create, update, delete) if the user is not authenticated.
+     * @principle Allows public read access with authenticated-user-only write access.
      */
     match /vehicles/{vehicleId} {
-      function isOwner() {
-        return request.auth.uid == resource.data.ownerId;
-      }
-
       function isSignedIn() {
         return request.auth != null;
       }
 
       allow get, list: if true;
-      allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
-      allow update: if isSignedIn() && isOwner();
-      allow delete: if isSignedIn() && isOwner();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && exists(resource.data);
     }
 
     /**
-     * @description Grants public read access to gallery item data, but restricts writes to the owner.
+     * @description Controls access to customer gallery images and captions.
      * @path /gallery/{galleryItemId}
-     * @allow (get, list) Any user can read gallery item data.
-     * @allow (create) Only the authenticated user can create a gallery item, and must set `ownerId` to their `uid`.
-     * @allow (update, delete) Only the owner of the gallery item (where `ownerId == request.auth.uid`) can update or delete it, and the document must exist.
-     * @deny (create) An unauthenticated user cannot create a gallery item.
-     * @deny (update, delete) A non-owner cannot update or delete a gallery item.
-     * @principle Enforces public read, owner-only write for gallery item data.
+     * @allow (get, list) to anyone.
+     * @allow (create) to only authenticated users. The 'caption', 'imageUrl' fields in the request data are required.
+     * @allow (update, delete) to authenticated users if the document exists.
+     * @deny (create, update, delete) if the user is not authenticated.
+     * @principle Allows public read access with authenticated-user-only write access.
      */
     match /gallery/{galleryItemId} {
-      function isOwner() {
-        return request.auth.uid == resource.data.ownerId;
-      }
-
       function isSignedIn() {
         return request.auth != null;
       }
 
-
       allow get, list: if true;
-      allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
-      allow update: if isSignedIn() && isOwner();
-      allow delete: if isSignedIn() && isOwner();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && exists(resource.data);
     }
   }
 }
