@@ -13,7 +13,7 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
-        <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-y-10 md:gap-8">
+        <div className="flex flex-col md:grid md:grid-cols-3 lg:grid-cols-4 gap-y-10 md:gap-8">
           
           <div className="flex flex-col sm:flex-row md:flex-col gap-y-10 md:gap-8 order-2 md:order-1 w-full md:w-auto lg:col-span-2">
             {/* Contact Info */}
@@ -40,7 +40,7 @@ export function Footer() {
             </div>
 
             {/* Social Media */}
-            <div className="w-full sm:w-1/2 md:w-full text-left order-2 md:order-1">
+            <div className="w-full sm:w-1/2 md:w-full text-left">
               <h3 className="text-lg font-bold text-white">Connect</h3>
               <div className="mt-4 flex gap-4 justify-start">
                 {socialLinks.map((social) => (
@@ -60,7 +60,7 @@ export function Footer() {
             </div>
           </div>
             {/* Logo and About */}
-          <div className="lg:col-span-2 text-center md:text-left order-1 md:order-2 flex flex-col items-center md:items-start">
+          <div className="md:col-start-3 lg:col-start-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
               <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
