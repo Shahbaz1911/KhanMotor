@@ -36,19 +36,20 @@ export default function ContactPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Header fade-in on load, then hide on scroll
-      const showAnim = gsap.from(headerRef.current, {
-        autoAlpha: 0,
-        yPercent: -100,
-        paused: true,
-        duration: 0.2,
-      }).progress(1);
+      // Header fade-in on load
+      gsap.fromTo(headerRef.current, 
+        { autoAlpha: 0, y: -20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
+      );
 
-      ScrollTrigger.create({
-        start: "top top-=-100", // Start hiding after scrolling 100px
-        end: 99999,
-        onUpdate: (self) => {
-          self.direction === -1 ? showAnim.play() : showAnim.reverse();
+      // Header fade out on scroll
+      gsap.to(headerRef.current, {
+        autoAlpha: 0,
+        scrollTrigger: {
+          trigger: pageRef.current,
+          start: 'top top',
+          end: '+=150',
+          scrub: true,
         },
       });
 
@@ -164,3 +165,5 @@ export default function ContactPage() {
     </div>
   );
 }
+
+    
