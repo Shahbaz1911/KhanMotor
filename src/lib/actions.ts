@@ -5,6 +5,11 @@ import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
 import { v2 as cloudinary } from "cloudinary";
 
+if (typeof window === 'undefined') {
+  require('dotenv').config();
+}
+
+
 export type ContactFormState = {
   message: string;
   success: boolean;
