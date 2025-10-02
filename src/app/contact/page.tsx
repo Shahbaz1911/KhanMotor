@@ -45,13 +45,8 @@ export default function ContactPage() {
       ScrollTrigger.create({
         trigger: pageRef.current,
         start: "top top",
-        onUpdate: (self) => {
-          if (self.scroll() > 100) { 
-            gsap.to(headerControlsRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
-          } else {
-            gsap.to(headerControlsRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
-          }
-        },
+        onLeave: () => gsap.to(headerControlsRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" }),
+        onEnterBack: () => gsap.to(headerControlsRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" }),
       });
 
     }, pageRef);
