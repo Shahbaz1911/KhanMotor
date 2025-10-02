@@ -174,7 +174,11 @@ export default function GalleryPage() {
     const docRef = doc(firestore, "gallery", id);
     deleteDoc(docRef)
         .then(() => {
-             toast({ title: "Item Deleted", description: "The gallery item has been successfully removed." });
+             toast({ 
+                title: "Item Deleted", 
+                description: "The gallery item has been successfully removed.",
+                variant: "destructive" 
+            });
         })
         .catch((serverError) => {
             const permissionError = new FirestorePermissionError({
@@ -353,3 +357,5 @@ export default function GalleryPage() {
     </div>
   );
 }
+
+    

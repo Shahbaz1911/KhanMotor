@@ -116,7 +116,11 @@ export default function InventoryClientPage() {
         const docRef = doc(firestore, "vehicles", id);
         deleteDoc(docRef)
             .then(() => {
-                toast({ title: "Vehicle Deleted", description: "The vehicle has been successfully removed from inventory." });
+                toast({ 
+                    title: "Vehicle Deleted", 
+                    description: "The vehicle has been successfully removed from inventory.",
+                    variant: "destructive"
+                });
             })
             .catch(async (serverError) => {
                 const permissionError = new FirestorePermissionError({
@@ -285,3 +289,5 @@ export default function InventoryClientPage() {
     </div>
   )
 }
+
+    
