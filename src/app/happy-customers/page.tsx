@@ -73,21 +73,25 @@ export default function HappyCustomersPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-        // Header fade-in on load, then hide on scroll
-        const showAnim = gsap.from(headerRef.current, {
-            autoAlpha: 0,
-            yPercent: -100,
-            paused: true,
-            duration: 0.2,
-        }).progress(1);
+      // Header fade-in on load
+      gsap.fromTo(headerRef.current, 
+        { autoAlpha: 0, y: -20 },
+        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
+      );
 
-        ScrollTrigger.create({
-            start: "top top-=-100",
-            end: 99999,
-            onUpdate: (self) => {
-                self.direction === -1 ? showAnim.play() : showAnim.reverse();
-            },
-        });
+      // Header fade out on scroll, reappear only at top
+      ScrollTrigger.create({
+        trigger: pageRef.current,
+        start: 'top top',
+        end: 'max',
+        onUpdate: (self) => {
+          if (self.scroll() > 100) {
+            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: 'power2.out' });
+          } else {
+            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.in' });
+          }
+        },
+      });
 
       gsap.from(titleRef.current, {
         opacity: 0,
@@ -215,5 +219,3 @@ export default function HappyCustomersPage() {
     </>
   );
 }
-
-    
