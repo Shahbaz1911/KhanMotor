@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UploadCloud, LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon } from "lucide-react";
+import { UploadCloud, LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import placeholderImages from "@/lib/placeholder-images.json";
 import { vehicles as allVehicles } from "@/lib/vehiclesData";
@@ -18,12 +18,28 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { uploadFile } from "@/firebase/storage";
+import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("inventory");
+
+  // State for vehicle form
+  const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
+  const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
+  const [vehicleUploadProgress, setVehicleUploadProgress] = useState<number | null>(null);
+  const [isVehicleUploading, setIsVehicleUploading] = useState(false);
+
+  // State for customer gallery form
+  const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
+  const [customerImageUrl, setCustomerImageUrl] = useState<string | null>(null);
+  const [customerUploadProgress, setCustomerUploadProgress] = useState<number | null>(null);
+  const [isCustomerUploading, setIsCustomerUploading] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -38,6 +54,43 @@ export default function AdminDashboardPage() {
         </div>
     );
   }
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vehicle' | 'customer') => {
+    const file = e.target.files?.[0] || null;
+    if (type === 'vehicle') {
+        setVehicleImageFile(file);
+        setVehicleImageUrl(null);
+    } else {
+        setCustomerImageFile(file);
+        setCustomerImageUrl(null);
+    }
+  };
+
+  const handleFileUpload = async (type: 'vehicle' | 'customer') => {
+    const file = type === 'vehicle' ? vehicleImageFile : customerImageFile;
+    const path = type === 'vehicle' ? 'vehicle-images' : 'customer-gallery';
+    const setIsUploading = type === 'vehicle' ? setIsVehicleUploading : setIsCustomerUploading;
+    const setProgress = type === 'vehicle' ? setVehicleUploadProgress : setCustomerUploadProgress;
+    const setImageUrl = type === 'vehicle' ? setVehicleImageUrl : setCustomerImageUrl;
+
+    if (!file) {
+      toast({ title: "No file selected", description: "Please select a file to upload.", variant: "destructive" });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const url = await uploadFile(file, path, setProgress);
+      setImageUrl(url);
+      toast({ title: "Upload Successful!", description: "Image has been uploaded." });
+    } catch (error) {
+      console.error("Upload failed:", error);
+      toast({ title: "Upload Failed", description: "Could not upload the image.", variant: "destructive" });
+    } finally {
+      setIsUploading(false);
+      setProgress(null);
+    }
+  };
 
   // Placeholder for customer gallery items
   const galleryItems = [
@@ -112,20 +165,25 @@ export default function AdminDashboardPage() {
                             
                             <div className="space-y-2">
                                 <Label htmlFor="car-image">Car Image</Label>
-                                <div className="flex items-center justify-center w-full">
-                                    <Label htmlFor="car-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
-                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
-                                            <p className="mb-2 text-sm text-muted-foreground text-center"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                            <p className="text-xs text-muted-foreground text-center">PNG, JPG, or WEBP (MAX. 5MB)</p>
-                                        </div>
-                                        <Input id="car-image-upload" type="file" className="hidden" />
-                                    </Label>
-                                </div> 
+                                {vehicleImageUrl && <div className="mt-4"><Image src={vehicleImageUrl} alt="Uploaded vehicle" width={200} height={150} className="rounded-lg object-cover" /></div>}
+                                {isVehicleUploading && vehicleUploadProgress !== null && (
+                                    <div className="flex items-center gap-2">
+                                        <Progress value={vehicleUploadProgress} className="w-full" />
+                                        <span>{Math.round(vehicleUploadProgress)}%</span>
+                                    </div>
+                                )}
+                                <div className="flex items-center gap-4">
+                                    <Input id="car-image-upload" type="file" onChange={(e) => handleFileChange(e, 'vehicle')} className="flex-1" />
+                                    <Button type="button" onClick={() => handleFileUpload('vehicle')} disabled={isVehicleUploading || !vehicleImageFile}>
+                                        {isVehicleUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                                        <span className="ml-2">Upload</span>
+                                    </Button>
+                                </div>
+                                <p className="text-xs text-muted-foreground">Select a file then click upload. PNG, JPG, or WEBP (MAX. 5MB).</p>
                             </div>
 
                             <div className="flex justify-end">
-                                <Button type="submit">
+                                <Button type="submit" disabled={isVehicleUploading}>
                                     Add Vehicle
                                 </Button>
                             </div>
@@ -196,20 +254,25 @@ export default function AdminDashboardPage() {
                             <Input id="caption" placeholder="e.g., Mr. Khan with his new Honda City" />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="customer-image">Customer Photo</Label>
-                                <div className="flex items-center justify-center w-full">
-                                <Label htmlFor="customer-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
-                                        <p className="mb-2 text-sm text-muted-foreground text-center"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-muted-foreground text-center">PNG, JPG, or WEBP (MAX. 5MB)</p>
-                                    </div>
-                                    <Input id="customer-image-upload" type="file" className="hidden" />
-                                </Label>
-                            </div> 
+                             <Label htmlFor="customer-image">Customer Photo</Label>
+                             {customerImageUrl && <div className="mt-4"><Image src={customerImageUrl} alt="Uploaded customer" width={200} height={150} className="rounded-lg object-cover" /></div>}
+                            {isCustomerUploading && customerUploadProgress !== null && (
+                                <div className="flex items-center gap-2">
+                                    <Progress value={customerUploadProgress} className="w-full" />
+                                    <span>{Math.round(customerUploadProgress)}%</span>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-4">
+                                <Input id="customer-image-upload" type="file" onChange={(e) => handleFileChange(e, 'customer')} className="flex-1" />
+                                <Button type="button" onClick={() => handleFileUpload('customer')} disabled={isCustomerUploading || !customerImageFile}>
+                                    {isCustomerUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                                    <span className="ml-2">Upload</span>
+                                </Button>
+                            </div>
+                             <p className="text-xs text-muted-foreground">Select a file then click upload. PNG, JPG, or WEBP (MAX. 5MB).</p>
                         </div>
                         <div className="flex justify-end">
-                            <Button type="submit">Add to Gallery</Button>
+                            <Button type="submit" disabled={isCustomerUploading}>Add to Gallery</Button>
                         </div>
                     </form>
                     
