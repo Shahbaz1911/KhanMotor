@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VehicleShowcaseCard } from "@/components/vehicles/VehicleShowcaseCard";
 import type { Vehicle } from "@/types";
-import { initializeFirebase } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 
@@ -15,7 +15,7 @@ export default function VehiclesPage() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [vehicles, setVehicles] = React.useState<Vehicle[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const { firestore } = initializeFirebase();
+  const firestore = useFirestore();
 
   useEffect(() => {
     if (!firestore) return;
@@ -66,7 +66,7 @@ export default function VehiclesPage() {
         Our Vehicle Collection
       </h1>
 
-        {loading ? (
+        {loading || !firestore ? (
             <div className="flex justify-center items-center h-64">
                 <Loader2 className="h-8 w-8 animate-spin" />
             </div>

@@ -12,7 +12,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
 import { GalleryThumbnails, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { initializeFirebase } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import type { Vehicle } from "@/types";
 
@@ -25,7 +25,7 @@ export default function GalleryPage() {
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
-  const { firestore } = initializeFirebase();
+  const firestore = useFirestore();
 
   useEffect(() => {
     if (!firestore) return;
@@ -137,7 +137,7 @@ export default function GalleryPage() {
               Our Vehicle Collection
             </h1>
             
-            {loading ? (
+            {loading || !firestore ? (
                 <div className="flex justify-center items-center h-64">
                     <Loader2 className="h-8 w-8 animate-spin" />
                 </div>

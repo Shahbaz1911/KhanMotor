@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { initializeFirebase } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { collection, addDoc, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import type { Vehicle } from "@/types";
 import { uploadToCloudinary } from "@/lib/actions";
@@ -33,7 +32,7 @@ export default function AdminDashboardPage() {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("inventory");
   
-  const { firestore } = initializeFirebase();
+  const firestore = useFirestore();
 
   // State for vehicle form
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -78,7 +77,7 @@ export default function AdminDashboardPage() {
   }, [firestore]);
 
 
-  if (!user) {
+  if (!user || !firestore) {
     return (
         <div className="flex min-h-screen items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />

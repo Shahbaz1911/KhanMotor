@@ -2,11 +2,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/contexts/AuthContext"; // Added AuthProvider import
+import { AuthProvider } from "@/contexts/AuthContext";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SmoothScroll } from '@/components/custom/SmoothScroll';
 import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
+import { FirebaseProvider } from '@/firebase/provider';
 
 export const metadata: Metadata = {
   title: 'Khan Motor',
@@ -27,23 +28,25 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SmoothScroll>
-              <div className="flex min-h-screen flex-col">
-                <main className="flex-grow">{children}</main>
-                <Footer />
-              </div>
-              <WhatsAppButton />
-              <Toaster />
-            </SmoothScroll>
-          </ThemeProvider>
-        </AuthProvider>
+        <FirebaseProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SmoothScroll>
+                <div className="flex min-h-screen flex-col">
+                  <main className="flex-grow">{children}</main>
+                  <Footer />
+                </div>
+                <WhatsAppButton />
+                <Toaster />
+              </SmoothScroll>
+            </ThemeProvider>
+          </AuthProvider>
+        </FirebaseProvider>
       </body>
     </html>
   );

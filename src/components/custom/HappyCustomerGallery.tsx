@@ -6,7 +6,7 @@ import { Loader2, Star } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { initializeFirebase } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 
 interface GalleryItem {
@@ -26,7 +26,7 @@ export function HappyCustomerGallery() {
 
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const { firestore } = initializeFirebase();
+  const firestore = useFirestore();
 
   useEffect(() => {
     if (!firestore) return;
@@ -94,7 +94,7 @@ export function HappyCustomerGallery() {
           </p>
         </div>
 
-        {loading ? (
+        {loading || !firestore ? (
              <div className="flex justify-center items-center h-64">
                 <Loader2 className="h-8 w-8 animate-spin" />
             </div>
