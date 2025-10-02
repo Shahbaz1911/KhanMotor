@@ -9,13 +9,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, X } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
-import { collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { collection, onSnapshot, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
@@ -34,14 +34,13 @@ export default function AdminDashboardPage() {
   
   const firestore = useFirestore();
 
-  // State for customer gallery form
+  // State for customer gallery
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [newGalleryItem, setNewGalleryItem] = useState({ caption: "" });
-  const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
-  const [customerImageUrl, setCustomerImageUrl] = useState<string | null>(null);
-  const [isCustomerUploading, setIsCustomerUploading] = useState(false);
+  const [loadingGallery, setLoadingGallery] = useState(true);
   const [editingGalleryItem, setEditingGalleryItem] = useState<GalleryItem | null>(null);
   const [isGalleryEditDialogOpen, setIsGalleryEditDialogOpen] = useState(false);
+  const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
+  const [isCustomerUploading, setIsCustomerUploading] = useState(false);
 
 
   useEffect(() => {
@@ -52,12 +51,13 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     if (!firestore || !user) return;
-
+    setLoadingGallery(true);
     const galleryCollection = collection(firestore, "gallery");
     const galleryUnsubscribe = onSnapshot(galleryCollection, 
         (snapshot) => {
             const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
             setGalleryItems(galleryData);
+            setLoadingGallery(false);
         },
         async (error) => {
             const permissionError = new FirestorePermissionError({
@@ -65,6 +65,7 @@ export default function AdminDashboardPage() {
                 operation: 'list',
             });
             errorEmitter.emit('permission-error', permissionError);
+            setLoadingGallery(false);
         }
     );
     
@@ -86,16 +87,11 @@ export default function AdminDashboardPage() {
     }
   }
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'customer' | 'edit-gallery') => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-
-    if (type === 'customer') {
-        setCustomerImageFile(file);
-        if(file) setCustomerImageUrl(URL.createObjectURL(file));
-        else setCustomerImageUrl(null)
-    } else if (type === 'edit-gallery' && editingGalleryItem) {
-        setCustomerImageFile(file); // reuse for edit
-        if(file) setEditingGalleryItem({ ...editingGalleryItem, imageUrl: URL.createObjectURL(file) });
+    setCustomerImageFile(file);
+    if(file && editingGalleryItem) {
+        setEditingGalleryItem({ ...editingGalleryItem, imageUrl: URL.createObjectURL(file) });
     }
   };
 
@@ -124,51 +120,12 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleAddGalleryItem = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!firestore || !user || !customerImageFile) {
-        toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
-        return;
-    }
-    setIsCustomerUploading(true);
-    const uploadedImageUrl = await handleFileUpload(customerImageFile);
-    setIsCustomerUploading(false);
-    
-    if (!uploadedImageUrl) {
-        toast({ title: "Image upload failed", description: "Could not add gallery item.", variant: "destructive" });
-        return;
-    }
-
-    const galleryData = {
-        caption: newGalleryItem.caption,
-        imageUrl: uploadedImageUrl,
-        createdAt: serverTimestamp(),
-    };
-
-    const galleryCollection = collection(firestore, "gallery");
-    addDoc(galleryCollection, galleryData)
-        .then(() => {
-            toast({ title: "Gallery Item Added", description: `A new photo has been added to the gallery.` });
-            setNewGalleryItem({ caption: "" });
-            setCustomerImageFile(null);
-            setCustomerImageUrl(null);
-        })
-        .catch(async (serverError) => {
-             const permissionError = new FirestorePermissionError({
-                path: galleryCollection.path,
-                operation: 'create',
-                requestResourceData: galleryData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
-  }
-
   const handleUpdateGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore || !editingGalleryItem || !user) return;
 
     let uploadedImageUrl = editingGalleryItem.imageUrl;
-    if (customerImageFile) { // Check if a new file was selected for the gallery item
+    if (customerImageFile) {
         setIsCustomerUploading(true);
         const newUrl = await handleFileUpload(customerImageFile);
         setIsCustomerUploading(false);
@@ -298,6 +255,7 @@ export default function AdminDashboardPage() {
                          <Button
                             variant={'default'}
                             className="flex-1 w-full"
+                             onClick={() => router.push('/admin/dashboard')}
                         >
                             <Users className="mr-2 h-4 w-4" />
                             Manage Customer Gallery
@@ -307,73 +265,57 @@ export default function AdminDashboardPage() {
             </Card>
            
            <Card className="shadow-lg">
-                <CardHeader>
-                    <CardTitle>Manage Happy Customer Gallery</CardTitle>
-                    <CardDescription>
-                        Upload, edit, or delete photos for the customer gallery section on your homepage.
-                    </CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>Happy Customer Gallery</CardTitle>
+                        <CardDescription>
+                            Manage photos for the customer gallery section on your homepage.
+                        </CardDescription>
+                    </div>
+                     <Button onClick={() => router.push('/admin/gallery/add')}>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add to Gallery
+                    </Button>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleAddGalleryItem} className="grid gap-6 mb-8 border-b pb-8">
-                        <div className="space-y-2">
-                            <Label htmlFor="caption">Caption</Label>
-                            <Input id="caption" placeholder="e.g., Mr. Khan with his new Honda City" value={newGalleryItem.caption} onChange={e => setNewGalleryItem({ caption: e.target.value})} required/>
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Customer Photo</Label>
-                             <div className="flex items-center gap-4">
-                                {customerImageUrl && !isCustomerUploading && <Image src={customerImageUrl} alt="Uploaded customer" width={120} height={90} className="rounded-lg object-cover" />}
-                                {isCustomerUploading && (
-                                    <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted">
-                                        <Loader2 className="h-5 w-5 animate-spin" />
+                    {loadingGallery ? (
+                        <div className="flex justify-center items-center h-64">
+                           <Loader2 className="h-8 w-8 animate-spin" />
+                       </div>
+                    ) : galleryItems.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {galleryItems.map(item => (
+                                <Card key={item.id} className="overflow-hidden">
+                                    <div className="relative h-48 w-full">
+                                        <Image src={item.imageUrl} alt={item.caption} fill objectFit="cover" />
                                     </div>
-                                )}
-                                <div className="flex-1 space-y-2">
-                                     <Label htmlFor="customer-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                        <Upload className="h-5 w-5" />
-                                        <span>{customerImageFile ? "Change file" : "Click to upload"}</span>
-                                    </Label>
-                                    <Input id="customer-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'customer')} className="sr-only" />
-                                    <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB).</p>
-                                </div>
-                            </div>
+                                    <CardContent className="p-4">
+                                        <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
+                                        <div className="flex justify-end gap-2 mt-4">
+                                            <Button variant="outline" size="icon" onClick={() => openGalleryEditDialog(item)}>
+                                                <Edit className="h-4 w-4" />
+                                                <span className="sr-only">Edit</span>
+                                            </Button>
+                                            <Button variant="destructive" size="icon" onClick={() => handleDeleteGalleryItem(item.id)}>
+                                                <Trash2 className="h-4 w-4" />
+                                                    <span className="sr-only">Delete</span>
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
                         </div>
-                        <div className="flex justify-end">
-                            <Button type="submit" disabled={isCustomerUploading}>
-                                {isCustomerUploading ? 'Please wait...' : 'Add to Gallery'}
+                    ) : (
+                         <div className="text-center py-16">
+                            <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+                            <h3 className="mt-4 text-lg font-medium">No photos in gallery</h3>
+                            <p className="mt-1 text-sm text-muted-foreground">Get started by adding a new customer photo.</p>
+                            <Button className="mt-6" onClick={() => router.push('/admin/gallery/add')}>
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                Add Photo
                             </Button>
                         </div>
-                    </form>
-                    
-                    <div>
-                        <h3 className="text-lg font-semibold mb-4">Existing Gallery Photos</h3>
-                        {galleryItems.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {galleryItems.map(item => (
-                                    <Card key={item.id} className="overflow-hidden">
-                                        <div className="relative h-48 w-full">
-                                            <Image src={item.imageUrl} alt={item.caption} fill objectFit="cover" />
-                                        </div>
-                                        <CardContent className="p-4">
-                                            <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
-                                            <div className="flex justify-end gap-2 mt-4">
-                                                <Button variant="outline" size="icon" onClick={() => openGalleryEditDialog(item)}>
-                                                    <Edit className="h-4 w-4" />
-                                                    <span className="sr-only">Edit</span>
-                                                </Button>
-                                                <Button variant="destructive" size="icon" onClick={() => handleDeleteGalleryItem(item.id)}>
-                                                    <Trash2 className="h-4 w-4" />
-                                                        <span className="sr-only">Delete</span>
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-muted-foreground text-center py-8">No gallery photos have been uploaded yet.</p>
-                        )}
-                    </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -399,7 +341,7 @@ export default function AdminDashboardPage() {
                                             <Upload className="h-5 w-5" />
                                             <span>Replace file</span>
                                         </Label>
-                                        <Input id="edit-gallery-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-gallery')} className="sr-only" />
+                                        <Input id="edit-gallery-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e)} className="sr-only" />
                                     </div>
                                 </div>
                                 <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
