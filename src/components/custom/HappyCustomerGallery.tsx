@@ -1,20 +1,22 @@
+
 "use client";
 
 import Image from "next/image";
-import { Loader2, Star } from "lucide-react";
+import { ArrowRight, Loader2, Star } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useFirestore } from "@/firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, limit, orderBy } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 interface GalleryItem {
   id: string;
   caption: string;
   imageUrl: string;
-  // Assuming these might be added later
   customerName?: string;
   rating?: number;
   aiHint?: string;
@@ -24,6 +26,7 @@ export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,12 +36,13 @@ export function HappyCustomerGallery() {
     if (!firestore) return;
 
     const galleryCollection = collection(firestore, "gallery");
-    const unsubscribe = onSnapshot(galleryCollection, 
+    // Query for the 6 newest items
+    const q = query(galleryCollection, orderBy("createdAt", "desc"), limit(6));
+    const unsubscribe = onSnapshot(q, 
         (snapshot) => {
             const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
             setGalleryItems(galleryData);
             setLoading(false);
-            // Refresh ScrollTrigger after data is loaded
             ScrollTrigger.refresh();
         }, 
         (error) => {
@@ -108,7 +112,7 @@ export function HappyCustomerGallery() {
             </div>
         ) : (
             <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.length > 0 ? galleryItems.map((item, index) => (
+            {galleryItems.length > 0 ? galleryItems.map((item) => (
                 <div
                 key={item.id}
                 className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
@@ -146,8 +150,14 @@ export function HappyCustomerGallery() {
             )}
             </div>
         )}
+
+        <div className="mt-12 text-center">
+            <Button size="lg" variant="outline" onClick={() => router.push('/happy-customers')} className="group">
+                View Full Gallery
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+        </div>
       </div>
     </section>
   );
 }
-    

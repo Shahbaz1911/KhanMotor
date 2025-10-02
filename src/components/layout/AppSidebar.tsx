@@ -21,7 +21,8 @@ interface AppSidebarProps {
 const mainNavItems = [
   { id: "home", label: "Home", href: "/#home" }, 
   { id: "about-us", label: "About Us", href: "/#about-us" },
-  { id: "gallery", label: "Gallery", href: "/gallery" },
+  { id: "gallery", label: "Our Cars", href: "/gallery" },
+  { id: "happy-customers", label: "Happy Customers", href: "/happy-customers" },
   { id: "testimonials", label: "Reviews", href: "/#testimonials" },
   { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
   { id: "contact", label: "Contact Us", href: "/contact" },
@@ -61,13 +62,13 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             />
          </Link>
       </div>
-      <div className="flex-grow flex justify-start">
+      <div className="flex-grow flex justify-start overflow-y-auto">
         <nav className="flex flex-col gap-2 p-4 md:p-8 w-full">
           {mainNavItems.map((item) => (
             <Button
               key={item.id}
               variant="sidebar"
-              className="w-full justify-start text-3xl md:text-4xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-4"
+              className="w-full justify-start text-3xl md:text-4xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-4 h-auto"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
@@ -79,7 +80,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
         </nav>
       </div>
 
-      <div className="border-t border-gray-200 dark:border-white/10 p-4 space-y-4">
+      <div className="border-t border-gray-200 dark:border-white/10 p-4 space-y-4 mt-auto">
         <div className="flex items-center justify-start gap-2 px-2"> 
             <ThemeToggle />
             {socialLinks.map((social) => (
@@ -144,4 +145,3 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
     </div>
   );
 }
-
