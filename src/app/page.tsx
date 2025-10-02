@@ -112,12 +112,12 @@ export default function ConsolidatedPage() {
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="bottom" className="h-full bg-black/80 backdrop-blur-lg border-t border-white/10 p-0" srTitle="Navigation Menu">
+              <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
                 <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
                  <Button 
                     variant="ghost" 
                     onClick={() => setIsSheetOpen(false)} 
-                    className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white text-sm"
+                    className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
                     aria-label="Close menu"
                   >
                     CLOSE

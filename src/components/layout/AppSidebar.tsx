@@ -48,7 +48,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
   return (
     <div className={cn("h-full flex flex-col", className)}>
-       <div className="p-4 md:p-8 border-b border-white/10 flex justify-center">
+       <div className="p-4 md:p-8 border-b border-gray-200 dark:border-white/10 flex justify-center">
          <Link href="/#home" onClick={handleLinkClick}>
             <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
@@ -65,7 +65,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             <Button
               key={item.id}
               variant="sidebar"
-              className="w-full justify-start text-3xl md:text-4xl font-black text-white/80 hover:text-white relative group py-4"
+              className="w-full justify-start text-3xl md:text-4xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-4"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
@@ -77,7 +77,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
         </nav>
       </div>
 
-      <div className="border-t border-white/10 p-4 space-y-4">
+      <div className="border-t border-gray-200 dark:border-white/10 p-4 space-y-4">
         <div className="flex justify-start px-2"> 
             <ThemeToggle />
         </div>
@@ -85,14 +85,14 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           <div className="flex justify-start">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex h-auto items-center justify-start gap-3 p-2 text-left text-white w-full">
-                  <Avatar className="h-10 w-10 border-2 border-white/20">
+                <Button variant="ghost" className="flex h-auto items-center justify-start gap-3 p-2 text-left text-black dark:text-white w-full">
+                  <Avatar className="h-10 w-10 border-2 border-black/20 dark:border-white/20">
                     <AvatarImage src={user.avatarUrl} alt={user.name} />
                     <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
                     <p className="font-black">{user.name}</p>
-                    <p className="text-xs text-white/70">{user.email}</p>
+                    <p className="text-xs text-black/70 dark:text-white/70">{user.email}</p>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
@@ -124,7 +124,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           </div>
         ) : (
           <div className="flex justify-start">
-            <Button onClick={handleLogin} variant="outline" className="font-black bg-white text-black hover:bg-white/90 hover:text-black w-full">
+            <Button onClick={handleLogin} variant="outline" className="font-black bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90 w-full">
               Login
             </Button>
           </div>
