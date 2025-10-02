@@ -170,7 +170,7 @@ export default function AdminDashboardPage() {
 
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore) return;
+    if (!firestore || !user) return;
     if (!vehicleImageFile) {
         toast({ title: "Image required", description: "Please upload a vehicle image.", variant: "destructive" });
         return;
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
 
   const handleUpdateVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore || !editingVehicle) return;
+    if (!firestore || !editingVehicle || !user) return;
 
     let uploadedImageUrl = editingVehicle.imageUrl;
     if (vehicleImageFile) {
@@ -254,7 +254,7 @@ export default function AdminDashboardPage() {
   
   const handleAddGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore) return;
+    if (!firestore || !user) return;
      if (!customerImageFile) {
         toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
         return;
@@ -293,7 +293,7 @@ export default function AdminDashboardPage() {
 
   const handleUpdateGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore || !editingGalleryItem) return;
+    if (!firestore || !editingGalleryItem || !user) return;
 
     let uploadedImageUrl = editingGalleryItem.imageUrl;
     if (customerImageFile) { // Check if a new file was selected for the gallery item
@@ -330,13 +330,13 @@ export default function AdminDashboardPage() {
   }
 
   const handleDelete = async (collectionName: string, id: string) => {
-    if (!firestore) return;
-    if (!window.confirm("Are you sure you want to delete this item?")) return;
+    if (!firestore || !user) return;
+    if (!window.confirm("Are you sure you want to delete this item? This action cannot be undone.")) return;
     
     const docRef = doc(firestore, collectionName, id);
     deleteDoc(docRef)
         .then(() => {
-             toast({ title: "Item Deleted", description: "The item has been removed successfully." });
+             toast({ title: "Item Deleted", description: "The item has been successfully removed from the database." });
         })
         .catch(async (serverError) => {
             const permissionError = new FirestorePermissionError({
@@ -745,5 +745,6 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
 
     
