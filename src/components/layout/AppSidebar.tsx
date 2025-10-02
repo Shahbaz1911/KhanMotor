@@ -48,7 +48,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
   return (
     <div className={cn("h-full flex flex-col", className)}>
-       <div className="p-4 md:p-8 border-b border-gray-200 dark:border-white/10 flex justify-center">
+       <div className="p-4 md:p-8 border-b border-gray-200 dark:border-white/10 flex justify-start">
          <Link href="/#home" onClick={handleLinkClick}>
             <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
@@ -122,13 +122,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        ) : (
-          <div className="flex justify-start">
-            <Button onClick={handleLogin} variant="outline" className="font-black bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90 w-full">
-              Login
-            </Button>
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
