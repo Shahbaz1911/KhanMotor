@@ -50,7 +50,7 @@ export function Footer() {
 
             {/* Social Media */}
             <div className="w-full sm:w-1/2 md:w-full text-left order-2 md:order-1">
-              <h3 className="text-lg font-bold text-white">Follow Us</h3>
+              <h3 className="text-lg font-bold text-white">Connect</h3>
               <div className="mt-4 flex gap-4 justify-start">
                 {socialLinks.map((social) => (
                   <Button key={social.label} variant="outline" size="icon" asChild>
