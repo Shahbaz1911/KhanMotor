@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Car, Users, Settings, User as UserIcon, Loader2, ShieldCheck, CircleDollarSign } from "lucide-react";
+import { LogOut, Car, Users, Settings, User as UserIcon, Loader2, BadgeCheck, TrendingDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
                          <Card onClick={() => router.push('/admin/inventory?status=available')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Available</CardTitle>
-                                <ShieldCheck className="h-4 w-4 text-green-500" />
+                                <BadgeCheck className="h-4 w-4 text-green-500" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">{inventoryStats.available}</div>
@@ -196,7 +196,7 @@ export default function AdminDashboardPage() {
                          <Card onClick={() => router.push('/admin/inventory?status=sold')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Sold</CardTitle>
-                                <CircleDollarSign className="h-4 w-4 text-red-500" />
+                                <TrendingDown className="h-4 w-4 text-red-500" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">{inventoryStats.sold}</div>
@@ -210,3 +210,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    
