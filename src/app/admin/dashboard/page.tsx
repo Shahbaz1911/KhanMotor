@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -45,8 +45,6 @@ export default function AdminDashboardPage() {
   const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
   const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
   const [isVehicleUploading, setIsVehicleUploading] = useState(false);
-  const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   // State for customer gallery form
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -116,7 +114,7 @@ export default function AdminDashboardPage() {
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vehicle' | 'customer' | 'edit-vehicle' | 'edit-gallery') => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'vehicle' | 'customer' | 'edit-gallery') => {
     const file = e.target.files?.[0] || null;
 
     if (type === 'vehicle') {
@@ -127,9 +125,6 @@ export default function AdminDashboardPage() {
         setCustomerImageFile(file);
         if(file) setCustomerImageUrl(URL.createObjectURL(file));
         else setCustomerImageUrl(null)
-    } else if (type === 'edit-vehicle' && editingVehicle) {
-        setVehicleImageFile(file); // reuse for edit
-        if(file) setEditingVehicle({ ...editingVehicle, imageUrl: URL.createObjectURL(file) });
     } else if (type === 'edit-gallery' && editingGalleryItem) {
         setCustomerImageFile(file); // reuse for edit
         if(file) setEditingGalleryItem({ ...editingGalleryItem, imageUrl: URL.createObjectURL(file) });
@@ -211,47 +206,6 @@ export default function AdminDashboardPage() {
         });
   }
 
-  const handleUpdateVehicle = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!firestore || !editingVehicle || !user) return;
-
-    let uploadedImageUrl = editingVehicle.imageUrl;
-    if (vehicleImageFile) {
-        const newUrl = await handleFileUpload('vehicle');
-        if (newUrl) {
-            uploadedImageUrl = newUrl;
-        } else {
-            toast({ title: "Image upload failed", description: "Could not update vehicle image.", variant: "destructive" });
-            return;
-        }
-    }
-    
-    const vehicleData = {
-        ...editingVehicle,
-        year: Number(editingVehicle.year),
-        price: Number(editingVehicle.price),
-        features: Array.isArray(editingVehicle.features) ? editingVehicle.features : editingVehicle.features.split('\n').filter(f => f.trim() !== ""),
-        imageUrl: uploadedImageUrl,
-    };
-    
-    const vehicleRef = doc(firestore, "vehicles", editingVehicle.id);
-    updateDoc(vehicleRef, vehicleData)
-        .then(() => {
-            toast({ title: "Vehicle Updated", description: `${editingVehicle.make} ${editingVehicle.model} has been updated.` });
-            setIsEditDialogOpen(false);
-            setEditingVehicle(null);
-            setVehicleImageFile(null);
-        })
-        .catch(async (serverError) => {
-            const permissionError = new FirestorePermissionError({
-                path: vehicleRef.path,
-                operation: 'update',
-                requestResourceData: vehicleData,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-        });
-  }
-  
   const handleAddGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore || !user) return;
@@ -346,15 +300,6 @@ export default function AdminDashboardPage() {
             errorEmitter.emit('permission-error', permissionError);
         });
   }
-
-  const openEditDialog = (vehicle: Vehicle) => {
-    setEditingVehicle({
-        ...vehicle,
-        features: Array.isArray(vehicle.features) ? vehicle.features.join('\n') : vehicle.features
-    });
-    setIsEditDialogOpen(true);
-    setVehicleImageFile(null);
-  };
   
   const openGalleryEditDialog = (item: GalleryItem) => {
     setEditingGalleryItem(item);
@@ -478,7 +423,7 @@ export default function AdminDashboardPage() {
                                              </div>
                                             <p className="font-semibold text-lg mt-2">${vehicle.price.toLocaleString()}</p>
                                             <div className="flex justify-end gap-2 mt-4">
-                                                <Button variant="outline" size="icon" onClick={() => openEditDialog(vehicle)}>
+                                                <Button variant="outline" size="icon" onClick={() => router.push(`/admin/edit-vehicle/${vehicle.id}`)}>
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit</span>
                                                 </Button>
@@ -642,76 +587,6 @@ export default function AdminDashboardPage() {
            
            {renderContent()}
 
-            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent className="sm:max-w-[625px] grid-rows-[auto_1fr_auto]">
-                    <DialogHeader>
-                        <DialogTitle>Edit Vehicle</DialogTitle>
-                        <DialogDescription>
-                            Make changes to the vehicle details below. Click save when you're done.
-                        </DialogDescription>
-                    </DialogHeader>
-                    {editingVehicle && (
-                        <form onSubmit={handleUpdateVehicle} className="grid gap-4 overflow-hidden">
-                            <div className="grid gap-4 py-4 px-1 max-h-[60vh] overflow-y-auto">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="edit-make">Make</Label>
-                                        <Input id="edit-make" value={editingVehicle.make} onChange={e => setEditingVehicle({...editingVehicle, make: e.target.value})} required/>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="edit-model">Model</Label>
-                                        <Input id="edit-model" value={editingVehicle.model} onChange={e => setEditingVehicle({...editingVehicle, model: e.target.value})} required/>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="edit-year">Year</Label>
-                                        <Input id="edit-year" type="number" value={editingVehicle.year} onChange={e => setEditingVehicle({...editingVehicle, year: Number(e.target.value)})} required/>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="edit-price">Price ($)</Label>
-                                        <Input id="edit-price" type="number" value={editingVehicle.price} onChange={e => setEditingVehicle({...editingVehicle, price: Number(e.target.value)})} required/>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-status">Status</Label>
-                                    <Select value={editingVehicle.status} onValueChange={value => setEditingVehicle({...editingVehicle, status: value as 'available' | 'sold'})}>
-                                        <SelectTrigger id="edit-status">
-                                            <SelectValue placeholder="Select status" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="available">Available</SelectItem>
-                                            <SelectItem value="sold">Sold</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-description">Description</Label>
-                                    <Textarea id="edit-description" value={editingVehicle.description} onChange={e => setEditingVehicle({...editingVehicle, description: e.target.value})} required/>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-features">Features (one per line)</Label>
-                                    <Textarea id="edit-features" value={editingVehicle.features} onChange={e => setEditingVehicle({...editingVehicle, features: e.target.value})} required/>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-car-image">Car Image</Label>
-                                    {editingVehicle.imageUrl && !isVehicleUploading && <div className="mt-2"><Image src={editingVehicle.imageUrl} alt="Current vehicle" width={150} height={100} className="rounded-lg object-cover" /></div>}
-                                    {isVehicleUploading && <div className="flex items-center gap-2 mt-2"><Loader2 className="h-5 w-5 animate-spin" /><span>Uploading...</span></div>}
-                                    <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-vehicle')} className="mt-2" />
-                                    <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
-                                </div>
-                            </div>
-                            <DialogFooter className="border-t pt-4">
-                                <DialogClose asChild>
-                                    <Button type="button" variant="secondary">Cancel</Button>
-                                </DialogClose>
-                                <Button type="submit" disabled={isVehicleUploading}>{isVehicleUploading ? 'Uploading...' : 'Save Changes'}</Button>
-                            </DialogFooter>
-                        </form>
-                    )}
-                </DialogContent>
-            </Dialog>
-
             <Dialog open={isGalleryEditDialogOpen} onOpenChange={setIsGalleryEditDialogOpen}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -747,6 +622,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-    
-    
