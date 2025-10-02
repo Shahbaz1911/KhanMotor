@@ -23,7 +23,7 @@ const mainNavItems = [
   { id: "gallery", label: "Gallery", href: "/gallery" },
   { id: "testimonials", label: "Reviews", href: "/#testimonials" },
   { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
-  { id: "contact", label: "Contact Us", href: "/#contact" },
+  { id: "contact", label: "Contact Us", href: "/contact" },
 ];
 
 const socialLinks = [
