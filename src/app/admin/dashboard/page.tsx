@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { UploadCloud, LogOut, Trash2, Edit, Car, Users } from "lucide-react";
 import Image from "next/image";
 import placeholderImages from "@/lib/placeholder-images.json";
+import { vehicles as allVehicles } from "@/lib/vehiclesData";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export default function AdminDashboardPage() {
@@ -53,19 +55,7 @@ export default function AdminDashboardPage() {
       case 'inventory':
         return (
             <>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Manage Inventory</CardTitle>
-                        <CardDescription>
-                            Here you can add, edit, and delete vehicle listings.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">Your vehicle listings will appear here. You can edit or delete them as needed.</p>
-                    </CardContent>
-                </Card>
-
-                <Card className="shadow-lg">
+                <Card className="shadow-lg mb-8">
                     <CardHeader>
                         <CardTitle>Add New Vehicle</CardTitle>
                         <CardDescription>
@@ -74,23 +64,25 @@ export default function AdminDashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <form className="grid gap-6">
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 <div className="space-y-2">
-                                    <Label htmlFor="car-name">Car Name</Label>
-                                    <Input id="car-name" placeholder="e.g., Audi R8 Spyder" />
+                                    <Label htmlFor="make">Make</Label>
+                                    <Input id="make" placeholder="e.g., Audi" />
                                 </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="model">Model</Label>
+                                    <Input id="model" placeholder="e.g., R8 Spyder" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="year">Year</Label>
+                                    <Input id="year" type="number" placeholder="e.g., 2023" />
+                                </div>
+                            </div>
+                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="price">Price ($)</Label>
                                     <Input id="price" type="number" placeholder="e.g., 180000" />
                                 </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="description">Description</Label>
-                                <Textarea id="description" placeholder="Enter a brief description of the vehicle..." />
-                            </div>
-                            
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Status</Label>
                                     <Select>
@@ -103,19 +95,30 @@ export default function AdminDashboardPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="car-image">Car Image</Label>
-                                    <div className="flex items-center justify-center w-full">
-                                        <Label htmlFor="car-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
-                                                <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 5MB)</p>
-                                            </div>
-                                            <Input id="car-image-upload" type="file" className="hidden" />
-                                        </Label>
-                                    </div> 
-                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="description">Description</Label>
+                                <Textarea id="description" placeholder="Enter a brief description of the vehicle..." />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="features">Features (one per line)</Label>
+                                <Textarea id="features" placeholder="e.g., V10 Engine\nConvertible\nBang & Olufsen Sound" />
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <Label htmlFor="car-image">Car Image</Label>
+                                <div className="flex items-center justify-center w-full">
+                                    <Label htmlFor="car-image-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-background hover:bg-accent">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <UploadCloud className="w-8 h-8 mb-3 text-muted-foreground" />
+                                            <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                            <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 5MB)</p>
+                                        </div>
+                                        <Input id="car-image-upload" type="file" className="hidden" />
+                                    </Label>
+                                </div> 
                             </div>
 
                             <div className="flex justify-end">
@@ -124,6 +127,52 @@ export default function AdminDashboardPage() {
                                 </Button>
                             </div>
                         </form>
+                    </CardContent>
+                </Card>
+
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Current Inventory</CardTitle>
+                        <CardDescription>
+                            Manage your existing vehicle listings.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        {allVehicles.length > 0 ? (
+                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {allVehicles.map(vehicle => (
+                                    <Card key={vehicle.id} className="overflow-hidden">
+                                        <div className="relative h-48 w-full">
+                                            <Image src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} layout="fill" objectFit="cover" />
+                                        </div>
+                                        <CardContent className="p-4">
+                                             <div className="flex justify-between items-start">
+                                                <div>
+                                                    <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
+                                                    <p className="text-sm text-muted-foreground">{vehicle.year}</p>
+                                                </div>
+                                                <Badge variant={Math.random() > 0.5 ? "secondary" : "destructive"} className="capitalize">
+                                                   {Math.random() > 0.5 ? "Available" : "Sold"}
+                                                </Badge>
+                                             </div>
+                                            <p className="font-semibold text-lg mt-2">${vehicle.price.toLocaleString()}</p>
+                                            <div className="flex justify-end gap-2 mt-4">
+                                                <Button variant="outline" size="icon">
+                                                    <Edit className="h-4 w-4" />
+                                                    <span className="sr-only">Edit</span>
+                                                </Button>
+                                                <Button variant="destructive" size="icon">
+                                                    <Trash2 className="h-4 w-4" />
+                                                        <span className="sr-only">Delete</span>
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        ) : (
+                           <p className="text-muted-foreground text-center py-8">No vehicles in inventory yet.</p>
+                        )}
                     </CardContent>
                 </Card>
             </>
@@ -245,3 +294,5 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+    
