@@ -4,7 +4,7 @@
 import Image from "next/image";
 import type { Vehicle } from "@/types";
 import { Button } from "../ui/button";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Car, Gauge, Fuel, Cog } from "lucide-react";
 import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
@@ -76,28 +76,40 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
       </div>
 
       <div ref={contentRef}>
-        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground">{vehicle.year}</p>
+        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground">{vehicle.year} • {vehicle.color}</p>
         <h3 className="gsap-reveal mt-2 text-3xl font-black tracking-tight md:text-4xl">
           {vehicle.make} {vehicle.model}
         </h3>
-        <p className="gsap-reveal mt-4 text-lg text-muted-foreground">
+         <p className="gsap-reveal text-lg font-bold text-primary">{vehicle.variant}</p>
+        <p className="gsap-reveal mt-4 text-md text-muted-foreground">
           {vehicle.description}
         </p>
 
-        <ul className="gsap-reveal mt-6 space-y-3">
-          {vehicle.features.slice(0, 3).map((feature, index) => (
-            <li key={index} className="flex items-center gap-3">
-              <CheckCircle className="h-5 w-5 flex-shrink-0 text-primary" />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="gsap-reveal mt-6 grid grid-cols-2 gap-4 text-sm">
+            <div className="flex items-center gap-2">
+                <Gauge className="h-5 w-5 text-muted-foreground" />
+                <span>{vehicle.mileage.toLocaleString()} km</span>
+            </div>
+            <div className="flex items-center gap-2">
+                <Fuel className="h-5 w-5 text-muted-foreground" />
+                <span className="capitalize">{vehicle.fuelType}</span>
+            </div>
+             <div className="flex items-center gap-2">
+                <Cog className="h-5 w-5 text-muted-foreground" />
+                <span className="capitalize">{vehicle.transmission}</span>
+            </div>
+             <div className="flex items-center gap-2">
+                <Car className="h-5 w-5 text-muted-foreground" />
+                <span className="capitalize">{vehicle.ownership} Owner</span>
+            </div>
+        </div>
 
-        <div className="gsap-reveal mt-8 flex items-center gap-6">
+        <div className="gsap-reveal mt-8 flex flex-col sm:flex-row sm:items-center sm:gap-6">
           <p className="text-3xl font-bold">
-            ${vehicle.price.toLocaleString()}
+            ₹{vehicle.price.toLocaleString()}
+            {vehicle.priceType === 'negotiable' && <span className="text-sm font-normal text-muted-foreground"> (Negotiable)</span>}
           </p>
-          <Button size="lg" className="group" onClick={() => router.push('/book-appointment')}>
+          <Button size="lg" className="group mt-4 sm:mt-0" onClick={() => router.push('/book-appointment')}>
             Book Test Drive
             <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
           </Button>

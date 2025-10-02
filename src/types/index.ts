@@ -6,7 +6,14 @@ export interface Vehicle {
   make: string;
   model: string;
   year: number;
+  variant: string;
+  color: string;
   price: number;
+  priceType: 'negotiable' | 'fixed';
+  mileage: number;
+  fuelType: 'petrol' | 'diesel' | 'cng' | 'electric';
+  transmission: 'manual' | 'automatic';
+  ownership: 'first' | 'second' | 'third' | 'fourth';
   status: 'available' | 'sold';
   imageUrl: string;
   description: string;
@@ -56,5 +63,3 @@ export const appointmentFormSchema = z.object({
 });
 
 export type AppointmentFormData = z.infer<typeof appointmentFormSchema>;
-
-    

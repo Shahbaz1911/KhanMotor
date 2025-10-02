@@ -30,6 +30,13 @@ interface GalleryItem {
     caption: string;
 }
 
+const initialVehicleState = {
+    make: "", model: "", year: "", variant: "", color: "", 
+    price: "", priceType: "negotiable", mileage: "", fuelType: "petrol", 
+    transmission: "manual", ownership: "first", status: "available",
+    description: "", features: ""
+};
+
 export default function AdminDashboardPage() {
   const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -40,7 +47,7 @@ export default function AdminDashboardPage() {
 
   // State for vehicle form
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [newVehicle, setNewVehicle] = useState({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
+  const [newVehicle, setNewVehicle] = useState(initialVehicleState);
   const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
   const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
   const [isVehicleUploading, setIsVehicleUploading] = useState(false);
@@ -181,6 +188,7 @@ export default function AdminDashboardPage() {
         ...newVehicle,
         year: Number(newVehicle.year),
         price: Number(newVehicle.price),
+        mileage: Number(newVehicle.mileage),
         features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
         imageUrl: uploadedImageUrl,
         aiHint: 'new vehicle',
@@ -191,7 +199,7 @@ export default function AdminDashboardPage() {
     addDoc(vehiclesCollection, vehicleData)
         .then(() => {
             toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
-            setNewVehicle({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
+            setNewVehicle(initialVehicleState);
             setVehicleImageFile(null);
             setVehicleImageUrl(null);
         })
@@ -328,39 +336,97 @@ export default function AdminDashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleAddVehicle} className="grid gap-6">
+                             {/* Basic Info */}
+                            <h3 className="text-lg font-semibold border-b pb-2">Basic Info</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="make">Make</Label>
-                                    <Input id="make" placeholder="e.g., Audi" value={newVehicle.make} onChange={e => setNewVehicle({...newVehicle, make: e.target.value})} required/>
+                                    <Input id="make" placeholder="e.g., Honda" value={newVehicle.make} onChange={e => setNewVehicle({...newVehicle, make: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="model">Model</Label>
-                                    <Input id="model" placeholder="e.g., R8 Spyder" value={newVehicle.model} onChange={e => setNewVehicle({...newVehicle, model: e.target.value})} required/>
+                                    <Input id="model" placeholder="e.g., City" value={newVehicle.model} onChange={e => setNewVehicle({...newVehicle, model: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="year">Year</Label>
-                                    <Input id="year" type="number" placeholder="e.g., 2023" value={newVehicle.year} onChange={e => setNewVehicle({...newVehicle, year: e.target.value})} required/>
+                                    <Label htmlFor="year">Year of Manufacture</Label>
+                                    <Input id="year" type="number" placeholder="e.g., 2019" value={newVehicle.year} onChange={e => setNewVehicle({...newVehicle, year: e.target.value})} required/>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="variant">Variant / Trim</Label>
+                                    <Input id="variant" placeholder="e.g., ZXI+" value={newVehicle.variant} onChange={e => setNewVehicle({...newVehicle, variant: e.target.value})} required/>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="color">Color</Label>
+                                    <Input id="color" placeholder="e.g., Red" value={newVehicle.color} onChange={e => setNewVehicle({...newVehicle, color: e.target.value})} required/>
                                 </div>
                             </div>
+                            
+                            {/* Pricing */}
+                            <h3 className="text-lg font-semibold border-b pb-2 mt-4">Pricing</h3>
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="price">Price ($)</Label>
-                                    <Input id="price" type="number" placeholder="e.g., 180000" value={newVehicle.price} onChange={e => setNewVehicle({...newVehicle, price: e.target.value})} required/>
+                                    <Label htmlFor="price">Price (₹)</Label>
+                                    <Input id="price" type="number" placeholder="e.g., 850000" value={newVehicle.price} onChange={e => setNewVehicle({...newVehicle, price: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="status">Status</Label>
-                                    <Select value={newVehicle.status} onValueChange={value => setNewVehicle({...newVehicle, status: value})}>
-                                        <SelectTrigger id="status">
-                                            <SelectValue placeholder="Select status" />
+                                    <Label htmlFor="priceType">Price Type</Label>
+                                    <Select value={newVehicle.priceType} onValueChange={value => setNewVehicle({...newVehicle, priceType: value})}>
+                                        <SelectTrigger id="priceType">
+                                            <SelectValue placeholder="Select type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="available">Available</SelectItem>
-                                            <SelectItem value="sold">Sold</SelectItem>
+                                            <SelectItem value="negotiable">Negotiable</SelectItem>
+                                            <SelectItem value="fixed">Fixed</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
 
+                            {/* Condition & Specs */}
+                            <h3 className="text-lg font-semibold border-b pb-2 mt-4">Condition & Specs</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                               <div className="space-y-2">
+                                    <Label htmlFor="mileage">Mileage (km)</Label>
+                                    <Input id="mileage" type="number" placeholder="e.g., 25000" value={newVehicle.mileage} onChange={e => setNewVehicle({...newVehicle, mileage: e.target.value})} required/>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="fuelType">Fuel Type</Label>
+                                    <Select value={newVehicle.fuelType} onValueChange={value => setNewVehicle({...newVehicle, fuelType: value})}>
+                                        <SelectTrigger id="fuelType"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="petrol">Petrol</SelectItem>
+                                            <SelectItem value="diesel">Diesel</SelectItem>
+                                            <SelectItem value="cng">CNG</SelectItem>
+                                            <SelectItem value="electric">Electric</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="transmission">Transmission</Label>
+                                    <Select value={newVehicle.transmission} onValueChange={value => setNewVehicle({...newVehicle, transmission: value})}>
+                                        <SelectTrigger id="transmission"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="manual">Manual</SelectItem>
+                                            <SelectItem value="automatic">Automatic</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="ownership">Ownership</Label>
+                                    <Select value={newVehicle.ownership} onValueChange={value => setNewVehicle({...newVehicle, ownership: value})}>
+                                        <SelectTrigger id="ownership"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="first">First Owner</SelectItem>
+                                            <SelectItem value="second">Second Owner</SelectItem>
+                                            <SelectItem value="third">Third Owner</SelectItem>
+                                            <SelectItem value="fourth">Fourth Owner</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                             {/* Other Details */}
+                             <h3 className="text-lg font-semibold border-b pb-2 mt-4">Other Details</h3>
                             <div className="space-y-2">
                                 <Label htmlFor="description">Description</Label>
                                 <Textarea id="description" placeholder="Enter a brief description of the vehicle..." value={newVehicle.description} onChange={e => setNewVehicle({...newVehicle, description: e.target.value})} required/>
@@ -390,6 +456,20 @@ export default function AdminDashboardPage() {
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div className="space-y-2">
+                                <Label htmlFor="status">Status</Label>
+                                <Select value={newVehicle.status} onValueChange={value => setNewVehicle({...newVehicle, status: value})}>
+                                    <SelectTrigger id="status">
+                                        <SelectValue placeholder="Select status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="available">Available</SelectItem>
+                                        <SelectItem value="sold">Sold</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
 
                             <div className="flex justify-end">
                                 <Button type="submit" disabled={isVehicleUploading}>
@@ -425,7 +505,7 @@ export default function AdminDashboardPage() {
                                                    {vehicle.status || 'N/A'}
                                                 </Badge>
                                              </div>
-                                            <p className="font-semibold text-lg mt-2">${vehicle.price.toLocaleString()}</p>
+                                            <p className="font-semibold text-lg mt-2">₹{vehicle.price.toLocaleString()}</p>
                                             <div className="flex justify-end gap-2 mt-4">
                                                 <Button variant="outline" size="icon" onClick={() => router.push(`/admin/edit-vehicle/${vehicle.id}`)}>
                                                     <Edit className="h-4 w-4" />

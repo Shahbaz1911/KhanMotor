@@ -33,14 +33,21 @@
         "make": { "type": "string" },
         "model": { "type": "string" },
         "year": { "type": "number" },
+        "variant": { "type": "string" },
+        "color": { "type": "string" },
         "price": { "type": "number" },
+        "priceType": { "type": "string", "enum": ["negotiable", "fixed"] },
+        "mileage": { "type": "number" },
+        "fuelType": { "type": "string", "enum": ["petrol", "diesel", "cng", "electric"] },
+        "transmission": { "type": "string", "enum": ["manual", "automatic"] },
+        "ownership": { "type": "string", "enum": ["first", "second", "third", "fourth"] },
         "status": { "type": "string", "enum": ["available", "sold"] },
         "description": { "type": "string" },
         "features": { "type": "array", "items": { "type": "string" } },
         "imageUrl": { "type": "string", "format": "uri" },
         "aiHint": { "type": "string" }
       },
-      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrl"]
+      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrl", "variant", "color", "priceType", "mileage", "fuelType", "transmission", "ownership"]
     },
     "galleryItem": {
       "title": "Gallery Item",
