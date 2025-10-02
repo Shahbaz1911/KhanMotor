@@ -21,7 +21,7 @@ const mainNavItems = [
   { id: "home", label: "Home", href: "/#home" }, 
   { id: "about-us", label: "About Us", href: "/#about-us" },
   { id: "vehicles", label: "Vehicles", href: "/vehicles" },
-  { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
+  { id: "testimonials", label: "Review", href: "/#testimonials" },
   { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
   { id: "contact", label: "Contact Us", href: "/#contact" },
 ];
