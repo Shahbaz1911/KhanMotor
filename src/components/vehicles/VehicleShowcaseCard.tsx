@@ -86,22 +86,30 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         </p>
 
         <div className="gsap-reveal mt-6 grid grid-cols-2 gap-4 text-sm">
-            <div className="flex items-center gap-2">
-                <Gauge className="h-5 w-5 text-muted-foreground" />
-                <span>{vehicle.mileage.toLocaleString()} km</span>
-            </div>
-            <div className="flex items-center gap-2">
-                <Fuel className="h-5 w-5 text-muted-foreground" />
-                <span className="capitalize">{vehicle.fuelType}</span>
-            </div>
-             <div className="flex items-center gap-2">
-                <Cog className="h-5 w-5 text-muted-foreground" />
-                <span className="capitalize">{vehicle.transmission}</span>
-            </div>
-             <div className="flex items-center gap-2">
-                <Car className="h-5 w-5 text-muted-foreground" />
-                <span className="capitalize">{vehicle.ownership} Owner</span>
-            </div>
+            {typeof vehicle.mileage === 'number' && (
+              <div className="flex items-center gap-2">
+                  <Gauge className="h-5 w-5 text-muted-foreground" />
+                  <span>{vehicle.mileage.toLocaleString()} km</span>
+              </div>
+            )}
+            {vehicle.fuelType && (
+              <div className="flex items-center gap-2">
+                  <Fuel className="h-5 w-5 text-muted-foreground" />
+                  <span className="capitalize">{vehicle.fuelType}</span>
+              </div>
+            )}
+            {vehicle.transmission && (
+              <div className="flex items-center gap-2">
+                  <Cog className="h-5 w-5 text-muted-foreground" />
+                  <span className="capitalize">{vehicle.transmission}</span>
+              </div>
+            )}
+            {vehicle.ownership && (
+              <div className="flex items-center gap-2">
+                  <Car className="h-5 w-5 text-muted-foreground" />
+                  <span className="capitalize">{vehicle.ownership} Owner</span>
+              </div>
+            )}
         </div>
 
         <div className="gsap-reveal mt-8 flex flex-col sm:flex-row sm:items-center sm:gap-6">
