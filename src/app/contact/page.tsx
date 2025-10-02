@@ -40,17 +40,19 @@ export default function ContactPage() {
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
       
-      // Animate header out on scroll down, and in on scroll up to top
-      gsap.to(headerRef.current, {
-        autoAlpha: 0,
-        y: -20,
-        duration: 0.3,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: "body",
-          start: "top top",
-          end: "top -100px",
-          scrub: true,
+      // Header fade out on scroll
+      ScrollTrigger.create({
+        trigger: "body",
+        start: "top top",
+        end: "max",
+        onUpdate: (self) => {
+          // Start hiding after scrolling down a bit (e.g., 50px)
+          if (self.scroll() > 50) {
+            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
+          } else {
+            // Show when at the top
+            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
+          }
         },
       });
 
