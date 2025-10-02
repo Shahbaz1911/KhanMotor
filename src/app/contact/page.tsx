@@ -1,3 +1,4 @@
+
 "use client";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Button } from "@/components/ui/button";
@@ -34,25 +35,19 @@ export default function ContactPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Fade header in on load
-      gsap.fromTo(headerRef.current, 
-        { autoAlpha: 0, y: -20 },
-        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
-      );
-      
-      // Header fade out on scroll
+      // Header fade-in on load, then hide on scroll
+      const showAnim = gsap.from(headerRef.current, {
+        autoAlpha: 0,
+        yPercent: -100,
+        paused: true,
+        duration: 0.2,
+      }).progress(1);
+
       ScrollTrigger.create({
-        trigger: "body",
-        start: "top top",
-        end: "max",
+        start: "top top-=-100", // Start hiding after scrolling 100px
+        end: 99999,
         onUpdate: (self) => {
-          // Start hiding after scrolling down a bit (e.g., 50px)
-          if (self.scroll() > 50) {
-            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
-          } else {
-            // Show when at the top
-            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
-          }
+          self.direction === -1 ? showAnim.play() : showAnim.reverse();
         },
       });
 
