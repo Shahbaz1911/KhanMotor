@@ -7,6 +7,7 @@ export interface Vehicle {
   model: string;
   year: number;
   price: number;
+  status: 'available' | 'sold';
   imageUrl: string;
   description: string;
   features: string[];
@@ -55,3 +56,5 @@ export const appointmentFormSchema = z.object({
 });
 
 export type AppointmentFormData = z.infer<typeof appointmentFormSchema>;
+
+    

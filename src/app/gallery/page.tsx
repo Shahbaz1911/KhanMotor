@@ -29,14 +29,15 @@ export default function GalleryPage() {
 
   useEffect(() => {
     if (!firestore) return;
-
-    const vehiclesCollection = collection(firestore, "vehicles");
-    const unsubscribe = onSnapshot(vehiclesCollection, (snapshot) => {
+    setLoading(true);
+    const unsubscribe = onSnapshot(collection(firestore, "vehicles"), (snapshot) => {
         const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
         setVehicles(vehiclesData);
         setLoading(false);
-        // Refresh ScrollTrigger after data is loaded
-        ScrollTrigger.refresh();
+        // Using a timeout to ensure DOM is updated before refreshing ScrollTrigger
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 100);
     }, (error) => {
         console.error("Error fetching vehicles:", error);
         setLoading(false);
@@ -167,3 +168,5 @@ export default function GalleryPage() {
     </>
   );
 }
+
+    

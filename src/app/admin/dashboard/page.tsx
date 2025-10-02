@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -58,21 +59,19 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     if (!firestore) return;
 
-    const vehiclesCollection = collection(firestore, "vehicles");
-    const unsubscribeVehicles = onSnapshot(vehiclesCollection, (snapshot) => {
+    const vehiclesUnsubscribe = onSnapshot(collection(firestore, "vehicles"), (snapshot) => {
         const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
         setVehicles(vehiclesData);
     });
 
-    const galleryCollection = collection(firestore, "gallery");
-    const unsubscribeGallery = onSnapshot(galleryCollection, (snapshot) => {
+    const galleryUnsubscribe = onSnapshot(collection(firestore, "gallery"), (snapshot) => {
         const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
         setGalleryItems(galleryData);
     });
     
     return () => {
-        unsubscribeVehicles();
-        unsubscribeGallery();
+        vehiclesUnsubscribe();
+        galleryUnsubscribe();
     };
   }, [firestore]);
 
@@ -150,7 +149,7 @@ export default function AdminDashboardPage() {
             ...newVehicle,
             year: Number(newVehicle.year),
             price: Number(newVehicle.price),
-            features: newVehicle.features.split('\\n').filter(f => f.trim() !== ""),
+            features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
             imageUrl: uploadedImageUrl,
             aiHint: 'new vehicle'
         });
@@ -300,7 +299,7 @@ export default function AdminDashboardPage() {
                                 {vehicles.map(vehicle => (
                                     <Card key={vehicle.id} className="overflow-hidden">
                                         <div className="relative h-48 w-full">
-                                            <Image src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} layout="fill" objectFit="cover" />
+                                            <Image src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
                                         </div>
                                         <CardContent className="p-4">
                                              <div className="flex justify-between items-start">
@@ -308,8 +307,8 @@ export default function AdminDashboardPage() {
                                                     <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
                                                     <p className="text-sm text-muted-foreground">{vehicle.year}</p>
                                                 </div>
-                                                <Badge variant={(vehicle as any).status === 'available' ? "secondary" : "destructive"} className="capitalize">
-                                                   {(vehicle as any).status || 'N/A'}
+                                                <Badge variant={vehicle.status === 'available' ? "secondary" : "destructive"} className="capitalize">
+                                                   {vehicle.status || 'N/A'}
                                                 </Badge>
                                              </div>
                                             <p className="font-semibold text-lg mt-2">${vehicle.price.toLocaleString()}</p>
@@ -377,7 +376,7 @@ export default function AdminDashboardPage() {
                                 {galleryItems.map(item => (
                                     <Card key={item.id} className="overflow-hidden">
                                         <div className="relative h-48 w-full">
-                                            <Image src={item.imageUrl} alt={item.caption} layout="fill" objectFit="cover" />
+                                            <Image src={item.imageUrl} alt={item.caption} fill objectFit="cover" />
                                         </div>
                                         <CardContent className="p-4">
                                             <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
@@ -483,3 +482,6 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
+
+    
