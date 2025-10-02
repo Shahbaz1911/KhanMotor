@@ -64,7 +64,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             />
          </Link>
       </div>
-      <div className="flex-grow flex items-center justify-start">
+      <div className="flex-grow flex justify-start">
         <nav className="flex flex-col gap-2 p-4 md:p-8 w-full">
           {mainNavItems.map((item) => (
             <Button
