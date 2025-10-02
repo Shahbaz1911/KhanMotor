@@ -273,14 +273,14 @@ export default function AdminDashboardPage() {
             </Card>
            
            <Card className="shadow-lg">
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <CardTitle>Happy Customer Gallery</CardTitle>
                         <CardDescription>
                             Manage photos for the customer gallery section on your homepage.
                         </CardDescription>
                     </div>
-                     <Button onClick={() => router.push('/admin/gallery/add')}>
+                     <Button onClick={() => router.push('/admin/gallery/add')} className="w-full sm:w-auto">
                         <PlusCircle className="mr-2 h-4 w-4" />
                         Add to Gallery
                     </Button>
@@ -376,5 +376,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-    
