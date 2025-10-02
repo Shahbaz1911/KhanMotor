@@ -643,7 +643,7 @@ export default function AdminDashboardPage() {
            {renderContent()}
 
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogContent className="sm:max-w-[625px]">
+                <DialogContent className="sm:max-w-[625px] grid-rows-[auto_1fr_auto]">
                     <DialogHeader>
                         <DialogTitle>Edit Vehicle</DialogTitle>
                         <DialogDescription>
@@ -651,55 +651,57 @@ export default function AdminDashboardPage() {
                         </DialogDescription>
                     </DialogHeader>
                     {editingVehicle && (
-                        <form onSubmit={handleUpdateVehicle} className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="edit-make">Make</Label>
-                                    <Input id="edit-make" value={editingVehicle.make} onChange={e => setEditingVehicle({...editingVehicle, make: e.target.value})} required/>
+                        <form onSubmit={handleUpdateVehicle} className="grid gap-4 overflow-hidden">
+                            <div className="grid gap-4 py-4 px-1 max-h-[60vh] overflow-y-auto">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="edit-make">Make</Label>
+                                        <Input id="edit-make" value={editingVehicle.make} onChange={e => setEditingVehicle({...editingVehicle, make: e.target.value})} required/>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="edit-model">Model</Label>
+                                        <Input id="edit-model" value={editingVehicle.model} onChange={e => setEditingVehicle({...editingVehicle, model: e.target.value})} required/>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="edit-year">Year</Label>
+                                        <Input id="edit-year" type="number" value={editingVehicle.year} onChange={e => setEditingVehicle({...editingVehicle, year: Number(e.target.value)})} required/>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="edit-price">Price ($)</Label>
+                                        <Input id="edit-price" type="number" value={editingVehicle.price} onChange={e => setEditingVehicle({...editingVehicle, price: Number(e.target.value)})} required/>
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="edit-model">Model</Label>
-                                    <Input id="edit-model" value={editingVehicle.model} onChange={e => setEditingVehicle({...editingVehicle, model: e.target.value})} required/>
+                                    <Label htmlFor="edit-status">Status</Label>
+                                    <Select value={editingVehicle.status} onValueChange={value => setEditingVehicle({...editingVehicle, status: value as 'available' | 'sold'})}>
+                                        <SelectTrigger id="edit-status">
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="available">Available</SelectItem>
+                                            <SelectItem value="sold">Sold</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="edit-year">Year</Label>
-                                    <Input id="edit-year" type="number" value={editingVehicle.year} onChange={e => setEditingVehicle({...editingVehicle, year: Number(e.target.value)})} required/>
+                                    <Label htmlFor="edit-description">Description</Label>
+                                    <Textarea id="edit-description" value={editingVehicle.description} onChange={e => setEditingVehicle({...editingVehicle, description: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="edit-price">Price ($)</Label>
-                                    <Input id="edit-price" type="number" value={editingVehicle.price} onChange={e => setEditingVehicle({...editingVehicle, price: Number(e.target.value)})} required/>
+                                    <Label htmlFor="edit-features">Features (one per line)</Label>
+                                    <Textarea id="edit-features" value={editingVehicle.features} onChange={e => setEditingVehicle({...editingVehicle, features: e.target.value})} required/>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="edit-car-image">Car Image</Label>
+                                    {editingVehicle.imageUrl && !isVehicleUploading && <div className="mt-2"><Image src={editingVehicle.imageUrl} alt="Current vehicle" width={150} height={100} className="rounded-lg object-cover" /></div>}
+                                    {isVehicleUploading && <div className="flex items-center gap-2 mt-2"><Loader2 className="h-5 w-5 animate-spin" /><span>Uploading...</span></div>}
+                                    <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-vehicle')} className="mt-2" />
+                                    <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="edit-status">Status</Label>
-                                <Select value={editingVehicle.status} onValueChange={value => setEditingVehicle({...editingVehicle, status: value as 'available' | 'sold'})}>
-                                    <SelectTrigger id="edit-status">
-                                        <SelectValue placeholder="Select status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="available">Available</SelectItem>
-                                        <SelectItem value="sold">Sold</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="edit-description">Description</Label>
-                                <Textarea id="edit-description" value={editingVehicle.description} onChange={e => setEditingVehicle({...editingVehicle, description: e.target.value})} required/>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="edit-features">Features (one per line)</Label>
-                                <Textarea id="edit-features" value={editingVehicle.features} onChange={e => setEditingVehicle({...editingVehicle, features: e.target.value})} required/>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="edit-car-image">Car Image</Label>
-                                {editingVehicle.imageUrl && !isVehicleUploading && <div className="mt-2"><Image src={editingVehicle.imageUrl} alt="Current vehicle" width={150} height={100} className="rounded-lg object-cover" /></div>}
-                                {isVehicleUploading && <div className="flex items-center gap-2 mt-2"><Loader2 className="h-5 w-5 animate-spin" /><span>Uploading...</span></div>}
-                                <Input id="edit-car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'edit-vehicle')} className="mt-2" />
-                                <p className="text-xs text-muted-foreground">Select a new file to replace the existing image.</p>
-                            </div>
-                            <DialogFooter>
+                            <DialogFooter className="border-t pt-4">
                                 <DialogClose asChild>
                                     <Button type="button" variant="secondary">Cancel</Button>
                                 </DialogClose>
@@ -746,4 +748,5 @@ export default function AdminDashboardPage() {
   );
 }
 
+    
     
