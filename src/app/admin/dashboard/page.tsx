@@ -12,34 +12,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UploadCloud, LogOut, Trash2, Edit, Car, Users, Settings, User as UserIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
-import placeholderImages from "@/lib/placeholder-images.json";
-import { vehicles as allVehicles } from "@/lib/vehiclesData";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { uploadFile } from "@/firebase/storage";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { initializeFirebase } from "@/firebase";
+import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import type { Vehicle } from "@/types";
 
+interface GalleryItem {
+    id: string;
+    imageUrl: string;
+    caption: string;
+}
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState("inventory");
+  
+  const { firestore } = initializeFirebase();
 
   // State for vehicle form
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [newVehicle, setNewVehicle] = useState({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
   const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
   const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
   const [vehicleUploadProgress, setVehicleUploadProgress] = useState<number | null>(null);
   const [isVehicleUploading, setIsVehicleUploading] = useState(false);
 
   // State for customer gallery form
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [newGalleryItem, setNewGalleryItem] = useState({ caption: "" });
   const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
   const [customerImageUrl, setCustomerImageUrl] = useState<string | null>(null);
   const [customerUploadProgress, setCustomerUploadProgress] = useState<number | null>(null);
   const [isCustomerUploading, setIsCustomerUploading] = useState(false);
+
 
   useEffect(() => {
     if (!user) {
@@ -47,10 +59,32 @@ export default function AdminDashboardPage() {
     }
   }, [user, router]);
 
+  useEffect(() => {
+    if (!firestore) return;
+
+    const vehiclesCollection = collection(firestore, "vehicles");
+    const unsubscribeVehicles = onSnapshot(vehiclesCollection, (snapshot) => {
+        const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+        setVehicles(vehiclesData);
+    });
+
+    const galleryCollection = collection(firestore, "gallery");
+    const unsubscribeGallery = onSnapshot(galleryCollection, (snapshot) => {
+        const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
+        setGalleryItems(galleryData);
+    });
+    
+    return () => {
+        unsubscribeVehicles();
+        unsubscribeGallery();
+    };
+  }, [firestore]);
+
+
   if (!user) {
     return (
         <div className="flex min-h-screen items-center justify-center">
-            <p>Loading...</p>
+            <Loader2 className="h-8 w-8 animate-spin" />
         </div>
     );
   }
@@ -59,10 +93,12 @@ export default function AdminDashboardPage() {
     const file = e.target.files?.[0] || null;
     if (type === 'vehicle') {
         setVehicleImageFile(file);
-        setVehicleImageUrl(null);
+        if (file) setVehicleImageUrl(URL.createObjectURL(file));
+        else setVehicleImageUrl(null);
     } else {
         setCustomerImageFile(file);
-        setCustomerImageUrl(null);
+        if(file) setCustomerImageUrl(URL.createObjectURL(file));
+        else setCustomerImageUrl(null)
     }
   };
 
@@ -71,7 +107,7 @@ export default function AdminDashboardPage() {
     const path = type === 'vehicle' ? 'vehicle-images' : 'customer-gallery';
     const setIsUploading = type === 'vehicle' ? setIsVehicleUploading : setIsCustomerUploading;
     const setProgress = type === 'vehicle' ? setVehicleUploadProgress : setCustomerUploadProgress;
-    const setImageUrl = type === 'vehicle' ? setVehicleImageUrl : setCustomerImageUrl;
+    const setFinalImageUrl = type === 'vehicle' ? setVehicleImageUrl : setCustomerImageUrl;
 
     if (!file) {
       toast({ title: "No file selected", description: "Please select a file to upload.", variant: "destructive" });
@@ -81,8 +117,9 @@ export default function AdminDashboardPage() {
     setIsUploading(true);
     try {
       const url = await uploadFile(file, path, setProgress);
-      setImageUrl(url);
-      toast({ title: "Upload Successful!", description: "Image has been uploaded." });
+      setFinalImageUrl(url);
+      toast({ title: "Upload Successful!", description: "Image is ready to be saved." });
+      return url;
     } catch (error) {
       console.error("Upload failed:", error);
       toast({ title: "Upload Failed", description: "Could not upload the image.", variant: "destructive" });
@@ -92,20 +129,93 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Placeholder for customer gallery items
-  const galleryItems = [
-    {
-        id: "1",
-        imageUrl: placeholderImages.customer1.url,
-        caption: "Mr. Johnson with his new sports car."
-    },
-    {
-        id: "2",
-        imageUrl: placeholderImages.customer2.url,
-        caption: "Ms. Garcia enjoying her brand new SUV."
+  const handleAddVehicle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firestore) return;
+    if (!vehicleImageFile) {
+        toast({ title: "Image required", description: "Please upload a vehicle image.", variant: "destructive" });
+        return;
     }
-  ];
+
+    let uploadedImageUrl = vehicleImageUrl;
+    // if the image file is present but url is a blob url, it needs to be uploaded.
+    if (vehicleImageFile && vehicleImageUrl?.startsWith('blob:')) {
+        const url = await handleFileUpload('vehicle');
+        if (!url) return;
+        uploadedImageUrl = url;
+    }
+    
+    if (!uploadedImageUrl) {
+        toast({ title: "Image URL missing", description: "Failed to get image URL after upload.", variant: "destructive" });
+        return;
+    }
+
+    try {
+        await addDoc(collection(firestore, "vehicles"), {
+            ...newVehicle,
+            year: Number(newVehicle.year),
+            price: Number(newVehicle.price),
+            features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
+            imageUrl: uploadedImageUrl,
+            aiHint: 'new vehicle'
+        });
+        toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
+        setNewVehicle({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
+        setVehicleImageFile(null);
+        setVehicleImageUrl(null);
+    } catch (error) {
+        console.error("Error adding vehicle: ", error);
+        toast({ title: "Error", description: "Could not add vehicle.", variant: "destructive" });
+    }
+  }
   
+  const handleAddGalleryItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firestore) return;
+     if (!customerImageFile) {
+        toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
+        return;
+    }
+
+    let uploadedImageUrl = customerImageUrl;
+    if (customerImageFile && customerImageUrl?.startsWith('blob:')) {
+        const url = await handleFileUpload('customer');
+        if (!url) return;
+        uploadedImageUrl = url;
+    }
+    
+    if (!uploadedImageUrl) {
+        toast({ title: "Image URL missing", description: "Failed to get image URL after upload.", variant: "destructive" });
+        return;
+    }
+
+    try {
+        await addDoc(collection(firestore, "gallery"), {
+            caption: newGalleryItem.caption,
+            imageUrl: uploadedImageUrl,
+        });
+        toast({ title: "Gallery Item Added", description: `A new photo has been added to the gallery.` });
+        setNewGalleryItem({ caption: "" });
+        setCustomerImageFile(null);
+        setCustomerImageUrl(null);
+    } catch (error) {
+        console.error("Error adding gallery item: ", error);
+        toast({ title: "Error", description: "Could not add gallery item.", variant: "destructive" });
+    }
+  }
+
+  const handleDelete = async (collectionName: string, id: string) => {
+    if (!firestore) return;
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
+    try {
+        await deleteDoc(doc(firestore, collectionName, id));
+        toast({ title: "Item Deleted", description: "The item has been removed successfully." });
+    } catch (error) {
+         console.error("Error deleting item: ", error);
+         toast({ title: "Error", description: "Could not delete item.", variant: "destructive" });
+    }
+  }
+
   const renderContent = () => {
     switch (activeSection) {
       case 'inventory':
@@ -119,29 +229,29 @@ export default function AdminDashboardPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form className="grid gap-6">
+                        <form onSubmit={handleAddVehicle} className="grid gap-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="make">Make</Label>
-                                    <Input id="make" placeholder="e.g., Audi" />
+                                    <Input id="make" placeholder="e.g., Audi" value={newVehicle.make} onChange={e => setNewVehicle({...newVehicle, make: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="model">Model</Label>
-                                    <Input id="model" placeholder="e.g., R8 Spyder" />
+                                    <Input id="model" placeholder="e.g., R8 Spyder" value={newVehicle.model} onChange={e => setNewVehicle({...newVehicle, model: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="year">Year</Label>
-                                    <Input id="year" type="number" placeholder="e.g., 2023" />
+                                    <Input id="year" type="number" placeholder="e.g., 2023" value={newVehicle.year} onChange={e => setNewVehicle({...newVehicle, year: e.target.value})} required/>
                                 </div>
                             </div>
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="price">Price ($)</Label>
-                                    <Input id="price" type="number" placeholder="e.g., 180000" />
+                                    <Input id="price" type="number" placeholder="e.g., 180000" value={newVehicle.price} onChange={e => setNewVehicle({...newVehicle, price: e.target.value})} required/>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Status</Label>
-                                    <Select>
+                                    <Select value={newVehicle.status} onValueChange={value => setNewVehicle({...newVehicle, status: value})}>
                                         <SelectTrigger id="status">
                                             <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
@@ -155,12 +265,12 @@ export default function AdminDashboardPage() {
 
                             <div className="space-y-2">
                                 <Label htmlFor="description">Description</Label>
-                                <Textarea id="description" placeholder="Enter a brief description of the vehicle..." />
+                                <Textarea id="description" placeholder="Enter a brief description of the vehicle..." value={newVehicle.description} onChange={e => setNewVehicle({...newVehicle, description: e.target.value})} required/>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="features">Features (one per line)</Label>
-                                <Textarea id="features" placeholder="e.g., V10 Engine\nConvertible\nBang & Olufsen Sound" />
+                                <Textarea id="features" placeholder="e.g., V10 Engine\nConvertible\nBang & Olufsen Sound" value={newVehicle.features} onChange={e => setNewVehicle({...newVehicle, features: e.target.value})} required/>
                             </div>
                             
                             <div className="space-y-2">
@@ -173,13 +283,15 @@ export default function AdminDashboardPage() {
                                     </div>
                                 )}
                                 <div className="flex items-center gap-4">
-                                    <Input id="car-image-upload" type="file" onChange={(e) => handleFileChange(e, 'vehicle')} className="flex-1" />
-                                    <Button type="button" onClick={() => handleFileUpload('vehicle')} disabled={isVehicleUploading || !vehicleImageFile}>
-                                        {isVehicleUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
-                                        <span className="ml-2">Upload</span>
-                                    </Button>
+                                    <Input id="car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'vehicle')} className="flex-1" />
+                                    {vehicleImageFile && vehicleImageUrl?.startsWith('blob:') && (
+                                        <Button type="button" onClick={() => handleFileUpload('vehicle')} disabled={isVehicleUploading}>
+                                            {isVehicleUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                                            <span className="ml-2">Upload</span>
+                                        </Button>
+                                    )}
                                 </div>
-                                <p className="text-xs text-muted-foreground">Select a file then click upload. PNG, JPG, or WEBP (MAX. 5MB).</p>
+                                <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 5MB).</p>
                             </div>
 
                             <div className="flex justify-end">
@@ -199,9 +311,9 @@ export default function AdminDashboardPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {allVehicles.length > 0 ? (
+                        {vehicles.length > 0 ? (
                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {allVehicles.map(vehicle => (
+                                {vehicles.map(vehicle => (
                                     <Card key={vehicle.id} className="overflow-hidden">
                                         <div className="relative h-48 w-full">
                                             <Image src={vehicle.imageUrl} alt={`${vehicle.make} ${vehicle.model}`} layout="fill" objectFit="cover" />
@@ -212,17 +324,17 @@ export default function AdminDashboardPage() {
                                                     <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
                                                     <p className="text-sm text-muted-foreground">{vehicle.year}</p>
                                                 </div>
-                                                <Badge variant={Math.random() > 0.5 ? "secondary" : "destructive"} className="capitalize">
-                                                   {Math.random() > 0.5 ? "Available" : "Sold"}
+                                                <Badge variant={(vehicle as any).status === 'available' ? "secondary" : "destructive"} className="capitalize">
+                                                   {(vehicle as any).status || 'N/A'}
                                                 </Badge>
                                              </div>
                                             <p className="font-semibold text-lg mt-2">${vehicle.price.toLocaleString()}</p>
                                             <div className="flex justify-end gap-2 mt-4">
-                                                <Button variant="outline" size="icon">
+                                                <Button variant="outline" size="icon" disabled>
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit</span>
                                                 </Button>
-                                                <Button variant="destructive" size="icon">
+                                                <Button variant="destructive" size="icon" onClick={() => handleDelete('vehicles', vehicle.id)}>
                                                     <Trash2 className="h-4 w-4" />
                                                         <span className="sr-only">Delete</span>
                                                 </Button>
@@ -248,10 +360,10 @@ export default function AdminDashboardPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form className="grid gap-6 mb-8 border-b pb-8">
+                    <form onSubmit={handleAddGalleryItem} className="grid gap-6 mb-8 border-b pb-8">
                         <div className="space-y-2">
                             <Label htmlFor="caption">Caption</Label>
-                            <Input id="caption" placeholder="e.g., Mr. Khan with his new Honda City" />
+                            <Input id="caption" placeholder="e.g., Mr. Khan with his new Honda City" value={newGalleryItem.caption} onChange={e => setNewGalleryItem({ caption: e.target.value})} required/>
                         </div>
                         <div className="space-y-2">
                              <Label htmlFor="customer-image">Customer Photo</Label>
@@ -263,13 +375,15 @@ export default function AdminDashboardPage() {
                                 </div>
                             )}
                             <div className="flex items-center gap-4">
-                                <Input id="customer-image-upload" type="file" onChange={(e) => handleFileChange(e, 'customer')} className="flex-1" />
-                                <Button type="button" onClick={() => handleFileUpload('customer')} disabled={isCustomerUploading || !customerImageFile}>
-                                    {isCustomerUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
-                                    <span className="ml-2">Upload</span>
-                                </Button>
+                                <Input id="customer-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'customer')} className="flex-1" />
+                                 {customerImageFile && customerImageUrl?.startsWith('blob:') && (
+                                    <Button type="button" onClick={() => handleFileUpload('customer')} disabled={isCustomerUploading}>
+                                        {isCustomerUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
+                                        <span className="ml-2">Upload</span>
+                                    </Button>
+                                 )}
                             </div>
-                             <p className="text-xs text-muted-foreground">Select a file then click upload. PNG, JPG, or WEBP (MAX. 5MB).</p>
+                             <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 5MB).</p>
                         </div>
                         <div className="flex justify-end">
                             <Button type="submit" disabled={isCustomerUploading}>Add to Gallery</Button>
@@ -288,11 +402,11 @@ export default function AdminDashboardPage() {
                                         <CardContent className="p-4">
                                             <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
                                             <div className="flex justify-end gap-2 mt-4">
-                                                <Button variant="outline" size="icon">
+                                                <Button variant="outline" size="icon" disabled>
                                                     <Edit className="h-4 w-4" />
                                                     <span className="sr-only">Edit</span>
                                                 </Button>
-                                                <Button variant="destructive" size="icon">
+                                                <Button variant="destructive" size="icon" onClick={() => handleDelete('gallery', item.id)}>
                                                     <Trash2 className="h-4 w-4" />
                                                         <span className="sr-only">Delete</span>
                                                 </Button>
@@ -302,7 +416,7 @@ export default function AdminDashboardPage() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-muted-foreground text-center">No gallery photos have been uploaded yet.</p>
+                            <p className="text-muted-foreground text-center py-8">No gallery photos have been uploaded yet.</p>
                         )}
                     </div>
                 </CardContent>

@@ -2,64 +2,54 @@
 "use client";
 
 import Image from "next/image";
-import { Star } from "lucide-react";
-import placeholderImages from "@/lib/placeholder-images.json";
-import { cn } from "@/lib/utils";
-import React, { useEffect, useRef } from "react";
+import { Loader2, Star } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initializeFirebase } from "@/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
-const galleryItems = [
-  {
-    customerName: "Alex Johnson",
-    caption: "Proud owner of this beauty!",
-    imageUrl: placeholderImages.customer1.url,
-    aiHint: placeholderImages.customer1.aiHint,
-    rating: 5,
-  },
-  {
-    customerName: "Maria Garcia",
-    caption: "Serviced to perfection.",
-    imageUrl: placeholderImages.customer2.url,
-    aiHint: placeholderImages.customer2.aiHint,
-    rating: 5,
-  },
-  {
-    customerName: "David Smith",
-    caption: "Found my dream car here.",
-    imageUrl: placeholderImages.customer3.url,
-    aiHint: placeholderImages.customer3.aiHint,
-    rating: 5,
-  },
-  {
-    customerName: "Jessica Williams",
-    caption: "Top-notch service.",
-    imageUrl: placeholderImages.customer4.url,
-    aiHint: placeholderImages.customer4.aiHint,
-    rating: 5,
-  },
-  {
-    customerName: "Chen Wang",
-    caption: "In love with my new ride.",
-    imageUrl: placeholderImages.customer5.url,
-    aiHint: placeholderImages.customer5.aiHint,
-    rating: 5,
-  },
-  {
-    customerName: "Fatima Al-Fassi",
-    caption: "Excellent repair work.",
-    imageUrl: placeholderImages.customer6.url,
-    aiHint: placeholderImages.customer6.aiHint,
-    rating: 5,
-  },
-];
+interface GalleryItem {
+  id: string;
+  caption: string;
+  imageUrl: string;
+  // Assuming these might be added later
+  customerName?: string;
+  rating?: number;
+  aiHint?: string;
+}
 
 export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { firestore } = initializeFirebase();
+
   useEffect(() => {
+    if (!firestore) return;
+
+    const galleryCollection = collection(firestore, "gallery");
+    const unsubscribe = onSnapshot(galleryCollection, (snapshot) => {
+        const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
+        setGalleryItems(galleryData);
+        setLoading(false);
+         // Refresh ScrollTrigger after data is loaded
+        ScrollTrigger.refresh();
+    }, (error) => {
+        console.error("Error fetching gallery items:", error);
+        setLoading(false);
+    });
+    
+    return () => unsubscribe();
+  }, [firestore]);
+
+
+  useEffect(() => {
+    if (loading) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -90,7 +80,7 @@ export function HappyCustomerGallery() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [loading]);
 
   return (
     <section ref={sectionRef} id="customer-gallery" className="bg-background relative py-16 md:py-24">
@@ -104,41 +94,53 @@ export function HappyCustomerGallery() {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {galleryItems.map((item, index) => (
-            <div
-              key={index}
-              className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
-            >
-              <Image
-                src={item.imageUrl}
-                alt={`Customer ${item.customerName}`}
-                fill
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                data-ai-hint={item.aiHint}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
-              <div className="absolute inset-0 flex flex-col justify-end p-6">
-                <div className="relative z-10 text-white">
-                  <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <h3 className="text-xl font-black">{item.customerName}</h3>
-                    <div className="mt-1 flex">
-                      {Array(item.rating)
-                        .fill(0)
-                        .map((_, i) => (
-                          <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        ))}
-                    </div>
-                  </div>
-                  <p className="mt-2 text-sm font-medium opacity-100 transition-opacity duration-300 group-hover:opacity-0">
-                    {item.caption}
-                  </p>
-                </div>
-              </div>
+        {loading ? (
+             <div className="flex justify-center items-center h-64">
+                <Loader2 className="h-8 w-8 animate-spin" />
             </div>
-          ))}
-        </div>
+        ) : (
+            <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {galleryItems.length > 0 ? galleryItems.map((item, index) => (
+                <div
+                key={index}
+                className="group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg"
+                >
+                <Image
+                    src={item.imageUrl}
+                    alt={`Customer photo: ${item.caption}`}
+                    fill
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    data-ai-hint={item.aiHint || 'customer car'}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
+                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                    <div className="relative z-10 text-white">
+                    <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        {item.customerName && <h3 className="text-xl font-black">{item.customerName}</h3>}
+                        {item.rating && <div className="mt-1 flex">
+                        {Array(item.rating)
+                            .fill(0)
+                            .map((_, i) => (
+                            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                            ))}
+                        </div>}
+                    </div>
+                    <p className="mt-2 text-sm font-medium">
+                        {item.caption}
+                    </p>
+                    </div>
+                </div>
+                </div>
+            )) : (
+                 <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground">
+                    No customer photos yet. Be the first!
+                </div>
+            )}
+            </div>
+        )}
       </div>
     </section>
   );
 }
+
+    

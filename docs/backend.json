@@ -24,6 +24,33 @@
         "uid",
         "email"
       ]
+    },
+    "vehicle": {
+      "title": "Vehicle",
+      "description": "A vehicle in the inventory.",
+      "type": "object",
+      "properties": {
+        "make": { "type": "string" },
+        "model": { "type": "string" },
+        "year": { "type": "number" },
+        "price": { "type": "number" },
+        "status": { "type": "string", "enum": ["available", "sold"] },
+        "description": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "imageUrl": { "type": "string", "format": "uri" },
+        "aiHint": { "type": "string" }
+      },
+      "required": ["make", "model", "year", "price", "status", "description", "features", "imageUrl"]
+    },
+    "galleryItem": {
+      "title": "Gallery Item",
+      "description": "An item in the customer gallery.",
+      "type": "object",
+      "properties": {
+        "caption": { "type": "string" },
+        "imageUrl": { "type": "string", "format": "uri" }
+      },
+      "required": ["caption", "imageUrl"]
     }
   },
   "auth": {
@@ -33,10 +60,16 @@
   },
   "firestore": {
     "/users/{userId}": {
-      "schema": {
-        "$ref": "#/entities/user"
-      },
+      "schema": { "$ref": "#/entities/user" },
       "description": "Stores user profile information"
+    },
+    "/vehicles/{vehicleId}": {
+        "schema": { "$ref": "#/entities/vehicle" },
+        "description": "Stores all vehicle inventory data."
+    },
+    "/gallery/{galleryItemId}": {
+        "schema": { "$ref": "#/entities/galleryItem" },
+        "description": "Stores customer gallery images and captions."
     }
   },
   "storage": {

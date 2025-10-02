@@ -2,7 +2,6 @@
 "use client";
 
 import React, { useMemo, useEffect, useRef, useState } from "react";
-import { vehicles as allVehicles } from "@/lib/vehiclesData";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { VehicleShowcaseCard } from "@/components/vehicles/VehicleShowcaseCard";
@@ -11,9 +10,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
-import { GalleryThumbnails } from "lucide-react";
+import { GalleryThumbnails, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { initializeFirebase } from "@/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import type { Vehicle } from "@/types";
 
 export default function GalleryPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -22,8 +24,32 @@ export default function GalleryPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const router = useRouter();
 
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { firestore } = initializeFirebase();
 
   useEffect(() => {
+    if (!firestore) return;
+
+    const vehiclesCollection = collection(firestore, "vehicles");
+    const unsubscribe = onSnapshot(vehiclesCollection, (snapshot) => {
+        const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
+        setVehicles(vehiclesData);
+        setLoading(false);
+        // Refresh ScrollTrigger after data is loaded
+        ScrollTrigger.refresh();
+    }, (error) => {
+        console.error("Error fetching vehicles:", error);
+        setLoading(false);
+    });
+    
+    return () => unsubscribe();
+  }, [firestore]);
+
+
+  useEffect(() => {
+    if (loading) return;
+    
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -65,11 +91,7 @@ export default function GalleryPage() {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       ctx.revert();
     }
-  }, []);
-
-  const displayedVehicles = useMemo(() => {
-    return allVehicles;
-  }, []);
+  }, [loading]);
 
   return (
     <>
@@ -115,28 +137,36 @@ export default function GalleryPage() {
             <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black">
               Our Vehicle Collection
             </h1>
-
-            <div className="flex flex-col gap-16 md:gap-24">
-              {displayedVehicles.length > 0 ? (
-                displayedVehicles.map((vehicle, index) => (
-                  <VehicleShowcaseCard 
-                    key={vehicle.id} 
-                    vehicle={vehicle} 
-                    align={index % 2 === 0 ? 'left' : 'right'} 
-                  />
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
-                  <div className="mb-4 text-5xl">🚗</div>
-                  <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
-                  <p className="text-muted-foreground">
-                    There are currently no vehicles in our collection.
-                  </p>
+            
+            {loading ? (
+                <div className="flex justify-center items-center h-64">
+                    <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
-              )}
-            </div>
+            ) : (
+                <div className="flex flex-col gap-16 md:gap-24">
+                  {vehicles.length > 0 ? (
+                    vehicles.map((vehicle, index) => (
+                      <VehicleShowcaseCard 
+                        key={vehicle.id} 
+                        vehicle={vehicle} 
+                        align={index % 2 === 0 ? 'left' : 'right'} 
+                      />
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
+                      <div className="mb-4 text-5xl">🚗</div>
+                      <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
+                      <p className="text-muted-foreground">
+                        There are currently no vehicles in our collection. Check back soon!
+                      </p>
+                    </div>
+                  )}
+                </div>
+            )}
           </div>
         </div>
     </>
   );
 }
+
+    
