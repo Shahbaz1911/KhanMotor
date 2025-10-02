@@ -3,6 +3,14 @@
 
 import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true
+});
 
 export type ContactFormState = {
   message: string;
@@ -97,4 +105,35 @@ export async function submitAppointmentForm(
     message: "Thank you for your appointment request! We will contact you shortly to confirm.",
     success: true,
   };
+}
+
+export async function uploadToCloudinary(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
+  const file = formData.get('file') as File;
+
+  if (!file) {
+    return { success: false, error: 'No file provided.' };
+  }
+  
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      return { success: false, error: 'Cloudinary environment variables are not configured.' };
+  }
+
+  try {
+    const fileBuffer = await file.arrayBuffer();
+    const mimeType = file.type;
+    const encoding = 'base64';
+    const base64Data = Buffer.from(fileBuffer).toString('base64');
+    const fileUri = 'data:' + mimeType + ';' + encoding + ',' + base64Data;
+
+    const result = await cloudinary.uploader.upload(fileUri, {
+      folder: 'arman-autoxperts',
+      resource_type: 'image',
+    });
+
+    return { success: true, url: result.secure_url };
+  } catch (error) {
+    console.error('Cloudinary upload error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during upload.';
+    return { success: false, error: errorMessage };
+  }
 }

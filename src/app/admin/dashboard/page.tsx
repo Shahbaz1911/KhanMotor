@@ -15,12 +15,12 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { uploadFile } from "@/firebase/storage";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { initializeFirebase } from "@/firebase";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import type { Vehicle } from "@/types";
+import { uploadToCloudinary } from "@/lib/actions";
 
 interface GalleryItem {
     id: string;
@@ -41,7 +41,6 @@ export default function AdminDashboardPage() {
   const [newVehicle, setNewVehicle] = useState({ make: "", model: "", year: "", price: "", status: "available", description: "", features: "" });
   const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
   const [vehicleImageUrl, setVehicleImageUrl] = useState<string | null>(null);
-  const [vehicleUploadProgress, setVehicleUploadProgress] = useState<number | null>(null);
   const [isVehicleUploading, setIsVehicleUploading] = useState(false);
 
   // State for customer gallery form
@@ -49,7 +48,6 @@ export default function AdminDashboardPage() {
   const [newGalleryItem, setNewGalleryItem] = useState({ caption: "" });
   const [customerImageFile, setCustomerImageFile] = useState<File | null>(null);
   const [customerImageUrl, setCustomerImageUrl] = useState<string | null>(null);
-  const [customerUploadProgress, setCustomerUploadProgress] = useState<number | null>(null);
   const [isCustomerUploading, setIsCustomerUploading] = useState(false);
 
 
@@ -104,10 +102,7 @@ export default function AdminDashboardPage() {
 
   const handleFileUpload = async (type: 'vehicle' | 'customer') => {
     const file = type === 'vehicle' ? vehicleImageFile : customerImageFile;
-    const path = type === 'vehicle' ? 'vehicle-images' : 'customer-gallery';
     const setIsUploading = type === 'vehicle' ? setIsVehicleUploading : setIsCustomerUploading;
-    const setProgress = type === 'vehicle' ? setVehicleUploadProgress : setCustomerUploadProgress;
-    const setFinalImageUrl = type === 'vehicle' ? setVehicleImageUrl : setCustomerImageUrl;
 
     if (!file) {
       toast({ title: "No file selected", description: "Please select a file to upload.", variant: "destructive" });
@@ -116,30 +111,36 @@ export default function AdminDashboardPage() {
 
     setIsUploading(true);
     try {
-      const url = await uploadFile(file, path, setProgress);
-      setFinalImageUrl(url);
-      toast({ title: "Upload Successful!", description: "Image is ready to be saved." });
-      return url;
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const result = await uploadToCloudinary(formData);
+
+      if (result.success && result.url) {
+        toast({ title: "Upload Successful!", description: "Image is ready to be saved." });
+        return result.url;
+      } else {
+        throw new Error(result.error || "Cloudinary upload failed.");
+      }
     } catch (error) {
       console.error("Upload failed:", error);
-      toast({ title: "Upload Failed", description: "Could not upload the image.", variant: "destructive" });
+      const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
+      toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
     } finally {
       setIsUploading(false);
-      setProgress(null);
     }
   };
 
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore) return;
-    if (!vehicleImageFile) {
+    if (!vehicleImageFile && !vehicleImageUrl) {
         toast({ title: "Image required", description: "Please upload a vehicle image.", variant: "destructive" });
         return;
     }
 
     let uploadedImageUrl = vehicleImageUrl;
-    // if the image file is present but url is a blob url, it needs to be uploaded.
-    if (vehicleImageFile && vehicleImageUrl?.startsWith('blob:')) {
+    if (vehicleImageFile) {
         const url = await handleFileUpload('vehicle');
         if (!url) return;
         uploadedImageUrl = url;
@@ -172,13 +173,13 @@ export default function AdminDashboardPage() {
   const handleAddGalleryItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore) return;
-     if (!customerImageFile) {
+     if (!customerImageFile && !customerImageUrl) {
         toast({ title: "Image required", description: "Please upload a customer image.", variant: "destructive" });
         return;
     }
 
     let uploadedImageUrl = customerImageUrl;
-    if (customerImageFile && customerImageUrl?.startsWith('blob:')) {
+    if (customerImageFile) {
         const url = await handleFileUpload('customer');
         if (!url) return;
         uploadedImageUrl = url;
@@ -275,28 +276,22 @@ export default function AdminDashboardPage() {
                             
                             <div className="space-y-2">
                                 <Label htmlFor="car-image">Car Image</Label>
-                                {vehicleImageUrl && <div className="mt-4"><Image src={vehicleImageUrl} alt="Uploaded vehicle" width={200} height={150} className="rounded-lg object-cover" /></div>}
-                                {isVehicleUploading && vehicleUploadProgress !== null && (
-                                    <div className="flex items-center gap-2">
-                                        <Progress value={vehicleUploadProgress} className="w-full" />
-                                        <span>{Math.round(vehicleUploadProgress)}%</span>
+                                {vehicleImageUrl && !isVehicleUploading && <div className="mt-4"><Image src={vehicleImageUrl} alt="Uploaded vehicle" width={200} height={150} className="rounded-lg object-cover" /></div>}
+                                {isVehicleUploading && (
+                                    <div className="flex items-center gap-2 mt-4">
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <span>Uploading...</span>
                                     </div>
                                 )}
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 mt-2">
                                     <Input id="car-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'vehicle')} className="flex-1" />
-                                    {vehicleImageFile && vehicleImageUrl?.startsWith('blob:') && (
-                                        <Button type="button" onClick={() => handleFileUpload('vehicle')} disabled={isVehicleUploading}>
-                                            {isVehicleUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
-                                            <span className="ml-2">Upload</span>
-                                        </Button>
-                                    )}
                                 </div>
-                                <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 5MB).</p>
+                                <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 10MB).</p>
                             </div>
 
                             <div className="flex justify-end">
                                 <Button type="submit" disabled={isVehicleUploading}>
-                                    Add Vehicle
+                                    {isVehicleUploading ? 'Uploading...' : 'Add Vehicle'}
                                 </Button>
                             </div>
                         </form>
@@ -367,26 +362,22 @@ export default function AdminDashboardPage() {
                         </div>
                         <div className="space-y-2">
                              <Label htmlFor="customer-image">Customer Photo</Label>
-                             {customerImageUrl && <div className="mt-4"><Image src={customerImageUrl} alt="Uploaded customer" width={200} height={150} className="rounded-lg object-cover" /></div>}
-                            {isCustomerUploading && customerUploadProgress !== null && (
-                                <div className="flex items-center gap-2">
-                                    <Progress value={customerUploadProgress} className="w-full" />
-                                    <span>{Math.round(customerUploadProgress)}%</span>
+                             {customerImageUrl && !isCustomerUploading && <div className="mt-4"><Image src={customerImageUrl} alt="Uploaded customer" width={200} height={150} className="rounded-lg object-cover" /></div>}
+                             {isCustomerUploading && (
+                                <div className="flex items-center gap-2 mt-4">
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    <span>Uploading...</span>
                                 </div>
                             )}
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 mt-2">
                                 <Input id="customer-image-upload" type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'customer')} className="flex-1" />
-                                 {customerImageFile && customerImageUrl?.startsWith('blob:') && (
-                                    <Button type="button" onClick={() => handleFileUpload('customer')} disabled={isCustomerUploading}>
-                                        {isCustomerUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UploadCloud className="h-4 w-4" />}
-                                        <span className="ml-2">Upload</span>
-                                    </Button>
-                                 )}
                             </div>
-                             <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 5MB).</p>
+                             <p className="text-xs text-muted-foreground">Select a file. PNG, JPG, or WEBP (MAX. 10MB).</p>
                         </div>
                         <div className="flex justify-end">
-                            <Button type="submit" disabled={isCustomerUploading}>Add to Gallery</Button>
+                            <Button type="submit" disabled={isCustomerUploading}>
+                                {isCustomerUploading ? 'Uploading...' : 'Add to Gallery'}
+                            </Button>
                         </div>
                     </form>
                     
@@ -503,5 +494,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-    

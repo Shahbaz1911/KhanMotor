@@ -40,11 +40,13 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'armanautoxperts-in.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
       }
     ],
   },
 };
 
 export default nextConfig;
-
-    
