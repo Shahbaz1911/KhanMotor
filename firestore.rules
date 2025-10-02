@@ -1,19 +1,20 @@
 /**
- * @fileoverview Firestore Security Rules for the application.
- *
- * Core Philosophy:
- * This ruleset prioritizes security by enforcing a strict owner-only access model for user data
- * and restricting write access to the gallery. Read access to the gallery is public.
- *
- * Data Structure:
- * - /users/{userId}: Stores individual user profiles.
- * - /vehicles/{vehicleId}: Stores vehicle information (make, model, etc.). Write access is denied.
- * - /gallery/{galleryItemId}: Stores gallery images with captions. Write access is denied.
- *
- * Key Security Decisions:
- * - User data is strictly private; only the owner can read or write it.
- * - Listing of users is disallowed.
- * - The gallery collection is read-only from the client; all writes are denied.
+ * @file Firestore Security Rules
+ * @core_philosophy This ruleset implements a basic security model.
+ *  - User profiles are secured with owner-only access.
+ *  - The vehicle and gallery collections are publicly readable, but only authenticated users can write to them.
+ * @data_structure
+ *  - /users/{userId}: Stores user profiles.
+ *  - /vehicles/{vehicleId}: Stores vehicle data.
+ *  - /gallery/{galleryItemId}: Stores gallery items.
+ * @key_security_decisions
+ *  - Users can only access their own profile data.
+ *  - Vehicle and gallery listing is public.
+ *  - Data shape is not strictly enforced in this prototype.
+ * @denormalization_for_authorization
+ *  - None.
+ * @structural_segregation
+ *  - None.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -22,50 +23,77 @@ service cloud.firestore {
     /**
      * @description Controls access to user profile information.
      * @path /users/{userId}
-     * @allow (create) User with matching UID can create their profile.
-     * @allow (get, update, delete) User with matching UID can read, update, and delete their profile.
-     * @deny (create) User cannot create a profile with a mismatched UID.
-     * @deny (list) Listing users is not allowed.
+     * @allow (create) User with uid 'user123' can create their profile.
+     * @deny (create) User with uid 'user456' cannot create a profile for 'user123'.
+     * @allow (get) User with uid 'user123' can read their profile.
+     * @deny (get) User with uid 'user456' cannot read the profile of 'user123'.
+     * @allow (update) User with uid 'user123' can update their profile.
+     * @deny (update) User with uid 'user456' cannot update the profile of 'user123'.
+     * @allow (delete) User with uid 'user123' can delete their profile.
+     * @deny (delete) User with uid 'user456' cannot delete the profile of 'user123'.
      * @principle Enforces document ownership for all operations.
      */
     match /users/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
-
+      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.uid == userId;
       allow get: if isSignedIn() && isOwner(userId);
       allow list: if false;
-      allow create: if isSignedIn() && isOwner(userId);
-      allow update: if isSignedIn() && isOwner(userId);
-      allow delete: if isSignedIn() && isOwner(userId);
+      allow update: if isSignedIn() && isExistingOwner(userId) && request.resource.data.uid == resource.data.uid;
+      allow delete: if isSignedIn() && isExistingOwner(userId);
     }
 
     /**
      * @description Controls access to vehicle inventory data.
      * @path /vehicles/{vehicleId}
-     * @allow (get, list) Public read access to vehicle data.
-     * @deny (create, update, delete) No client-side write access to vehicle data.
-     * @principle Restricts client-side modifications to vehicle data.
+     * @allow (get) Any user can read vehicle data.
+     * @allow (list) Any user can list vehicle data.
+     * @allow (create) Only signed-in users can create vehicle data.
+     * @deny (create) Unauthenticated users cannot create vehicle data.
+     * @allow (update) Only signed-in users can update vehicle data.
+     * @deny (update) Unauthenticated users cannot update vehicle data.
+     * @allow (delete) Only signed-in users can delete vehicle data.
+     * @deny (delete) Unauthenticated users cannot delete vehicle data.
+     * @principle Allows public read access but restricts write access to authenticated users.
      */
     match /vehicles/{vehicleId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource != null;
+      allow delete: if isSignedIn() && resource != null;
     }
 
     /**
-     * @description Controls access to gallery images and captions.
+     * @description Controls access to customer gallery items.
      * @path /gallery/{galleryItemId}
-     * @allow (get, list) Public read access to gallery data.
-     * @deny (create, update, delete) No client-side write access to gallery data.
-     * @principle Restricts client-side modifications to gallery data.
+     * @allow (get) Any user can read gallery items.
+     * @allow (list) Any user can list gallery items.
+     * @allow (create) Only signed-in users can create gallery items.
+     * @deny (create) Unauthenticated users cannot create gallery items.
+     * @allow (update) Only signed-in users can update gallery items.
+     * @deny (update) Unauthenticated users cannot update gallery items.
+     * @allow (delete) Only signed-in users can delete gallery items.
+     * @deny (delete) Unauthenticated users cannot delete gallery items.
+     * @principle Allows public read access but restricts write access to authenticated users.
      */
     match /gallery/{galleryItemId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource != null;
+      allow delete: if isSignedIn() && resource != null;
     }
+  }
+
+  // Helper functions
+  function isSignedIn() {
+    return request.auth != null;
+  }
+
+  function isOwner(userId) {
+    return request.auth.uid == userId;
+  }
+
+  function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
   }
 }
