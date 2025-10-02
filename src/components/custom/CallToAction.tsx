@@ -20,19 +20,18 @@ export function CallToAction() {
 
     const ctx = gsap.context(() => {
       if (textRef.current) {
-        gsap.fromTo(
-          textRef.current,
-          { x: "100vw" },
-          {
-            x: "-200%",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1, 
-            },
-          }
-        );
+        // This simple `to` animation with scrub will automatically reverse on scroll up.
+        gsap.to(textRef.current, {
+          x: () => -(textRef.current!.scrollWidth - window.innerWidth),
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true // Recalculates values on resize
+          },
+        });
       }
     }, sectionRef);
 
@@ -54,13 +53,13 @@ export function CallToAction() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
 
-      <div className="relative container mx-auto px-4 z-10">
-        <div ref={textRef} className="whitespace-nowrap">
-          <h2 className="text-6xl md:text-8xl lg:text-9xl font-black uppercase">
+      <div className="relative container mx-auto px-4 z-10 text-center">
+         <div ref={textRef} className="whitespace-nowrap">
+          <h2 className="text-6xl md:text-8xl lg:text-9xl font-black uppercase inline-block">
             Are you ready to experience luxury?
           </h2>
         </div>
-        <div className="mt-12 text-center">
+        <div className="mt-12">
           <Button
             size="lg"
             variant="outline"
