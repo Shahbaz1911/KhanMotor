@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, Settings, LogOut, MoveRight } from "lucide-react"; 
+import { User, Settings, LogOut, MoveRight, Instagram, Facebook } from "lucide-react"; 
 import { cn } from "@/lib/utils";
 import placeholderImages from '@/lib/placeholder-images.json';
 import Image from "next/image";
@@ -24,6 +24,11 @@ const mainNavItems = [
   { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
   { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
   { id: "contact", label: "Contact Us", href: "/#contact" },
+];
+
+const socialLinks = [
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Facebook, href: '#', label: 'Facebook' },
 ];
 
 
@@ -78,8 +83,20 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
       </div>
 
       <div className="border-t border-gray-200 dark:border-white/10 p-4 space-y-4">
-        <div className="flex justify-start px-2"> 
+        <div className="flex items-center justify-start gap-2 px-2"> 
             <ThemeToggle />
+            {socialLinks.map((social) => (
+                <Button key={social.label} variant="outline" size="icon" asChild>
+                    <a
+                    href={social.href}
+                    aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >
+                    <social.icon className="h-[1.2rem] w-[1.2rem]" />
+                    </a>
+                </Button>
+            ))}
         </div>
         {user ? (
           <div className="flex justify-start">
