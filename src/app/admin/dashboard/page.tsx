@@ -77,6 +77,11 @@ export default function AdminDashboardPage() {
   const handleLogout = async () => {
     try {
       await logout();
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+        variant: "destructive"
+      })
       router.push('/admin');
     } catch (error) {
       toast({

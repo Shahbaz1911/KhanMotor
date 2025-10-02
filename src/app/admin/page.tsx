@@ -39,6 +39,7 @@ export default function AdminLoginPage() {
       toast({
         title: "Login Successful",
         description: "Welcome back!",
+        variant: "success",
       });
       router.push("/admin/dashboard");
     } catch (err: any) {

@@ -60,14 +60,19 @@ export default function InventoryPage() {
 
     const handleLogout = async () => {
         try {
-        await logout();
-        router.push('/admin');
+          await logout();
+          toast({
+            title: "Logged Out",
+            description: "You have been successfully logged out.",
+            variant: "destructive"
+          })
+          router.push('/admin');
         } catch (error) {
-        toast({
+          toast({
             title: "Logout Failed",
             description: "Could not log out. Please try again.",
             variant: "destructive"
-        })
+          })
         }
     }
 
@@ -229,5 +234,3 @@ export default function InventoryPage() {
     </div>
   )
 }
-
-    
