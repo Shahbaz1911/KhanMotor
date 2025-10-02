@@ -51,29 +51,29 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
 
   return (
     <div className={cn("h-full flex flex-col", className)}>
-       <div className="p-4 md:p-8 border-b border-gray-200 dark:border-white/10 flex justify-start">
+       <div className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-start">
          <Link href="/#home" onClick={handleLinkClick}>
             <Image
                 src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}
-                className="w-32 h-auto"
+                className="w-28 h-auto"
             />
          </Link>
       </div>
       <div className="flex-grow flex justify-start overflow-y-auto">
-        <nav className="flex flex-col gap-2 p-4 md:p-8 w-full">
+        <nav className="flex flex-col gap-1 p-4 w-full">
           {mainNavItems.map((item) => (
             <Button
               key={item.id}
               variant="sidebar"
-              className="w-full justify-start text-3xl md:text-4xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-4 h-auto"
+              className="w-full justify-start text-2xl md:text-3xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-3 h-auto"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
                 <span className="group-hover:translate-x-4 transition-transform duration-300">{item.label}</span>
-                <MoveRight className="absolute right-0 h-8 w-8 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                <MoveRight className="absolute right-0 h-6 w-6 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </Link>
             </Button>
           ))}
