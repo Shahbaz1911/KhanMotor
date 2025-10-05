@@ -39,12 +39,12 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   const { user, logout } = useAuth();
   const router = useRouter();
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
   }, [theme]);
 
   const handleLogout = async () => {

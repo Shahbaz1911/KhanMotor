@@ -48,14 +48,14 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { theme, systemTheme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
 
   useEffect(() => {
     // Determine the effective theme, considering system preference
     const currentTheme = theme === 'system' ? systemTheme : theme;
     setLogoSrc(currentTheme === 'light' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
   }, [theme, systemTheme]);
 
   useEffect(() => {

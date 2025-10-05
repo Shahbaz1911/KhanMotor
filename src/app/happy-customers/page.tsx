@@ -42,12 +42,12 @@ export default function HappyCustomersPage() {
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
   }, [theme]);
 
   useEffect(() => {

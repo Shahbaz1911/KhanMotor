@@ -32,12 +32,12 @@ export default function AdminDashboardPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
   }, [theme]);
 
 
@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
         variant: "destructive"
       })
       router.push('/admin');
-    } catch (error) => {
+    } catch (error) {
       toast({
         title: "Logout Failed",
         description: "Could not log out. Please try again.",
