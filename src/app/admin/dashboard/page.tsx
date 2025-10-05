@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}
-                    className="w-28 h-auto"
+                    className="w-24 h-auto"
                 />
               </Link>
             </div>
