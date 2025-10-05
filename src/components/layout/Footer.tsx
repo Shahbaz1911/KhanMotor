@@ -15,12 +15,6 @@ export function Footer() {
   const { theme } = useTheme();
   const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
 
-  useEffect(() => {
-    setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
-  }, [theme]);
-
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Facebook, href: '#', label: 'Facebook' },
@@ -99,7 +93,7 @@ export function Footer() {
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
               <Image
-                src={logoSrc}
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}
