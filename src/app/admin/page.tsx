@@ -12,17 +12,28 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle, Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useTheme } from "next-themes";
 
 
 export default function AdminLoginPage() {
   const { user, login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { theme } = useTheme();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
+
 
   useEffect(() => {
     if (user) {
@@ -73,7 +84,7 @@ export default function AdminLoginPage() {
         <CardHeader className="text-center">
             <div className="mx-auto mb-4">
                  <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src={logoSrc}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}

@@ -17,6 +17,7 @@ import { FirestorePermissionError } from "@/firebase/errors";
 import type { Vehicle } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 
 export default function AdminDashboardPage() {
@@ -25,10 +26,19 @@ export default function AdminDashboardPage() {
   const { toast } = useToast();
   
   const firestore = useFirestore();
+  const { theme } = useTheme();
 
   // State for vehicle stats
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
+  
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
 
 
   useEffect(() => {
@@ -80,7 +90,7 @@ export default function AdminDashboardPage() {
         variant: "destructive"
       })
       router.push('/admin');
-    } catch (error) {
+    } catch (error) => {
       toast({
         title: "Logout Failed",
         description: "Could not log out. Please try again.",
@@ -108,7 +118,7 @@ export default function AdminDashboardPage() {
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src={logoSrc}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}
@@ -227,4 +237,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-

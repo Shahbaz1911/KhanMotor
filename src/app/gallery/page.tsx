@@ -18,6 +18,7 @@ import type { Vehicle } from "@/types";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 export default function GalleryPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -25,10 +26,19 @@ export default function GalleryPage() {
   const headerRef = useRef<HTMLDivElement>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const router = useRouter();
+  const { theme } = useTheme();
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
+
 
   useEffect(() => {
     if (!firestore) return;
@@ -134,7 +144,7 @@ export default function GalleryPage() {
               <div className="absolute left-1/2 -translate-x-1/2">
                 <Link href="/">
                   <Image 
-                      src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                      src={logoSrc}
                       alt="Arman Autoxperts Logo"
                       width={150}
                       height={150}

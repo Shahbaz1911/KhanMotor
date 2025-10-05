@@ -9,9 +9,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { User, Settings, LogOut, MoveRight, Instagram, Facebook } from "lucide-react"; 
 import { cn } from "@/lib/utils";
-import placeholderImages from '@/lib/placeholder-images.json';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 interface AppSidebarProps {
   className?: string;
@@ -37,6 +38,14 @@ const socialLinks = [
 export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
 
   const handleLogout = async () => {
     await logout();
@@ -54,7 +63,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
        <div className="p-4 border-b border-gray-200 dark:border-white/10 flex justify-start">
          <Link href="/#home" onClick={handleLinkClick}>
             <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                src={logoSrc}
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}

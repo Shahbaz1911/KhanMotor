@@ -13,6 +13,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTheme } from "next-themes";
 
 const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -31,6 +32,14 @@ export default function ContactPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
   
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -111,7 +120,7 @@ export default function ContactPage() {
             <div className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src={logoSrc}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}

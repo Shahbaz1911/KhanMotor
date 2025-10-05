@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 interface PreloaderProps {
   onLoaded: () => void;
@@ -45,6 +46,17 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const logoRef = useRef<HTMLDivElement>(null);
   const speedNumberRef = useRef<HTMLSpanElement>(null);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+  const { theme, systemTheme } = useTheme();
+
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    // Determine the effective theme, considering system preference
+    const currentTheme = theme === 'system' ? systemTheme : theme;
+    setLogoSrc(currentTheme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme, systemTheme]);
 
   useEffect(() => {
     const speedCounter = { val: 0 };
@@ -121,7 +133,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       {/* Logo above the speedometer */}
       <div ref={logoRef} className="mb-8">
            <Image
-              src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+              src={logoSrc}
               alt="Arman Autoxperts Logo"
               width={200}
               height={200}

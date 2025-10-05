@@ -18,6 +18,7 @@ import { FirestorePermissionError } from "@/firebase/errors";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 interface GalleryItem {
   id: string;
@@ -35,10 +36,19 @@ export default function HappyCustomersPage() {
   const gridRef = useRef<HTMLDivElement>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const router = useRouter();
+  const { theme } = useTheme();
 
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
+
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
 
   useEffect(() => {
     if (!firestore) return;
@@ -146,7 +156,7 @@ export default function HappyCustomersPage() {
               <div className="absolute left-1/2 -translate-x-1/2">
                 <Link href="/">
                   <Image 
-                      src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                      src={logoSrc}
                       alt="Arman Autoxperts Logo"
                       width={150}
                       height={150}

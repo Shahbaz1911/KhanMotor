@@ -14,6 +14,7 @@ import Image from "next/image";
 import { GalleryThumbnails } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 export default function BookAppointmentPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,15 @@ export default function BookAppointmentPage() {
   const headerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
+
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -91,7 +101,7 @@ export default function BookAppointmentPage() {
             <div className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src={logoSrc}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}

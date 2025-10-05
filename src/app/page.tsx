@@ -26,12 +26,22 @@ import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
 import { CallToAction } from "@/components/custom/CallToAction";
 import { TextMarquee } from "@/components/custom/TextMarquee";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 
 export default function ConsolidatedPage() {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
+
 
   const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
   const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
@@ -130,7 +140,7 @@ export default function ConsolidatedPage() {
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src={logoSrc}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}
@@ -228,5 +238,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    

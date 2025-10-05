@@ -1,15 +1,25 @@
+
 "use client";
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTheme } from 'next-themes';
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+
+  useEffect(() => {
+    setLogoSrc(theme === 'light' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
+  }, [theme]);
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -89,7 +99,7 @@ export function Footer() {
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
               <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                src={logoSrc}
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}
