@@ -44,10 +44,9 @@ const TimelineItem = ({
   isLeft: boolean;
   progress: any;
 }) => {
-
-  const borderColor = useTransform(
+  const cardBorderColor = useTransform(
     progress,
-    [0.45, 0.5, 0.55], // Trigger animation exactly at the center
+    [0.4, 0.5, 0.6],
     ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
   );
 
@@ -60,8 +59,8 @@ const TimelineItem = ({
       className="w-full relative"
     >
       <motion.div
+        style={{ borderColor: cardBorderColor }}
         className="bg-card/90 backdrop-blur-md shadow-lg w-full h-full relative overflow-hidden rounded-lg border-2"
-        style={{ borderColor }}
       >
         <CardHeader>
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
@@ -137,10 +136,10 @@ export function WhyChooseUs() {
                     const itemRef = useRef<HTMLDivElement>(null);
                     const { scrollYProgress: itemScrollYProgress } = useScroll({
                         target: itemRef,
-                        offset: ["start end", "end start"]
+                        offset: ["start end", "start center"]
                     });
 
-                     const borderColor = useTransform(
+                     const iconBorderColor = useTransform(
                         itemScrollYProgress,
                         [0.4, 0.5, 0.6],
                         ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
@@ -155,7 +154,7 @@ export function WhyChooseUs() {
                                         backgroundColor: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--background))", "hsl(var(--primary))"]),
                                         color: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
                                         scale: useTransform(itemScrollYProgress, [0.4, 0.5, 0.6], [1, 1.2, 1]),
-                                        borderColor
+                                        borderColor: iconBorderColor
                                      }}
                                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 bg-background"
                                 >
