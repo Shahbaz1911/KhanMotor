@@ -61,11 +61,6 @@ const TimelineItem = ({
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
       className="w-full relative p-[1px] rounded-lg"
-      style={{
-        backgroundImage: `radial-gradient(circle at 50% 50%, transparent 99%, hsl(var(--destructive)))`,
-        backgroundSize: '100% 100%',
-        backgroundPosition: 'center center',
-      }}
     >
        <motion.div
         className="absolute inset-0 rounded-lg -z-10"
@@ -74,7 +69,7 @@ const TimelineItem = ({
             animatedRotation,
             (r) => `conic-gradient(from ${r}deg at 50% 50%, hsl(var(--destructive)) 0%, hsl(var(--primary)) 20%, transparent 100%)`
           ),
-          opacity: useTransform(progress, [0.3, 0.5, 0.7], [0, 1, 0]),
+          opacity: useTransform(progress, [0.3, 0.4, 0.6], [0, 1, 0]),
         }}
       />
       <Card className="bg-card/90 backdrop-blur-md border-border shadow-lg w-full h-full">
