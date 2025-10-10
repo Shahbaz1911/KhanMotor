@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -50,7 +51,7 @@ export const TracingBeam = ({
       ref={ref}
       className={cn("relative w-full max-w-4xl mx-auto h-full", className)}
     >
-      <div className="absolute -left-4 md:left-1/2 md:-translate-x-1/2 top-3">
+      <div className="absolute left-0 top-3">
         <motion.div
           transition={{
             duration: 0.2,
@@ -60,9 +61,10 @@ export const TracingBeam = ({
             boxShadow:
               scrollYProgress.get() > 0
                 ? "none"
-                : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                : "rgba(var(--primary-rgb), 0.24) 0px 3px 8px",
           }}
-          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center absolute top-0 -translate-y-4"
+          className="ml-[27px] h-4 w-4 rounded-full border border-primary shadow-sm flex items-center justify-center absolute"
+           style={{ top: y1 }}
         >
           <motion.div
             transition={{
@@ -114,8 +116,8 @@ export const TracingBeam = ({
             >
               <stop stopColor="hsl(var(--destructive))" stopOpacity="0" />
               <stop stopColor="hsl(var(--destructive))" />
-              <stop offset="0.5" stopColor="hsl(var(--destructive), 0.5)" />
-              <stop offset="1" stopColor="hsl(var(--destructive))" stopOpacity="0" />
+              <stop offset="0.325" stopColor="hsl(var(--primary))" />
+              <stop offset="1" stopColor="hsl(var(--primary))" stopOpacity="0" />
             </motion.linearGradient>
           </defs>
         </svg>
