@@ -147,7 +147,7 @@ export function WhyChooseUs() {
                     const itemRef = useRef<HTMLDivElement>(null);
                     const { scrollYProgress: itemScrollYProgress } = useScroll({
                         target: itemRef,
-                        offset: ["start end", "center center"]
+                        offset: ["start end", "end end"]
                     });
 
                     return (
