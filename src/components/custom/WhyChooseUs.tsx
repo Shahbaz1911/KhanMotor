@@ -44,22 +44,14 @@ const TimelineItem = ({
   isLeft: boolean;
   progress: any;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  
-  const cardVariants = {
-    hidden: { opacity: 0, x: isLeft ? -50 : 50, scale: 0.95 },
-    visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
   const animatedRotation = useTransform(progress, [0, 1], [0, 360]);
 
   return (
     <motion.div
-      ref={ref}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
+      initial={{ opacity: 0, x: isLeft ? -50 : 50, scale: 0.95 }}
+      whileInView={{ opacity: 1, x: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       className="w-full relative p-[1px] rounded-lg"
     >
        <motion.div
@@ -136,7 +128,7 @@ export function WhyChooseUs() {
             {/* The vertical line */}
             <div className="absolute left-6 md:left-1/2 top-0 h-full w-0.5 bg-border md:-translate-x-1/2" aria-hidden="true">
                  <motion.div 
-                    className="h-full w-full bg-primary origin-top"
+                    className="h-full w-full bg-destructive origin-top"
                     style={{ scaleY: scaleY }}
                  />
             </div>
@@ -169,7 +161,8 @@ export function WhyChooseUs() {
                             {/* Horizontal connector line for desktop */}
                              <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-0.5 bg-border w-[calc(50%-4rem)]"
                                 style={{ 
-                                    left: isLeft ? '0' : 'calc(50% + 4rem)',
+                                    left: isLeft ? 'auto' : 'calc(50% + 4rem)',
+                                    right: isLeft ? 'calc(50% + 4rem)' : 'auto',
                                 }}
                              >
                                 <motion.div 
@@ -179,7 +172,7 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="md:hidden w-[calc(100%-4rem)] ml-auto">
+                             <div className="md:hidden w-[calc(100%-4rem)] ml-[4rem]">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
