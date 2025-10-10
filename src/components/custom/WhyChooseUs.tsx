@@ -9,7 +9,7 @@ import {
   MessageSquareHeart,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const highlightItems = [
@@ -38,9 +38,11 @@ const highlightItems = [
 const TimelineItem = ({
   item,
   isLeft,
+  progress,
 }: {
   item: (typeof highlightItems)[0];
   isLeft: boolean;
+  progress: any;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   
@@ -49,6 +51,8 @@ const TimelineItem = ({
     visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
+  const animatedRotation = useTransform(progress, [0, 1], [0, 360]);
+
   return (
     <motion.div
       ref={ref}
@@ -56,9 +60,24 @@ const TimelineItem = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
-      className="w-full"
+      className="w-full relative p-[1px] rounded-lg"
+      style={{
+        backgroundImage: `radial-gradient(circle at 50% 50%, transparent 99%, hsl(var(--destructive)))`,
+        backgroundSize: '100% 100%',
+        backgroundPosition: 'center center',
+      }}
     >
-      <Card className="bg-card/50 backdrop-blur-md border-border shadow-lg w-full">
+       <motion.div
+        className="absolute inset-0 rounded-lg -z-10"
+        style={{
+          background: useTransform(
+            animatedRotation,
+            (r) => `conic-gradient(from ${r}deg at 50% 50%, hsl(var(--destructive)) 0%, hsl(var(--primary)) 20%, transparent 100%)`
+          ),
+          opacity: useTransform(progress, [0.3, 0.5, 0.7], [0, 1, 0]),
+        }}
+      />
+      <Card className="bg-card/90 backdrop-blur-md border-border shadow-lg w-full h-full">
          <CardHeader>
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
@@ -141,13 +160,11 @@ export function WhyChooseUs() {
                             {/* Icon on the timeline */}
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                                 <motion.div
-                                     whileInView={{ 
-                                        backgroundColor: ["hsl(var(--background))", "hsl(var(--primary))"],
-                                        color: ["hsl(var(--primary))", "hsl(var(--primary-foreground))"],
-                                        scale: [1, 1.2, 1],
+                                     style={{ 
+                                        backgroundColor: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--background))", "hsl(var(--primary))"]),
+                                        color: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
+                                        scale: useTransform(itemScrollYProgress, [0.3, 0.4, 0.6], [1, 1.2, 1]),
                                      }}
-                                     viewport={{ once: true, amount: 0.5 }}
-                                     transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
                                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary bg-background"
                                 >
                                     <item.icon className="h-6 w-6" />
@@ -166,21 +183,21 @@ export function WhyChooseUs() {
 
                             {/* Mobile layout: all cards on the right */}
                              <div className="md:hidden w-[calc(50%-2rem)] ml-auto">
-                                <TimelineItem item={item} isLeft={false} />
+                                <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
                             {/* Desktop layout: alternating cards */}
                              <div className="hidden md:flex w-full">
                                {isLeft ? (
-                                    <div className="w-[calc(50%-3rem)] mr-auto">
-                                        <TimelineItem item={item} isLeft={true} />
+                                    <div className="w-[calc(50%-4rem)] mr-auto">
+                                        <TimelineItem item={item} isLeft={true} progress={itemScrollYProgress} />
                                     </div>
                                 ) : (
                                    <div className="w-1/2"></div> /* Spacer for right-aligned cards */
                                 )}
                                  {!isLeft ? (
-                                    <div className="w-[calc(50%-3rem)] ml-auto">
-                                        <TimelineItem item={item} isLeft={false} />
+                                    <div className="w-[calc(50%-4rem)] ml-auto">
+                                        <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress}/>
                                     </div>
                                 ) : (
                                     <div className="w-1/2"></div> /* Spacer for left-aligned cards */
@@ -195,5 +212,3 @@ export function WhyChooseUs() {
     </section>
   );
 }
-
-    
