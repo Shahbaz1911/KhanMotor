@@ -47,7 +47,7 @@ const TimelineItem = ({
 
   const borderColor = useTransform(
     progress,
-    [0.3, 0.4, 0.6],
+    [0.45, 0.5, 0.55], // Trigger animation exactly at the center
     ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
   );
 
@@ -137,13 +137,13 @@ export function WhyChooseUs() {
                     const itemRef = useRef<HTMLDivElement>(null);
                     const { scrollYProgress: itemScrollYProgress } = useScroll({
                         target: itemRef,
-                        offset: ["start end", "end end"]
+                        offset: ["start end", "end start"]
                     });
 
-                    const borderColor = useTransform(
+                     const borderColor = useTransform(
                         itemScrollYProgress,
-                        [0.3, 0.4, 0.6],
-                        ["hsl(var(--primary))", "hsl(var(--destructive))", "hsl(var(--primary))"]
+                        [0.4, 0.5, 0.6],
+                        ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
                     );
 
                     return (
@@ -152,9 +152,9 @@ export function WhyChooseUs() {
                             <div className="absolute left-6 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                                 <motion.div
                                      style={{ 
-                                        backgroundColor: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--background))", "hsl(var(--primary))"]),
-                                        color: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
-                                        scale: useTransform(itemScrollYProgress, [0.3, 0.4, 0.6], [1, 1.2, 1]),
+                                        backgroundColor: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--background))", "hsl(var(--primary))"]),
+                                        color: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
+                                        scale: useTransform(itemScrollYProgress, [0.4, 0.5, 0.6], [1, 1.2, 1]),
                                         borderColor
                                      }}
                                      className="flex h-12 w-12 items-center justify-center rounded-full border-2 bg-background"
