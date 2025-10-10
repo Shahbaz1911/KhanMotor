@@ -134,7 +134,7 @@ export function WhyChooseUs() {
         
         <div className="relative w-full max-w-4xl mx-auto">
             {/* The vertical line */}
-            <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2" aria-hidden="true">
+            <div className="absolute left-6 md:left-1/2 top-0 h-full w-0.5 bg-border md:-translate-x-1/2" aria-hidden="true">
                  <motion.div 
                     className="h-full w-full bg-primary origin-top"
                     style={{ scaleY: scaleY }}
@@ -153,7 +153,7 @@ export function WhyChooseUs() {
                     return (
                         <div key={item.title} ref={itemRef} className="relative flex items-center min-h-[150px]">
                             {/* Icon on the timeline */}
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                            <div className="absolute left-6 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                                 <motion.div
                                      style={{ 
                                         backgroundColor: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--background))", "hsl(var(--primary))"]),
@@ -167,8 +167,10 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Horizontal connector line for desktop */}
-                             <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-0.5 bg-border w-1/2"
-                                style={{ left: isLeft ? '0' : '50%', right: isLeft ? '50%' : '0' }}
+                             <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-0.5 bg-border w-[calc(50%-4rem)]"
+                                style={{ 
+                                    left: isLeft ? '0' : 'calc(50% + 4rem)',
+                                }}
                              >
                                 <motion.div 
                                     className={cn("h-full bg-primary", isLeft ? "origin-right" : "origin-left")}
@@ -176,8 +178,8 @@ export function WhyChooseUs() {
                                 />
                             </div>
 
-                            {/* Mobile layout: all cards on the right */}
-                             <div className="md:hidden w-[calc(50%-2rem)] ml-auto">
+                            {/* Mobile layout: all cards on the right of the timeline */}
+                             <div className="md:hidden w-[calc(100%-4rem)] ml-auto">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
