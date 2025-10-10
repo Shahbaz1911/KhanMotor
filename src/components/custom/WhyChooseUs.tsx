@@ -64,7 +64,17 @@ const TimelineItem = ({
           opacity: useTransform(progress, [0.3, 0.4, 0.6], [0, 1, 0]),
         }}
       />
-      <Card className="bg-card/90 backdrop-blur-md border-border shadow-lg w-full h-full">
+      <Card className="bg-card/90 backdrop-blur-md border-border shadow-lg w-full h-full relative overflow-hidden">
+         <motion.div
+          className={cn(
+            "absolute top-0 h-full w-1 bg-destructive",
+            isLeft ? "right-0" : "left-0"
+          )}
+          style={{
+            scaleY: useTransform(progress, [0.3, 0.4, 0.6], [0, 1, 0]),
+            opacity: useTransform(progress, [0.3, 0.4, 0.6], [0, 1, 0]),
+          }}
+         />
          <CardHeader>
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
@@ -158,21 +168,8 @@ export function WhyChooseUs() {
                                 </motion.div>
                             </div>
 
-                            {/* Horizontal connector line for desktop */}
-                             <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-0.5 bg-border w-[calc(50%-4rem)]"
-                                style={{ 
-                                    left: isLeft ? 'auto' : 'calc(50% + 4rem)',
-                                    right: isLeft ? 'calc(50% + 4rem)' : 'auto',
-                                }}
-                             >
-                                <motion.div 
-                                    className={cn("h-full bg-primary", isLeft ? "origin-right" : "origin-left")}
-                                    style={{ scaleX: itemScrollYProgress }}
-                                />
-                            </div>
-
                             {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="md:hidden w-[calc(100%-4rem)] ml-[4rem]">
+                             <div className="w-[calc(100%-4rem)] ml-auto md:hidden">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
