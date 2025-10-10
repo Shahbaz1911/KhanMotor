@@ -11,10 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['"Inter Tight"', 'sans-serif'],
-        headline: ['"Inter Tight"', 'sans-serif'],
-        kajiro: ['"Inter Tight"', 'sans-serif'],
-        code: ['monospace'],
+        body: ['"Raleway"', 'sans-serif'],
+        headline: ['"Bebas Neue"', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
