@@ -44,7 +44,6 @@ const TimelineItem = ({
   isLeft: boolean;
   progress: any;
 }) => {
-  const animatedRotation = useTransform(progress, [0, 1], [0, 360]);
 
   return (
     <motion.div
@@ -52,18 +51,8 @@ const TimelineItem = ({
       whileInView={{ opacity: 1, x: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.5 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full relative p-[1px] rounded-lg"
+      className="w-full relative"
     >
-       <motion.div
-        className="absolute inset-0 rounded-lg -z-10"
-        style={{
-          background: useTransform(
-            animatedRotation,
-            (r) => `conic-gradient(from ${r}deg at 50% 50%, hsl(var(--destructive)) 0%, hsl(var(--primary)) 20%, transparent 100%)`
-          ),
-          opacity: useTransform(progress, [0.3, 0.4, 0.6], [0, 1, 0]),
-        }}
-      />
       <Card className="bg-card/90 backdrop-blur-md border-border shadow-lg w-full h-full relative overflow-hidden">
          <motion.div
           className={cn(
@@ -161,8 +150,9 @@ export function WhyChooseUs() {
                                         backgroundColor: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--background))", "hsl(var(--primary))"]),
                                         color: useTransform(itemScrollYProgress, [0.3, 0.4], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
                                         scale: useTransform(itemScrollYProgress, [0.3, 0.4, 0.6], [1, 1.2, 1]),
+                                        borderColor: useTransform(itemScrollYProgress, [0.3, 0.4, 0.6], ["hsl(var(--primary))", "hsl(var(--destructive))", "hsl(var(--primary))"]),
                                      }}
-                                     className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary bg-background"
+                                     className="flex h-12 w-12 items-center justify-center rounded-full border-2 bg-background"
                                 >
                                     <item.icon className="h-6 w-6" />
                                 </motion.div>
