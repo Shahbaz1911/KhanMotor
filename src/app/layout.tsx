@@ -25,7 +25,7 @@ export default function RootLayout({
         <link rel="icon" href="https://armanautoxperts-in.vercel.app/armanautoxperts/armanautoxperts-1.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
         <FirebaseProvider>

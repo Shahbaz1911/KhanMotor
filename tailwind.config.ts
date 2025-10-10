@@ -1,4 +1,3 @@
-
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -11,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['"Raleway"', 'sans-serif'],
-        headline: ['"Bebas Neue"', 'sans-serif'],
+        body: ['"Bebas Neue"', 'sans-serif'],
+        headline: ['"Raleway"', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
