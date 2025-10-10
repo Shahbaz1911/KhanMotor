@@ -93,7 +93,7 @@ export function AchievementsSection() {
     <section ref={sectionRef} id="achievements" className="py-16 md:py-24 bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-4 text-4xl font-black tracking-tight lg:text-5xl">
+            <h2 className="mb-4 text-4xl font-black tracking-tight lg:text-5xl uppercase">
                 A Legacy of Trust and Excellence
             </h2>
             <p className="text-lg text-muted-foreground md:text-xl">

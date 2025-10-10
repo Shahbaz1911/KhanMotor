@@ -147,7 +147,7 @@ export default function InventoryClientPage() {
                 <Button variant="outline" size="icon" onClick={() => router.push('/admin/dashboard')}>
                     <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Manage Inventory</h1>
+                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Manage Inventory</h1>
             </div>
             <div className="flex items-center gap-4">
               <DropdownMenu>
@@ -192,7 +192,7 @@ export default function InventoryClientPage() {
             <Card>
                 <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <CardTitle>Current Inventory</CardTitle>
+                        <CardTitle className="uppercase">Current Inventory</CardTitle>
                         <CardDescription>
                             Manage your existing vehicle listings. Newest vehicles are shown first.
                         </CardDescription>
@@ -236,7 +236,7 @@ export default function InventoryClientPage() {
                                     <CardContent className="p-4">
                                         <div className="flex justify-between items-start">
                                             <div>
-                                                <h3 className="font-bold text-lg">{vehicle.make} {vehicle.model}</h3>
+                                                <h3 className="font-bold text-lg uppercase">{vehicle.make} {vehicle.model}</h3>
                                                 <p className="text-sm text-muted-foreground">{vehicle.year}</p>
                                             </div>
                                             <Badge variant={vehicle.status === 'available' ? "secondary" : "destructive"} className={cn("capitalize", vehicle.status === 'available' && "bg-green-600/90 text-white border-green-700")}>
@@ -267,7 +267,7 @@ export default function InventoryClientPage() {
                     ) : (
                         <div className="text-center py-16">
                             <Car className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <h3 className="mt-4 text-lg font-medium">No vehicles match filter</h3>
+                            <h3 className="mt-4 text-lg font-medium uppercase">No vehicles match filter</h3>
                              <p className="mt-1 text-sm text-muted-foreground">
                                 {statusFilter === null 
                                     ? "Get started by adding a new vehicle."
@@ -289,5 +289,3 @@ export default function InventoryClientPage() {
     </div>
   )
 }
-
-    

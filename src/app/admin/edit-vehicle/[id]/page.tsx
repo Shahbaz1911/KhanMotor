@@ -163,7 +163,7 @@ export default function EditVehiclePage() {
                      <Button variant="outline" size="icon" onClick={() => router.push('/admin/dashboard')}>
                         <ArrowLeft className="h-4 w-4" />
                      </Button>
-                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Edit Vehicle</h1>
+                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Edit Vehicle</h1>
                     <div className="w-8"></div>
                 </div>
             </header>
@@ -171,14 +171,14 @@ export default function EditVehiclePage() {
                 <div className="mx-auto max-w-3xl">
                      <Card>
                         <CardHeader>
-                            <CardTitle>Editing: {vehicle.make} {vehicle.model}</CardTitle>
+                            <CardTitle className="uppercase">Editing: {vehicle.make} {vehicle.model}</CardTitle>
                             <CardDescription>
                                 Make changes to the vehicle details below. Click save when you're done.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                              <form onSubmit={handleUpdateVehicle} className="grid gap-6">
-                                <h3 className="text-lg font-semibold border-b pb-2">Basic Info</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 uppercase">Basic Info</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="make">Make</Label>
@@ -201,7 +201,7 @@ export default function EditVehiclePage() {
                                         <Input id="color" value={vehicle.color} onChange={e => setVehicle({...vehicle, color: e.target.value})} required/>
                                     </div>
                                 </div>
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Pricing</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Pricing</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="price">Price (₹)</Label>
@@ -219,7 +219,7 @@ export default function EditVehiclePage() {
                                     </div>
                                 </div>
 
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Condition & Specs</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Condition & Specs</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="mileage">Mileage (km)</Label>
@@ -261,7 +261,7 @@ export default function EditVehiclePage() {
                                     </div>
                                 </div>
                                 
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Other Details</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Other Details</h3>
                                 <div className="space-y-2">
                                     <Label htmlFor="status">Status</Label>
                                     <Select value={vehicle.status} onValueChange={value => setVehicle({...vehicle, status: value as 'available' | 'sold'})}>

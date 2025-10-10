@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
                     className="w-36 h-auto"
                 />
             </div>
-          <CardTitle className="text-2xl">Admin Login</CardTitle>
+          <CardTitle className="text-2xl uppercase">Admin Login</CardTitle>
           <CardDescription>
             Sign in to manage your vehicle inventory.
           </CardDescription>
@@ -101,7 +101,7 @@ export default function AdminLoginPage() {
                 {error && (
                     <Alert variant="destructive">
                         <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>Login Failed</AlertTitle>
+                        <AlertTitle className="uppercase">Login Failed</AlertTitle>
                         <AlertDescription>{error}</AlertDescription>
                     </Alert>
                 )}

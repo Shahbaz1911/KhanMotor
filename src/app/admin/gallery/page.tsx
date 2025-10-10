@@ -211,7 +211,7 @@ export default function GalleryPage() {
                 <Button variant="outline" size="icon" onClick={() => router.push('/admin/dashboard')}>
                     <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Manage Customer Gallery</h1>
+                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Manage Customer Gallery</h1>
             </div>
             <div className="flex items-center gap-4">
               <DropdownMenu>
@@ -256,7 +256,7 @@ export default function GalleryPage() {
            <Card className="shadow-lg">
                 <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <CardTitle>Happy Customer Gallery</CardTitle>
+                        <CardTitle className="uppercase">Happy Customer Gallery</CardTitle>
                         <CardDescription>
                             Manage photos for the customer gallery section on your homepage.
                         </CardDescription>
@@ -303,7 +303,7 @@ export default function GalleryPage() {
                     ) : (
                          <div className="text-center py-16">
                             <Users className="mx-auto h-12 w-12 text-muted-foreground" />
-                            <h3 className="mt-4 text-lg font-medium">No photos in gallery</h3>
+                            <h3 className="mt-4 text-lg font-medium uppercase">No photos in gallery</h3>
                             <p className="mt-1 text-sm text-muted-foreground">Get started by adding a new customer photo.</p>
                             <Button className="mt-6" onClick={() => router.push('/admin/gallery/add')}>
                                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -317,7 +317,7 @@ export default function GalleryPage() {
             <Dialog open={isGalleryEditDialogOpen} onOpenChange={setIsGalleryEditDialogOpen}>
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Edit Gallery Item</DialogTitle>
+                        <DialogTitle className="uppercase">Edit Gallery Item</DialogTitle>
                         <DialogDescription>Update the caption or image for this gallery item.</DialogDescription>
                     </DialogHeader>
                     {editingGalleryItem && (

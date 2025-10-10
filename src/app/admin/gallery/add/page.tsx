@@ -115,7 +115,7 @@ export default function AddGalleryItemPage() {
                      <Button variant="outline" size="icon" onClick={() => router.push('/admin/dashboard')}>
                         <ArrowLeft className="h-4 w-4" />
                      </Button>
-                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Add to Gallery</h1>
+                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Add to Gallery</h1>
                     <div className="w-8"></div>
                 </div>
             </header>
@@ -134,12 +134,12 @@ export default function AddGalleryItemPage() {
                             >
                                 <Check className="h-16 w-16 text-white" />
                             </motion.div>
-                            <p className="mt-4 text-lg font-semibold">Photo Added Successfully!</p>
+                            <p className="mt-4 text-lg font-semibold uppercase">Photo Added Successfully!</p>
                         </motion.div>
                     )}
                      <Card className="shadow-lg">
                         <CardHeader>
-                            <CardTitle>Add New Customer Photo</CardTitle>
+                            <CardTitle className="uppercase">Add New Customer Photo</CardTitle>
                             <CardDescription>
                                 Upload a photo and add a caption for the customer gallery.
                             </CardDescription>

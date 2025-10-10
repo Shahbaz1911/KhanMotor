@@ -86,7 +86,7 @@ const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] 
           <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
         </Avatar>
         <div>
-          <CardTitle className="text-xl font-black">{testimonial.name}</CardTitle>
+          <CardTitle className="text-xl font-black uppercase">{testimonial.name}</CardTitle>
           <CardDescription className="dark:text-gray-300">{testimonial.title}</CardDescription>
         </div>
       </CardHeader>

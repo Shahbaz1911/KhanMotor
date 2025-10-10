@@ -112,7 +112,7 @@ export default function AdminDashboardPage() {
       <header className="bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 sticky top-0 z-30">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block">Admin Dashboard</h1>
+              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 hidden sm:block uppercase">Admin Dashboard</h1>
             </div>
             
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -169,7 +169,7 @@ export default function AdminDashboardPage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:px-8">
             <Card className="mb-4">
                 <CardHeader>
-                    <CardTitle>Welcome, {user.displayName}</CardTitle>
+                    <CardTitle className="uppercase">Welcome, {user.displayName}</CardTitle>
                     <CardDescription>Select a section below to manage your website content.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -195,7 +195,7 @@ export default function AdminDashboardPage() {
             </Card>
 
             <section>
-              <h2 className="text-2xl font-bold mb-4">Inventory Stats</h2>
+              <h2 className="text-2xl font-bold mb-4 uppercase">Inventory Stats</h2>
                 {loadingVehicles ? (
                     <div className="flex justify-center items-center h-24">
                         <Loader2 className="h-8 w-8 animate-spin" />
@@ -204,7 +204,7 @@ export default function AdminDashboardPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <Card onClick={() => router.push('/admin/inventory')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Total Vehicles</CardTitle>
+                                <CardTitle className="text-sm font-medium uppercase">Total Vehicles</CardTitle>
                                 <Car className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
                         </Card>
                          <Card onClick={() => router.push('/admin/inventory?status=available')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Available</CardTitle>
+                                <CardTitle className="text-sm font-medium uppercase">Available</CardTitle>
                                 <BadgeCheck className="h-4 w-4 text-green-500" />
                             </CardHeader>
                             <CardContent>
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
                         </Card>
                          <Card onClick={() => router.push('/admin/inventory?status=sold')} className="cursor-pointer hover:bg-muted/50 transition-colors">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Sold</CardTitle>
+                                <CardTitle className="text-sm font-medium uppercase">Sold</CardTitle>
                                 <TrendingDown className="h-4 w-4 text-red-500" />
                             </CardHeader>
                             <CardContent>

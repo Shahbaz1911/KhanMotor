@@ -143,7 +143,7 @@ export default function ContactPage() {
                 variants={listVariants}
                 className="flex flex-col justify-center"
             >
-              <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4">Connect With Us</motion.h1>
+              <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4 uppercase">Connect With Us</motion.h1>
               <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8">
                 We&apos;re here to help with all your automotive needs. Reach out today and let us know how we can assist you.
               </motion.p>
@@ -168,7 +168,7 @@ export default function ContactPage() {
                </motion.div>
 
               <motion.div variants={itemVariants} className="mt-12">
-                <h3 className="text-xl font-bold mb-4">Connect</h3>
+                <h3 className="text-xl font-bold mb-4 uppercase">Connect</h3>
                  <div className="flex gap-4">
                     {socialLinks.map((social) => (
                         <Button key={social.label} variant="outline" size="icon" asChild>

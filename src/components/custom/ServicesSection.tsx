@@ -66,7 +66,7 @@ export function ServicesSection() {
     <section ref={sectionRef} id="services" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black">
+          <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
             Our Services
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl mt-4">
@@ -81,7 +81,7 @@ export function ServicesSection() {
                   <div className="p-4 bg-destructive/20 rounded-full border border-destructive/30 mb-4">
                     <service.icon className="h-8 w-8 text-destructive" />
                   </div>
-                  <CardTitle className="text-2xl font-black">{service.title}</CardTitle>
+                  <CardTitle className="text-2xl font-black uppercase">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>{service.description}</CardDescription>

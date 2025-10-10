@@ -159,7 +159,7 @@ export default function GalleryPage() {
               </Button>
           </div>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
-            <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black">
+            <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase">
               Our Vehicle Collection
             </h1>
             
@@ -180,7 +180,7 @@ export default function GalleryPage() {
                   ) : (
                     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
                       <div className="mb-4 text-5xl">🚗</div>
-                      <h3 className="text-2xl font-semibold">No Vehicles Found</h3>
+                      <h3 className="text-2xl font-semibold uppercase">No Vehicles Found</h3>
                       <p className="text-muted-foreground">
                         There are currently no vehicles in our collection. Check back soon!
                       </p>

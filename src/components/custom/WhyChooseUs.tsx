@@ -61,7 +61,7 @@ export function WhyChooseUs() {
         >
             <motion.h2 
                 variants={titleVariants}
-                className="text-4xl tracking-tight lg:text-5xl font-black"
+                className="text-4xl tracking-tight lg:text-5xl font-black uppercase"
             >
                 Why Choose Arman Autoxperts?
             </motion.h2>
@@ -88,7 +88,7 @@ export function WhyChooseUs() {
                 <div className="md:ml-[calc(50%+2rem)] md:pl-8">
                     <Card className="bg-card/50 backdrop-blur-md border-border">
                         <CardHeader>
-                            <CardTitle className="text-xl font-black">{item.title}</CardTitle>
+                            <CardTitle className="text-xl font-black uppercase">{item.title}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">{item.description}</p>

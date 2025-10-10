@@ -38,7 +38,7 @@ export function TextMarquee() {
           {repeatedTexts.map((text, i) => (
             <React.Fragment key={i}>
               <div className="mx-8">
-                <h2 className="text-6xl md:text-8xl font-black text-foreground/80 whitespace-nowrap">
+                <h2 className="text-6xl md:text-8xl font-black text-foreground/80 whitespace-nowrap uppercase">
                   {text}
                 </h2>
               </div>

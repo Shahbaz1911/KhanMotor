@@ -177,7 +177,7 @@ export default function HappyCustomersPage() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Home
                 </Button>
-                <h1 ref={titleRef} className="mb-12 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black">
+                <h1 ref={titleRef} className="mb-12 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
                     Our Happy Customers
                 </h1>
             </div>
@@ -216,7 +216,7 @@ export default function HappyCustomersPage() {
                     )) : (
                         <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
                             <div className="mb-4 text-5xl">📸</div>
-                            <h3 className="text-2xl font-semibold">No Photos Yet</h3>
+                            <h3 className="text-2xl font-semibold uppercase">No Photos Yet</h3>
                             <p className="text-muted-foreground">
                                 Our customer gallery is waiting for its first star. Check back soon!
                             </p>

@@ -151,7 +151,7 @@ export default function AddVehiclePage() {
                      <Button variant="outline" size="icon" onClick={() => router.push('/admin/inventory')}>
                         <ArrowLeft className="h-4 w-4" />
                      </Button>
-                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">Add New Vehicle</h1>
+                    <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Add New Vehicle</h1>
                     <div className="w-8"></div>
                 </div>
             </header>
@@ -170,12 +170,12 @@ export default function AddVehiclePage() {
                             >
                                 <Check className="h-16 w-16 text-white" />
                             </motion.div>
-                            <p className="mt-4 text-lg font-semibold">Vehicle Added Successfully!</p>
+                            <p className="mt-4 text-lg font-semibold uppercase">Vehicle Added Successfully!</p>
                         </motion.div>
                     )}
                      <Card className="shadow-lg">
                         <CardHeader>
-                            <CardTitle>Add New Vehicle</CardTitle>
+                            <CardTitle className="uppercase">Add New Vehicle</CardTitle>
                             <CardDescription>
                                 Fill out the form below to add a new car to your inventory.
                             </CardDescription>
@@ -183,7 +183,7 @@ export default function AddVehiclePage() {
                         <CardContent>
                             <form onSubmit={handleAddVehicle} className="grid gap-6">
                                 {/* Basic Info */}
-                                <h3 className="text-lg font-semibold border-b pb-2">Basic Info</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 uppercase">Basic Info</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="make">Make</Label>
@@ -208,7 +208,7 @@ export default function AddVehiclePage() {
                                 </div>
                                 
                                 {/* Pricing */}
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Pricing</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Pricing</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="price">Price (₹)</Label>
@@ -229,7 +229,7 @@ export default function AddVehiclePage() {
                                 </div>
 
                                 {/* Condition & Specs */}
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Condition & Specs</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Condition & Specs</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 <div className="space-y-2">
                                         <Label htmlFor="mileage">Mileage (km)</Label>
@@ -272,7 +272,7 @@ export default function AddVehiclePage() {
                                 </div>
 
                                 {/* Other Details */}
-                                <h3 className="text-lg font-semibold border-b pb-2 mt-4">Other Details</h3>
+                                <h3 className="text-lg font-semibold border-b pb-2 mt-4 uppercase">Other Details</h3>
                                 <div className="space-y-2">
                                     <Label htmlFor="description">Description</Label>
                                     <Textarea id="description" placeholder="Enter a brief description of the vehicle..." value={newVehicle.description} onChange={e => setNewVehicle({...newVehicle, description: e.target.value})} required/>

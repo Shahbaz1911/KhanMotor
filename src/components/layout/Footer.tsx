@@ -48,7 +48,7 @@ export function Footer() {
           <div className="md:col-span-8 flex flex-col sm:flex-row md:flex-col lg:flex-row gap-y-10 md:gap-8 order-2 md:order-1 w-full text-left">
             {/* Contact Info */}
             <div className="w-full lg:w-1/2 flex flex-col items-start">
-              <h3 className="text-lg font-bold text-white">Contact Us</h3>
+              <h3 className="text-lg font-bold text-white uppercase">Contact Us</h3>
               <ul className="mt-4 space-y-3 text-sm">
                   <li className="flex items-start justify-start gap-3">
                       <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-destructive" />
@@ -71,7 +71,7 @@ export function Footer() {
 
             {/* Social Media */}
             <div className="w-full lg:w-1/2 flex flex-col items-start mt-10 sm:mt-0 lg:mt-0 lg:pl-4">
-              <h3 className="text-lg font-bold text-white">Connect</h3>
+              <h3 className="text-lg font-bold text-white uppercase">Connect</h3>
               <div className="mt-4 flex gap-4 justify-start">
                 {socialLinks.map((social) => (
                   <Button key={social.label} variant="outline" size="icon" asChild>

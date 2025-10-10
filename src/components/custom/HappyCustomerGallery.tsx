@@ -99,7 +99,7 @@ export function HappyCustomerGallery() {
     <section ref={sectionRef} id="customer-gallery" className="bg-background relative py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div ref={titleRef} className="mb-12 text-center">
-          <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black">
+          <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
             Happy Customers, Happy Cars
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl mt-4">
@@ -133,7 +133,7 @@ export function HappyCustomerGallery() {
                     <div className="absolute inset-0 flex flex-col justify-end p-6">
                         <div className="relative z-10 text-white">
                         <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                            {item.customerName && <h3 className="text-xl font-black">{item.customerName}</h3>}
+                            {item.customerName && <h3 className="text-xl font-black uppercase">{item.customerName}</h3>}
                             {item.rating && <div className="mt-1 flex">
                             {Array(item.rating)
                                 .fill(0)
