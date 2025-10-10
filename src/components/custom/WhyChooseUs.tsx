@@ -43,12 +43,7 @@ const TimelineItem = ({
   isLeft: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"],
-    // Adjust offset for a smoother appearance
-  });
-
+  
   const cardVariants = {
     hidden: { opacity: 0, x: isLeft ? -50 : 50, scale: 0.95 },
     visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
@@ -61,7 +56,7 @@ const TimelineItem = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
-      className={cn("w-full md:w-[calc(50%-2rem)]", isLeft ? "md:mr-auto" : "md:ml-auto")}
+      className="w-full"
     >
       <Card className="bg-card/50 backdrop-blur-md border-border shadow-lg w-full">
          <CardHeader>
@@ -160,7 +155,9 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Horizontal connector line for desktop */}
-                             <div className="hidden md:block absolute left-1/2 top-1/2 -translate-y-1/2 h-0.5 bg-border w-1/2">
+                             <div className="hidden md:block absolute top-1/2 -translate-y-1/2 h-0.5 bg-border w-1/2"
+                                style={{ left: isLeft ? '0' : '50%', right: isLeft ? '50%' : '0' }}
+                             >
                                 <motion.div 
                                     className={cn("h-full bg-primary", isLeft ? "origin-right" : "origin-left")}
                                     style={{ scaleX: itemScrollYProgress }}
@@ -168,25 +165,25 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Mobile layout: all cards on the right */}
-                            <div className="md:hidden w-[calc(50%-2rem)] ml-auto">
+                             <div className="md:hidden w-[calc(50%-2rem)] ml-auto">
                                 <TimelineItem item={item} isLeft={false} />
                             </div>
                             
                             {/* Desktop layout: alternating cards */}
-                            <div className="hidden md:flex w-full">
+                             <div className="hidden md:flex w-full">
                                {isLeft ? (
-                                    <div className="w-1/2 pr-8">
+                                    <div className="w-[calc(50%-3rem)] mr-auto">
                                         <TimelineItem item={item} isLeft={true} />
                                     </div>
                                 ) : (
-                                    <div className="w-1/2"></div>
+                                   <div className="w-1/2"></div> /* Spacer for right-aligned cards */
                                 )}
                                  {!isLeft ? (
-                                    <div className="w-1/2 pl-8">
+                                    <div className="w-[calc(50%-3rem)] ml-auto">
                                         <TimelineItem item={item} isLeft={false} />
                                     </div>
                                 ) : (
-                                    <div className="w-1/2"></div>
+                                    <div className="w-1/2"></div> /* Spacer for left-aligned cards */
                                 )}
                             </div>
                         </div>
@@ -198,3 +195,5 @@ export function WhyChooseUs() {
     </section>
   );
 }
+
+    
