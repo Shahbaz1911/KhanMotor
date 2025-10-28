@@ -8,11 +8,9 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTheme } from 'next-themes';
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const { theme } = useTheme();
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -92,7 +90,7 @@ export function Footer() {
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
               <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png"
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}
