@@ -127,7 +127,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
           {vehicle.make} {vehicle.model}
         </h3>
          <p className="gsap-reveal text-lg font-bold text-primary">{vehicle.variant}</p>
-        <p className="gsap-reveal mt-4 text-md text-muted-foreground">
+        <p className="gsap-reveal mt-4 text-md text-muted-foreground lowercase">
           {vehicle.description}
         </p>
 
@@ -161,7 +161,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         <div className="gsap-reveal mt-8 flex flex-col sm:flex-row sm:items-center sm:gap-6">
           <p className="text-3xl font-bold">
             ₹{vehicle.price.toLocaleString()}
-            {vehicle.priceType === 'negotiable' && <span className="text-sm font-normal text-muted-foreground"> (Negotiable)</span>}
+            {vehicle.priceType === 'negotiable' && <span className="text-sm font-normal text-muted-foreground lowercase"> (negotiable)</span>}
           </p>
           <Button size="lg" className="group mt-4 sm:mt-0" onClick={() => router.push('/book-appointment')} disabled={vehicle.status === 'sold'}>
             {vehicle.status === 'sold' ? 'Sold Out' : 'Book Test Drive'}

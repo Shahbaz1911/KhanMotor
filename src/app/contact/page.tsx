@@ -144,8 +144,8 @@ export default function ContactPage() {
                 className="flex flex-col justify-center"
             >
               <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4 uppercase">Connect With Us</motion.h1>
-              <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8">
-                We&apos;re here to help with all your automotive needs. Reach out today and let us know how we can assist you.
+              <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 lowercase">
+                we&apos;re here to help with all your automotive needs. reach out today and let us know how we can assist you.
               </motion.p>
               <motion.div variants={listVariants} className="space-y-6">
                   {contactDetails.map((item, index) => (
@@ -154,7 +154,7 @@ export default function ContactPage() {
                             <div className="flex-shrink-0 bg-primary/10 text-primary p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                                <item.icon className="h-6 w-6" />
                             </div>
-                            <span className="group-hover:underline">{item.text}</span>
+                            <span className="group-hover:underline lowercase">{item.text}</span>
                         </Link>
                       </motion.div>
                   ))}

@@ -69,8 +69,8 @@ export function ServicesSection() {
           <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
             Our Services
           </h2>
-          <p className="text-lg text-muted-foreground md:text-xl mt-4">
-            Comprehensive care for your luxury vehicle.
+          <p className="text-lg text-muted-foreground md:text-xl mt-4 lowercase">
+            comprehensive care for your luxury vehicle.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -84,7 +84,7 @@ export function ServicesSection() {
                   <CardTitle className="text-2xl font-black uppercase">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>{service.description}</CardDescription>
+                  <CardDescription className="lowercase">{service.description.toLowerCase()}</CardDescription>
                 </CardContent>
               </Card>
             </div>

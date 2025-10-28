@@ -120,8 +120,8 @@ export default function BookAppointmentPage() {
         <Card ref={cardRef} className="w-full max-w-3xl shadow-xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl md:text-4xl uppercase">Schedule Your Test Drive</CardTitle>
-            <CardDescription className="text-md md:text-lg">
-              Choose your preferred date and time. We&apos;re excited to get you behind the wheel!
+            <CardDescription className="text-md md:text-lg lowercase">
+              choose your preferred date and time. we&apos;re excited to get you behind the wheel!
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -115,8 +115,8 @@ export function ContactForm() {
     <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl bg-card/50 dark:bg-background/50 backdrop-blur-md border-border">
       <CardHeader>
         <CardTitle className="text-3xl uppercase">Get in Touch</CardTitle>
-        <CardDescription>
-          Have questions or need assistance? Fill out the form below, and we&apos;ll get back to you shortly.
+        <CardDescription className="lowercase">
+          have questions or need assistance? fill out the form below, and we&apos;ll get back to you shortly.
         </CardDescription>
       </CardHeader>
       <CardContent>

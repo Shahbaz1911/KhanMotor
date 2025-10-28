@@ -52,7 +52,7 @@ export function Footer() {
               <ul className="mt-4 space-y-3 text-sm">
                   <li className="flex items-start justify-start gap-3">
                       <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-destructive" />
-                      <a href="https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill,Rithala, Rohini, Delhi, 110085</a>
+                      <a href="https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors lowercase">shop no 12, vijay vihar phase i, block b, near rice mill,rithala, rohini, delhi, 110085</a>
                   </li>
                   <li className="flex items-center justify-start gap-3">
                       <Phone className="h-5 w-5 text-destructive" />
@@ -106,10 +106,10 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-          <p className="text-sm text-gray-400 order-2 sm:order-1 mt-4 sm:mt-0">&copy; {new Date().getFullYear()} ArmanAutoXperts. All Rights Reserved.</p>
+          <p className="text-sm text-gray-400 order-2 sm:order-1 mt-4 sm:mt-0 lowercase">&copy; {new Date().getFullYear()} armanautoxperts. all rights reserved.</p>
           <div className="flex justify-center gap-4 text-sm order-1 sm:order-2">
-              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Privacy Policy</Link>
-              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline">Terms of Service</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline lowercase">privacy policy</Link>
+              <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline lowercase">terms of service</Link>
           </div>
         </div>
 

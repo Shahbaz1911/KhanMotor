@@ -102,8 +102,8 @@ export function HappyCustomerGallery() {
           <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
             Happy Customers, Happy Cars
           </h2>
-          <p className="text-lg text-muted-foreground md:text-xl mt-4">
-            Join our community of satisfied clients and their stunning vehicles.
+          <p className="text-lg text-muted-foreground md:text-xl mt-4 lowercase">
+            join our community of satisfied clients and their stunning vehicles.
           </p>
         </div>
 
@@ -142,15 +142,15 @@ export function HappyCustomerGallery() {
                                 ))}
                             </div>}
                         </div>
-                        <p className="mt-2 text-sm font-medium">
+                        <p className="mt-2 text-sm font-medium lowercase">
                             {item.caption}
                         </p>
                         </div>
                     </div>
                     </div>
                 )) : (
-                    <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg">
-                        No customer photos have been uploaded yet. Be the first!
+                    <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg lowercase">
+                        no customer photos have been uploaded yet. be the first!
                     </div>
                 )}
                 </div>

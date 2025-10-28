@@ -96,8 +96,8 @@ export function AchievementsSection() {
             <h2 className="mb-4 text-4xl font-black tracking-tight lg:text-5xl uppercase">
                 A Legacy of Trust and Excellence
             </h2>
-            <p className="text-lg text-muted-foreground md:text-xl">
-                Our numbers speak for themselves. We are committed to providing unparalleled service and building lasting relationships.
+            <p className="text-lg text-muted-foreground md:text-xl lowercase">
+                our numbers speak for themselves. we are committed to providing unparalleled service and building lasting relationships.
             </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 text-center sm:grid-cols-3">
@@ -111,8 +111,8 @@ export function AchievementsSection() {
                 <StatCounter value={stat.value} duration={2} />
                 {stat.suffix}
               </div>
-              <p className="mt-2 text-lg font-medium text-muted-foreground">
-                {stat.label}
+              <p className="mt-2 text-lg font-medium text-muted-foreground lowercase">
+                {stat.label.toLowerCase()}
               </p>
             </div>
           ))}

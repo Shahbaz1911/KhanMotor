@@ -181,8 +181,8 @@ export default function GalleryPage() {
                     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
                       <div className="mb-4 text-5xl">🚗</div>
                       <h3 className="text-2xl font-semibold uppercase">No Vehicles Found</h3>
-                      <p className="text-muted-foreground">
-                        There are currently no vehicles in our collection. Check back soon!
+                      <p className="text-muted-foreground lowercase">
+                        there are currently no vehicles in our collection. check back soon!
                       </p>
                     </div>
                   )}

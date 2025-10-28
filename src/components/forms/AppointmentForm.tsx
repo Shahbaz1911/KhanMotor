@@ -210,8 +210,8 @@ export function AppointmentForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                Let us know if you have a specific vehicle in mind for your test drive.
+              <FormDescription className="lowercase">
+                let us know if you have a specific vehicle in mind for your test drive.
               </FormDescription>
               <FormMessage />
             </FormItem>

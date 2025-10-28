@@ -44,9 +44,10 @@ const TimelineItem = ({
   isLeft: boolean;
   progress: any;
 }) => {
-  const cardBorderColor = useTransform(
+  
+  const borderColor = useTransform(
     progress,
-    [0.4, 0.5, 0.6],
+    [0.45, 0.5, 0.55],
     ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
   );
 
@@ -59,14 +60,14 @@ const TimelineItem = ({
       className="w-full relative"
     >
       <motion.div
-        style={{ borderColor: cardBorderColor }}
+        style={{ borderColor }}
         className="bg-card/90 backdrop-blur-md shadow-lg w-full h-full relative overflow-hidden rounded-lg border-2"
       >
         <CardHeader>
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground">{item.description}</p>
+            <p className="text-muted-foreground lowercase">{item.description.toLowerCase()}</p>
         </CardContent>
       </motion.div>
     </motion.div>
@@ -115,9 +116,9 @@ export function WhyChooseUs() {
             </motion.h2>
             <motion.p
                 variants={textVariants}
-                className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto"
+                className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto lowercase"
             >
-                Experience the difference of true automotive excellence, where every detail is crafted for your satisfaction.
+                experience the difference of true automotive excellence, where every detail is crafted for your satisfaction.
             </motion.p>
         </motion.div>
         
@@ -132,7 +133,6 @@ export function WhyChooseUs() {
             
             <div className="relative flex flex-col gap-12">
                 {highlightItems.map((item, index) => {
-                    const isLeft = index % 2 === 0;
                     const itemRef = useRef<HTMLDivElement>(null);
                     const { scrollYProgress: itemScrollYProgress } = useScroll({
                         target: itemRef,
@@ -141,7 +141,7 @@ export function WhyChooseUs() {
 
                      const iconBorderColor = useTransform(
                         itemScrollYProgress,
-                        [0.4, 0.5, 0.6],
+                        [0.45, 0.5, 0.55],
                         ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
                     );
 
@@ -151,8 +151,8 @@ export function WhyChooseUs() {
                             <div className="absolute left-6 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                                 <motion.div
                                      style={{ 
-                                        backgroundColor: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--background))", "hsl(var(--primary))"]),
-                                        color: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--primary))", "hsl(var(--primary-foreground))"]),
+                                        backgroundColor: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--background))", "hsl(var(--destructive))"]),
+                                        color: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--destructive))", "hsl(var(--primary-foreground))"]),
                                         scale: useTransform(itemScrollYProgress, [0.4, 0.5, 0.6], [1, 1.2, 1]),
                                         borderColor: iconBorderColor
                                      }}
@@ -163,14 +163,14 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="w-[calc(100%-4rem)] ml-auto md:hidden">
+                             <div className="md:hidden w-[calc(100%-4rem)] ml-[4rem]">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
                             {/* Desktop layout: alternating cards */}
-                             <div className={cn("hidden md:flex w-full", isLeft ? "justify-start" : "justify-end")}>
+                             <div className={cn("hidden md:flex w-full", index % 2 === 0 ? "justify-start" : "justify-end")}>
                                 <div className="w-[calc(50%-4rem)]">
-                                    <TimelineItem item={item} isLeft={isLeft} progress={itemScrollYProgress}/>
+                                    <TimelineItem item={item} isLeft={index % 2 === 0} progress={itemScrollYProgress}/>
                                 </div>
                             </div>
                         </div>

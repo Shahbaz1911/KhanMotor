@@ -206,7 +206,7 @@ export default function HappyCustomersPage() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                                 <div className="absolute inset-0 flex flex-col justify-end p-6">
                                     <div className="relative z-10 text-white">
-                                    <p className="mt-2 text-md font-semibold">
+                                    <p className="mt-2 text-md font-semibold lowercase">
                                         {item.caption}
                                     </p>
                                     </div>
@@ -217,8 +217,8 @@ export default function HappyCustomersPage() {
                         <div className="sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
                             <div className="mb-4 text-5xl">📸</div>
                             <h3 className="text-2xl font-semibold uppercase">No Photos Yet</h3>
-                            <p className="text-muted-foreground">
-                                Our customer gallery is waiting for its first star. Check back soon!
+                            <p className="text-muted-foreground lowercase">
+                                our customer gallery is waiting for its first star. check back soon!
                             </p>
                         </div>
                     )}

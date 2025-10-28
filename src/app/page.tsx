@@ -176,10 +176,10 @@ export default function ConsolidatedPage() {
                 About Us
               </h2>
               <div className="gsap-reveal">
-                <TextGenerateEffect words={aboutText1} className="mb-4" />
+                <TextGenerateEffect words={aboutText1.toLowerCase()} className="mb-4" />
               </div>
               <div className="gsap-reveal">
-                <TextGenerateEffect words={aboutText2} className="mb-6" />
+                <TextGenerateEffect words={aboutText2.toLowerCase()} className="mb-6" />
               </div>
 
               <Button 
