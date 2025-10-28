@@ -5,22 +5,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTheme } from 'next-themes';
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
-
-  useEffect(() => {
-    setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
-  }, [theme]);
-
+  const logoSrc = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
