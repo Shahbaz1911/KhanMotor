@@ -52,7 +52,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { theme, systemTheme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
   const [effectiveTheme, setEffectiveTheme] = useState('dark');
 
 
@@ -61,8 +61,8 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     const currentTheme = theme === 'system' ? systemTheme : theme;
     setEffectiveTheme(currentTheme || 'dark');
     setLogoSrc(currentTheme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
   }, [theme, systemTheme]);
 
   useEffect(() => {

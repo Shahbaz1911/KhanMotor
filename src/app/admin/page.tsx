@@ -26,12 +26,12 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
   }, [theme]);
 
 
