@@ -26,12 +26,12 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme]);
 
 
@@ -50,25 +50,25 @@ export default function AdminLoginPage() {
       await login(email, password);
       toast({
         title: "Login Successful",
-        description: "Welcome back!",
+        description: "welcome back!",
         variant: "success",
       });
       router.push("/admin/dashboard");
     } catch (err: any) {
-       let errorMessage = "An unknown error occurred.";
+       let errorMessage = "an unknown error occurred.";
        // Check for Firebase-specific error codes
        if (err.code) {
            switch (err.code) {
                case 'auth/user-not-found':
                case 'auth/wrong-password':
                case 'auth/invalid-credential':
-                   errorMessage = 'Invalid email or password. Please check your credentials or create an account in the Firebase console.';
+                   errorMessage = 'invalid email or password. please check your credentials or create an account in the firebase console.';
                    break;
                case 'auth/invalid-email':
-                   errorMessage = 'Please enter a valid email address.';
+                   errorMessage = 'please enter a valid email address.';
                    break;
                default:
-                   errorMessage = 'Login failed. Please try again later.';
+                   errorMessage = 'login failed. please try again later.';
                    break;
            }
        }
@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
             </div>
           <CardTitle className="text-2xl uppercase">Admin Login</CardTitle>
           <CardDescription>
-            Sign in to manage your vehicle inventory.
+            sign in to manage your vehicle inventory.
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -51,7 +52,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { theme, systemTheme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   const [effectiveTheme, setEffectiveTheme] = useState('dark');
 
 
@@ -60,8 +61,8 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     const currentTheme = theme === 'system' ? systemTheme : theme;
     setEffectiveTheme(currentTheme || 'dark');
     setLogoSrc(currentTheme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme, systemTheme]);
 
   useEffect(() => {

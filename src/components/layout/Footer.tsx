@@ -13,7 +13,6 @@ import { useTheme } from 'next-themes';
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
 
   const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -93,7 +92,7 @@ export function Footer() {
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
               <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                src="https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"
                 alt="Arman Autoxperts Logo"
                 width={150}
                 height={150}

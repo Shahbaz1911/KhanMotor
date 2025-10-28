@@ -34,7 +34,6 @@ export default function ConsolidatedPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png");
 
 
   const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
@@ -134,7 +133,7 @@ export default function ConsolidatedPage() {
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/arman.png"
+                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}

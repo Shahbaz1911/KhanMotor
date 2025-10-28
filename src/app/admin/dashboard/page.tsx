@@ -32,12 +32,12 @@ export default function AdminDashboardPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/blacklogo.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/arman-1.png");
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme]);
 
 
@@ -86,14 +86,14 @@ export default function AdminDashboardPage() {
       await logout();
       toast({
         title: "Logged Out",
-        description: "You have been successfully logged out.",
+        description: "you have been successfully logged out.",
         variant: "destructive"
       })
       router.push('/admin');
     } catch (error) {
       toast({
         title: "Logout Failed",
-        description: "Could not log out. Please try again.",
+        description: "could not log out. please try again.",
         variant: "destructive"
       })
     }
@@ -170,7 +170,7 @@ export default function AdminDashboardPage() {
             <Card className="mb-4">
                 <CardHeader>
                     <CardTitle className="uppercase">Welcome, {user.displayName}</CardTitle>
-                    <CardDescription>Select a section below to manage your website content.</CardDescription>
+                    <CardDescription>select a section below to manage your website content.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex flex-col sm:flex-row items-center gap-4">
