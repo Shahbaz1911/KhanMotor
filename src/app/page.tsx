@@ -133,7 +133,7 @@ export default function ConsolidatedPage() {
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 <Image 
-                    src="https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"
+                    src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"}
                     alt="Arman Autoxperts Logo"
                     width={150}
                     height={150}
@@ -231,3 +231,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    

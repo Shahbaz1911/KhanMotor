@@ -31,12 +31,12 @@ export default function GalleryPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
 
   useEffect(() => {
-    setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
+    setLogoSrc(theme === 'dark' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme]);
 
 
@@ -193,3 +193,5 @@ export default function GalleryPage() {
     </>
   );
 }
+
+    

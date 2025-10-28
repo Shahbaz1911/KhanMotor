@@ -23,12 +23,12 @@ export default function BookAppointmentPage() {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
 
   useEffect(() => {
-    setLogoSrc(theme === 'light' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png");
+    setLogoSrc(theme === 'dark' 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme]);
 
 
@@ -132,3 +132,5 @@ export default function BookAppointmentPage() {
     </div>
   );
 }
+
+    
