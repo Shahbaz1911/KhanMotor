@@ -26,7 +26,7 @@ const services = [
   { icon: Wrench, text: "Car Repair & Servicing" },
   { icon: Paintbrush, text: "Denting, Painting & Detailing" },
   { icon: Repeat, text: "Buy & Sell Used Cars" },
-  { icon: ShieldCheck, text: "Car Maintenance & Inspection" },
+  { icon: ShieldCheck, text: "Car Maintenance" },
 ];
 
 export function WhatsAppButton() {

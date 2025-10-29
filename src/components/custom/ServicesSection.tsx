@@ -31,7 +31,7 @@ const services = [
   },
   {
     icon: ShieldCheck,
-    title: "Car Maintenance & Inspection",
+    title: "Car Maintenance",
     description: "scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and air conditioning repair.",
   },
 ];

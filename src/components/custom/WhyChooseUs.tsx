@@ -20,8 +20,8 @@ const highlightItems = [
   },
   {
     icon: ShieldCheck,
-    title: "Verified Quality & Inspection",
-    description: "each vehicle undergoes a rigorous vehicle inspection service. we offer certified pre-owned cars for your peace of mind.",
+    title: "Verified Quality",
+    description: "each vehicle undergoes a rigorous quality check. we offer certified pre-owned cars for your peace of mind.",
   },
   {
     icon: Wrench,
