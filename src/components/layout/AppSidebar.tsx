@@ -72,12 +72,12 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
          </Link>
       </div>
       <div className="flex-grow flex justify-start overflow-y-auto">
-        <nav className="flex flex-col gap-1 p-4 w-full">
+        <nav className="group/nav flex flex-col gap-1 p-4 w-full">
           {mainNavItems.map((item) => (
             <Button
               key={item.id}
               variant="sidebar"
-              className="w-full justify-start text-2xl md:text-3xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-3 h-auto"
+              className="w-full justify-start text-2xl md:text-3xl font-black text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white relative group py-3 h-auto transition-all duration-300 group-hover/nav:blur-sm hover:!blur-none after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-destructive after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out group-hover:after:scale-x-100"
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
