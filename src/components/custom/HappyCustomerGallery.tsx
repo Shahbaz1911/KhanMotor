@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, Loader2, Star } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,9 +12,7 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import Carousel from "@/components/ui/carousel";
 
 interface GalleryItem {
   id: string;
@@ -28,22 +26,16 @@ interface GalleryItem {
 export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
-
   useEffect(() => {
     if (!firestore) return;
 
     const galleryCollection = collection(firestore, "gallery");
-    // Query for all items, newest first
     const q = query(galleryCollection, orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, 
         (snapshot) => {
@@ -85,20 +77,17 @@ export function HappyCustomerGallery() {
         y: 50,
         duration: 0.8,
         ease: "power3.out",
-      }).from(
-        carouselRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.6"
-      );
+      })
     }, sectionRef);
 
     return () => ctx.revert();
   }, [loading]);
+  
+  const carouselSlides = galleryItems.map(item => ({
+    title: item.customerName || item.caption,
+    button: "View Details",
+    src: item.imageUrl,
+  }));
 
   return (
     <section ref={sectionRef} id="customer-gallery" className="bg-background relative py-16 md:py-24">
@@ -119,58 +108,8 @@ export function HappyCustomerGallery() {
         ) : (
             <>
                 {galleryItems.length > 0 ? (
-                  <div ref={carouselRef}>
-                    <Carousel
-                      plugins={[plugin.current]}
-                      opts={{
-                        align: "start",
-                        loop: true,
-                      }}
-                      className="w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto"
-                      onMouseEnter={plugin.current.stop}
-                      onMouseLeave={plugin.current.reset}
-                    >
-                      <CarouselContent>
-                        {galleryItems.map((item, index) => (
-                          <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                            <div className="p-1">
-                              <div
-                                className={cn(
-                                  "group relative block h-[450px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
-                                )}
-                              >
-                                <Image
-                                  src={item.imageUrl}
-                                  alt={`Customer photo: ${item.caption}`}
-                                  fill
-                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                  data-ai-hint={item.aiHint || 'customer car'}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
-                                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                                  <div className="relative z-10 text-white">
-                                    <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                                      {item.customerName && <h3 className="text-xl font-black uppercase">{item.customerName}</h3>}
-                                      {item.rating && <div className="mt-1 flex">
-                                        {Array(item.rating)
-                                          .fill(0)
-                                          .map((_, i) => (
-                                            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                                          ))}
-                                      </div>}
-                                    </div>
-                                    <p className="mt-2 text-sm font-medium lowercase">
-                                      {item.caption}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </CarouselItem>
-                        ))}
-                      </CarouselContent>
-                      <CarouselDots />
-                    </Carousel>
+                  <div className="relative overflow-hidden w-full h-full py-20">
+                      <Carousel slides={carouselSlides} />
                   </div>
                 ) : (
                   <div className="text-center text-muted-foreground p-12 border border-dashed rounded-lg lowercase">
