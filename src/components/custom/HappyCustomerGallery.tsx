@@ -7,13 +7,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useFirestore } from "@/firebase";
-import { collection, onSnapshot, query, limit, orderBy } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 interface GalleryItem {
   id: string;
@@ -34,12 +35,16 @@ export function HappyCustomerGallery() {
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true })
+  );
+
   useEffect(() => {
     if (!firestore) return;
 
     const galleryCollection = collection(firestore, "gallery");
-    // Query for the 3 newest items
-    const q = query(galleryCollection, orderBy("createdAt", "desc"), limit(3));
+    // Query for all items, newest first
+    const q = query(galleryCollection, orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, 
         (snapshot) => {
             const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
@@ -116,11 +121,14 @@ export function HappyCustomerGallery() {
                 {galleryItems.length > 0 ? (
                   <div ref={carouselRef}>
                     <Carousel
+                      plugins={[plugin.current]}
                       opts={{
                         align: "start",
                         loop: true,
                       }}
                       className="w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto"
+                      onMouseEnter={plugin.current.stop}
+                      onMouseLeave={plugin.current.reset}
                     >
                       <CarouselContent>
                         {galleryItems.map((item, index) => (
