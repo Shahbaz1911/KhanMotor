@@ -199,7 +199,7 @@ export default function HappyCustomersPage() {
                                     src={item.imageUrl}
                                     alt={`Customer photo: ${item.caption}`}
                                     fill
-                                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    className="h-full w-full object-cover transition-all duration-300 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
                                     data-ai-hint={item.aiHint || 'customer car'}
                                 />
                                 </div>
@@ -229,3 +229,4 @@ export default function HappyCustomersPage() {
     </>
   );
 }
+
