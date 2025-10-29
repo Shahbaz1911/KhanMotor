@@ -27,7 +27,8 @@ import { CallToAction } from "@/components/custom/CallToAction";
 import { TextMarquee } from "@/components/custom/TextMarquee";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import Carousel from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/shadcn-carousel";
+import Autoplay from "embla-carousel-autoplay";
 import CircularText from "@/components/custom/CircularText";
 
 
@@ -66,7 +67,8 @@ export default function ConsolidatedPage() {
   ].map(img => ({
     title: img.aiHint,
     button: "Learn More",
-    src: img.url
+    src: img.url,
+    aiHint: img.aiHint
   }));
 
 
@@ -215,7 +217,32 @@ export default function ConsolidatedPage() {
               </Button>
             </div>
             <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
-               <Carousel slides={aboutCarouselImages} />
+               <Carousel 
+                className="w-full h-full"
+                plugins={[
+                    Autoplay({
+                      delay: 2000,
+                      stopOnInteraction: false,
+                      stopOnMouseEnter: true,
+                    }),
+                  ]}
+               >
+                <CarouselContent>
+                  {aboutCarouselImages.map((img, index) => (
+                    <CarouselItem key={index}>
+                      <div className="w-full h-80 md:h-[450px] relative">
+                         <Image 
+                            src={img.src} 
+                            alt={img.title} 
+                            fill
+                            className="object-cover"
+                            data-ai-hint={img.aiHint}
+                         />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
           </div>
         </section>
@@ -248,4 +275,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
