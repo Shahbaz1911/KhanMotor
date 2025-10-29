@@ -31,7 +31,7 @@ export function TextMarquee() {
   }, []);
 
   return (
-    <section className="bg-white dark:bg-black overflow-hidden">
+    <section className="bg-black overflow-hidden">
       <div className="w-full h-px bg-border" />
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-12 md:py-16">
         <div ref={marqueeRef} className="flex w-max items-center">
@@ -41,8 +41,8 @@ export function TextMarquee() {
                 <h2 className={cn(
                     "text-6xl md:text-8xl font-black whitespace-nowrap uppercase",
                     i % 2 === 0 
-                      ? "text-black dark:text-white" 
-                      : "text-transparent [-webkit-text-stroke:2px_hsl(var(--destructive))] dark:[-webkit-text-stroke:2px_hsl(var(--destructive))]"
+                      ? "text-white" 
+                      : "text-transparent [-webkit-text-stroke:2px_hsl(var(--destructive))]"
                 )}>
                   {text}
                 </h2>
