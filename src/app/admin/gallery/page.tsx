@@ -4,15 +4,26 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { LogOut, Trash2, Edit, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle, CalendarDays, ArrowLeft } from "lucide-react";
+import { LogOut, Trash2, Edit, Users, Settings, User as UserIcon, Loader2, Upload, PlusCircle, CalendarDays, ArrowLeft, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, Timestamp } from "firebase/firestore";
@@ -20,6 +31,7 @@ import { uploadToCloudinary } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface GalleryItem {
     id: string;
@@ -167,9 +179,8 @@ export default function GalleryPage() {
         });
   }
 
-  const handleDeleteGalleryItem = (id: string) => {
-    if (!firestore || !user) return;
-    if (!window.confirm("Are you sure you want to delete this gallery item? This action cannot be undone.")) return;
+  const handleDeleteGalleryItem = (id: string | null) => {
+    if (!firestore || !user || !id) return;
     
     const docRef = doc(firestore, "gallery", id);
     deleteDoc(docRef)
@@ -291,10 +302,34 @@ export default function GalleryPage() {
                                                 <Edit className="h-4 w-4" />
                                                 <span className="sr-only">Edit</span>
                                             </Button>
-                                            <Button variant="destructive" size="icon" onClick={() => handleDeleteGalleryItem(item.id)}>
-                                                <Trash2 className="h-4 w-4" />
-                                                    <span className="sr-only">Delete</span>
-                                            </Button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive" size="icon">
+                                                        <Trash2 className="h-4 w-4" />
+                                                        <span className="sr-only">Delete</span>
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle className="flex items-center gap-2">
+                                                            <AlertTriangle className="text-destructive" /> Are you absolutely sure?
+                                                        </AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. This will permanently delete the gallery item with the caption:
+                                                            <span className="font-bold text-foreground"> &quot;{item.caption}&quot;</span>.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction
+                                                            className={buttonVariants({ variant: "destructive" })}
+                                                            onClick={() => handleDeleteGalleryItem(item.id)}
+                                                        >
+                                                            Delete
+                                                        </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
                                         </div>
                                     </CardContent>
                                 </Card>
