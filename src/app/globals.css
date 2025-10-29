@@ -126,6 +126,6 @@
 
 @layer utilities {
   .bg-footer-gradient {
-    @apply bg-gradient-to-br from-red-500 via-orange-500 to-yellow-400;
+    @apply bg-gradient-to-br from-red-500 via-red-600 to-red-800;
   }
 }
