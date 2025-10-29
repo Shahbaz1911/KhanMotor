@@ -110,7 +110,10 @@ const CircularText: React.FC<CircularTextProps> = ({
                 return (
                 <motion.span
                     key={i}
-                    className="absolute inline-block inset-0 text-inherit transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
+                    className={cn(
+                        "absolute inline-block inset-0 text-inherit transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]",
+                        letter === '✦' && 'text-destructive'
+                    )}
                     style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 80px' }} // 80px is half of 160px width/height
                 >
                     {letter}
