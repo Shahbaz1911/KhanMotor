@@ -16,7 +16,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, className, paragr
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start 0.9', 'start 0.25'],
+    offset: ['start end', 'start start'],
   });
   
   const words = typeof children === 'string' ? children.split(' ') : [];
