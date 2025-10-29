@@ -23,7 +23,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({ children, className, paragr
 
   return (
     <div ref={containerRef} className={cn("relative z-10", className)}>
-      <p className={cn("flex flex-wrap text-4xl md:text-5xl lg:text-6xl font-black leading-relaxed text-muted-foreground/30", paragraphClassName)}>
+      <p className={cn("flex flex-wrap text-2xl md:text-4xl lg:text-5xl font-black leading-relaxed text-muted-foreground/30", paragraphClassName)}>
         {words.map((word, i) => {
           const start = i / words.length;
           const end = start + (1 / words.length);
