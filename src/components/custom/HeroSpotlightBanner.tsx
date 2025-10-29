@@ -24,14 +24,10 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
       
       gsap.set(innerWords, { y: "110%" });
       gsap.set(buttonRef.current, { opacity: 0, y: 20 });
-      gsap.set(logoRef.current, { opacity: 0, y: -20 });
       
       const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.2 });
 
-      tl.to(
-          logoRef.current,
-          { opacity: 1, y: 0, duration: 0.8 }
-      )
+      tl
       .to(
           innerWords,
           {
@@ -52,16 +48,6 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   return (
     <section ref={sectionRef} className="relative z-20 w-full h-full flex items-center justify-center overflow-hidden text-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <div ref={logoRef} className="flex justify-center mb-8">
-            <Image
-                src="https://armanautoxperts-in.vercel.app/armanautoxperts/herologo.png"
-                alt="Khan Motor Logo"
-                width={300}
-                height={150}
-                className="w-48 h-auto md:w-64"
-                priority
-            />
-        </div>
         <h1 ref={headingRef} className="mb-10 scroll-m-20 text-5xl tracking-tight sm:text-6xl md:text-7xl text-white drop-shadow-lg font-black uppercase" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
           {headingText.split(" ").map((word, index) => (
             <span key={index} className="inline-block overflow-hidden pb-2">
