@@ -111,8 +111,7 @@ const CircularText: React.FC<CircularTextProps> = ({
                 <motion.span
                     key={i}
                     className={cn(
-                        "absolute inline-block inset-0 text-inherit transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]",
-                        letter === '✦' && 'text-destructive'
+                        "absolute inline-block inset-0 text-inherit transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
                     )}
                     style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 80px' }} // 80px is half of 160px width/height
                 >
@@ -122,8 +121,8 @@ const CircularText: React.FC<CircularTextProps> = ({
             })}
         </motion.div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="flex items-center justify-center h-28 w-28 rounded-full bg-primary text-primary-foreground group-hover:bg-destructive transition-colors duration-300">
-                <span className="text-lg font-black uppercase">Click</span>
+            <div className="flex items-center justify-center h-32 w-32 rounded-full bg-destructive text-destructive-foreground transition-colors duration-300 group-hover:bg-destructive/90">
+                <span className="text-xl font-black uppercase">Click</span>
                 <ArrowUpRight className="w-5 h-5 ml-1" />
             </div>
       </div>
