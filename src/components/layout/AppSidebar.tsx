@@ -81,7 +81,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
               asChild
             >
               <Link href={item.href} onClick={handleLinkClick}>
-                <span className="group-hover:translate-x-4 transition-transform duration-300">{item.label}</span>
+                <span className="group-hover:translate-x-4 transition-transform duration-300 uppercase">{item.label}</span>
                 <MoveRight className="absolute right-0 h-6 w-6 opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </Link>
             </Button>
@@ -99,7 +99,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                     aria-label={social.label}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:border-destructive hover:text-destructive transition-colors"
+                    className="bg-transparent border-gray-600 hover:border-destructive hover:bg-destructive/20 text-gray-300 hover:text-destructive transition-colors"
                     >
                     <social.icon className="h-[1.2rem] w-[1.2rem]" />
                     </a>
