@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Quote, CalendarClock, GalleryThumbnails, ArrowLeft } from "lucide-react";
+import { ArrowRight, Star, Quote, CalendarClock, GalleryThumbnails } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -27,7 +27,7 @@ import { CallToAction } from "@/components/custom/CallToAction";
 import { TextMarquee } from "@/components/custom/TextMarquee";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Carousel from "@/components/ui/carousel";
 
 
 export default function ConsolidatedPage() {
@@ -62,7 +62,11 @@ export default function ConsolidatedPage() {
       placeholderImages.about,
       (placeholderImages as any).about2,
       (placeholderImages as any).about3
-  ];
+  ].map(img => ({
+    title: img.aiHint,
+    button: "Learn More",
+    src: img.url
+  }));
 
 
   // GSAP Animation useEffect
@@ -154,7 +158,7 @@ export default function ConsolidatedPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-20 md:w-28 h-auto"
+                      className="w-16 md:w-28 h-auto"
                   />
                 )}
               </Link>
@@ -210,29 +214,7 @@ export default function ConsolidatedPage() {
               </Button>
             </div>
             <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
-               <Carousel className="w-full h-full group" opts={{ loop: true }}>
-                  <CarouselContent>
-                    {aboutCarouselImages.map((image, index) => (
-                      <CarouselItem key={index}>
-                        <div className="relative h-80 md:h-[450px] w-full">
-                          <Image
-                            src={image.url}
-                            alt={`About Motor Khan Image ${index + 1}`}
-                            fill
-                            className="rounded-lg object-cover"
-                            data-ai-hint={image.aiHint}
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 text-white border-none hover:bg-black/75">
-                    <ArrowLeft className="h-6 w-6" />
-                  </CarouselPrevious>
-                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/50 text-white border-none hover:bg-black/75">
-                    <ArrowRight className="h-6 w-6" />
-                  </CarouselNext>
-              </Carousel>
+               <Carousel slides={aboutCarouselImages} />
             </div>
           </div>
         </section>

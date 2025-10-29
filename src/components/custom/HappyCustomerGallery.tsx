@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from "next/image";
 import { ArrowRight, Loader2 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
@@ -13,6 +12,8 @@ import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import Carousel from "@/components/ui/carousel";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 interface GalleryItem {
   id: string;
@@ -31,6 +32,10 @@ export function HappyCustomerGallery() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+      Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+  ]);
 
   useEffect(() => {
     if (!firestore) return;
