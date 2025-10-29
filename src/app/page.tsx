@@ -18,7 +18,6 @@ import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
-import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
 import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
@@ -31,6 +30,7 @@ import Autoplay from "embla-carousel-autoplay";
 import CircularText from "@/components/custom/CircularText";
 import ScrollReveal from "@/components/custom/ScrollReveal";
 import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
+import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
 
 
 export default function ConsolidatedPage() {
@@ -272,13 +272,8 @@ export default function ConsolidatedPage() {
         <GoogleGeminiEffectDemo />
         
         {/* Section 4: Testimonials */}
-        <section id="testimonials" className="py-16 md:py-24 overflow-hidden">
-           <div className="container mx-auto px-4 mb-12">
-            <h2 className="scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase">
-              What Our Clients Say
-            </h2>
-           </div>
-           <TestimonialMarquee />
+        <section id="testimonials" className="py-16 md:py-24 bg-background">
+          <TestimonialParallax />
         </section>
 
         <HappyCustomerGallery />
@@ -294,5 +289,6 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
 
     
