@@ -13,13 +13,12 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
 
   const headingText = "Experience Automotive Excellence";
 
   useEffect(() => {
     // Only run animation if isLoaded is true
-    if (isLoaded && headingRef.current && buttonRef.current && logoRef.current) {
+    if (isLoaded && headingRef.current && buttonRef.current) { 
       const innerWords = headingRef.current.querySelectorAll(".word-inner");
       
       gsap.set(innerWords, { y: "110%" });
@@ -61,7 +60,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
           ref={buttonRef}
           size="lg" 
           variant="outline"
-          className="group bg-transparent hover:bg-destructive hover:text-destructive-foreground border-2 border-destructive text-lg text-destructive px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black"
+          className="group bg-transparent hover:bg-white hover:text-black border-2 border-white text-lg text-white px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black"
           onClick={() => router.push('/#featured-gallery')}
         >
           DISCOVER
