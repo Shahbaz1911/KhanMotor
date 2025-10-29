@@ -99,6 +99,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
                     aria-label={social.label}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="hover:border-destructive hover:text-destructive transition-colors"
                     >
                     <social.icon className="h-[1.2rem] w-[1.2rem]" />
                     </a>

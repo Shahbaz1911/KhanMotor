@@ -78,7 +78,7 @@ export function Footer() {
                       aria-label={social.label}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-transparent border-gray-600 hover:border-destructive hover:bg-destructive/20"
+                      className="bg-transparent border-gray-600 hover:border-destructive hover:bg-destructive/20 text-gray-300 hover:text-white transition-colors"
                       >
                       <social.icon className="h-5 w-5" />
                       </a>
