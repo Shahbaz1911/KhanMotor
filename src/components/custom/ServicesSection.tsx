@@ -16,23 +16,23 @@ import { cn } from "@/lib/utils";
 const services = [
   {
     icon: Wrench,
-    title: "Car Repair",
-    description: "Comprehensive repair services by certified technicians to keep your vehicle in peak condition.",
+    title: "Car Repair & Servicing",
+    description: "Comprehensive auto repair and car servicing by certified technicians to keep your vehicle in peak condition. Your reliable mechanic near me.",
   },
   {
     icon: Paintbrush,
-    title: "Denting & Painting",
-    description: "State-of-the-art bodywork and paint services to restore your car's pristine look.",
+    title: "Denting, Painting & Detailing",
+    description: "State-of-the-art auto body shop for denting, painting, car detailing, and classic car restoration to restore your car's pristine look.",
   },
   {
     icon: Repeat,
-    title: "Buy & Sell",
-    description: "A trusted marketplace for buying and selling premium pre-owned luxury vehicles.",
+    title: "Buy & Sell Used Cars",
+    description: "A trusted car marketplace for buying certified pre-owned cars or to sell your car. Find the best second-hand cars.",
   },
   {
     icon: ShieldCheck,
-    title: "Maintenance",
-    description: "Scheduled maintenance and expert care to ensure longevity and performance.",
+    title: "Car Maintenance & Inspection",
+    description: "Scheduled auto maintenance, vehicle inspection, oil change service, and air conditioning repair to ensure longevity and performance.",
   },
 ];
 
@@ -70,7 +70,7 @@ export function ServicesSection() {
             Our Services
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl mt-4 lowercase">
-            comprehensive care for your luxury vehicle.
+            comprehensive care for your luxury vehicle. from auto repair to buying and selling cars.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

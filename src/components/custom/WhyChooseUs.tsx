@@ -16,22 +16,22 @@ const highlightItems = [
   {
     icon: Car,
     title: "Premium Vehicle Selection",
-    description: "Handpicked luxury and performance cars from world-renowned brands.",
+    description: "Handpicked luxury and performance cars from world-renowned brands. Find your next car for sale from our curated collection.",
   },
   {
     icon: ShieldCheck,
-    title: "Verified Quality",
-    description: "Each vehicle undergoes rigorous inspection for your peace of mind.",
+    title: "Verified Quality & Inspection",
+    description: "Each vehicle undergoes rigorous vehicle inspection. We offer certified pre-owned cars for your peace of mind.",
   },
   {
     icon: Wrench,
-    title: "Expert Maintenance",
-    description: "State-of-the-art service center with certified technicians.",
+    title: "Expert Auto Maintenance",
+    description: "State-of-the-art auto repair shop with certified technicians for all your auto maintenance needs, from oil changes to transmission repair.",
   },
   {
     icon: MessageSquareHeart,
     title: "Personalized Service",
-    description: "Dedicated consultants to guide you through a bespoke buying experience.",
+    description: "Dedicated consultants to guide you through a bespoke buying experience at our car dealership. We also have mobile mechanic options.",
   },
 ];
 

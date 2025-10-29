@@ -160,7 +160,7 @@ export default function GalleryPage() {
           </div>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase">
-              Our Vehicle Collection
+              Used Cars for Sale
             </h1>
             
             {loading || !firestore ? (
@@ -180,9 +180,9 @@ export default function GalleryPage() {
                   ) : (
                     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
                       <div className="mb-4 text-5xl">🚗</div>
-                      <h3 className="text-2xl font-semibold uppercase">No Vehicles Found</h3>
+                      <h3 className="text-2xl font-semibold uppercase">No Cars for Sale</h3>
                       <p className="text-muted-foreground lowercase">
-                        there are currently no vehicles in our collection. check back soon!
+                        there are currently no vehicles in our collection. our car dealership is always updating, so check back soon!
                       </p>
                     </div>
                   )}

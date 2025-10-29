@@ -10,8 +10,8 @@ import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
-  title: 'Motor Khan',
-  description: 'Explore premium vehicles, contact us, or use our AI tools. All in one place.',
+  title: 'Motor Khan - Premium Used Cars, Auto Repair, and Car Maintenance',
+  description: 'Find certified pre-owned cars for sale at Motor Khan, your trusted car dealership. We offer expert auto repair, car maintenance, vehicle inspection, and classic car restoration services. Sell your car or find your next vehicle with us.',
 };
 
 export default function RootLayout({

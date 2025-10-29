@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Star } from 'lucide-react';
 
-const marqueeTexts = ["Excellence", "Performance", "Luxury"];
+const marqueeTexts = ["Auto Repair", "Vehicle Servicing", "Car Maintenance", "Brake Repair", "Oil Change", "Car For Sale"];
 
 export function TextMarquee() {
   const marqueeRef = useRef<HTMLDivElement>(null);
