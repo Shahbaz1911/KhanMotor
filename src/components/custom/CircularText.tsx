@@ -4,6 +4,7 @@
 import React, { useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, MotionValue, Transition } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ArrowRight } from 'lucide-react';
 
 interface CircularTextProps {
   text: string;
@@ -95,7 +96,7 @@ const CircularText: React.FC<CircularTextProps> = ({
 
   return (
     <motion.div
-      className={cn("m-0 mx-auto rounded-full w-[100px] h-[100px] relative font-black text-center cursor-pointer origin-center", className)}
+      className={cn("m-0 mx-auto rounded-full w-32 h-32 relative font-black text-center cursor-pointer origin-center group", className)}
       style={{ rotate: rotation }}
       initial={{ rotate: 0 }}
       animate={controls}
@@ -109,12 +110,18 @@ const CircularText: React.FC<CircularTextProps> = ({
           <motion.span
             key={i}
             className="absolute inline-block inset-0 text-inherit transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
-            style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 50px' }}
+            style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 64px' }}
           >
             {letter}
           </motion.span>
         );
       })}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-20 w-20 rounded-full bg-primary text-primary-foreground group-hover:bg-destructive transition-colors duration-300">
+          <span className="text-sm font-black uppercase">View</span>
+          <ArrowRight className="w-4 h-4 mt-1 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </div>
     </motion.div>
   );
 };

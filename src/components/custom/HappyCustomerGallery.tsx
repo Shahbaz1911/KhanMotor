@@ -35,10 +35,6 @@ export function HappyCustomerGallery() {
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-      Autoplay({ playOnInit: true, delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
-  ]);
-
   useEffect(() => {
     if (!firestore) return;
 
@@ -129,7 +125,7 @@ export function HappyCustomerGallery() {
                         text="VIEW*FULL*GALLERY*"
                         onHover="speedUp"
                         spinDuration={20}
-                        className="w-32 h-32 text-sm text-foreground"
+                        className="text-sm text-foreground"
                       />
                     </Link>
                 </div>
