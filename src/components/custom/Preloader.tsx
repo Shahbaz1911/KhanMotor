@@ -61,7 +61,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     const currentTheme = theme === 'system' ? systemTheme : theme;
     setEffectiveTheme(currentTheme || 'light');
     setLogoSrc(currentTheme === 'dark' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/herologo.png" 
       : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme, systemTheme]);
 
@@ -202,5 +202,3 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     </div>
   );
 }
-
-    
