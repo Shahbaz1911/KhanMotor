@@ -40,7 +40,7 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack-2.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -227,7 +227,7 @@ export default function ConsolidatedPage() {
           </motion.div>
         </section>
         
-        <section className="container mx-auto px-4 py-16 md:py-24 text-4xl md:text-5xl lg:text-6xl font-black leading-relaxed">
+        <section className="container mx-auto px-4 py-16 md:py-24">
           <ScrollReveal>
               At Motor Khan, we don&apos;t just sell and service cars—we build relationships. Our passion for automotive excellence is matched only by our commitment to customer satisfaction.
           </ScrollReveal>
