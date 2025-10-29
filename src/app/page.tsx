@@ -30,6 +30,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/shadcn-
 import Autoplay from "embla-carousel-autoplay";
 import CircularText from "@/components/custom/CircularText";
 import ScrollReveal from "@/components/custom/ScrollReveal";
+import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
 
 
 export default function ConsolidatedPage() {
@@ -281,6 +282,8 @@ export default function ConsolidatedPage() {
         <HappyCustomerGallery />
 
         <CallToAction />
+        
+        <GoogleGeminiEffectDemo />
 
         {/* Section 6: Contact Us */}
         <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
