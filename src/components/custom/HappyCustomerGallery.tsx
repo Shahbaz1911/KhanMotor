@@ -13,6 +13,7 @@ import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Carousel, CarouselContent, CarouselItem, CarouselDots } from "@/components/ui/carousel";
 
 interface GalleryItem {
   id: string;
@@ -26,7 +27,7 @@ interface GalleryItem {
 export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -37,8 +38,8 @@ export function HappyCustomerGallery() {
     if (!firestore) return;
 
     const galleryCollection = collection(firestore, "gallery");
-    // Query for the 6 newest items
-    const q = query(galleryCollection, orderBy("createdAt", "desc"), limit(6));
+    // Query for the 3 newest items
+    const q = query(galleryCollection, orderBy("createdAt", "desc"), limit(3));
     const unsubscribe = onSnapshot(q, 
         (snapshot) => {
             const galleryData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as GalleryItem));
@@ -80,12 +81,11 @@ export function HappyCustomerGallery() {
         duration: 0.8,
         ease: "power3.out",
       }).from(
-        gridRef.current?.children || [],
+        carouselRef.current,
         {
           opacity: 0,
           y: 50,
           duration: 0.8,
-          stagger: 0.1,
           ease: "power3.out",
         },
         "-=0.6"
@@ -113,47 +113,62 @@ export function HappyCustomerGallery() {
             </div>
         ) : (
             <>
-                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {galleryItems.length > 0 ? galleryItems.map((item, index) => (
-                    <div
-                    key={item.id}
-                    className={cn(
-                        "group relative block h-[400px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
-                        index % 2 === 0 ? "hover:-rotate-2" : "hover:rotate-2"
-                    )}
+                {galleryItems.length > 0 ? (
+                  <div ref={carouselRef}>
+                    <Carousel
+                      opts={{
+                        align: "start",
+                        loop: true,
+                      }}
+                      className="w-full max-w-sm sm:max-w-xl md:max-w-2xl lg:max-w-4xl mx-auto"
                     >
-                    <Image
-                        src={item.imageUrl}
-                        alt={`Customer photo: ${item.caption}`}
-                        fill
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        data-ai-hint={item.aiHint || 'customer car'}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                        <div className="relative z-10 text-white">
-                        <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                            {item.customerName && <h3 className="text-xl font-black uppercase">{item.customerName}</h3>}
-                            {item.rating && <div className="mt-1 flex">
-                            {Array(item.rating)
-                                .fill(0)
-                                .map((_, i) => (
-                                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                                ))}
-                            </div>}
-                        </div>
-                        <p className="mt-2 text-sm font-medium lowercase">
-                            {item.caption}
-                        </p>
-                        </div>
-                    </div>
-                    </div>
-                )) : (
-                    <div className="sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-12 border border-dashed rounded-lg lowercase">
-                        no customer photos have been uploaded yet. be the first!
-                    </div>
+                      <CarouselContent>
+                        {galleryItems.map((item, index) => (
+                          <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
+                            <div className="p-1">
+                              <div
+                                className={cn(
+                                  "group relative block h-[450px] w-full overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",
+                                )}
+                              >
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={`Customer photo: ${item.caption}`}
+                                  fill
+                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                  data-ai-hint={item.aiHint || 'customer car'}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-300"></div>
+                                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                                  <div className="relative z-10 text-white">
+                                    <div className="translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                                      {item.customerName && <h3 className="text-xl font-black uppercase">{item.customerName}</h3>}
+                                      {item.rating && <div className="mt-1 flex">
+                                        {Array(item.rating)
+                                          .fill(0)
+                                          .map((_, i) => (
+                                            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                          ))}
+                                      </div>}
+                                    </div>
+                                    <p className="mt-2 text-sm font-medium lowercase">
+                                      {item.caption}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselDots />
+                    </Carousel>
+                  </div>
+                ) : (
+                  <div className="text-center text-muted-foreground p-12 border border-dashed rounded-lg lowercase">
+                      no customer photos have been uploaded yet. be the first!
+                  </div>
                 )}
-                </div>
                  <div className="mt-12 text-center">
                     <Button size="lg" variant="outline" onClick={() => router.push('/happy-customers')} className="group">
                         View Full Gallery
