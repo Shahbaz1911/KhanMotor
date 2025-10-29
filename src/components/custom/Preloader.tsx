@@ -126,7 +126,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       <span className={cn(
-        "inline-block text-[10px] -translate-y-1.5",
+        "inline-block text-[10px] -translate-y-1.5 font-cairo",
         isLight ? "text-black" : "text-white"
         )} style={{ transform: `rotate(${-rotation}deg) ` }}>
         {value}
@@ -195,7 +195,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
          {/* Center pin */}
         <div className={cn("absolute w-4 h-4 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isLight ? "bg-zinc-200 border border-zinc-400" : "bg-zinc-800 border border-zinc-600")}></div>
       </div>
-       <div className={cn("mt-4 text-center", isLight ? "text-black" : "text-white")}>
+       <div className={cn("mt-4 text-center font-cairo", isLight ? "text-black" : "text-white")}>
             <span ref={speedNumberRef} className="text-5xl font-black tabular-nums">0</span>
             <span className="ml-2 text-lg">mph</span>
         </div>

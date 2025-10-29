@@ -107,7 +107,7 @@ export function AchievementsSection() {
               className="flex flex-col items-center justify-center rounded-lg p-8"
             >
               <stat.icon className="mb-4 h-12 w-12 text-primary" />
-              <div className="text-5xl font-black text-foreground">
+              <div className="text-5xl font-black text-foreground font-cairo">
                 <StatCounter value={stat.value} duration={2} />
                 {stat.suffix}
               </div>

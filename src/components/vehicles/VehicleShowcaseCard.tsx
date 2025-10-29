@@ -122,7 +122,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
       </div>
 
       <div ref={contentRef}>
-        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground">{vehicle.year} • {vehicle.color}</p>
+        <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground font-cairo">{vehicle.year} • {vehicle.color}</p>
         <h3 className="gsap-reveal mt-2 text-3xl font-black tracking-tight md:text-4xl uppercase">
           {vehicle.make} {vehicle.model}
         </h3>
@@ -131,7 +131,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
           {vehicle.description}
         </p>
 
-        <div className="gsap-reveal mt-6 grid grid-cols-2 gap-4 text-sm">
+        <div className="gsap-reveal mt-6 grid grid-cols-2 gap-4 text-sm font-cairo">
             {vehicle.mileage !== undefined && (
               <div className="flex items-center gap-2">
                   <Gauge className="h-5 w-5 text-muted-foreground" />
@@ -159,7 +159,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         </div>
 
         <div className="gsap-reveal mt-8 flex flex-col sm:flex-row sm:items-center sm:gap-6">
-          <p className="text-3xl font-bold">
+          <p className="text-3xl font-bold font-cairo">
             ₹{vehicle.price.toLocaleString()}
             {vehicle.priceType === 'negotiable' && <span className="text-sm font-normal text-muted-foreground lowercase"> (negotiable)</span>}
           </p>

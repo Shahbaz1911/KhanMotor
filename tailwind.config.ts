@@ -13,6 +13,7 @@ export default {
       fontFamily: {
         body: ['"Raleway"', 'sans-serif'],
         headline: ['"Raleway"', 'sans-serif'],
+        cairo: ['"Cairo"', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
