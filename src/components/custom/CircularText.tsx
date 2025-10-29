@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { motion, useAnimation, useMotionValue, MotionValue, Transition } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 interface CircularTextProps {
   text: string;
@@ -121,7 +121,7 @@ const CircularText: React.FC<CircularTextProps> = ({
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="flex items-center justify-center h-28 w-28 rounded-full bg-primary text-primary-foreground group-hover:bg-destructive transition-colors duration-300">
                 <span className="text-lg font-black uppercase">Click</span>
-                <ArrowRight className="w-5 h-5 ml-1" />
+                <ArrowUpRight className="w-5 h-5 ml-1" />
             </div>
       </div>
     </div>
