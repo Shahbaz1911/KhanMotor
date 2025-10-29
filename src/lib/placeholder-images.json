@@ -3,6 +3,14 @@
     "url": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXJzJTIwfGVufDB8fHx8MTc1OTQxOTYyOHww&ixlib=rb-4.1.0&q=80&w=1080",
     "aiHint": "silver sportscar"
   },
+  "about2": {
+    "url": "https://picsum.photos/seed/about2/1080/810",
+    "aiHint": "dealership showroom"
+  },
+  "about3": {
+    "url": "https://picsum.photos/seed/about3/1080/810",
+    "aiHint": "mechanic working"
+  },
   "cta": {
     "url": "https://picsum.photos/seed/cta/1920/1080",
     "aiHint": "car interior driving"
