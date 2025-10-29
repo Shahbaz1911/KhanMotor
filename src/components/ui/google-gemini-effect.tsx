@@ -1,3 +1,4 @@
+
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
@@ -21,7 +22,7 @@ export const GoogleGeminiEffect = ({
 }) => {
   return (
     <div className={cn("sticky top-80", className)}>
-      <p className="text-4xl md:text-7xl font-normal pb-4 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300">
+      <p className="text-4xl md:text-7xl font-black uppercase pb-4 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300">
         {title || `Experience the Khan Motor Difference`}
       </p>
       <p className="text-sm md:text-xl font-normal text-center text-neutral-400 mt-4 max-w-lg mx-auto">
@@ -158,3 +159,5 @@ export const GoogleGeminiEffect = ({
     </div>
   );
 };
+
+    
