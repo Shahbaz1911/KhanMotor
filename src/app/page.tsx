@@ -39,7 +39,7 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -289,3 +289,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    

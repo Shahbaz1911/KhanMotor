@@ -172,3 +172,5 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
     </div>
   );
 }
+
+    

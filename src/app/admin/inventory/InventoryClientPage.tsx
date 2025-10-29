@@ -17,7 +17,7 @@ import { collection, onSnapshot, doc, deleteDoc, query, orderBy, Timestamp } fro
 import type { Vehicle } from "@/types";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/shadcn-carousel";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -289,3 +289,5 @@ export default function InventoryClientPage() {
     </div>
   )
 }
+
+    
