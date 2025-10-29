@@ -5,7 +5,7 @@ import { useActionState, useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { CalendarIcon, Loader2, Send } from "lucide-react";
+import { CalendarIcon, Loader2, Send, Check } from "lucide-react";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -34,12 +34,31 @@ const initialState: AppointmentFormState = {
   success: false,
 };
 
-function SubmitButton() {
+function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
   const { pending } = useFormStatus();
+
   return (
-    <Button type="submit" disabled={pending} className="w-full md:w-auto">
-      {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-      Request Appointment
+    <Button
+      type="submit"
+      disabled={pending || isSuccess}
+      className={cn("w-full md:w-auto", isSuccess && "bg-green-500 hover:bg-green-600")}
+    >
+      {isSuccess ? (
+        <>
+          <Check className="mr-2 h-4 w-4" />
+          Success!
+        </>
+      ) : pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Requesting...
+        </>
+      ) : (
+        <>
+          <Send className="mr-2 h-4 w-4" />
+          Request Appointment
+        </>
+      )}
     </Button>
   );
 }
@@ -73,11 +92,16 @@ export function AppointmentForm() {
         toast({
           title: "Success!",
           description: state.message,
+          variant: "success",
         });
-        form.reset();
-        if (formRef.current) {
-          formRef.current.reset();
-        }
+        // We don't reset the form immediately to show the success state on the button
+        // It will be reset if the user navigates away or reloads.
+        setTimeout(() => {
+          form.reset();
+           if (formRef.current) {
+            formRef.current.reset();
+          }
+        }, 2000)
       } else {
         toast({
           title: "Error",
@@ -217,7 +241,7 @@ export function AppointmentForm() {
             </FormItem>
           )}
         />
-        <SubmitButton />
+        <SubmitButton isSuccess={state.success} />
       </form>
     </Form>
   );
