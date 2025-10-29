@@ -84,6 +84,7 @@ const CircularText: React.FC<CircularTextProps> = ({
 
   return (
     <div className={cn("relative w-40 h-40 group", className)}>
+        <div className="absolute inset-0 border-2 border-border rounded-full transition-all duration-300 group-hover:border-destructive group-hover:shadow-[0_0_15px_hsla(var(--destructive),0.5)]"></div>
         <motion.div
             className={cn("m-0 mx-auto rounded-full w-40 h-40 relative font-black text-center cursor-pointer origin-center")}
             style={{ rotate: rotation }}
@@ -103,7 +104,7 @@ const CircularText: React.FC<CircularTextProps> = ({
                     )}
                     style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 80px' }} // 80px is half of 160px width/height
                 >
-                    {letter === '✦' ? <span className='text-destructive'>{letter}</span> : letter}
+                    {letter === '✦' ? <span>{letter}</span> : letter}
                 </motion.span>
                 );
             })}
