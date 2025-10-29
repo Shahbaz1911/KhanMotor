@@ -16,22 +16,22 @@ const highlightItems = [
   {
     icon: Car,
     title: "Premium Vehicle Selection",
-    description: "Handpicked luxury and performance cars from world-renowned brands. Find your next car for sale from our curated collection.",
+    description: "handpicked luxury and performance cars. find your next car for sale from our curated collection at our car dealership.",
   },
   {
     icon: ShieldCheck,
     title: "Verified Quality & Inspection",
-    description: "Each vehicle undergoes rigorous vehicle inspection. We offer certified pre-owned cars for your peace of mind.",
+    description: "each vehicle undergoes a rigorous vehicle inspection service. we offer certified pre-owned cars for your peace of mind.",
   },
   {
     icon: Wrench,
     title: "Expert Auto Maintenance",
-    description: "State-of-the-art auto repair shop with certified technicians for all your auto maintenance needs, from oil changes to transmission repair.",
+    description: "state-of-the-art auto repair shop with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
   },
   {
     icon: MessageSquareHeart,
     title: "Personalized Service",
-    description: "Dedicated consultants to guide you through a bespoke buying experience at our car dealership. We also have mobile mechanic options.",
+    description: "our trusted car workshop offers dedicated consultants to guide you. we even offer a mobile mechanic for your convenience.",
   },
 ];
 
@@ -118,7 +118,7 @@ export function WhyChooseUs() {
                 variants={textVariants}
                 className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto lowercase"
             >
-                experience the difference of true automotive excellence, where every detail is crafted for your satisfaction.
+                experience the difference at our auto service center, where every detail is crafted for your satisfaction.
             </motion.p>
         </motion.div>
         

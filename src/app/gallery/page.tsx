@@ -182,7 +182,7 @@ export default function GalleryPage() {
                       <div className="mb-4 text-5xl">🚗</div>
                       <h3 className="text-2xl font-semibold uppercase">No Cars for Sale</h3>
                       <p className="text-muted-foreground lowercase">
-                        there are currently no vehicles in our collection. our car dealership is always updating, so check back soon!
+                        our car dealership is always updating our car marketplace. check back soon to find certified pre-owned cars!
                       </p>
                     </div>
                   )}

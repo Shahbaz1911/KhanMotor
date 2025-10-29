@@ -17,22 +17,22 @@ const services = [
   {
     icon: Wrench,
     title: "Car Repair & Servicing",
-    description: "Comprehensive auto repair and car servicing by certified technicians to keep your vehicle in peak condition. Your reliable mechanic near me.",
+    description: "comprehensive auto repair and car servicing from a trusted car workshop. we handle brake repair, transmission repair, and car engine diagnostics.",
   },
   {
     icon: Paintbrush,
     title: "Denting, Painting & Detailing",
-    description: "State-of-the-art auto body shop for denting, painting, car detailing, and classic car restoration to restore your car's pristine look.",
+    description: "our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional car detailing.",
   },
   {
     icon: Repeat,
     title: "Buy & Sell Used Cars",
-    description: "A trusted car marketplace for buying certified pre-owned cars or to sell your car. Find the best second-hand cars.",
+    description: "explore our car marketplace to buy used cars or sell your car. we are a top used car dealer for certified pre-owned cars.",
   },
   {
     icon: ShieldCheck,
     title: "Car Maintenance & Inspection",
-    description: "Scheduled auto maintenance, vehicle inspection, oil change service, and air conditioning repair to ensure longevity and performance.",
+    description: "scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and air conditioning repair.",
   },
 ];
 
@@ -67,10 +67,10 @@ export function ServicesSection() {
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
-            Our Services
+            Our Auto Services
           </h2>
           <p className="text-lg text-muted-foreground md:text-xl mt-4 lowercase">
-            comprehensive care for your luxury vehicle. from auto repair to buying and selling cars.
+            from classic car restoration to routine car maintenance, we are the best car mechanic for all your needs.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

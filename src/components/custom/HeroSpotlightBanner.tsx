@@ -14,7 +14,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const headingText = "Experience Automotive Excellence";
+  const headingText = "Car Restoration, Repair & Sales";
 
   useEffect(() => {
     // Only run animation if isLoaded is true

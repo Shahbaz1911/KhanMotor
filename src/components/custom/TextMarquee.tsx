@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Star } from 'lucide-react';
 
-const marqueeTexts = ["Auto Repair", "Vehicle Servicing", "Car Maintenance", "Brake Repair", "Oil Change", "Car For Sale"];
+const marqueeTexts = ["Auto Repair", "Vehicle Servicing", "Classic Car Restoration", "Brake Repair", "Oil Change", "Car For Sale", "Collision Repair", "Sell My Car"];
 
 export function TextMarquee() {
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export function TextMarquee() {
     const animation = gsap.to(marqueeEl, {
       x: `-${singleSetWidth}px`,
       ease: "none",
-      duration: 20, // Slower duration for a more elegant effect
+      duration: 25, // Slower duration for a more elegant effect
       repeat: -1,
     });
     

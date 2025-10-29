@@ -218,7 +218,7 @@ export default function HappyCustomersPage() {
                             <div className="mb-4 text-5xl">📸</div>
                             <h3 className="text-2xl font-semibold uppercase">No Photos Yet</h3>
                             <p className="text-muted-foreground lowercase">
-                                our customer gallery is waiting for its first star. check back soon!
+                                our customer gallery is waiting for its first star. check back soon for reviews from our trusted car workshop!
                             </p>
                         </div>
                     )}

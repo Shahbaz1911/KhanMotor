@@ -47,8 +47,8 @@ export default function ConsolidatedPage() {
   }, []);
 
 
-  const aboutText1 = "since 1995, motor khan has been your trusted partner for premium used cars and expert auto repair. as a leading car dealership, we specialize in certified pre-owned vehicles, ensuring quality and reliability. we pick the best, most impressive vehicles for you.";
-  const aboutText2 = "we want to make buying a car, or servicing your current one, a clear and personal experience for everyone. whether you need an oil change, brake repair, or are looking to sell your car, we are the mechanic near you that you can trust.";
+  const aboutText1 = "since 1995, motor khan has been your trusted car workshop for premium used cars and expert auto repair. as a leading car dealership in rithala, delhi, we specialize in certified pre-owned vehicles, ensuring quality and reliability. we are the mechanic near you that you can trust for everything from a simple oil change service to complex transmission repair.";
+  const aboutText2 = "we aim to make buying a car or servicing your current one a transparent and personal experience. whether you need brake repair, car detailing, or are looking to sell your car, our team is here to provide affordable car repair and exceptional service.";
 
 
   // GSAP Animation Refs
@@ -197,7 +197,7 @@ export default function ConsolidatedPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div ref={aboutContentRef}>
               <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
-                About Our Auto Repair Shop & Car Dealership
+                Your Trusted Auto Repair Shop & Car Dealership
               </h2>
               <div className="gsap-reveal">
                 <TextGenerateEffect words={aboutText1} className="mb-4" />
