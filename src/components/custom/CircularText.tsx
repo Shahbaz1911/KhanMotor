@@ -110,9 +110,9 @@ const CircularText: React.FC<CircularTextProps> = ({
             })}
         </motion.div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="flex items-center justify-center h-32 w-32 rounded-full bg-destructive text-black transition-colors duration-300 group-hover:bg-destructive/90">
-                <span className="text-xl font-black uppercase">Click</span>
-                <ArrowUpRight className="w-5 h-5 ml-1" />
+            <div className="flex items-center justify-center h-32 w-32 rounded-full bg-destructive text-destructive-foreground transition-colors duration-300 group-hover:bg-destructive/90">
+                <span className="text-2xl font-black uppercase">Click</span>
+                <ArrowUpRight className="w-6 h-6 ml-1" />
             </div>
       </div>
     </div>
