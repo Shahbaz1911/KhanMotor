@@ -2,7 +2,7 @@
 "use client";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Button } from "@/components/ui/button";
-import { Instagram, Facebook, MapPin, Phone, Mail, ArrowRight, GalleryThumbnails } from 'lucide-react';
+import { Instagram, Facebook, MapPin, Phone, Mail, GalleryThumbnails } from 'lucide-react';
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from "react";
@@ -15,6 +15,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import CircularText from "@/components/custom/CircularText";
 
 const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -99,7 +100,7 @@ export default function ContactPage() {
           <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
+                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm uppercase">
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -130,7 +131,7 @@ export default function ContactPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm uppercase" onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
@@ -161,11 +162,15 @@ export default function ContactPage() {
                   ))}
               </motion.div>
 
-               <motion.div variants={itemVariants}>
-                 <Button onClick={() => router.push('/#contact')} size="lg" className="group mt-8">
-                      Get in Touch
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </Button>
+               <motion.div variants={itemVariants} className="mt-8">
+                  <Link href="/#contact">
+                    <CircularText
+                      text="GET✦IN✦TOUCH✦"
+                      onHover="speedUp"
+                      spinDuration={20}
+                      className="text-sm text-foreground"
+                    />
+                  </Link>
                </motion.div>
 
               <motion.div variants={itemVariants} className="mt-12">
