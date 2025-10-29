@@ -148,7 +148,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
             </DropdownMenu>
           </div>
         ) : null}
-        <p className="text-xs text-muted-foreground px-2 text-start">
+        <p className="text-[10px] tracking-wider font-light text-muted-foreground/80 px-2 text-start uppercase">
             Copyright © {new Date().getFullYear()} Motor Khan | All rights reserved
         </p>
       </div>
