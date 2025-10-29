@@ -99,7 +99,7 @@ export function WhyChooseUs() {
   
 
   return (
-    <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background">
+    <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background overflow-x-hidden">
       <div className="container mx-auto px-4">
         <motion.div
             className="mb-16 text-center"
@@ -163,7 +163,7 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="md:hidden w-[calc(100%-4rem)] ml-[4rem]">
+                             <div className="md:hidden w-full pl-20">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
