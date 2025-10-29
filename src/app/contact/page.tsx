@@ -135,7 +135,7 @@ export default function ContactPage() {
             </Button>
           </div>
         </div>
-        <div className="container mx-auto px-4 py-16 md:py-24 min-h-screen flex items-center justify-center mt-16">
+        <div className="container mx-auto px-4 py-16 md:py-24 flex items-center justify-center mt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
             <motion.div
                 initial="hidden"
