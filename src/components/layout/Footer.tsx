@@ -25,7 +25,7 @@ export function Footer() {
       gsap.from(footerRef.current, {
         scrollTrigger: {
           trigger: footerRef.current,
-          start: 'top bottom-=100', // Start animation when footer is 100px from bottom
+          start: 'top bottom', // Start animation when footer top enters bottom of viewport
           toggleActions: 'play none none none',
         },
         opacity: 0,
@@ -39,8 +39,8 @@ export function Footer() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="dark border-t border-white/10 bg-black text-gray-300">
-      <div className="container mx-auto px-6 py-12">
+    <footer ref={footerRef} className="bg-footer-gradient py-12 md:py-20 px-4">
+      <div className="container mx-auto bg-black text-gray-300 rounded-2xl shadow-2xl p-8 md:p-12">
         <div className="flex flex-col md:grid md:grid-cols-12 gap-y-10 md:gap-8">
           
           <div className="md:col-span-8 flex flex-col sm:flex-row md:flex-col lg:flex-row gap-y-10 md:gap-8 order-2 md:order-1 w-full text-left">
