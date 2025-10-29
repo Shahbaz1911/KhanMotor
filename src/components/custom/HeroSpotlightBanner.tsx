@@ -43,8 +43,8 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
       const wordTl = gsap.timeline({ repeat: -1, delay: 1 }); // Start after initial hero animation
       animatedWords.forEach((word) => {
         wordTl
-          .to(word, { yPercent: 0, opacity: 1, duration: 0.6, ease: "power3.out" })
-          .to(word, { yPercent: -110, opacity: 0, duration: 0.6, ease: "power3.in", delay: 1.5 });
+          .to(word, { y: "0%", opacity: 1, duration: 0.6, ease: "power3.out" })
+          .to(word, { y: "-110%", opacity: 0, duration: 0.6, ease: "power3.in", delay: 1.5 });
       });
     }
   }, [isLoaded]);
