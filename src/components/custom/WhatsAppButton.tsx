@@ -4,6 +4,9 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useState } from "react";
+import { Wrench, Paintbrush, Repeat, ShieldCheck, MessageCircle } from "lucide-react";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
     <svg
@@ -18,20 +21,72 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
     </svg>
 );
 
+const services = [
+  { icon: Wrench, text: "Car Repair & Servicing" },
+  { icon: Paintbrush, text: "Denting, Painting & Detailing" },
+  { icon: Repeat, text: "Buy & Sell Used Cars" },
+  { icon: ShieldCheck, text: "Car Maintenance & Inspection" },
+];
 
 export function WhatsAppButton() {
   const phoneNumber = "918595853918";
-  const message = "Hello! I'm interested in your vehicles.";
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleServiceClick = (serviceText: string) => {
+    const message = `Hello! I'm interested in your ${serviceText}.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setIsOpen(false);
+  };
+  
+  const handleGeneralInquiry = () => {
+    const message = "Hello! I have a general inquiry.";
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setIsOpen(false);
+  }
 
   return (
-    <Button
-      asChild
-      className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full bg-black text-white shadow-lg transition-all duration-300 hover:bg-white hover:text-black hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-    >
-      <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
-        <WhatsAppIcon />
-      </Link>
-    </Button>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full bg-black text-white shadow-lg transition-all duration-300 hover:bg-white hover:text-black hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          aria-label="Chat on WhatsApp"
+        >
+          <WhatsAppIcon />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80 mr-4 mb-2" align="end" side="top">
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <h4 className="font-medium leading-none">Inquire on WhatsApp</h4>
+            <p className="text-sm text-muted-foreground">
+              What service are you interested in?
+            </p>
+          </div>
+          <div className="grid gap-2">
+            {services.map((service) => (
+              <Button
+                key={service.text}
+                variant="outline"
+                className="justify-start"
+                onClick={() => handleServiceClick(service.text)}
+              >
+                <service.icon className="mr-2 h-4 w-4" />
+                {service.text}
+              </Button>
+            ))}
+             <Button
+                variant="outline"
+                className="justify-start"
+                onClick={handleGeneralInquiry}
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                General Inquiry
+              </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
