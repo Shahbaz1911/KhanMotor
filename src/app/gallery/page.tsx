@@ -35,7 +35,7 @@ export default function GalleryPage() {
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
       : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
   }, [theme]);
 
