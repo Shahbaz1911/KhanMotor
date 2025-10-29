@@ -35,13 +35,13 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    setLogoSrc(theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
-  }, [theme]);
+    // The logo is now static, so we don't need to update it based on theme
+  }, []);
 
 
   const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
@@ -140,7 +140,7 @@ export default function ConsolidatedPage() {
 
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
-                {mounted && logoSrc && (
+                {mounted && (
                   <Image 
                       src={logoSrc}
                       alt="Arman Autoxperts Logo"
