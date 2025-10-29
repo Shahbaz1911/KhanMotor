@@ -9,18 +9,25 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import placeholderImages from "@/lib/placeholder-images.json";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export function CallToAction() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const backgroundWidth = useTransform(scrollYProgress, [0.1, 0.5], ["0%", "100%"]);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
       if (textRef.current) {
-        // This simple `to` animation with scrub will automatically reverse on scroll up.
         gsap.to(textRef.current, {
           x: () => -(textRef.current!.scrollWidth - window.innerWidth),
           ease: "none",
@@ -29,7 +36,7 @@ export function CallToAction() {
             start: "top bottom",
             end: "bottom top",
             scrub: true,
-            invalidateOnRefresh: true // Recalculates values on resize
+            invalidateOnRefresh: true
           },
         });
       }
@@ -59,16 +66,20 @@ export function CallToAction() {
             Are you ready to experience luxury?
           </h2>
         </div>
-        <div className="mt-12">
-          <Button
-            size="lg"
-            variant="outline"
-            className="group bg-transparent hover:bg-destructive hover:text-destructive-foreground border-2 border-destructive text-lg text-white px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black"
-            onClick={() => router.push('/book-appointment')}
-          >
-            Book a Test Drive
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Button>
+        <div className="mt-12 flex justify-center">
+            <motion.button
+                onClick={() => router.push('/book-appointment')}
+                className="group relative bg-transparent border-2 border-destructive text-lg text-white px-8 py-6 rounded-full transition-all duration-300 font-black overflow-hidden"
+            >
+                <motion.div
+                    style={{ width: backgroundWidth }}
+                    className="absolute inset-0 bg-destructive z-0"
+                />
+                <span className="relative z-10 flex items-center">
+                    Book a Test Drive
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </span>
+            </motion.button>
         </div>
       </div>
     </section>
