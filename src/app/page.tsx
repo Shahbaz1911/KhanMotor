@@ -267,9 +267,9 @@ export default function ConsolidatedPage() {
         <TextMarquee />
         <ServicesSection />
 
-        <WhyChooseUs />
-
         <CallToAction />
+
+        <WhyChooseUs />
         
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 bg-background">
@@ -289,4 +289,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
