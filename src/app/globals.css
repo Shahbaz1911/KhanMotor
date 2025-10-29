@@ -8,7 +8,7 @@
     --background: 240 10% 99%; /* Lighter off-white for a clean, airy feel */
     --foreground: 240 10% 3.9%; /* Near-black for sharp text contrast */
     --card: 240 10% 100%; /* Pure white for cards to pop slightly */
-    --card-foreground: 240 10% 3.9%;
+    -card-foreground: 240 10% 3.9%;
     --popover: 240 10% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%; /* A strong, dark blue-gray for primary actions */
@@ -90,6 +90,13 @@
   }
   h3, p {
     @apply font-headline font-light;
+  }
+  .dark h3, .dark p {
+    @apply text-foreground;
+  }
+  
+  :not(.dark) h3, :not(.dark) p {
+    color: hsl(var(--foreground));
   }
 }
 
