@@ -31,6 +31,7 @@ import CircularText from "@/components/custom/CircularText";
 import ScrollReveal from "@/components/custom/ScrollReveal";
 import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
 import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
+import { motion } from "framer-motion";
 
 
 export default function ConsolidatedPage() {
@@ -167,7 +168,13 @@ export default function ConsolidatedPage() {
         
         {/* Section 2: About Us */}
         <section id="about-us" className="container mx-auto px-4 py-16 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+          >
             <div>
               <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
                 Your Trusted Auto Repair Shop & Car Dealership
@@ -217,7 +224,7 @@ export default function ConsolidatedPage() {
                 </CarouselContent>
               </Carousel>
             </div>
-          </div>
+          </motion.div>
         </section>
         
         <TextMarquee />
