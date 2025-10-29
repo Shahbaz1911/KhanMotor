@@ -89,7 +89,7 @@
     @apply font-headline;
   }
   h3, p {
-    @apply font-headline font-light;
+    @apply font-headline font-bold;
   }
   .dark h3, .dark p {
     @apply text-foreground;
