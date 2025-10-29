@@ -39,7 +39,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="border-t border-white/10 bg-black text-gray-300">
+    <footer ref={footerRef} className="dark border-t border-white/10 bg-black text-gray-300">
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col md:grid md:grid-cols-12 gap-y-10 md:gap-8">
           
@@ -115,5 +115,3 @@ export function Footer() {
     </footer>
   );
 }
-
-    
