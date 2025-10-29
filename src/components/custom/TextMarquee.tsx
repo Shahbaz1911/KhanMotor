@@ -3,7 +3,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { Star } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const marqueeTexts = ["Car Restoration", "Classic Car Restoration", "Auto Repair", "Vehicle Servicing", "Auto Service Center", "Mobile Mechanic", "Auto Body Shop", "Collision Repair", "Brake Repair", "Transmission Repair", "Oil Change Service", "Tire Replacement", "Car Detailing", "Air Conditioning Repair"];
 
@@ -38,12 +38,17 @@ export function TextMarquee() {
           {repeatedTexts.map((text, i) => (
             <React.Fragment key={i}>
               <div className="mx-8">
-                <h2 className="text-6xl md:text-8xl font-black text-black/80 dark:text-white/80 whitespace-nowrap uppercase">
+                <h2 className={cn(
+                    "text-6xl md:text-8xl font-black whitespace-nowrap uppercase",
+                    i % 2 === 0 
+                      ? "text-black/80 dark:text-white/80" 
+                      : "text-transparent bg-clip-text [-webkit-text-stroke:2px_var(--tw-stroke-color)] stroke-destructive"
+                )}>
                   {text}
                 </h2>
               </div>
               {i < repeatedTexts.length - 1 && (
-                <Star className="h-8 w-8 text-destructive flex-shrink-0" fill="currentColor" />
+                <span className="text-4xl text-destructive font-black flex-shrink-0">✧</span>
               )}
             </React.Fragment>
           ))}
