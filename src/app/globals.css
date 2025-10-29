@@ -85,8 +85,11 @@
     transition-duration: 300ms;
     transition-timing-function: ease-in-out;
   }
-  h1, h2, h3, h4, h5, h6, .card-title {
+  h1, h2, h4, h5, h6, .card-title {
     @apply font-headline;
+  }
+  h3, p {
+    @apply font-headline font-light;
   }
 }
 
