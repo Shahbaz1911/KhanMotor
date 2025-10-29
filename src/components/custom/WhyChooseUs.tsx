@@ -112,7 +112,7 @@ export function WhyChooseUs() {
                 variants={titleVariants}
                 className="text-4xl tracking-tight lg:text-5xl font-black uppercase"
             >
-                Why Choose Arman Autoxperts?
+                Why Choose Motor Khan?
             </motion.h2>
             <motion.p
                 variants={textVariants}

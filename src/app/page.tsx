@@ -44,7 +44,7 @@ export default function ConsolidatedPage() {
   }, []);
 
 
-  const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
+  const aboutText1 = "Driven by a passion for excellence since 1995, Motor Khan offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
   const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
 
 
@@ -143,7 +143,7 @@ export default function ConsolidatedPage() {
                 {mounted && (
                   <Image 
                       src={logoSrc}
-                      alt="Arman Autoxperts Logo"
+                      alt="Motor Khan Logo"
                       width={150}
                       height={150}
                       className="w-28 h-auto"
@@ -204,7 +204,7 @@ export default function ConsolidatedPage() {
             <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
               <Image
                 src={placeholderImages.about.url}
-                alt="Arman Autoxperts Dealership Interior"
+                alt="Motor Khan Dealership Interior"
                 fill
                 className="rounded-lg object-cover"
                 data-ai-hint={placeholderImages.about.aiHint}

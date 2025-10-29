@@ -10,7 +10,7 @@ import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
-  title: 'ArmanAutoxperts',
+  title: 'Motor Khan',
   description: 'Explore premium vehicles, contact us, or use our AI tools. All in one place.',
 };
 

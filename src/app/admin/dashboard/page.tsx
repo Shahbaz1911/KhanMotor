@@ -119,7 +119,7 @@ export default function AdminDashboardPage() {
               <Link href="/">
                 <Image 
                     src={logoSrc}
-                    alt="Arman Autoxperts Logo"
+                    alt="Motor Khan Logo"
                     width={150}
                     height={150}
                     className="w-24 h-auto"

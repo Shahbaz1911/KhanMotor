@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
             <div className="mx-auto mb-4">
                  <Image 
                     src={logoSrc}
-                    alt="Arman Autoxperts Logo"
+                    alt="Motor Khan Logo"
                     width={150}
                     height={150}
                     className="w-36 h-auto"

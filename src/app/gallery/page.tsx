@@ -145,7 +145,7 @@ export default function GalleryPage() {
                 <Link href="/">
                   <Image 
                       src={logoSrc}
-                      alt="Arman Autoxperts Logo"
+                      alt="Motor Khan Logo"
                       width={150}
                       height={150}
                       className="w-28 h-auto"

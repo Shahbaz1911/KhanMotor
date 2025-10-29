@@ -149,7 +149,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       <div ref={logoRef} className="mb-8">
            <Image
               src={logoSrc}
-              alt="Arman Autoxperts Logo"
+              alt="Motor Khan Logo"
               width={200}
               height={200}
               className="w-48 h-auto"

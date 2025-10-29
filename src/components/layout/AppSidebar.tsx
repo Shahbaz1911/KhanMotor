@@ -64,7 +64,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
          <Link href="/#home" onClick={handleLinkClick}>
             <Image
                 src={logoSrc}
-                alt="Arman Autoxperts Logo"
+                alt="Motor Khan Logo"
                 width={150}
                 height={150}
                 className="w-28 h-auto"
@@ -148,7 +148,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           </div>
         ) : null}
         <p className="text-xs text-muted-foreground px-2 text-start">
-            Copyright © {new Date().getFullYear()} ArmanAutoXperts | All rights reserved
+            Copyright © {new Date().getFullYear()} Motor Khan | All rights reserved
         </p>
       </div>
     </div>

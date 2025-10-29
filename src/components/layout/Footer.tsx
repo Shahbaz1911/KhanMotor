@@ -92,7 +92,7 @@ export function Footer() {
              <Link href="/#home" className="mb-4 inline-block">
               <Image
                 src={logoSrc}
-                alt="Arman Autoxperts Logo"
+                alt="Motor Khan Logo"
                 width={150}
                 height={150}
                 className="w-48 h-auto"
@@ -104,7 +104,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-          <p className="text-sm text-gray-400 order-2 sm:order-1 mt-4 sm:mt-0 lowercase">&copy; {new Date().getFullYear()} armanautoxperts. all rights reserved.</p>
+          <p className="text-sm text-gray-400 order-2 sm:order-1 mt-4 sm:mt-0 lowercase">&copy; {new Date().getFullYear()} motorkhan. all rights reserved.</p>
           <div className="flex justify-center gap-4 text-sm order-1 sm:order-2">
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline lowercase">privacy policy</Link>
               <Link href="#" className="text-gray-400 transition-colors duration-300 hover:text-white hover:underline lowercase">terms of service</Link>
