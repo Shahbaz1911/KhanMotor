@@ -39,7 +39,7 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack-2.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -57,9 +57,6 @@ export default function ConsolidatedPage() {
   const headerControlsRef = useRef<HTMLDivElement>(null);
   const headerLogoRef = useRef<HTMLDivElement>(null);
   
-  const aboutSectionRef = useRef<HTMLElement>(null);
-  const aboutContentRef = useRef<HTMLDivElement>(null);
-  const aboutImageRef = useRef<HTMLDivElement>(null);
   
   const aboutCarouselImages = [
       placeholderImages.about,
@@ -96,31 +93,6 @@ export default function ConsolidatedPage() {
         { autoAlpha: 0, y: -20 },
         { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
       );
-
-      // About Us Animation
-      const aboutTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: aboutSectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        }
-      });
-      
-      aboutTl
-        .from(aboutContentRef.current?.querySelectorAll(".gsap-reveal"), {
-          opacity: 0,
-          y: 50,
-          stagger: 0.2,
-          duration: 0.8,
-          ease: "power3.out",
-        })
-        .from(aboutImageRef.current, {
-          opacity: 0,
-          y: 50,
-          duration: 0.8,
-          ease: "power3.out",
-        }, "-=0.6");
-
 
     }, pageRef);
 
@@ -194,46 +166,30 @@ export default function ConsolidatedPage() {
         <AchievementsSection />
         
         {/* Section 2: About Us */}
-        <section ref={aboutSectionRef} id="about-us" className="container mx-auto px-4 py-16 md:py-24">
+        <section id="about-us" className="container mx-auto px-4 py-16 md:py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div ref={aboutContentRef}>
-              <h2 className="gsap-reveal mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
+            <div>
+              <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
                 Your Trusted Auto Repair Shop & Car Dealership
               </h2>
-              <div className="gsap-reveal">
-                <ScrollReveal
-                  stagger={0.2}
-                  baseOpacity={0}
-                  enableBlur={true}
-                  blurStrength={10}
-                  baseRotation={5}
-                >
-                  {aboutText1}
-                </ScrollReveal>
-              </div>
-              <div className="gsap-reveal">
-                 <ScrollReveal
-                  stagger={0.2}
-                  baseOpacity={0}
-                  enableBlur={true}
-                  blurStrength={10}
-                  baseRotation={5}
-                >
-                  {aboutText2}
-                </ScrollReveal>
-              </div>
+              <p className="text-lg text-muted-foreground my-5">
+                {aboutText1}
+              </p>
+              <p className="text-lg text-muted-foreground my-5">
+                {aboutText2}
+              </p>
 
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="group gsap-reveal bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive" 
+                className="group bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive" 
                 onClick={() => router.push('/contact')}
               >
                 Meet Our Team
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-            <div ref={aboutImageRef} className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
+            <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
                <Carousel 
                 className="w-full h-full"
                 plugins={[
@@ -289,5 +245,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
