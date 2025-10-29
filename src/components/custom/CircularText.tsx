@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion, useAnimation, useMotionValue, MotionValue, Transition } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ArrowUpRight } from 'lucide-react';
@@ -40,58 +40,46 @@ const CircularText: React.FC<CircularTextProps> = ({
   const controls = useAnimation();
   const rotation: MotionValue<number> = useMotionValue(0);
 
-  useEffect(() => {
+  const startAnimation = (duration: number, scaleVal: number = 1) => {
     const start = rotation.get();
     controls.start({
       rotate: start + 360,
-      scale: 1,
-      transition: getTransition(spinDuration, start) as any
+      scale: scaleVal,
+      transition: getTransition(duration, start) as any,
     });
+  };
+
+  React.useEffect(() => {
+    startAnimation(spinDuration);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spinDuration, text, onHover, controls, rotation]);
 
   const handleHoverStart = () => {
-    const start = rotation.get();
-
     if (!onHover) return;
 
-    let transitionConfig: ReturnType<typeof getTransition> | Transition;
+    let newDuration = spinDuration;
     let scaleVal = 1;
 
     switch (onHover) {
       case 'slowDown':
-        transitionConfig = getTransition(spinDuration * 2, start);
+        newDuration = spinDuration * 2;
         break;
       case 'speedUp':
-        transitionConfig = getTransition(spinDuration / 4, start);
+        newDuration = spinDuration / 4;
         break;
       case 'pause':
-        transitionConfig = {
-          rotate: { type: 'spring', damping: 20, stiffness: 300 },
-          scale: { type: 'spring', damping: 20, stiffness: 300 }
-        };
-        break;
+        controls.stop();
+        return;
       case 'goBonkers':
-        transitionConfig = getTransition(spinDuration / 20, start);
+        newDuration = spinDuration / 20;
         scaleVal = 0.8;
         break;
-      default:
-        transitionConfig = getTransition(spinDuration, start);
     }
-
-    controls.start({
-      rotate: start + 360,
-      scale: scaleVal,
-      transition: transitionConfig as any
-    });
+    startAnimation(newDuration, scaleVal);
   };
 
   const handleHoverEnd = () => {
-    const start = rotation.get();
-    controls.start({
-      rotate: start + 360,
-      scale: 1,
-      transition: getTransition(spinDuration, start) as any
-    });
+    startAnimation(spinDuration);
   };
 
   return (
@@ -115,13 +103,13 @@ const CircularText: React.FC<CircularTextProps> = ({
                     )}
                     style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 80px' }} // 80px is half of 160px width/height
                 >
-                    {letter}
+                    {letter === '✦' ? <span className='text-destructive'>{letter}</span> : letter}
                 </motion.span>
                 );
             })}
         </motion.div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="flex items-center justify-center h-32 w-32 rounded-full bg-destructive text-destructive-foreground transition-colors duration-300 group-hover:bg-destructive/90">
+            <div className="flex items-center justify-center h-32 w-32 rounded-full bg-destructive text-black transition-colors duration-300 group-hover:bg-destructive/90">
                 <span className="text-xl font-black uppercase">Click</span>
                 <ArrowUpRight className="w-5 h-5 ml-1" />
             </div>
