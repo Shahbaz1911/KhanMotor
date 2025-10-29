@@ -21,7 +21,7 @@ export function TextMarquee() {
     const animation = gsap.to(marqueeEl, {
       x: `-${singleSetWidth}px`,
       ease: "none",
-      duration: 25, // Slower duration for a more elegant effect
+      duration: 40,
       repeat: -1,
     });
     

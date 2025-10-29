@@ -201,6 +201,7 @@ export default function ConsolidatedPage() {
               </h2>
               <div className="gsap-reveal">
                 <ScrollReveal
+                  stagger={0.2}
                   baseOpacity={0}
                   enableBlur={true}
                   blurStrength={10}
@@ -211,6 +212,7 @@ export default function ConsolidatedPage() {
               </div>
               <div className="gsap-reveal">
                  <ScrollReveal
+                  stagger={0.2}
                   baseOpacity={0}
                   enableBlur={true}
                   blurStrength={10}

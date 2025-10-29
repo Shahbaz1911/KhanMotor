@@ -15,6 +15,7 @@ interface ScrollRevealProps {
   baseOpacity?: number;
   baseRotation?: number;
   blurStrength?: number;
+  stagger?: number;
   containerClassName?: string;
   textClassName?: string;
   rotationEnd?: string;
@@ -28,6 +29,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   baseOpacity = 0.1,
   baseRotation = 3,
   blurStrength = 4,
+  stagger = 0.05,
   containerClassName = '',
   textClassName = '',
   rotationEnd = 'bottom bottom',
@@ -77,7 +79,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       {
         ease: 'none',
         opacity: 1,
-        stagger: 0.05,
+        stagger: stagger,
         scrollTrigger: {
           trigger: el,
           scroller,
@@ -95,7 +97,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         {
           ease: 'none',
           filter: 'blur(0px)',
-          stagger: 0.05,
+          stagger: stagger,
           scrollTrigger: {
             trigger: el,
             scroller,
@@ -110,7 +112,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength, stagger]);
 
   return (
     <div ref={containerRef} className={cn("my-5", containerClassName)}>
