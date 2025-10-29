@@ -165,14 +165,10 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Link href="/gallery">
-              <CircularText
-                text="VIEW*GALLERY*"
-                onHover="speedUp"
-                spinDuration={20}
-                className="w-24 h-24 text-sm"
-              />
-            </Link>
+            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm" onClick={() => router.push('/gallery')}>
+                <GalleryThumbnails className="mr-2 h-4 w-4" />
+                GALLERY
+            </Button>
         </div>
 
         {/* Section 1: Home */}
@@ -253,4 +249,3 @@ export default function ConsolidatedPage() {
   );
 }
 
-    

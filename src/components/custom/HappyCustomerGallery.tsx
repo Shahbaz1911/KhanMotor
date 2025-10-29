@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import Carousel from "@/components/ui/carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import CircularText from "./CircularText";
+import Link from "next/link";
 
 interface GalleryItem {
   id: string;
@@ -121,11 +123,15 @@ export function HappyCustomerGallery() {
                       no customer photos have been uploaded yet. be the first!
                   </div>
                 )}
-                 <div className="mt-12 text-center">
-                    <Button size="lg" variant="outline" onClick={() => router.push('/happy-customers')} className="group">
-                        View Full Gallery
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Button>
+                 <div className="mt-12 flex justify-center">
+                    <Link href="/happy-customers">
+                      <CircularText
+                        text="VIEW*FULL*GALLERY*"
+                        onHover="speedUp"
+                        spinDuration={20}
+                        className="w-32 h-32 text-sm text-foreground"
+                      />
+                    </Link>
                 </div>
             </>
         )}
