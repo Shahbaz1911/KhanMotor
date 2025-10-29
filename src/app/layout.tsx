@@ -10,8 +10,8 @@ import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
-  title: 'Motor Khan - Car Restoration, Auto Repair, and Used Cars in Rithala, Delhi',
-  description: 'Your trusted car workshop in Rithala, Delhi for classic car restoration, auto repair, and car maintenance. We are a top car dealership to buy used cars or sell your car. Visit our auto body shop for denting, painting, and car detailing.',
+  title: 'Motor Khan - Your Trusted Car Workshop in Rithala, Delhi',
+  description: 'Expert car restoration, auto repair, and car maintenance at Motor Khan, the top car dealership in Rithala, Delhi. We specialize in classic car restoration, collision repair, denting and painting, and offer a curated car marketplace for certified pre-owned cars. Whether you want to buy used cars or sell your car, we are the best car mechanic for all your needs.',
 };
 
 export default function RootLayout({
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="https://armanautoxperts-in.vercel.app/armanautoxperts/armanautoxperts-1.png" sizes="any" />
+        <link rel="icon" href="https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap" rel="stylesheet" />
