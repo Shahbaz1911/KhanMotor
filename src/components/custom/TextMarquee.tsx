@@ -43,7 +43,7 @@ export function TextMarquee() {
                 </h2>
               </div>
               {i < repeatedTexts.length - 1 && (
-                <Star className="h-8 w-8 text-foreground/30 flex-shrink-0" fill="currentColor" />
+                <Star className="h-8 w-8 text-destructive flex-shrink-0" fill="currentColor" />
               )}
             </React.Fragment>
           ))}
