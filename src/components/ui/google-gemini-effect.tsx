@@ -1,4 +1,3 @@
-
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
@@ -159,5 +158,3 @@ export const GoogleGeminiEffect = ({
     </div>
   );
 };
-
-    
