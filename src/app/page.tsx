@@ -18,7 +18,6 @@ import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TestimonialMarquee } from "@/components/custom/TestimonialMarquee";
 import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
@@ -30,6 +29,7 @@ import { useTheme } from "next-themes";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/shadcn-carousel";
 import Autoplay from "embla-carousel-autoplay";
 import CircularText from "@/components/custom/CircularText";
+import ScrollReveal from "@/components/custom/ScrollReveal";
 
 
 export default function ConsolidatedPage() {
@@ -200,10 +200,24 @@ export default function ConsolidatedPage() {
                 Your Trusted Auto Repair Shop & Car Dealership
               </h2>
               <div className="gsap-reveal">
-                <TextGenerateEffect words={aboutText1} className="mb-4" />
+                <ScrollReveal
+                  baseOpacity={0}
+                  enableBlur={true}
+                  blurStrength={10}
+                  baseRotation={5}
+                >
+                  {aboutText1}
+                </ScrollReveal>
               </div>
               <div className="gsap-reveal">
-                <TextGenerateEffect words={aboutText2} className="mb-6" />
+                 <ScrollReveal
+                  baseOpacity={0}
+                  enableBlur={true}
+                  blurStrength={10}
+                  baseRotation={5}
+                >
+                  {aboutText2}
+                </ScrollReveal>
               </div>
 
               <Button 
