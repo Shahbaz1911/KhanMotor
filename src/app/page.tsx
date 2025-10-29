@@ -142,11 +142,11 @@ export default function ConsolidatedPage() {
               <Link href="/">
                 {mounted && (
                   <Image 
-                      src={logoSrc}
+                      src="https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png"
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-28 h-auto"
+                      className="w-24 md:w-28 h-auto"
                   />
                 )}
               </Link>
