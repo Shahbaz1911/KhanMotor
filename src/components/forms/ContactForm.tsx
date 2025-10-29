@@ -39,7 +39,7 @@ function SubmitButton() {
     <Button 
       type="submit" 
       disabled={pending}
-      className="w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive/30 border border-transparent uppercase"
+      className="w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive/30 border border-destructive uppercase"
     >
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
       Send Message
