@@ -269,7 +269,7 @@ export default function ConsolidatedPage() {
 
         <WhyChooseUs />
 
-        <GoogleGeminiEffectDemo />
+        <CallToAction />
         
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 bg-background">
@@ -277,9 +277,9 @@ export default function ConsolidatedPage() {
         </section>
 
         <HappyCustomerGallery />
-
-        <CallToAction />
         
+        <GoogleGeminiEffectDemo />
+
         {/* Section 6: Contact Us */}
         <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
           <ContactForm />
@@ -290,5 +290,3 @@ export default function ConsolidatedPage() {
   );
 }
 
-
-    
