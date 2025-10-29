@@ -57,11 +57,12 @@ const TimelineItem = ({
       whileInView={{ opacity: 1, x: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.7 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full relative"
+      whileHover={{ scale: 1.03, y: -5 }}
+      className="w-full relative group"
     >
       <motion.div
         style={{ borderColor }}
-        className="bg-card/90 backdrop-blur-md shadow-lg w-full h-full relative overflow-hidden rounded-lg border-2"
+        className="bg-card/90 backdrop-blur-md shadow-lg w-full h-full relative overflow-hidden rounded-lg border-2 transition-all duration-300 group-hover:border-destructive group-hover:shadow-destructive/20 group-hover:shadow-lg"
       >
         <CardHeader>
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
