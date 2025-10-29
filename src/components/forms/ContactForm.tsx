@@ -39,7 +39,7 @@ function SubmitButton() {
     <Button 
       type="submit" 
       disabled={pending}
-      className="w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive/30 border border-transparent"
+      className="w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive/30 border border-transparent uppercase"
     >
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
       Send Message
@@ -115,7 +115,7 @@ export function ContactForm() {
     <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl bg-card/50 dark:bg-background/50 backdrop-blur-md border-border">
       <CardHeader>
         <CardTitle className="text-3xl uppercase">Get in Touch</CardTitle>
-        <CardDescription className="lowercase">
+        <CardDescription className="uppercase">
           have questions or need assistance? fill out the form below, and we&apos;ll get back to you shortly.
         </CardDescription>
       </CardHeader>
@@ -127,7 +127,7 @@ export function ContactForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel className="uppercase">Full Name</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
@@ -140,7 +140,7 @@ export function ContactForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel className="uppercase">Email Address</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="john.doe@example.com" {...field} />
                   </FormControl>
@@ -153,9 +153,9 @@ export function ContactForm() {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel className="uppercase">Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
+                    <Input type="tel" placeholder="(123) 456-7890" {...field} className="font-cairo" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,7 +166,7 @@ export function ContactForm() {
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Message</FormLabel>
+                  <FormLabel className="uppercase">Your Message</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell us how we can help you..."

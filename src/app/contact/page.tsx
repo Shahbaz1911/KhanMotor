@@ -14,6 +14,7 @@ import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 const socialLinks = [
     { icon: Instagram, href: '#', label: 'Instagram' },
@@ -93,7 +94,7 @@ export default function ContactPage() {
 
 
   return (
-    <div ref={pageRef} className="bg-background">
+    <div ref={pageRef} className="bg-background font-cairo">
         <div ref={headerRef} className="fixed top-4 w-full px-4 z-50">
           <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -144,7 +145,7 @@ export default function ContactPage() {
                 className="flex flex-col justify-center"
             >
               <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4 uppercase">Connect With Us</motion.h1>
-              <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 lowercase">
+              <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 uppercase">
                 we&apos;re here to help with all your automotive needs. reach out today and let us know how we can assist you.
               </motion.p>
               <motion.div variants={listVariants} className="space-y-6">
@@ -154,7 +155,7 @@ export default function ContactPage() {
                             <div className="flex-shrink-0 bg-primary/10 text-primary p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                                <item.icon className="h-6 w-6" />
                             </div>
-                            <span className="group-hover:underline lowercase">{item.text}</span>
+                            <span className={cn("group-hover:underline uppercase", (item.icon === Phone) && "font-cairo")}>{item.text}</span>
                         </Link>
                       </motion.div>
                   ))}
