@@ -41,8 +41,8 @@ export function TextMarquee() {
                 <h2 className={cn(
                     "text-6xl md:text-8xl font-black whitespace-nowrap uppercase",
                     i % 2 === 0 
-                      ? "text-black/80 dark:text-white/80" 
-                      : "text-transparent bg-clip-text [-webkit-text-stroke:2px_var(--tw-stroke-color)] stroke-destructive"
+                      ? "text-black dark:text-white" 
+                      : "text-transparent [-webkit-text-stroke:2px_hsl(var(--destructive))] dark:[-webkit-text-stroke:2px_hsl(var(--destructive))]"
                 )}>
                   {text}
                 </h2>
