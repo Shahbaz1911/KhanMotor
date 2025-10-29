@@ -28,6 +28,7 @@ import { TextMarquee } from "@/components/custom/TextMarquee";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import Carousel from "@/components/ui/carousel";
+import CircularText from "@/components/custom/CircularText";
 
 
 export default function ConsolidatedPage() {
@@ -164,10 +165,14 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm" onClick={() => router.push('/gallery')}>
-                <GalleryThumbnails className="mr-2 h-4 w-4" />
-                GALLERY
-            </Button>
+            <Link href="/gallery">
+              <CircularText
+                text="VIEW*GALLERY*"
+                onHover="speedUp"
+                spinDuration={20}
+                className="w-24 h-24 text-sm"
+              />
+            </Link>
         </div>
 
         {/* Section 1: Home */}
@@ -247,3 +252,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
