@@ -35,6 +35,14 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
+  const [logoSrc, setLogoSrc] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setLogoSrc(theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  }, [theme]);
+
 
   const aboutText1 = "Driven by a passion for excellence since 1995, Arman Autoxperts offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
   const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
@@ -132,13 +140,15 @@ export default function ConsolidatedPage() {
 
             <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
-                <Image 
-                    src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"}
-                    alt="Arman Autoxperts Logo"
-                    width={150}
-                    height={150}
-                    className="w-28 h-auto"
-                />
+                {mounted && logoSrc && (
+                  <Image 
+                      src={logoSrc}
+                      alt="Arman Autoxperts Logo"
+                      width={150}
+                      height={150}
+                      className="w-28 h-auto"
+                  />
+                )}
               </Link>
             </div>
           
@@ -231,5 +241,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
