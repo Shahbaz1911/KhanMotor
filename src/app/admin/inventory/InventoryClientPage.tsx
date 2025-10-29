@@ -6,11 +6,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft, CalendarDays } from "lucide-react";
+import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft, CalendarDays, AlertTriangle } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot, doc, deleteDoc, query, orderBy, Timestamp } from "firebase/firestore";
@@ -32,6 +43,7 @@ export default function InventoryClientPage() {
     const { toast } = useToast();
     const [vehicles, setVehicles] = useState<VehicleWithTimestamp[]>([]);
     const [loading, setLoading] = useState(true);
+    const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
     
     const firestore = useFirestore();
 
@@ -109,9 +121,8 @@ export default function InventoryClientPage() {
         }
     }
 
-    const handleDelete = (id: string) => {
-        if (!firestore || !user) return;
-        if (!window.confirm("Are you sure you want to delete this vehicle? This action cannot be undone.")) return;
+    const handleDelete = (id: string | null) => {
+        if (!firestore || !user || !id) return;
         
         const docRef = doc(firestore, "vehicles", id);
         deleteDoc(docRef)
@@ -255,10 +266,35 @@ export default function InventoryClientPage() {
                                                 <Edit className="h-4 w-4" />
                                                 <span className="sr-only">Edit</span>
                                             </Button>
-                                            <Button variant="destructive" size="icon" onClick={() => handleDelete(vehicle.id)}>
-                                                <Trash2 className="h-4 w-4" />
-                                                    <span className="sr-only">Delete</span>
-                                            </Button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive" size="icon">
+                                                        <Trash2 className="h-4 w-4" />
+                                                        <span className="sr-only">Delete</span>
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle className="flex items-center gap-2">
+                                                        <AlertTriangle className="text-destructive" /> Are you absolutely sure?
+                                                    </AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete the
+                                                        <span className="font-bold text-foreground"> {vehicle.year} {vehicle.make} {vehicle.model} </span>
+                                                        from your inventory.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                        className={buttonVariants({ variant: "destructive" })}
+                                                        onClick={() => handleDelete(vehicle.id)}
+                                                    >
+                                                        Delete
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
                                         </div>
                                     </CardContent>
                                 </Card>
