@@ -44,8 +44,8 @@ export default function ConsolidatedPage() {
   }, []);
 
 
-  const aboutText1 = "Driven by a passion for excellence since 1995, Motor Khan offers a curated collection of the world's most prestigious vehicles, handpicked for quality and performance.";
-  const aboutText2 = "Our mission is to provide a personalized and transparent journey for discerning automotive enthusiasts.";
+  const aboutText1 = "Since 1995, Motor Khan has been all about great cars. We pick the best, most impressive vehicles for you.";
+  const aboutText2 = "We want to make buying a car a clear and personal experience for everyone who loves cars.";
 
 
   // GSAP Animation Refs
