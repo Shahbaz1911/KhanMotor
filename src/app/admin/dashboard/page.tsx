@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
                     alt="Motor Khan Logo"
                     width={150}
                     height={150}
-                    className="w-24 h-auto"
+                    className="w-16 md:w-24 h-auto"
                 />
               </Link>
             </div>
