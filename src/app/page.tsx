@@ -146,7 +146,7 @@ export default function ConsolidatedPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-24 md:w-28 h-auto"
+                      className="w-20 md:w-28 h-auto"
                   />
                 )}
               </Link>
