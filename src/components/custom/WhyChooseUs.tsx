@@ -55,7 +55,7 @@ const TimelineItem = ({
     <motion.div
       initial={{ opacity: 0, x: isLeft ? -50 : 50, scale: 0.95 }}
       whileInView={{ opacity: 1, x: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.5 }}
+      viewport={{ once: true, amount: 0.7 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="w-full relative"
     >
@@ -105,7 +105,7 @@ export function WhyChooseUs() {
             className="mb-16 text-center"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.7 }}
             variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
         >
             <motion.h2
@@ -163,7 +163,7 @@ export function WhyChooseUs() {
                             </div>
 
                             {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="md:hidden w-full pl-20">
+                             <div className="w-full pl-20 md:hidden">
                                 <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
                             </div>
                             
