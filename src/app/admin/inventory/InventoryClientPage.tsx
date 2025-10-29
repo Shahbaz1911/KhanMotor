@@ -4,7 +4,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Trash2, Edit, Car, Settings, User as UserIcon, Loader2, PlusCircle, ArrowLeft, CalendarDays, AlertTriangle } from "lucide-react";
 import Image from "next/image";
@@ -43,7 +43,6 @@ export default function InventoryClientPage() {
     const { toast } = useToast();
     const [vehicles, setVehicles] = useState<VehicleWithTimestamp[]>([]);
     const [loading, setLoading] = useState(true);
-    const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
     
     const firestore = useFirestore();
 
