@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 
 interface AppointmentSlipPdfProps {
@@ -10,30 +10,9 @@ interface AppointmentSlipPdfProps {
   vehicleOfInterest?: string;
 }
 
-// Register fonts
-// NOTE: These fonts need to be available in the environment where the PDF is rendered.
-// For Vercel, you need to include the font files in your project.
-// We will link to Google Fonts for simplicity, but bundling them is more reliable.
-Font.register({
-  family: 'Raleway',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/raleway/v28/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCFPrcVIT9d0c-d.ttf', fontWeight: 400 },
-    { src: 'https://fonts.gstatic.com/s/raleway/v28/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCIPrcVIT9d0c-d.ttf', fontWeight: 700 },
-    { src: 'https://fonts.gstatic.com/s/raleway/v28/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCNPrcVIT9d0c-d.ttf', fontWeight: 900 },
-  ],
-});
-Font.register({
-    family: 'Cairo',
-    fonts: [
-        { src: 'https://fonts.gstatic.com/s/cairo/v28/SLXGc1nY6HkvangtZmpQdkh-_XVappendix.ttf', fontWeight: 400 },
-        { src: 'https://fonts.gstatic.com/s/cairo/v28/SLXGc1nY6HkvangtZmpQdkh-_XVAdD_e.ttf', fontWeight: 700 },
-    ]
-});
-
-
 const styles = StyleSheet.create({
   page: {
-    fontFamily: 'Raleway',
+    fontFamily: 'Helvetica',
     padding: 40,
     backgroundColor: '#FFFFFF',
     color: '#1F2937',
@@ -57,7 +36,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 900,
+    fontWeight: 'bold',
     textAlign: 'center',
     textTransform: 'uppercase',
     marginTop: 40,
@@ -77,7 +56,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: 700,
+    fontWeight: 'bold',
     textTransform: 'uppercase',
     color: '#C31327',
     marginBottom: 15,
@@ -89,14 +68,13 @@ const styles = StyleSheet.create({
   detailLabel: {
     width: '40%',
     fontSize: 11,
-    fontWeight: 700,
+    fontWeight: 'bold',
     textTransform: 'uppercase',
     color: '#4B5563',
   },
   detailValue: {
     width: '60%',
     fontSize: 12,
-    fontFamily: 'Cairo',
   },
   qrCodeSection: {
     marginTop: 40,
