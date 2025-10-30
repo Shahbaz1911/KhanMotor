@@ -87,11 +87,6 @@ export function AppointmentForm() {
 
     if (result.success) {
       setFormStatus("success");
-      toast({
-        title: "Success!",
-        description: result.message,
-        variant: "success",
-      });
       setTimeout(() => {
         form.reset();
         setFormStatus("idle");
