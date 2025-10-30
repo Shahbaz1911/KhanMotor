@@ -32,6 +32,7 @@ import ScrollReveal from "@/components/custom/ScrollReveal";
 import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
 import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
 import { motion } from "framer-motion";
+import Head from "next/head";
 
 
 export default function ConsolidatedPage() {
@@ -40,7 +41,7 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -100,9 +101,101 @@ export default function ConsolidatedPage() {
     return () => ctx.revert();
   }, [isLoaded]);
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Car Restoration & Detailing",
+    "provider": {
+      "@type": "AutoRepair",
+      "name": "Motor Khan",
+      "url": "https://motorkhan.com"
+    },
+    "areaServed": {
+      "@type": "Place",
+      "name": "Delhi, India"
+    },
+    "description": "MotorKhan offers expert car restoration, detailing, polishing, and interior care services in Delhi."
+  };
+
+  const reviewSchema = {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    "name": "MotorKhan",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "150"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": "Sarah L.",
+        "reviewBody": "Motor Khan provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5"
+        }
+      },
+      {
+        "@type": "Review",
+        "author": "John B.",
+        "reviewBody": "The team at Motor Khan made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5"
+        }
+      }
+    ]
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What services does Motor Khan offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We specialize in car restoration, detailing, denting and painting, car repair, servicing, and buying/selling certified pre-owned cars."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is Motor Khan located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MotorKhan is located at Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini, Delhi, 110085."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer financing options?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we work with multiple partners to provide flexible financing options for your vehicle purchase."
+        }
+      }
+    ]
+  };
+
 
   return (
     <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
         <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
@@ -229,10 +322,10 @@ export default function ConsolidatedPage() {
         
         <section className="container mx-auto px-4 py-16 md:py-24">
           <ScrollReveal>
-              At Motor Khan, we don&apos;t just sell and service cars—we build relationships. Our passion for automotive excellence is matched only by our commitment to customer satisfaction.
+              At Motor Khan, we don't just sell and service cars—we build relationships. Our passion for automotive excellence is matched only by our commitment to customer satisfaction.
           </ScrollReveal>
           <ScrollReveal>
-              For over two decades, we&apos;ve been the go-to destination in Rithala for those who demand quality, transparency, and a personal touch.
+              For over two decades, we've been the go-to destination in Rithala for those who demand quality, transparency, and a personal touch.
           </ScrollReveal>
         </section>
 

@@ -20,6 +20,41 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Motor Khan",
+    "url": "https://motorkhan.com",
+    "logo": "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png",
+    "sameAs": [
+      "https://www.instagram.com/motorkhan",
+      "https://www.facebook.com/motorkhan"
+    ]
+  };
+
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    "name": "Motor Khan",
+    "image": "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png",
+    "url": "https://motorkhan.com",
+    "telephone": "+918595853918",
+    "priceRange": "₹₹",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini",
+      "addressLocality": "Delhi",
+      "postalCode": "110085",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 28.7369,
+      "longitude": 77.1209
+    },
+    "openingHours": "Mo-Su 09:00-21:00"
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -28,6 +63,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
       </head>
       <body className="font-body antialiased">
         <FirebaseProvider>
