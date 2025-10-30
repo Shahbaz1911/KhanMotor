@@ -100,10 +100,10 @@ export async function submitAppointmentForm(
 
   const dataToValidate = {
     ...rawData,
+    // Correctly parse the date string from FormData into a Date object
     preferredDate: rawData.preferredDate ? new Date(rawData.preferredDate as string) : undefined
   };
-
-  // The date from FormData is a string. We need to convert it before validation.
+  
   const validatedFields = appointmentFormSchema.safeParse(dataToValidate);
   
   if (!validatedFields.success) {
@@ -191,4 +191,3 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
     return { success: false, error: errorMessage };
   }
 }
-
