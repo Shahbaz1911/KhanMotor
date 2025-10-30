@@ -64,9 +64,9 @@ function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
 }
 
 const timeSlots = [
-  "Morning (9am - 12pm)",
-  "Afternoon (1pm - 4pm)",
-  "Evening (5pm - 7pm)",
+  { label: "Morning (9am - 12pm)", value: "09:00-12:00" },
+  { label: "Afternoon (1pm - 4pm)", value: "13:00-16:00" },
+  { label: "Evening (5pm - 7pm)", value: "17:00-19:00" },
 ];
 
 export function AppointmentForm() {
@@ -209,8 +209,8 @@ export function AppointmentForm() {
                 </FormControl>
                 <SelectContent>
                   {timeSlots.map((slot) => (
-                    <SelectItem key={slot} value={slot}>
-                      {slot}
+                    <SelectItem key={slot.value} value={slot.value}>
+                      {slot.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

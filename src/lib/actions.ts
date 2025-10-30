@@ -98,6 +98,7 @@ export async function submitAppointmentForm(
       vehicleOfInterest: formData.get("vehicleOfInterest"),
   };
 
+  // The date from FormData is a string. We need to convert it before validation.
   const validatedFields = appointmentFormSchema.safeParse({
       ...rawData,
       preferredDate: rawData.preferredDate ? new Date(rawData.preferredDate as string) : undefined
