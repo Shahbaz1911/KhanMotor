@@ -7,6 +7,8 @@ import { v2 as cloudinary } from "cloudinary";
 import { Resend } from "resend";
 import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
 import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
+import { AppointmentSlipPdf } from "@/components/emails/AppointmentSlipPdf";
+import { renderToBuffer } from '@react-pdf/renderer';
 
 if (typeof window === 'undefined') {
   require('dotenv').config();
@@ -111,6 +113,16 @@ export async function submitAppointmentForm(
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
   try {
+     // Generate PDF buffer
+    const pdfBuffer = await renderToBuffer(
+      AppointmentSlipPdf({
+        name,
+        preferredDate,
+        preferredTime,
+        vehicleOfInterest,
+      })
+    );
+
      const { data, error } = await resend.emails.send({
       from: `Motor Khan <${fromEmail}>`,
       to: [email],
@@ -122,6 +134,12 @@ export async function submitAppointmentForm(
         vehicleOfInterest,
         userEmail: email 
       }),
+      attachments: [
+        {
+          filename: 'Appointment_Slip_Motor_Khan.pdf',
+          content: pdfBuffer,
+        },
+      ],
     });
 
     if (error) {
