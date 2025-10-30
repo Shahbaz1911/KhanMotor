@@ -9,6 +9,7 @@ import { SmoothScroll } from '@/components/custom/SmoothScroll';
 import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
 import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
+import { CookieConsentBanner } from '@/components/custom/CookieConsentBanner';
 
 export const metadata: Metadata = {
   title: 'Motor Khan - Your Trusted Car Workshop in Rithala, Delhi',
@@ -88,6 +89,7 @@ export default function RootLayout({
                   <Footer />
                 </div>
                 <WhatsAppButton />
+                <CookieConsentBanner />
                 <Toaster />
               </SmoothScroll>
             </ThemeProvider>
