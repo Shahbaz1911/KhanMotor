@@ -76,6 +76,7 @@ const generateTimeSlots = () => {
 };
 
 const formatTimeForDisplay = (time: string) => {
+    if (!time || !time.includes(':')) return 'Select a time';
     const [hour, minute] = time.split(':');
     const hourNum = parseInt(hour, 10);
     const ampm = hourNum >= 12 ? 'PM' : 'AM';
@@ -227,7 +228,7 @@ export function AppointmentForm() {
                 <input
                   type="hidden"
                   name="preferredDate"
-                  value={field.value ? field.value.toISOString() : ""}
+                  value={field.value ? field.value.toISOString().split('T')[0] : ""}
                 />
                 <FormMessage />
               </FormItem>
