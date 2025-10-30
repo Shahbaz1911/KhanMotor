@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect } from "react";
 import { motion, useAnimate } from "framer-motion";
-import { Loader2, Check, CalendarCheck } from "lucide-react";
+import { Loader2, Check, Send } from "lucide-react";
 
 type Status = "idle" | "loading" | "success";
 
@@ -10,12 +10,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   children: React.ReactNode;
   status?: Status;
+  icon?: React.ReactNode;
 }
 
 export const StatefulButton = ({
   className,
   children,
   status = "idle",
+  icon,
   ...props
 }: ButtonProps) => {
   const [scope, animate] = useAnimate();
@@ -69,10 +71,10 @@ export const StatefulButton = ({
       <motion.div layout className="flex items-center justify-center gap-2 h-6">
         <Loader />
         <CheckIcon />
-        <IdleIcon />
+        <IdleIcon icon={icon} />
         <motion.span layout>
           {status === "idle" && children}
-          {status === "loading" && "Requesting..."}
+          {status === "loading" && "Sending..."}
           {status === "success" && "Success!"}
         </motion.span>
       </motion.div>
@@ -102,13 +104,13 @@ const CheckIcon = () => {
   );
 };
 
-const IdleIcon = () => {
+const IdleIcon = ({ icon }: { icon?: React.ReactNode }) => {
     return (
         <motion.div 
             initial={{ scale: 1, width: "20px", display: "flex" }}
             className="idle-icon"
         >
-            <CalendarCheck className="h-5 w-5" />
+            {icon || <Send className="h-5 w-5" />}
         </motion.div>
     )
 }

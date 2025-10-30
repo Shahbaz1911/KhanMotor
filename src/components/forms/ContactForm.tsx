@@ -1,12 +1,12 @@
-
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react"; // Changed from react-dom to react and useFormState to useActionState
+import { useActionState, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-
-import { Button } from "@/components/ui/button";
+import { submitContactForm, type ContactFormState } from "@/lib/actions";
+import { contactFormSchema } from "@/types";
+import { useToast } from "@/hooks/use-toast";
 import {
   Form,
   FormControl,
@@ -17,16 +17,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { submitContactForm, type ContactFormState } from "@/lib/actions";
-import { contactFormSchema } from "@/types";
-
-import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Send, Loader2, Check } from "lucide-react";
-import { useFormStatus } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
+import { StatefulButton } from "@/components/ui/stateful-button";
 
 
 const initialState: ContactFormState = {
@@ -34,43 +30,13 @@ const initialState: ContactFormState = {
   success: false,
 };
 
-function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
-  const { pending } = useFormStatus();
-  return (
-    <Button 
-      type="submit" 
-      disabled={pending || isSuccess}
-      className={cn(
-        "w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground border border-destructive uppercase",
-        isSuccess && "bg-green-500 hover:bg-green-600 border-green-600 text-white"
-      )}
-    >
-      {isSuccess ? (
-        <>
-          <Check className="mr-2 h-4 w-4" />
-          Success!
-        </>
-      ) : pending ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Sending...
-        </>
-      ) : (
-        <>
-          <Send className="mr-2 h-4 w-4" />
-          Send Message
-        </>
-      )}
-    </Button>
-  );
-}
-
 export function ContactForm() {
-  const [state, formAction] = useActionState(submitContactForm, initialState); // Changed from useFormState
+  const [state, formAction] = useActionState(submitContactForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success">("idle");
+
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -102,15 +68,21 @@ export function ContactForm() {
     },
   });
 
+  const handleFormAction = (payload: FormData) => {
+    setFormStatus("loading");
+    formAction(payload);
+  };
+  
   useEffect(() => {
     if (state.message) {
+      setFormStatus("idle"); // Reset loading state
       if (state.success) {
-        setIsSuccess(true);
+        setFormStatus("success");
         form.reset(); 
         if (formRef.current) {
            formRef.current.reset(); 
         }
-        setTimeout(() => setIsSuccess(false), 3000);
+        setTimeout(() => setFormStatus("idle"), 3000);
       } else {
         toast({
           title: "Error",
@@ -138,7 +110,7 @@ export function ContactForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form ref={formRef} action={formAction} className="space-y-6">
+          <form ref={formRef} action={handleFormAction} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -195,7 +167,13 @@ export function ContactForm() {
                 </FormItem>
               )}
             />
-            <SubmitButton isSuccess={isSuccess} />
+            <StatefulButton 
+              type="submit"
+              status={formStatus}
+              className="w-full md:w-auto"
+            >
+              Send Message
+            </StatefulButton>
           </form>
         </Form>
       </CardContent>
