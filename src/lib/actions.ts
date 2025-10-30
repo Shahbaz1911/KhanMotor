@@ -98,16 +98,35 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const blackColor = rgb(0, 0, 0);
     const grayColor = rgb(0.3, 0.3, 0.3);
 
+    // Draw a white background for the main content
+    page.drawRectangle({
+        x: 0,
+        y: 0,
+        width: width,
+        height: height,
+        color: whiteColor,
+    });
+
     // --- Header ---
-    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
+    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png";
     const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
-    const logoDims = logoImage.scale(0.35);
+    const logoDims = logoImage.scale(0.3);
     
-    // Move logo down to prevent cutoff
+    // Header background
+    const headerHeight = 140;
+    page.drawRectangle({
+        x: 0,
+        y: height - headerHeight,
+        width: width,
+        height: headerHeight,
+        color: blackColor,
+    });
+
+    // Draw logo on header
     page.drawImage(logoImage, {
         x: (width / 2) - (logoDims.width / 2),
-        y: height - 120, // Lowered Y position
+        y: height - headerHeight + (headerHeight - logoDims.height) / 2,
         width: logoDims.width,
         height: logoDims.height,
     });
@@ -116,22 +135,22 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const titleWidth = helveticaBoldFont.widthOfTextAtSize(title, 20);
     page.drawText(title, {
         x: (width / 2) - (titleWidth / 2),
-        y: height - 150, // Lowered Y position
+        y: height - 160,
         font: helveticaBoldFont,
         size: 20,
         color: blackColor,
     });
-
+    
     // --- Red Separator Line ---
     page.drawLine({
-        start: { x: 50, y: height - 170 },
-        end: { x: width - 50, y: height - 170 },
+        start: { x: 50, y: height - 180 },
+        end: { x: width - 50, y: height - 180 },
         thickness: 1.5,
         color: redColor,
     });
 
     // --- Appointment Details Section ---
-    const contentYStart = height - 220;
+    const contentYStart = height - 230;
     
     page.drawRectangle({
         x: 50,
@@ -199,7 +218,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     leftY -= footerLineHeight;
     page.drawText('Facebook / Instagram', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     
-
     // --- Center Column ---
     const website = 'www.motorkhan.com';
     const websiteWidth = helveticaBoldFont.widthOfTextAtSize(website, 10);
@@ -221,7 +239,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     rightY -= footerLineHeight;
     page.drawText(addressLine2, { x: rightX - helveticaFont.widthOfTextAtSize(addressLine2, footerTextSize), y: rightY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     
-
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes);
 }
