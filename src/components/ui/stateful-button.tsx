@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect } from "react";
 import { motion, useAnimate } from "framer-motion";
+import { Loader2, Check, CalendarCheck } from "lucide-react";
 
 type Status = "idle" | "loading" | "success";
 
@@ -24,21 +25,24 @@ export const StatefulButton = ({
       if (status === "loading") {
         await animate(
           ".loader",
-          { width: "20px", scale: 1, display: "block" },
+          { width: "20px", scale: 1, display: "flex" },
           { duration: 0.2 }
         );
         await animate(".check", { display: "none", scale: 0, width: 0 });
+        await animate(".idle-icon", { display: "none", scale: 0, width: 0 });
       } else if (status === "success") {
         await animate(".loader", { display: "none", scale: 0, width: 0 });
+         await animate(".idle-icon", { display: "none", scale: 0, width: 0 });
         await animate(
           ".check",
-          { width: "20px", scale: 1, display: "block" },
+          { width: "20px", scale: 1, display: "flex" },
           { duration: 0.2 }
         );
       } else {
         await animate([
           [".loader", { display: "none", scale: 0, width: 0 }, { duration: 0 }],
           [".check", { display: "none", scale: 0, width: 0 }, { duration: 0 }],
+          [".idle-icon", { display: "flex", scale: 1, width: "20px" }, { duration: 0 }],
         ]);
       }
     };
@@ -51,7 +55,7 @@ export const StatefulButton = ({
       layoutId="button"
       ref={scope}
       className={cn(
-        "flex min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 font-black ring-offset-2 transition duration-200",
+        "flex min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 font-black ring-offset-background transition duration-200",
         {
           "bg-primary text-primary-foreground hover:bg-primary/90": status === "idle",
           "bg-primary/80 text-primary-foreground cursor-not-allowed": status === "loading",
@@ -65,6 +69,7 @@ export const StatefulButton = ({
       <motion.div layout className="flex items-center justify-center gap-2 h-6">
         <Loader />
         <CheckIcon />
+        <IdleIcon />
         <motion.span layout>
           {status === "idle" && children}
           {status === "loading" && "Requesting..."}
@@ -77,45 +82,33 @@ export const StatefulButton = ({
 
 const Loader = () => {
   return (
-    <motion.svg
-      animate={{ rotate: [0, 360] }}
-      initial={{ scale: 0, width: 0, display: "none" }}
-      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="loader text-white"
+    <motion.div
+        initial={{ scale: 0, width: 0, display: "none" }}
+        className="loader"
     >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 3a9 9 0 1 0 9 9" />
-    </motion.svg>
+        <Loader2 className="h-5 w-5 animate-spin" />
+    </motion.div>
   );
 };
 
 const CheckIcon = () => {
   return (
-    <motion.svg
-      initial={{ scale: 0, width: 0, display: "none" }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="check text-white"
+     <motion.div
+        initial={{ scale: 0, width: 0, display: "none" }}
+        className="check"
     >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-      <path d="M9 12l2 2l4 -4" />
-    </motion.svg>
+        <Check className="h-5 w-5" />
+    </motion.div>
   );
 };
+
+const IdleIcon = () => {
+    return (
+        <motion.div 
+            initial={{ scale: 1, width: "20px", display: "flex" }}
+            className="idle-icon"
+        >
+            <CalendarCheck className="h-5 w-5" />
+        </motion.div>
+    )
+}
