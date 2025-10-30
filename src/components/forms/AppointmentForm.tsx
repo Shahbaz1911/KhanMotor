@@ -95,6 +95,7 @@ export function AppointmentForm() {
           variant: "success",
         });
         form.reset();
+        formRef.current?.reset();
       } else {
         toast({
           title: "Error",

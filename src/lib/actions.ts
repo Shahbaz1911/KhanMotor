@@ -86,11 +86,23 @@ export type AppointmentFormState = {
 
 export async function submitAppointmentForm(
   prevState: AppointmentFormState,
-  data: z.infer<typeof appointmentFormSchema>
+  formData: FormData
 ): Promise<AppointmentFormState> {
-  
-  const validatedFields = appointmentFormSchema.safeParse(data);
 
+  const rawData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      preferredDate: formData.get("preferredDate"),
+      preferredTime: formData.get("preferredTime"),
+      vehicleOfInterest: formData.get("vehicleOfInterest"),
+  };
+
+  const validatedFields = appointmentFormSchema.safeParse({
+      ...rawData,
+      preferredDate: rawData.preferredDate ? new Date(rawData.preferredDate as string) : undefined
+  });
+  
   if (!validatedFields.success) {
     return {
       message: "Validation failed. Please check your input for the appointment.",
