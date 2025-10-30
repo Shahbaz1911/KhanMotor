@@ -89,7 +89,7 @@ export async function submitAppointmentForm(
   formData: FormData
 ): Promise<AppointmentFormState> {
   const rawDate = formData.get('preferredDate');
-  const dateToValidate = rawDate ? new Date(rawDate as string) : undefined;
+  const dateToValidate = rawDate ? new Date(`${rawDate}T00:00:00`) : undefined;
 
   const validatedFields = appointmentFormSchema.safeParse({
     name: formData.get("name"),

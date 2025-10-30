@@ -75,6 +75,7 @@ export function AppointmentForm() {
       name: "",
       email: "",
       phone: "",
+      preferredDate: new Date(),
       preferredTime: "09:30",
       vehicleOfInterest: "",
     },
@@ -178,7 +179,7 @@ export function AppointmentForm() {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(field.value, "MM/dd/yyyy")
                         ) : (
                           <span>Pick a date</span>
                         )}
@@ -190,7 +191,9 @@ export function AppointmentForm() {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(date) => {
+                        if(date) field.onChange(date)
+                      }}
                       disabled={(date) =>
                         date < new Date(new Date().setHours(0, 0, 0, 0))
                       }
@@ -198,6 +201,12 @@ export function AppointmentForm() {
                     />
                   </PopoverContent>
                 </Popover>
+                {/* Hidden input to send date in a standardized format */}
+                <input
+                  type="hidden"
+                  name="preferredDate"
+                  value={field.value ? format(field.value, "yyyy-MM-dd") : ""}
+                />
                 <FormMessage />
               </FormItem>
             )}
