@@ -4,11 +4,16 @@
 import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
 import { v2 as cloudinary } from "cloudinary";
+import { Resend } from "resend";
+import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
+import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 
 if (typeof window === 'undefined') {
   require('dotenv').config();
 }
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+const fromEmail = "noreply@updates.motorkhan.com";
 
 export type ContactFormState = {
   message: string;
@@ -42,18 +47,25 @@ export async function submitContactForm(
 
   const { name, email, phone, message } = validatedFields.data;
 
-  console.log("Contact Form Submission:");
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Phone:", phone);
-  console.log("Message:", message);
+  try {
+    await resend.emails.send({
+      from: `Motor Khan <${fromEmail}>`,
+      to: [email],
+      subject: "Thank You for Contacting Motor Khan!",
+      react: ContactFormEmail({ name, userEmail: email }),
+    });
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  return {
-    message: "Thank you for your message! We will get back to you soon.",
-    success: true,
-  };
+    return {
+      message: "Thank you for your message! We will get back to you soon.",
+      success: true,
+    };
+  } catch (error) {
+    console.error("Resend error:", error);
+    return {
+      message: "An error occurred while sending your message. Please try again later.",
+      success: false,
+    };
+  }
 }
 
 export type AppointmentFormState = {
@@ -88,21 +100,33 @@ export async function submitAppointmentForm(
   }
 
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
+  
+  try {
+     await resend.emails.send({
+      from: `Motor Khan <${fromEmail}>`,
+      to: [email],
+      subject: "Your Test Drive Appointment Request at Motor Khan",
+      react: AppointmentFormEmail({ 
+        name,
+        preferredDate,
+        preferredTime,
+        vehicleOfInterest,
+        userEmail: email 
+      }),
+    });
 
-  console.log("Appointment Form Submission:");
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Phone:", phone);
-  console.log("Preferred Date:", preferredDate.toISOString().split('T')[0]);
-  console.log("Preferred Time:", preferredTime);
-  console.log("Vehicle of Interest:", vehicleOfInterest);
+    return {
+      message: "Thank you for your appointment request! We will contact you shortly to confirm.",
+      success: true,
+    };
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  return {
-    message: "Thank you for your appointment request! We will contact you shortly to confirm.",
-    success: true,
-  };
+  } catch (error) {
+    console.error("Resend error:", error);
+     return {
+      message: "An error occurred while sending your request. Please try again later.",
+      success: false,
+    };
+  }
 }
 
 export async function uploadToCloudinary(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
