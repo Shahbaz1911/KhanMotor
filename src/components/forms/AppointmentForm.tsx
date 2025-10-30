@@ -73,6 +73,7 @@ export function AppointmentForm() {
   const [state, formAction] = useActionState(submitAppointmentForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const hiddenDateRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof appointmentFormSchema>>({
     resolver: zodResolver(appointmentFormSchema),
@@ -85,6 +86,14 @@ export function AppointmentForm() {
       vehicleOfInterest: "",
     },
   });
+
+  const preferredDateValue = form.watch("preferredDate");
+
+  useEffect(() => {
+    if (preferredDateValue && hiddenDateRef.current) {
+      hiddenDateRef.current.value = preferredDateValue.toISOString();
+    }
+  }, [preferredDateValue]);
 
   useEffect(() => {
     if (state.message) {
@@ -168,6 +177,7 @@ export function AppointmentForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Preferred Date</FormLabel>
+              <input type="hidden" name="preferredDate" ref={hiddenDateRef} />
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>

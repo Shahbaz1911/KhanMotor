@@ -84,12 +84,15 @@ export async function submitAppointmentForm(
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone"),
-    preferredDate: formData.get("preferredDate") ? new Date(formData.get("preferredDate") as string) : undefined,
+    preferredDate: formData.get("preferredDate"), // Keep as string
     preferredTime: formData.get("preferredTime"),
     vehicleOfInterest: formData.get("vehicleOfInterest"),
   };
   
-  const validatedFields = appointmentFormSchema.safeParse(rawFormData);
+  const validatedFields = appointmentFormSchema.safeParse({
+    ...rawFormData,
+    preferredDate: rawFormData.preferredDate ? new Date(rawFormData.preferredDate as string) : undefined,
+  });
 
   if (!validatedFields.success) {
     return {
