@@ -8,7 +8,7 @@ import { Resend } from "resend";
 import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
 import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
-import PDFDocument from 'pdfkit';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import axios from 'axios';
 
 if (typeof window === 'undefined') {
@@ -88,64 +88,86 @@ export type AppointmentFormState = {
 };
 
 async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): Promise<Buffer> {
-  const doc = new PDFDocument({ size: 'A4', margin: 40 });
-  const buffers: Buffer[] = [];
-  doc.on('data', buffers.push.bind(buffers));
-  
-  const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
-  const logoImageResponse = await axios.get(logoUrl, { responseType: 'arraybuffer' });
-  const logoImageBuffer = Buffer.from(logoImageResponse.data, 'binary');
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage();
+    const { width, height } = page.getSize();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-  // Header
-  doc.image(logoImageBuffer, 40, 40, { width: 120 });
-  doc.fontSize(10).fillColor('#4B5563').text('Motor Khan', { align: 'right' });
-  doc.text('Rithala, Rohini, Delhi', { align: 'right' });
-  doc.text('+91 8595853918', { align: 'right' });
-  doc.moveTo(40, 100).lineTo(555, 100).strokeColor('#C31327').stroke();
+    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
+    const logoImageResponse = await axios.get(logoUrl, { responseType: 'arraybuffer' });
+    const logoImageBytes = logoImageResponse.data;
+    const logoImage = await pdfDoc.embedPng(logoImageBytes);
+    const logoDims = logoImage.scale(0.25);
 
-  // Title
-  doc.fontSize(28).fillColor('#1F2937').text('Test Drive Appointment Slip', { align: 'center', upper: true }).moveDown(0.5);
-  doc.fontSize(12).fillColor('#4B5563').text("Please bring this slip (digital or printed) with you to your appointment.", { align: 'center' }).moveDown(2);
+    // Header
+    page.drawImage(logoImage, {
+        x: 50,
+        y: height - 50 - logoDims.height,
+        width: logoDims.width,
+        height: logoDims.height,
+    });
 
-  // Details Section
-  doc.rect(40, 220, 515, 120).fillAndStroke('#F9FAFB', '#E5E7EB');
-  doc.fillColor('#C31327').fontSize(16).text('Appointment Details', 60, 240, { upper: true });
+    page.drawText('Motor Khan', { x: width - 150, y: height - 60, font, size: 10, color: rgb(0.29, 0.33, 0.39) });
+    page.drawText('Rithala, Rohini, Delhi', { x: width - 150, y: height - 75, font, size: 10, color: rgb(0.29, 0.33, 0.39) });
+    page.drawText('+91 8595853918', { x: width - 150, y: height - 90, font, size: 10, color: rgb(0.29, 0.33, 0.39) });
+    page.drawLine({
+        start: { x: 50, y: height - 110 },
+        end: { x: width - 50, y: height - 110 },
+        thickness: 1,
+        color: rgb(0.76, 0.07, 0.15),
+    });
 
-  const detailRow = (y: number, label: string, value: string) => {
-    doc.fillColor('#4B5563').fontSize(11).text(label, 70, y, { continued: true }).font('Helvetica-Bold').text(value);
-  }
-  
-  const formatTime = (time: string) => {
-    if (!time || !time.includes(':')) return 'Not specified';
-    const [hour, minute] = time.split(':');
-    const hourNum = parseInt(hour, 10);
-    const ampm = hourNum >= 12 ? 'PM' : 'AM';
-    const formattedHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
-    return `${formattedHour}:${minute} ${ampm}`;
-  };
+    // Title
+    page.drawText('Test Drive Appointment Slip', { x: 50, y: height - 160, font: boldFont, size: 24, color: rgb(0.12, 0.16, 0.22), xJustification: 'center', yJustification: 'center' });
+    page.drawText('Please bring this slip (digital or printed) with you to your appointment.', { x: width / 2, y: height - 185, font, size: 10, color: rgb(0.42, 0.45, 0.51), xJustification: 'center' });
 
-  detailRow(270, 'Client Name: ', data.name);
-  detailRow(290, 'Appointment Date: ', format(data.preferredDate, 'EEEE, MMMM d, yyyy'));
-  detailRow(310, 'Appointment Time: ', formatTime(data.preferredTime));
-  if (data.vehicleOfInterest) {
-    detailRow(330, 'Vehicle of Interest: ', data.vehicleOfInterest);
-  }
+    // Details Section
+    page.drawRectangle({
+        x: 50,
+        y: height - 350,
+        width: width - 100,
+        height: 120,
+        color: rgb(0.98, 0.98, 0.98),
+        borderColor: rgb(0.9, 0.91, 0.92),
+        borderWidth: 1,
+    });
+    page.drawText('Appointment Details', { x: 70, y: height - 250, font: boldFont, size: 14, color: rgb(0.76, 0.07, 0.15) });
 
-  // QR Code Section
-  const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://motorkhan.com/book-appointment";
-  const qrImageResponse = await axios.get(qrUrl, { responseType: 'arraybuffer' });
-  const qrImageBuffer = Buffer.from(qrImageResponse.data, 'binary');
-  doc.image(qrImageBuffer, 247.5, 400, { width: 100 });
-  doc.fontSize(10).fillColor('#6B7280').text('Scan to manage your appointment', { align: 'center' });
+    const formatTime = (time: string) => {
+        if (!time || !time.includes(':')) return 'Not specified';
+        const [hour, minute] = time.split(':');
+        const hourNum = parseInt(hour, 10);
+        const ampm = hourNum >= 12 ? 'PM' : 'AM';
+        const formattedHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
+        return `${formattedHour}:${minute} ${ampm}`;
+    };
 
-  // Footer
-  doc.fontSize(9).fillColor('#9CA3AF').text('This is an automated confirmation slip. Our team will contact you to confirm your appointment.', 40, 780, { align: 'center' });
-  
-  return new Promise((resolve, reject) => {
-    doc.on('end', () => resolve(Buffer.concat(buffers)));
-    doc.on('error', reject);
-    doc.end();
-  });
+    const detailRow = (y: number, label: string, value: string) => {
+        page.drawText(label, { x: 70, y, font, size: 11, color: rgb(0.29, 0.33, 0.39) });
+        page.drawText(value, { x: 180, y, font: boldFont, size: 11, color: rgb(0.12, 0.16, 0.22) });
+    };
+
+    detailRow(height - 280, 'Client Name:', data.name);
+    detailRow(height - 300, 'Appointment Date:', format(data.preferredDate, 'EEEE, MMMM d, yyyy'));
+    detailRow(height - 320, 'Appointment Time:', formatTime(data.preferredTime));
+    if (data.vehicleOfInterest) {
+        detailRow(height - 340, 'Vehicle of Interest:', data.vehicleOfInterest);
+    }
+    
+    // QR Code
+    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://motorkhan.com/book-appointment";
+    const qrImageResponse = await axios.get(qrUrl, { responseType: 'arraybuffer' });
+    const qrImageBytes = qrImageResponse.data;
+    const qrImage = await pdfDoc.embedPng(qrImageBytes);
+    page.drawImage(qrImage, { x: (width / 2) - 50, y: 150, width: 100, height: 100 });
+    page.drawText('Scan to manage your appointment', { x: width / 2, y: 135, font, size: 9, color: rgb(0.42, 0.45, 0.51), xJustification: 'center' });
+
+    // Footer
+    page.drawText('This is an automated confirmation slip. Our team will contact you to confirm your appointment.', { x: width / 2, y: 50, font, size: 9, color: rgb(0.6, 0.64, 0.68), xJustification: 'center' });
+
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
 }
 
 export async function submitAppointmentForm(
@@ -257,3 +279,5 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
     return { success: false, error: errorMessage };
   }
 }
+
+    
