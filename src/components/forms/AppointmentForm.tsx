@@ -113,11 +113,15 @@ export function AppointmentForm() {
     }
   }, [state, toast, form]);
 
+  const onFormSubmit = (data: z.infer<typeof appointmentFormSchema>) => {
+    formAction(data);
+  };
+
   return (
     <Form {...form}>
       <form
         ref={formRef}
-        action={formAction}
+        onSubmit={form.handleSubmit(onFormSubmit)}
         className="space-y-6"
       >
         <FormField
@@ -200,7 +204,7 @@ export function AppointmentForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Preferred Time Slot</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a time slot" />

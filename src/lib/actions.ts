@@ -48,21 +48,29 @@ export async function submitContactForm(
   const { name, email, phone, message } = validatedFields.data;
 
   try {
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: `Motor Khan <${fromEmail}>`,
       to: [email],
       subject: "Thank You for Contacting Motor Khan!",
       react: ContactFormEmail({ name, userEmail: email }),
     });
 
+    if (error) {
+      console.error("Resend error:", error);
+      return {
+        message: "An error occurred while sending your message. Please try again later.",
+        success: false,
+      };
+    }
+
     return {
       message: "Thank you for your message! We will get back to you soon.",
       success: true,
     };
   } catch (error) {
-    console.error("Resend error:", error);
+    console.error("Resend execution error:", error);
     return {
-      message: "An error occurred while sending your message. Please try again later.",
+      message: "An unexpected error occurred. Please try again later.",
       success: false,
     };
   }
@@ -78,15 +86,10 @@ export type AppointmentFormState = {
 
 export async function submitAppointmentForm(
   prevState: AppointmentFormState,
-  formData: FormData
+  data: z.infer<typeof appointmentFormSchema>
 ): Promise<AppointmentFormState> {
   
-  const rawFormData = Object.fromEntries(formData.entries());
-
-  const validatedFields = appointmentFormSchema.safeParse({
-    ...rawFormData,
-    preferredDate: rawFormData.preferredDate ? new Date(rawFormData.preferredDate as string) : undefined,
-  });
+  const validatedFields = appointmentFormSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return {
@@ -99,7 +102,7 @@ export async function submitAppointmentForm(
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
   try {
-     await resend.emails.send({
+     const { data, error } = await resend.emails.send({
       from: `Motor Khan <${fromEmail}>`,
       to: [email],
       subject: "Your Test Drive Appointment Request at Motor Khan",
@@ -112,15 +115,23 @@ export async function submitAppointmentForm(
       }),
     });
 
+    if (error) {
+      console.error("Resend error:", error);
+      return {
+        message: "An error occurred while sending your request. Please try again later.",
+        success: false,
+      };
+    }
+
     return {
       message: "Thank you for your appointment request! We will contact you shortly to confirm.",
       success: true,
     };
 
   } catch (error) {
-    console.error("Resend error:", error);
+    console.error("Resend execution error:", error);
      return {
-      message: "An error occurred while sending your request. Please try again later.",
+      message: "An unexpected error occurred. Please try again later.",
       success: false,
     };
   }
