@@ -1,17 +1,17 @@
 
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import type { z } from "zod";
-import { Loader2, Send, Check } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-
+import { StatefulButton } from "@/components/ui/stateful-button";
 import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -23,46 +23,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { submitAppointmentForm, type AppointmentFormState } from "@/lib/actions";
+import { submitAppointmentForm } from "@/lib/actions";
 import { appointmentFormSchema } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useFormStatus } from "react-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
-const initialState: AppointmentFormState = {
-  message: "",
-  success: false,
-};
-
-function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      disabled={pending || isSuccess}
-      className={cn("w-full md:w-auto", isSuccess && "bg-green-500 hover:bg-green-600")}
-    >
-      {isSuccess ? (
-        <>
-          <Check className="mr-2 h-4 w-4" />
-          Success!
-        </>
-      ) : pending ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Requesting...
-        </>
-      ) : (
-        <>
-          <Send className="mr-2 h-4 w-4" />
-          Request Appointment
-        </>
-      )}
-    </Button>
-  );
-}
 
 const generateTimeSlots = () => {
     const slots = [];
@@ -86,10 +52,8 @@ const formatTimeForDisplay = (time: string) => {
 
 
 export function AppointmentForm() {
-  const [state, formAction] = useActionState(submitAppointmentForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
-  const [isSuccess, setIsSuccess] = useState(false);
   const timeSlots = generateTimeSlots();
   
   const form = useForm<z.infer<typeof appointmentFormSchema>>({
@@ -114,30 +78,31 @@ export function AppointmentForm() {
   });
 
 
-  useEffect(() => {
-    if (state.message) {
-      if (state.success) {
-        setIsSuccess(true);
+  const handleFormSubmit = async () => {
+    const formData = new FormData(formRef.current!);
+    const result = await submitAppointmentForm(undefined as any, formData);
+
+    if (result.message) {
+      if (result.success) {
         form.reset();
         formRef.current?.reset();
         toast({
           title: "Success!",
-          description: state.message,
+          description: result.message,
           variant: "success",
         });
-        setTimeout(() => setIsSuccess(false), 3000);
       } else {
         toast({
           title: "Error",
-          description: state.message || "Failed to submit appointment request.",
+          description: result.message || "Failed to submit appointment request.",
           variant: "destructive",
         });
-        if (state.errors) {
+        if (result.errors) {
           type FormSchema = z.infer<typeof appointmentFormSchema>;
-          for (const key in state.errors) {
-            if (Object.prototype.hasOwnProperty.call(state.errors, key)) {
+          for (const key in result.errors) {
+            if (Object.prototype.hasOwnProperty.call(result.errors, key)) {
                 const formKey = key as keyof FormSchema;
-                const errorMessages = state.errors[formKey];
+                const errorMessages = result.errors[formKey];
                 if (errorMessages && errorMessages.length > 0) {
                     form.setError(formKey, { type: "server", message: errorMessages.join(", ") });
                 }
@@ -146,13 +111,14 @@ export function AppointmentForm() {
         }
       }
     }
-  }, [state, toast, form]);
+  };
+
 
   return (
     <Form {...form}>
       <form
         ref={formRef}
-        action={formAction}
+        onSubmit={form.handleSubmit(handleFormSubmit)}
         className="space-y-6"
       >
         <FormField
@@ -263,8 +229,8 @@ export function AppointmentForm() {
             )}
           />
         </div>
-        <input type="hidden" name="preferredDate" value={preferredDateValue ? format(preferredDateValue, 'yyyy-MM-dd') : ''} />
-        <input type="hidden" name="preferredTime" value={preferredTimeValue} />
+        <input type="hidden" {...form.register("preferredDate")} value={preferredDateValue ? format(preferredDateValue, 'yyyy-MM-dd') : ''} />
+        <input type="hidden" {...form.register("preferredTime")} value={preferredTimeValue} />
         <FormField
           control={form.control}
           name="vehicleOfInterest"
@@ -285,10 +251,18 @@ export function AppointmentForm() {
             </FormItem>
           )}
         />
-        <SubmitButton isSuccess={isSuccess} />
+        <StatefulButton type="submit" onClick={async () => {
+             // We trigger validation manually
+            const isValid = await form.trigger();
+            if (!isValid) {
+              // If validation fails, throw an error to stop the button's loading sequence
+              throw new Error("Validation failed");
+            }
+            // The form's onSubmit will handle the actual submission
+          }}>
+          Request Appointment
+        </StatefulButton>
       </form>
     </Form>
   );
 }
-
-    
