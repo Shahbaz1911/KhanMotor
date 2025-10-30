@@ -117,7 +117,7 @@ export function AppointmentForm() {
     <Form {...form}>
       <form
         ref={formRef}
-        action={form.handleSubmit(data => formAction(data))}
+        action={formAction}
         className="space-y-6"
       >
         <FormField
