@@ -94,46 +94,40 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const helveticaBoldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png";
-    const logoImageResponse = await axios.get(logoUrl, { responseType: 'arraybuffer' });
-    const logoImageBytes = logoImageResponse.data;
+    // --- Header ---
+    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
+    const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
-    const logoDims = logoImage.scale(0.25);
-
-    // Black Header
-    page.drawRectangle({
-        x: 0,
-        y: height - 100,
-        width,
-        height: 100,
-        color: rgb(0, 0, 0),
-    });
+    const logoDims = logoImage.scale(0.35);
+    
     page.drawImage(logoImage, {
         x: (width / 2) - (logoDims.width / 2),
-        y: height - 50 - (logoDims.height / 2),
+        y: height - 100,
         width: logoDims.width,
         height: logoDims.height,
     });
     
-    // Main Content
-    const contentYStart = height - 130;
-    page.drawRectangle({
-        x: 30,
-        y: 120,
-        width: width - 60,
-        height: contentYStart - 120,
-        color: rgb(1, 1, 1),
-        borderColor: rgb(0.9, 0.9, 0.9),
-        borderWidth: 1,
-    });
-
-    page.drawText('Test Drive Appointment Confirmed', {
-        x: width / 2,
-        y: contentYStart - 40,
+    const title = 'Test Drive Appointment';
+    const titleWidth = helveticaBoldFont.widthOfTextAtSize(title, 20);
+    page.drawText(title, {
+        x: (width / 2) - (titleWidth / 2),
+        y: height - 130,
         font: helveticaBoldFont,
         size: 20,
         color: rgb(0, 0, 0),
     });
+
+    // --- Appointment Details Section ---
+    const contentYStart = height - 180;
+    const boxPadding = 40;
+    const boxX = boxPadding;
+    const boxWidth = width - (boxPadding * 2);
+
+    const drawDetailRow = (y: number, label: string, value: string) => {
+        const labelWidth = helveticaFont.widthOfTextAtSize(label, 12);
+        page.drawText(label, { x: boxX + 20, y, font: helveticaFont, size: 12, color: rgb(0.3, 0.3, 0.3) });
+        page.drawText(value, { x: boxX + 150, y, font: helveticaBoldFont, size: 12, color: rgb(0, 0, 0) });
+    };
 
     const formatTime = (time: string) => {
         if (!time || !time.includes(':')) return 'Not specified';
@@ -144,46 +138,59 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         return `${formattedHour}:${minute} ${ampm}`;
     };
 
-    const drawDetailRow = (y: number, label: string, value: string) => {
-        page.drawText(label, { x: 60, y, font: helveticaFont, size: 11, color: rgb(0.3, 0.3, 0.3) });
-        page.drawText(value, { x: 200, y, font: helveticaBoldFont, size: 11, color: rgb(0, 0, 0) });
-    };
-
-    let currentY = contentYStart - 90;
+    let currentY = contentYStart;
     drawDetailRow(currentY, 'Client Name:', data.name);
-    currentY -= 30;
+    currentY -= 40;
     drawDetailRow(currentY, 'Appointment Date:', format(data.preferredDate, 'EEEE, MMMM d, yyyy'));
-    currentY -= 30;
+    currentY -= 40;
     drawDetailRow(currentY, 'Appointment Time:', formatTime(data.preferredTime));
     if (data.vehicleOfInterest) {
-        currentY -= 30;
+        currentY -= 40;
         drawDetailRow(currentY, 'Vehicle of Interest:', data.vehicleOfInterest);
     }
-    
-    // Black Footer
-    page.drawRectangle({
-        x: 0,
-        y: 0,
-        width,
-        height: 100,
-        color: rgb(0, 0, 0),
+
+    // --- Footer ---
+    const footerY = 80;
+    page.drawLine({
+        start: { x: boxPadding, y: footerY + 30 },
+        end: { x: width - boxPadding, y: footerY + 30 },
+        thickness: 1,
+        color: rgb(0.9, 0.9, 0.9),
     });
 
-    const footerText = 'Shop No 12, Vijay Vihar Phase I, Delhi, 110085 | +91 8595853918 | contact@khanmotor.com';
-    page.drawText(footerText, {
-        x: width / 2,
-        y: 50,
-        font: helveticaFont,
-        size: 9,
-        color: rgb(1, 1, 1),
-    });
-    page.drawText('www.motorkhan.com', {
-        x: width / 2,
-        y: 35,
-        font: helveticaFont,
-        size: 9,
+    const footerTextSize = 8;
+    const footerLineHeight = 12;
+    const leftX = boxPadding;
+    const rightX = width - boxPadding;
+    
+    // Left: Contact Details
+    let footerCurrentY = footerY;
+    page.drawText('+91 8595853918', { x: leftX, y: footerCurrentY, font: helveticaFont, size: footerTextSize, color: rgb(0.3, 0.3, 0.3) });
+    footerCurrentY -= footerLineHeight;
+    page.drawText('contact@khanmotor.com', { x: leftX, y: footerCurrentY, font: helveticaFont, size: footerTextSize, color: rgb(0.3, 0.3, 0.3) });
+    // Add social icons if you have them as images
+
+    // Center: Website
+    const website = 'www.motorkhan.com';
+    const websiteWidth = helveticaBoldFont.widthOfTextAtSize(website, 10);
+    page.drawText(website, {
+        x: (width / 2) - (websiteWidth / 2),
+        y: footerY - (footerLineHeight / 2),
+        font: helveticaBoldFont,
+        size: 10,
         color: rgb(0.76, 0.07, 0.15),
     });
+
+    // Right: Address
+    const addressLine1 = 'Shop No 12, Vijay Vihar Phase I, Block B';
+    const addressLine2 = 'Rithala, Rohini, Delhi, 110085';
+    const address1Width = helveticaFont.widthOfTextAtSize(addressLine1, footerTextSize);
+    const address2Width = helveticaFont.widthOfTextAtSize(addressLine2, footerTextSize);
+    
+    footerCurrentY = footerY;
+    page.drawText(addressLine1, { x: rightX - address1Width, y: footerCurrentY, font: helveticaFont, size: footerTextSize, color: rgb(0.3, 0.3, 0.3) });
+    footerCurrentY -= footerLineHeight;
+    page.drawText(addressLine2, { x: rightX - address2Width, y: footerCurrentY, font: helveticaFont, size: footerTextSize, color: rgb(0.3, 0.3, 0.3) });
 
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes);
