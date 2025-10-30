@@ -28,7 +28,6 @@ import { appointmentFormSchema } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const initialState: AppointmentFormState = {
   message: "",
@@ -76,7 +75,7 @@ export function AppointmentForm() {
       name: "",
       email: "",
       phone: "",
-      preferredTime: "09:00-12:00",
+      preferredTime: "09:30",
       vehicleOfInterest: "",
     },
   });
@@ -87,6 +86,11 @@ export function AppointmentForm() {
         setIsSuccess(true);
         form.reset();
         formRef.current?.reset();
+        toast({
+          title: "Success!",
+          description: state.message,
+          variant: "success",
+        });
         setTimeout(() => setIsSuccess(false), 3000);
       } else {
         toast({
@@ -156,69 +160,62 @@ export function AppointmentForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="preferredDate"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Preferred Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date < new Date(new Date().setHours(0, 0, 0, 0))
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="preferredTime"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Preferred Time Slot</FormLabel>
-               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a time slot" />
-                  </SelectTrigger>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="preferredDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Preferred Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "MM/dd/yyyy")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date < new Date(new Date().setHours(0, 0, 0, 0))
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="preferredTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Preferred Time</FormLabel>
+                <FormControl>
+                  <Input type="time" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="09:00-12:00">Morning (9am - 12pm)</SelectItem>
-                  <SelectItem value="12:00-15:00">Afternoon (12pm - 3pm)</SelectItem>
-                  <SelectItem value="15:00-18:00">Late Afternoon (3pm - 6pm)</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="vehicleOfInterest"

@@ -26,6 +26,15 @@ const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : 'http://localhost:3000';
 
+const formatTime = (time: string) => {
+    const [hour, minute] = time.split(':');
+    const hourNum = parseInt(hour, 10);
+    const ampm = hourNum >= 12 ? 'PM' : 'AM';
+    const formattedHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
+    return `${formattedHour}:${minute} ${ampm}`;
+};
+
+
 export const AppointmentFormEmail = ({
   name,
   userEmail,
@@ -57,7 +66,7 @@ export const AppointmentFormEmail = ({
             <strong>Date:</strong> {format(preferredDate, 'PPP')}
           </Text>
           <Text style={detailItem}>
-            <strong>Time Slot:</strong> {preferredTime}
+            <strong>Time:</strong> {formatTime(preferredTime)}
           </Text>
           {vehicleOfInterest && (
             <Text style={detailItem}>
