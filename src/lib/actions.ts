@@ -202,7 +202,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Email', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
-    page.drawText('contact@khanmotor.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
+    page.drawText('info@motorkhan.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Socials', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;

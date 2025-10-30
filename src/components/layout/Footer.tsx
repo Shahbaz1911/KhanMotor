@@ -62,7 +62,7 @@ export function Footer() {
                   </li>
                   <li className="flex items-center justify-start gap-3">
                       <Mail className="h-5 w-5 text-destructive" />
-                      <a href="mailto:contact@khanmotor.com" className="hover:text-white transition-colors uppercase">contact@khanmotor.com</a>
+                      <a href="mailto:info@motorkhan.com" className="hover:text-white transition-colors uppercase">info@motorkhan.com</a>
                   </li>
               </ul>
             </div>
