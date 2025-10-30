@@ -88,23 +88,17 @@ export async function submitAppointmentForm(
   prevState: AppointmentFormState,
   formData: FormData
 ): Promise<AppointmentFormState> {
+  const rawDate = formData.get('preferredDate');
+  const dateToValidate = rawDate ? new Date(rawDate as string) : undefined;
 
-  const rawData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      preferredDate: formData.get("preferredDate"),
-      preferredTime: formData.get("preferredTime"),
-      vehicleOfInterest: formData.get("vehicleOfInterest"),
-  };
-
-  const dataToValidate = {
-    ...rawData,
-    // Correctly parse the date string from FormData into a Date object
-    preferredDate: rawData.preferredDate ? new Date(rawData.preferredDate as string) : undefined
-  };
-  
-  const validatedFields = appointmentFormSchema.safeParse(dataToValidate);
+  const validatedFields = appointmentFormSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phone: formData.get("phone"),
+    preferredDate: dateToValidate,
+    preferredTime: formData.get("preferredTime"),
+    vehicleOfInterest: formData.get("vehicleOfInterest"),
+  });
   
   if (!validatedFields.success) {
     return {

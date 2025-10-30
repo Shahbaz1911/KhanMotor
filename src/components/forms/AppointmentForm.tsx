@@ -178,7 +178,7 @@ export function AppointmentForm() {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "MM/dd/yyyy")
+                          format(field.value, "PPP")
                         ) : (
                           <span>Pick a date</span>
                         )}
