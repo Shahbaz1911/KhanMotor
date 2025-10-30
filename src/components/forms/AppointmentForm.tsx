@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -25,7 +25,6 @@ import { appointmentFormSchema } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
 
@@ -62,12 +61,6 @@ function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
     </Button>
   );
 }
-
-const timeSlots = [
-  { label: "Morning (9am - 12pm)", value: "09:00-12:00" },
-  { label: "Afternoon (1pm - 4pm)", value: "13:00-16:00" },
-  { label: "Evening (5pm - 7pm)", value: "17:00-19:00" },
-];
 
 export function AppointmentForm() {
   const [state, formAction] = useActionState(submitAppointmentForm, initialState);
@@ -200,21 +193,10 @@ export function AppointmentForm() {
           name="preferredTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preferred Time Slot</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a time slot" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {timeSlots.map((slot) => (
-                    <SelectItem key={slot.value} value={slot.value}>
-                      {slot.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormLabel>Preferred Time</FormLabel>
+              <FormControl>
+                <Input type="time" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

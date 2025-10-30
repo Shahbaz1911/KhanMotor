@@ -50,6 +50,8 @@ export const contactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
 // Appointment Form Schema
 export const appointmentFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -59,7 +61,7 @@ export const appointmentFormSchema = z.object({
     required_error: "A preferred date is required.",
     invalid_type_error: "That's not a valid date!",
   }),
-  preferredTime: z.string({ required_error: "Please select a time slot."}).min(1, { message: "Please select a time slot." }),
+  preferredTime: z.string({ required_error: "A preferred time is required."}).regex(timeRegex, "Please enter a valid time in HH:MM format."),
   vehicleOfInterest: z.string().optional(),
 });
 
