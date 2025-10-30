@@ -1,103 +1,49 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import { motion, useAnimate } from "framer-motion";
+
+type Status = "idle" | "loading" | "success";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   children: React.ReactNode;
+  status?: Status;
 }
 
-export const StatefulButton = ({ className, children, ...props }: ButtonProps) => {
+export const StatefulButton = ({
+  className,
+  children,
+  status = "idle",
+  ...props
+}: ButtonProps) => {
   const [scope, animate] = useAnimate();
-  const [status, setStatus] = React.useState<"idle" | "loading" | "success">("idle");
 
-  const animateLoading = async () => {
-    await animate(
-      ".loader",
-      {
-        width: "20px",
-        scale: 1,
-        display: "block",
-      },
-      {
-        duration: 0.2,
-      },
-    );
-  };
-
-  const animateSuccess = async () => {
-    await animate(
-      ".loader",
-      {
-        width: "0px",
-        scale: 0,
-        display: "none",
-      },
-      {
-        duration: 0.2,
-      },
-    );
-    await animate(
-      ".check",
-      {
-        width: "20px",
-        scale: 1,
-        display: "block",
-      },
-      {
-        duration: 0.2,
-      },
-    );
-
-    await animate(
-      ".check",
-      {
-        width: "0px",
-        scale: 0,
-        display: "none",
-      },
-      {
-        delay: 2,
-        duration: 0.2,
-      },
-    );
-  };
-
-  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (props.disabled) return;
-    setStatus("loading");
-    await animateLoading();
-    
-    // Check if onClick is provided and is a promise
-    if (props.onClick) {
-        try {
-            await props.onClick(event);
-            setStatus("success");
-            await animateSuccess();
-        } catch (error) {
-            // Handle error case if needed
-            console.error("Operation failed:", error);
-            // Optionally, animate back to idle state
-            await animate( ".loader", { width: "0px", scale: 0, display: "none" }, { duration: 0.2 } );
-
-        } finally {
-            setTimeout(() => setStatus("idle"), 2500); // Reset after success animation
-        }
-    } else {
-        setStatus("idle");
-    }
-  };
-
-  const {
-    onClick,
-    onDrag,
-    onDragStart,
-    onDragEnd,
-    onAnimationStart,
-    onAnimationEnd,
-    ...buttonProps
-  } = props;
+  useEffect(() => {
+    const handleStatusChange = async () => {
+      if (status === "loading") {
+        await animate(
+          ".loader",
+          { width: "20px", scale: 1, display: "block" },
+          { duration: 0.2 }
+        );
+        await animate(".check", { display: "none", scale: 0, width: 0 });
+      } else if (status === "success") {
+        await animate(".loader", { display: "none", scale: 0, width: 0 });
+        await animate(
+          ".check",
+          { width: "20px", scale: 1, display: "block" },
+          { duration: 0.2 }
+        );
+      } else {
+        await animate([
+          [".loader", { display: "none", scale: 0, width: 0 }, { duration: 0 }],
+          [".check", { display: "none", scale: 0, width: 0 }, { duration: 0 }],
+        ]);
+      }
+    };
+    handleStatusChange();
+  }, [status, animate]);
 
   return (
     <motion.button
@@ -107,23 +53,22 @@ export const StatefulButton = ({ className, children, ...props }: ButtonProps) =
       className={cn(
         "flex min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 font-black ring-offset-2 transition duration-200",
         {
-            "bg-primary text-primary-foreground hover:bg-primary/90": status === "idle",
-            "bg-primary/80 text-primary-foreground": status === "loading",
-            "bg-green-500 text-white": status === "success",
+          "bg-primary text-primary-foreground hover:bg-primary/90": status === "idle",
+          "bg-primary/80 text-primary-foreground cursor-not-allowed": status === "loading",
+          "bg-green-500 text-white cursor-not-allowed": status === "success",
         },
-        className,
+        className
       )}
-      {...buttonProps}
-      onClick={handleClick}
+      {...props}
       disabled={status !== "idle" || props.disabled}
     >
       <motion.div layout className="flex items-center justify-center gap-2 h-6">
         <Loader />
         <CheckIcon />
         <motion.span layout>
-            {status === 'idle' && children}
-            {status === 'loading' && 'Requesting...'}
-            {status === 'success' && 'Success!'}
+          {status === "idle" && children}
+          {status === "loading" && "Requesting..."}
+          {status === "success" && "Success!"}
         </motion.span>
       </motion.div>
     </motion.button>
@@ -133,23 +78,9 @@ export const StatefulButton = ({ className, children, ...props }: ButtonProps) =
 const Loader = () => {
   return (
     <motion.svg
-      animate={{
-        rotate: [0, 360],
-      }}
-      initial={{
-        scale: 0,
-        width: 0,
-        display: "none",
-      }}
-      style={{
-        scale: 0.8,
-        display: "none",
-      }}
-      transition={{
-        duration: 0.8,
-        repeat: Infinity,
-        ease: "linear",
-      }}
+      animate={{ rotate: [0, 360] }}
+      initial={{ scale: 0, width: 0, display: "none" }}
+      transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -170,15 +101,7 @@ const Loader = () => {
 const CheckIcon = () => {
   return (
     <motion.svg
-      initial={{
-        scale: 0,
-        width: 0,
-        display: "none",
-      }}
-      style={{
-        scale: 0.8,
-        display: "none",
-      }}
+      initial={{ scale: 0, width: 0, display: "none" }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
