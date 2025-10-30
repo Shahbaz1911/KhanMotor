@@ -89,6 +89,11 @@ export const AppointmentFormEmail = ({
                 Contact Us
             </Link>
         </Section>
+        <Text style={text}>
+            Follow us on{' '}
+            <Link style={link} href="https://instagram.com/motorkhan">Instagram</Link> and{' '}
+            <Link style={link} href="https://facebook.com/motorkhan">Facebook</Link>!
+        </Text>
         <Text style={footer}>
           Motor Khan | Shop No 12, Vijay Vihar Phase I, Delhi, 110085
         </Text>

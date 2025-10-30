@@ -108,25 +108,15 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     });
 
     // --- Header ---
-    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png";
+    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
     const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
-    const logoDims = logoImage.scale(0.3);
+    const logoDims = logoImage.scale(0.25);
     
-    // Header background
-    const headerHeight = 140;
-    page.drawRectangle({
-        x: 0,
-        y: height - headerHeight,
-        width: width,
-        height: headerHeight,
-        color: blackColor,
-    });
-
-    // Draw logo on header
+    // Header is white, so no background rectangle needed
     page.drawImage(logoImage, {
         x: (width / 2) - (logoDims.width / 2),
-        y: height - headerHeight + (headerHeight - logoDims.height) / 2,
+        y: height - 100, // Adjusted Y position for better spacing
         width: logoDims.width,
         height: logoDims.height,
     });
@@ -135,7 +125,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const titleWidth = helveticaBoldFont.widthOfTextAtSize(title, 20);
     page.drawText(title, {
         x: (width / 2) - (titleWidth / 2),
-        y: height - 160,
+        y: height - 130,
         font: helveticaBoldFont,
         size: 20,
         color: blackColor,
@@ -143,14 +133,14 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     
     // --- Red Separator Line ---
     page.drawLine({
-        start: { x: 50, y: height - 180 },
-        end: { x: width - 50, y: height - 180 },
+        start: { x: 50, y: height - 150 },
+        end: { x: width - 50, y: height - 150 },
         thickness: 1.5,
         color: redColor,
     });
 
     // --- Appointment Details Section ---
-    const contentYStart = height - 230;
+    const contentYStart = height - 200;
     
     page.drawRectangle({
         x: 50,
