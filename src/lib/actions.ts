@@ -2,7 +2,7 @@
 "use server";
 
 import { z } from "zod";
-import { contactFormSchema, appointmentFormSchema, type AppointmentFormData } from "@/types";
+import { contactFormSchema, appointmentFormSchema } from "@/types";
 import { v2 as cloudinary } from "cloudinary";
 import { Resend } from "resend";
 import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
