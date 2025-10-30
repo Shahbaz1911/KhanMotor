@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useEffect, useRef } from "react"; // Changed from react-dom to react and useFormState to useActionState
+import { useActionState, useEffect, useRef, useState } from "react"; // Changed from react-dom to react and useFormState to useActionState
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -22,10 +22,11 @@ import { contactFormSchema } from "@/types";
 
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Check } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { cn } from "@/lib/utils";
 
 
 const initialState: ContactFormState = {
@@ -33,16 +34,33 @@ const initialState: ContactFormState = {
   success: false,
 };
 
-function SubmitButton() {
+function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
   const { pending } = useFormStatus();
   return (
     <Button 
       type="submit" 
-      disabled={pending}
-      className="w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground border border-destructive uppercase"
+      disabled={pending || isSuccess}
+      className={cn(
+        "w-full md:w-auto bg-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground border border-destructive uppercase",
+        isSuccess && "bg-green-500 hover:bg-green-600 border-green-600 text-white"
+      )}
     >
-      {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-      Send Message
+      {isSuccess ? (
+        <>
+          <Check className="mr-2 h-4 w-4" />
+          Success!
+        </>
+      ) : pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Sending...
+        </>
+      ) : (
+        <>
+          <Send className="mr-2 h-4 w-4" />
+          Send Message
+        </>
+      )}
     </Button>
   );
 }
@@ -52,6 +70,7 @@ export function ContactForm() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -86,14 +105,12 @@ export function ContactForm() {
   useEffect(() => {
     if (state.message) {
       if (state.success) {
-        toast({
-          title: "Success!",
-          description: state.message,
-        });
+        setIsSuccess(true);
         form.reset(); 
         if (formRef.current) {
            formRef.current.reset(); 
         }
+        setTimeout(() => setIsSuccess(false), 3000);
       } else {
         toast({
           title: "Error",
@@ -178,7 +195,7 @@ export function ContactForm() {
                 </FormItem>
               )}
             />
-            <SubmitButton />
+            <SubmitButton isSuccess={isSuccess} />
           </form>
         </Form>
       </CardContent>
