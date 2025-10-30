@@ -156,7 +156,7 @@ export default function ContactPage() {
                             <div className="flex-shrink-0 bg-primary/10 text-primary p-3 rounded-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                                <item.icon className="h-6 w-6" />
                             </div>
-                            <span className={cn("group-hover:underline uppercase", (item.icon === Phone) && "font-cairo")}>{item.text}</span>
+                            <span className={cn("group-hover:underline uppercase", (item.icon === Phone || item.icon === MapPin) && "font-cairo")}>{item.text}</span>
                         </Link>
                       </motion.div>
                   ))}

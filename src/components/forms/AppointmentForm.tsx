@@ -150,7 +150,7 @@ export function AppointmentForm() {
             <FormItem>
               <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input type="tel" placeholder="(123) 456-7890" {...field} className="font-cairo" />
+                <Input type="tel" placeholder="(123) 456-7890" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

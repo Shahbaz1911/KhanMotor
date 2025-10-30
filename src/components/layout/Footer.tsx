@@ -50,7 +50,7 @@ export function Footer() {
               <ul className="mt-4 space-y-3 text-sm">
                   <li className="flex items-start justify-start gap-3">
                       <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-destructive" />
-                      <a href="https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase">shop no 12, vijay vihar phase i, block b, near rice mill,rithala, rohini, delhi, 110085</a>
+                      <a href="https://maps.google.com/?q=Shop+No+12,+Vijay+Vihar+Phase+I,+Block+B,+Near+Rice+Mill,Rithala,+Rohini,+Delhi,+110085" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors uppercase font-cairo">shop no 12, vijay vihar phase i, block b, near rice mill,rithala, rohini, delhi, 110085</a>
                   </li>
                   <li className="flex items-center justify-start gap-3">
                       <Phone className="h-5 w-5 text-destructive" />
