@@ -2,7 +2,7 @@
 "use server";
 
 import { z } from "zod";
-import { contactFormSchema, appointmentFormSchema } from "@/types";
+import { contactFormSchema, appointmentFormSchema, type AppointmentFormData } from "@/types";
 import { v2 as cloudinary } from "cloudinary";
 import { Resend } from "resend";
 import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
@@ -80,15 +80,9 @@ export async function submitAppointmentForm(
   prevState: AppointmentFormState,
   formData: FormData
 ): Promise<AppointmentFormState> {
-  const rawFormData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    preferredDate: formData.get("preferredDate"), // Keep as string
-    preferredTime: formData.get("preferredTime"),
-    vehicleOfInterest: formData.get("vehicleOfInterest"),
-  };
   
+  const rawFormData = Object.fromEntries(formData.entries());
+
   const validatedFields = appointmentFormSchema.safeParse({
     ...rawFormData,
     preferredDate: rawFormData.preferredDate ? new Date(rawFormData.preferredDate as string) : undefined,

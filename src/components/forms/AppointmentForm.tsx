@@ -73,8 +73,7 @@ export function AppointmentForm() {
   const [state, formAction] = useActionState(submitAppointmentForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
-  const hiddenDateRef = useRef<HTMLInputElement>(null);
-
+  
   const form = useForm<z.infer<typeof appointmentFormSchema>>({
     resolver: zodResolver(appointmentFormSchema),
     defaultValues: {
@@ -87,14 +86,6 @@ export function AppointmentForm() {
     },
   });
 
-  const preferredDateValue = form.watch("preferredDate");
-
-  useEffect(() => {
-    if (preferredDateValue && hiddenDateRef.current) {
-      hiddenDateRef.current.value = preferredDateValue.toISOString();
-    }
-  }, [preferredDateValue]);
-
   useEffect(() => {
     if (state.message) {
       if (state.success) {
@@ -103,14 +94,7 @@ export function AppointmentForm() {
           description: state.message,
           variant: "success",
         });
-        // We don't reset the form immediately to show the success state on the button
-        // It will be reset if the user navigates away or reloads.
-        setTimeout(() => {
-          form.reset();
-           if (formRef.current) {
-            formRef.current.reset();
-          }
-        }, 2000)
+        form.reset();
       } else {
         toast({
           title: "Error",
@@ -131,7 +115,11 @@ export function AppointmentForm() {
 
   return (
     <Form {...form}>
-      <form ref={formRef} action={formAction} className="space-y-6">
+      <form
+        ref={formRef}
+        action={formAction}
+        className="space-y-6"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -177,7 +165,6 @@ export function AppointmentForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Preferred Date</FormLabel>
-              <input type="hidden" name="preferredDate" ref={hiddenDateRef} />
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
