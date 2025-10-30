@@ -23,8 +23,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitAppointmentForm, type AppointmentFormState } from "@/lib/actions";
 import { appointmentFormSchema } from "@/types";
 import { useToast } from "@/hooks/use-toast";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
 
@@ -73,7 +71,7 @@ export function AppointmentForm() {
       name: "",
       email: "",
       phone: "",
-      preferredDate: undefined,
+      preferredDate: new Date(),
       preferredTime: "",
       vehicleOfInterest: "",
     },
@@ -159,31 +157,9 @@ export function AppointmentForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Preferred Date</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) => date < new Date(new Date().setHours(0,0,0,0)) } // Disable past dates
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+               <FormControl>
+                 <Input type="date" {...field} value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : ''} onChange={(e) => field.onChange(new Date(e.target.value))}/>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
