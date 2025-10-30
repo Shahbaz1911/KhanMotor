@@ -162,17 +162,6 @@ export default function ContactPage() {
                   ))}
               </motion.div>
 
-               <motion.div variants={itemVariants} className="mt-8">
-                  <Link href="/#contact">
-                    <CircularText
-                      text="GET✦IN✦TOUCH✦"
-                      onHover="speedUp"
-                      spinDuration={20}
-                      className="text-sm text-foreground"
-                    />
-                  </Link>
-               </motion.div>
-
               <motion.div variants={itemVariants} className="mt-12">
                 <h3 className="text-xl font-bold mb-4 uppercase">Connect</h3>
                  <div className="flex gap-4">
@@ -191,6 +180,17 @@ export default function ContactPage() {
                     ))}
                 </div>
               </motion.div>
+
+              <motion.div variants={itemVariants} className="mt-8 flex justify-start lg:justify-start">
+                  <Link href="/#contact">
+                    <CircularText
+                      text="GET✦IN✦TOUCH✦"
+                      onHover="speedUp"
+                      spinDuration={20}
+                      className="text-sm text-foreground"
+                    />
+                  </Link>
+               </motion.div>
             </motion.div>
 
             <motion.div
