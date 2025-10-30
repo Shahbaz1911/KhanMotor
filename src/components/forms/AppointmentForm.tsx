@@ -28,6 +28,7 @@ import { appointmentFormSchema } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const initialState: AppointmentFormState = {
   message: "",
@@ -63,11 +64,32 @@ function SubmitButton({ isSuccess }: { isSuccess: boolean }) {
   );
 }
 
+const generateTimeSlots = () => {
+    const slots = [];
+    for (let i = 9; i <= 20; i++) {
+        slots.push(`${i.toString().padStart(2, '0')}:00`);
+        if (i < 20) {
+            slots.push(`${i.toString().padStart(2, '0')}:30`);
+        }
+    }
+    return slots;
+};
+
+const formatTimeForDisplay = (time: string) => {
+    const [hour, minute] = time.split(':');
+    const hourNum = parseInt(hour, 10);
+    const ampm = hourNum >= 12 ? 'PM' : 'AM';
+    const formattedHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
+    return `${formattedHour}:${minute} ${ampm}`;
+};
+
+
 export function AppointmentForm() {
   const [state, formAction] = useActionState(submitAppointmentForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const timeSlots = generateTimeSlots();
   
   const form = useForm<z.infer<typeof appointmentFormSchema>>({
     resolver: zodResolver(appointmentFormSchema),
@@ -205,7 +227,7 @@ export function AppointmentForm() {
                 <input
                   type="hidden"
                   name="preferredDate"
-                  value={field.value ? format(field.value, "yyyy-MM-dd") : ""}
+                  value={field.value ? field.value.toISOString() : ""}
                 />
                 <FormMessage />
               </FormItem>
@@ -217,9 +239,20 @@ export function AppointmentForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Preferred Time</FormLabel>
-                <FormControl>
-                  <Input type="time" {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                        <SelectTrigger className="font-cairo">
+                            <SelectValue placeholder="Select a time" />
+                        </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                         {timeSlots.map(slot => (
+                            <SelectItem key={slot} value={slot} className="font-cairo">
+                                {formatTimeForDisplay(slot)}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

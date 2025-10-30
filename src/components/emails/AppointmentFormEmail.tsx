@@ -27,6 +27,7 @@ const baseUrl = process.env.VERCEL_URL
   : 'http://localhost:3000';
 
 const formatTime = (time: string) => {
+    if (!time || !time.includes(':')) return 'Not specified';
     const [hour, minute] = time.split(':');
     const hourNum = parseInt(hour, 10);
     const ampm = hourNum >= 12 ? 'PM' : 'AM';
