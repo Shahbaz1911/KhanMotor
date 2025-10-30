@@ -113,15 +113,11 @@ export function AppointmentForm() {
     }
   }, [state, toast, form]);
 
-  const onFormSubmit = (data: z.infer<typeof appointmentFormSchema>) => {
-    formAction(data);
-  };
-
   return (
     <Form {...form}>
       <form
         ref={formRef}
-        onSubmit={form.handleSubmit(onFormSubmit)}
+        action={form.handleSubmit(data => formAction(data))}
         className="space-y-6"
       >
         <FormField
