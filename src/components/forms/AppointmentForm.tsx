@@ -3,7 +3,7 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import type { z } from "zod";
 import { Loader2, Send, Check } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -103,6 +103,16 @@ export function AppointmentForm() {
       vehicleOfInterest: "",
     },
   });
+
+  const preferredTimeValue = useWatch({
+    control: form.control,
+    name: 'preferredTime',
+  });
+  const preferredDateValue = useWatch({
+    control: form.control,
+    name: 'preferredDate',
+  });
+
 
   useEffect(() => {
     if (state.message) {
@@ -224,12 +234,6 @@ export function AppointmentForm() {
                     />
                   </PopoverContent>
                 </Popover>
-                {/* Hidden input to send date in a standardized format */}
-                <input
-                  type="hidden"
-                  name="preferredDate"
-                  value={field.value ? field.value.toISOString().split('T')[0] : ""}
-                />
                 <FormMessage />
               </FormItem>
             )}
@@ -259,6 +263,8 @@ export function AppointmentForm() {
             )}
           />
         </div>
+        <input type="hidden" name="preferredDate" value={preferredDateValue ? format(preferredDateValue, 'yyyy-MM-dd') : ''} />
+        <input type="hidden" name="preferredTime" value={preferredTimeValue} />
         <FormField
           control={form.control}
           name="vehicleOfInterest"
@@ -284,3 +290,5 @@ export function AppointmentForm() {
     </Form>
   );
 }
+
+    
