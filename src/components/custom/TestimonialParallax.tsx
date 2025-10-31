@@ -7,7 +7,7 @@ import placeholderImages from "@/lib/placeholder-images.json";
 export function TestimonialParallax() {
   const products = [
     {
-      name: "Sarah L.",
+      name: "Ayesha Khan",
       title: "Luxury Car Enthusiast",
       link: "#",
       thumbnail: placeholderImages.testimonial1.url,
@@ -15,7 +15,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "John B.",
+      name: "Rohan Sharma",
       title: "First Time Buyer",
       link: "#",
       thumbnail: placeholderImages.testimonial2.url,
@@ -23,7 +23,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Emily K.",
+      name: "Fatima Ali",
       title: "Collector",
       link: "#",
       thumbnail: placeholderImages.testimonial3.url,
@@ -31,7 +31,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "David R.",
+      name: "Arjun Kumar",
       title: "Repeat Customer",
       link: "#",
       thumbnail: "https://picsum.photos/seed/testimonial4/100/100",
@@ -39,7 +39,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Jessica M.",
+      name: "Zoya Ahmed",
       title: "Performance Driving Fan",
       link: "#",
       thumbnail: "https://picsum.photos/seed/testimonial5/100/100",
@@ -47,7 +47,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Vikram S.",
+      name: "Vikram Singh",
       title: "Sports Car Owner",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1517524206127-48bbd363f357?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -55,7 +55,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Amit Patel",
+      name: "Imran Khan",
       title: "Truck Enthusiast",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1606152421802-db97b8c1a521?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -63,7 +63,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Sunita G.",
+      name: "Sunita Gupta",
       title: "Daily Commuter",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -71,7 +71,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "The Patels",
+      name: "The Mehra Family",
       title: "Family Van Owners",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1571980099688-6955a64a7810?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -79,7 +79,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Rohan V.",
+      name: "Rohan Verma",
       title: "Another Happy Customer",
       link: "#",
       thumbnail: placeholderImages.customer6.url,
@@ -87,7 +87,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Priya K.",
+      name: "Priya Singh",
       title: "Happy with their new ride",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1610496434054-6278d5573424?q=80&w=1949&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -95,7 +95,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Deepak C.",
+      name: "Deepak Chauhan",
       title: "A fresh new look",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1549399542-7e69c8195443?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -103,7 +103,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Aditya M.",
+      name: "Aditya Mehta",
       title: "Ready for the road",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1503720769255-88e6a578a149?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -111,7 +111,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Sneha R.",
+      name: "Sneha Reddy",
       title: "Quality service",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1582806954284-c013844a42b9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -119,7 +119,7 @@ export function TestimonialParallax() {
       rating: 5,
     },
     {
-      name: "Karan B.",
+      name: "Karan Malhotra",
       title: "Thrilled with the result",
       link: "#",
       thumbnail: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
