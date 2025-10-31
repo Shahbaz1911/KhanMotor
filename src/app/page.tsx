@@ -273,10 +273,10 @@ export default function ConsolidatedPage() {
                 Your Trusted Auto Repair Shop & Car Dealership
               </h2>
               <p className="text-lg text-muted-foreground my-5">
-                {aboutText1}
+                Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <Link href="/gallery" className="text-primary underline">certified pre-owned vehicles</Link>, ensuring quality and reliability. We are the <Link href="/contact" className="text-primary underline">mechanic near you</Link> that you can trust for everything from a simple oil change service to complex transmission repair.
               </p>
               <p className="text-lg text-muted-foreground my-5">
-                {aboutText2}
+                We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <Link href="/contact" className="text-primary underline">sell your car</Link>, our team is here to provide affordable car repair and exceptional service.
               </p>
 
               <Button 
@@ -354,3 +354,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    

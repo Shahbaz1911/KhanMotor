@@ -11,27 +11,28 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const highlightItems = [
   {
     icon: Car,
     title: "Premium Vehicle Selection",
-    description: "handpicked luxury and performance cars. find your next car for sale from our curated collection at our car dealership.",
+    description: "Handpicked luxury and performance cars. <a href='/gallery' class='text-primary underline'>Find your next car for sale</a> from our curated collection at our car dealership.",
   },
   {
     icon: ShieldCheck,
     title: "Verified Quality",
-    description: "each vehicle undergoes a rigorous quality check. we offer certified pre-owned cars for your peace of mind.",
+    description: "Each vehicle undergoes a rigorous quality check. We offer <a href='/gallery' class='text-primary underline'>certified pre-owned cars</a> for your peace of mind.",
   },
   {
     icon: Wrench,
     title: "Expert Auto Maintenance",
-    description: "state-of-the-art auto repair shop with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
+    description: "State-of-the-art <a href='/contact' class='text-primary underline'>auto repair shop</a> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
   },
   {
     icon: MessageSquareHeart,
     title: "Personalized Service",
-    description: "our trusted car workshop offers dedicated consultants to guide you. we even offer a mobile mechanic for your convenience.",
+    description: "Our trusted car workshop offers dedicated consultants to guide you. We even offer a <a href='/contact' class='text-primary underline'>mobile mechanic</a> for your convenience.",
   },
 ];
 
@@ -68,7 +69,7 @@ const TimelineItem = ({
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground lowercase">{item.description.toLowerCase()}</p>
+            <p className="text-muted-foreground lowercase" dangerouslySetInnerHTML={{ __html: item.description.toLowerCase() }} />
         </CardContent>
       </motion.div>
     </motion.div>
@@ -183,3 +184,5 @@ export function WhyChooseUs() {
     </section>
   );
 }
+
+    

@@ -12,27 +12,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const services = [
   {
     icon: Wrench,
     title: "Car Repair & Servicing",
-    description: "comprehensive auto repair and car servicing from a trusted car workshop. we handle brake repair, transmission repair, and car engine diagnostics.",
+    description: "Comprehensive <a href='/contact' class='text-primary underline'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
   },
   {
     icon: Paintbrush,
     title: "Denting, Painting & Detailing",
-    description: "our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional car detailing.",
+    description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact' class='text-primary underline'>car detailing</a>.",
   },
   {
     icon: Repeat,
     title: "Buy & Sell Used Cars",
-    description: "explore our car marketplace to buy used cars or sell your car. we are a top used car dealer for certified pre-owned cars.",
+    description: "Explore our car marketplace to <a href='/gallery' class='text-primary underline'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
   },
   {
     icon: ShieldCheck,
     title: "Car Maintenance",
-    description: "scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and air conditioning repair.",
+    description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact' class='text-primary underline'>air conditioning repair</a>.",
   },
 ];
 
@@ -84,7 +85,7 @@ export function ServicesSection() {
                   <CardTitle className="text-2xl font-black uppercase">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="lowercase">{service.description.toLowerCase()}</CardDescription>
+                  <CardDescription className="lowercase" dangerouslySetInnerHTML={{ __html: service.description.toLowerCase() }} />
                 </CardContent>
               </Card>
             </div>
@@ -94,3 +95,5 @@ export function ServicesSection() {
     </section>
   );
 }
+
+    
