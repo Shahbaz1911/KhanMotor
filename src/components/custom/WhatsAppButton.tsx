@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -36,21 +35,20 @@ export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   
-  const tl = useRef<gsap.core.Timeline>();
+  const tl = useRef<gsap.core.Timeline | null>(null);
   const whatsappIconRef = useRef(null);
   const closeIconRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
 
-  useEffect(() => {
     tl.current = gsap.timeline({ paused: true });
 
-    tl.current
-      .to(whatsappIconRef.current, { rotation: -180, opacity: 0, scale: 0.8, duration: 0.3, ease: "power2.in" })
-      .to(closeIconRef.current, { rotation: 0, opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, "-=0.2");
-
+    if (whatsappIconRef.current && closeIconRef.current) {
+      tl.current
+        .to(whatsappIconRef.current, { rotation: 180, opacity: 0, scale: 0.5, duration: 0.3, ease: "power2.in" })
+        .to(closeIconRef.current, { rotation: 0, opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, "-=0.2");
+    }
   }, []);
 
   useEffect(() => {
@@ -85,7 +83,7 @@ export function WhatsAppButton() {
         <Button
           className={cn(
             "fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-            theme === 'dark'
+             theme === 'dark'
               ? "bg-white text-black hover:bg-neutral-200"
               : "bg-black text-white hover:bg-neutral-800"
           )}
@@ -93,7 +91,7 @@ export function WhatsAppButton() {
         >
           <div className="relative w-6 h-6 flex items-center justify-center">
             <WhatsAppIcon ref={whatsappIconRef} className="absolute" />
-            <X ref={closeIconRef} className="absolute h-6 w-6 opacity-0 scale-80" style={{ transform: 'rotate(180deg)' }} />
+            <X ref={closeIconRef} className="absolute h-6 w-6 opacity-0 scale-50" style={{ transform: 'rotate(-180deg)' }} />
           </div>
         </Button>
       </PopoverTrigger>
