@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -34,6 +35,7 @@ import { motion } from "framer-motion";
 import Head from "next/head";
 import { LinkPreview } from "@/components/ui/link-preview";
 import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
+import { LocationMap } from "@/components/custom/LocationMap";
 
 
 export default function ConsolidatedPage() {
@@ -375,6 +377,8 @@ export default function ConsolidatedPage() {
         <HappyCustomerGallery />
         
         <GoogleGeminiEffectDemo />
+
+        <LocationMap />
 
         {/* Section 6: Contact Us */}
         <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">

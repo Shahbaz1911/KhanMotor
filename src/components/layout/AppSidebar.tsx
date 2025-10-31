@@ -25,6 +25,7 @@ const mainNavItems = [
   { id: "gallery", label: "Our Cars", href: "/gallery" },
   { id: "happy-customers", label: "Happy Customers", href: "/happy-customers" },
   { id: "testimonials", label: "Reviews", href: "/#testimonials" },
+  { id: "location", label: "Location", href: "/#location" },
   { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
   { id: "contact", label: "Contact Us", href: "/contact" },
 ];
