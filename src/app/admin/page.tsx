@@ -88,7 +88,7 @@ export default function AdminLoginPage() {
                     alt="Motor Khan Logo"
                     width={150}
                     height={150}
-                    className="w-36 h-auto"
+                    className="w-20 h-auto"
                 />
             </div>
           <CardTitle className="text-2xl uppercase">Admin Login</CardTitle>
