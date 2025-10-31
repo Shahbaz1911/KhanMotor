@@ -155,7 +155,7 @@ export default function HappyCustomersPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-16 md:w-20 h-auto"
+                      className="w-16 md:w-18 h-auto"
                   />
                 </Link>
               </div>
@@ -224,5 +224,3 @@ export default function HappyCustomersPage() {
     </>
   );
 }
-
-    
