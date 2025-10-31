@@ -143,7 +143,7 @@ export default function GalleryPage() {
                         alt="Motor Khan Logo"
                         width={150}
                         height={150}
-                        className="w-16 md:w-28 h-auto"
+                        className="w-16 md:w-24 h-auto"
                     />
                   </Link>
                 </div>
