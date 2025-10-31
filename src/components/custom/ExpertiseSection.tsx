@@ -39,20 +39,26 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: triggerRef.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1, // Link animation to scroll progress
             },
         });
-
+        
         const textOffset = window.innerWidth > 768 ? 150 : 50;
 
-        tl.from(triggerRef.current, { opacity: 0, y: 50, duration: 0.5 })
-          .from(startTextRef.current, { x: textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.2")
-          .from(endTextRef.current, { x: -textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, "<")
-          .from(imageRef.current, { scale: 0.5, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.6");
+        // Animate from an offset position to the final position
+        tl.from(startTextRef.current, { x: textOffset, opacity: 0 }, 0)
+          .from(endTextRef.current, { x: -textOffset, opacity: 0 }, 0)
+          .from(imageRef.current, { scale: 0.5, opacity: 0, ease: "power2.out" }, 0);
         
         return () => {
             tl.kill();
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.trigger === triggerRef.current) {
+                    trigger.kill();
+                }
+            });
         }
 
     }, []);
