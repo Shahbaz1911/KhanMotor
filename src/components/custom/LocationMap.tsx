@@ -54,16 +54,15 @@ export function LocationMap() {
           </motion.p>
         </motion.div>
 
-        <div className="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-2xl border">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.537951598573!2d77.1183188753896!3d28.73351287561413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d010770a0b679%3A0x8f03759976939535!2sMotor%20Khan!5e0!3m2!1sen!2sin!4v1720516560934!5m2!1sen!2sin"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen={true}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl border">
+           <iframe
             className="absolute inset-0 w-full h-full"
+            frameBorder="0"
+            scrolling="no"
+            marginHeight={0}
+            marginWidth={0}
+            src="https://maps.google.com/maps?width=100%&amp;height=100%&amp;hl=en&amp;q=khan motors ,Shop No 12, near Rice Mill, Vijay vihar Phase I, Phase 1, Block B, Rithala, Rohini, New Delhi, Delhi, 110085&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+            title="Motor Khan Location"
           ></iframe>
         </div>
       </div>
