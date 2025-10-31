@@ -34,10 +34,15 @@ export function WhatsAppButton() {
   const { theme } = useTheme();
   const phoneNumber = "918595853918";
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   
   const tl = useRef<gsap.core.Timeline>();
   const whatsappIconRef = useRef(null);
   const closeIconRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     tl.current = gsap.timeline({ paused: true });
@@ -68,6 +73,10 @@ export function WhatsAppButton() {
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setIsOpen(false);
+  }
+
+  if (!mounted) {
+    return null;
   }
 
   return (
