@@ -59,8 +59,7 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
-  const headerControlsRef = useRef<HTMLDivElement>(null);
-  const headerLogoRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   
   
   const aboutCarouselImages = [
@@ -82,26 +81,26 @@ export default function ConsolidatedPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-       // Header controls fade out on scroll
-      gsap.to(headerControlsRef.current, {
-        autoAlpha: 0,
-        scrollTrigger: {
-          trigger: pageRef.current,
-          start: 'top top',
-          end: '+=150',
-          scrub: true,
-        },
+       // Header show/hide on scroll
+      const showAnim = gsap.from(headerRef.current, { 
+        yPercent: -100,
+        paused: true,
+        duration: 0.2
+      }).progress(1);
+
+      ScrollTrigger.create({
+        start: "top top",
+        end: 99999,
+        onUpdate: (self) => {
+          self.direction === -1 ? showAnim.play() : showAnim.reverse()
+        }
       });
-
-      // Header logo fade in
-      gsap.fromTo(headerLogoRef.current, 
-        { autoAlpha: 0, y: -20 },
-        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
-      );
-
     }, pageRef);
 
-    return () => ctx.revert();
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert();
+    }
   }, [isLoaded]);
 
   const serviceSchema = {
@@ -201,10 +200,11 @@ export default function ConsolidatedPage() {
       </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <div ref={headerControlsRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
+        <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50 bg-background/80 dark:bg-black/80 backdrop-blur-md">
+           <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm">
+                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -223,11 +223,11 @@ export default function ConsolidatedPage() {
               </SheetContent>
             </Sheet>
 
-            <div ref={headerLogoRef} className="absolute left-1/2 -translate-x-1/2">
+            <div className="absolute left-1/2 -translate-x-1/2">
               <Link href="/">
                 {mounted && (
                   <Image 
-                      src="https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png"
+                      src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"}
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
@@ -237,10 +237,11 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white text-sm" onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
+          </div>
         </div>
 
         {/* Section 1: Home */}

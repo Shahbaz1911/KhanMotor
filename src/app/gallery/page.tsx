@@ -76,26 +76,20 @@ export default function GalleryPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Header fade in
-       gsap.fromTo(headerRef.current, 
-        { autoAlpha: 0, y: -20 },
-        { autoAlpha: 1, y: 0, duration: 0.8, delay: 0.2, ease: "power3.out" }
-      );
-      
-      // Header fade out on scroll
-      ScrollTrigger.create({
-        trigger: pageRef.current,
-        start: "top top",
-        end: "max",
-        onUpdate: (self) => {
-          if (self.scroll() > 100) { // Start hiding after scrolling 100px
-            gsap.to(headerRef.current, { autoAlpha: 0, y: -20, duration: 0.3, ease: "power2.out" });
-          } else {
-            gsap.to(headerRef.current, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.in" });
-          }
-        },
-      });
+      // Header show/hide on scroll
+      const showAnim = gsap.from(headerRef.current, { 
+        yPercent: -100,
+        paused: true,
+        duration: 0.2
+      }).progress(1);
 
+      ScrollTrigger.create({
+        start: "top top",
+        end: 99999,
+        onUpdate: (self) => {
+          self.direction === -1 ? showAnim.play() : showAnim.reverse()
+        }
+      });
 
       gsap.from(titleRef.current, {
         opacity: 0,
@@ -119,44 +113,46 @@ export default function GalleryPage() {
   return (
     <>
         <div ref={pageRef}>
-          <div ref={headerRef} className="fixed top-4 w-full px-4 z-50 flex justify-between items-center">
-              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
-                    MENU
-                    <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
-                  <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
-                   <Button 
-                      variant="ghost" 
-                      onClick={() => setIsSheetOpen(false)} 
-                      className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
-                      aria-label="Close menu"
-                    >
-                      CLOSE
-                      <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
-                   </Button>
-                </SheetContent>
-              </Sheet>
+          <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50 bg-background/80 dark:bg-black/80 backdrop-blur-md">
+              <div className="relative flex justify-between items-center">
+                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
+                      MENU
+                      <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
+                    <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+                    <Button 
+                        variant="ghost" 
+                        onClick={() => setIsSheetOpen(false)} 
+                        className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
+                        aria-label="Close menu"
+                      >
+                        CLOSE
+                        <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
+                    </Button>
+                  </SheetContent>
+                </Sheet>
 
-              <div className="absolute left-1/2 -translate-x-1/2">
-                <Link href="/">
-                  <Image 
-                      src={logoSrc}
-                      alt="Motor Khan Logo"
-                      width={150}
-                      height={150}
-                      className="w-16 md:w-28 h-auto"
-                  />
-                </Link>
+                <div className="absolute left-1/2 -translate-x-1/2">
+                  <Link href="/">
+                    <Image 
+                        src={logoSrc}
+                        alt="Motor Khan Logo"
+                        width={150}
+                        height={150}
+                        className="w-16 md:w-28 h-auto"
+                    />
+                  </Link>
+                </div>
+              
+                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
+                    <GalleryThumbnails className="mr-2 h-4 w-4" />
+                    GALLERY
+                </Button>
               </div>
-            
-              <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
-                  <GalleryThumbnails className="mr-2 h-4 w-4" />
-                  GALLERY
-              </Button>
           </div>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase">
