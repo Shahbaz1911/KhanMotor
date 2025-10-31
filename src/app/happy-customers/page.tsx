@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
-import { GalleryThumbnails, Loader2, Star } from "lucide-react";
+import { GalleryThumbnails, Loader2, Star, Car, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
@@ -155,13 +155,13 @@ export default function HappyCustomersPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-18 h-auto"
+                      className="w-16 md:w-20 h-auto"
                   />
                 </Link>
               </div>
             
               <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/gallery')}>
-                  <GalleryThumbnails className="mr-2 h-4 w-4" />
+                  <Car className="mr-2 h-4 w-4" />
                   VEHICLES
               </Button>
             </div>
