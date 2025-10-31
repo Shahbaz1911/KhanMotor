@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from 'next/image';
@@ -28,38 +27,16 @@ const expertiseItems = [
 ];
 
 const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
-    const lineRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
-        const el = lineRef.current;
-
-        if (el) {
-            gsap.fromTo(el,
-                { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 90%',
-                        toggleActions: 'play none none none',
-                    }
-                }
-            );
-        }
-    }, []);
-
     return (
-        <div ref={lineRef} className="flex items-center justify-center flex-wrap">
+        <div className="flex items-center justify-center flex-wrap">
             <span className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center">{startText}</span>
-            <motion.div 
+             <motion.div 
                 className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-            >
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+             >
                 <Image
                     src={image.url}
                     alt={image.aiHint}
