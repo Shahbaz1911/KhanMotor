@@ -69,12 +69,12 @@ const TimelineItem = ({
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground lowercase">
+            <div className="text-muted-foreground lowercase">
               {item.title === "Premium Vehicle Selection" && <>Handpicked luxury and performance cars. <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">Find your next car for sale</LinkPreview> from our curated collection at our car dealership.</>}
               {item.title === "Verified Quality" && <>Each vehicle undergoes a rigorous quality check. We offer <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">certified pre-owned cars</LinkPreview> for your peace of mind.</>}
               {item.title === "Expert Auto Maintenance" && <>State-of-the-art <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair shop</LinkPreview> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.</>}
               {item.title === "Personalized Service" && <>Our trusted car workshop offers dedicated consultants to guide you. We even offer a <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">mobile mechanic</LinkPreview> for your convenience.</>}
-            </p>
+            </div>
         </CardContent>
       </motion.div>
     </motion.div>
