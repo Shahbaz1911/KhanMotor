@@ -18,8 +18,8 @@ import { cn } from "@/lib/utils";
 import CircularText from "@/components/custom/CircularText";
 
 const socialLinks = [
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Instagram, href: 'https://www.instagram.com/motorkhan', label: 'Instagram' },
+    { icon: Facebook, href: 'https://www.facebook.com/motorkhan', label: 'Facebook' },
 ];
 
 const contactDetails = [
@@ -90,7 +90,7 @@ export default function ContactPage() {
 
   return (
     <div ref={pageRef} className="bg-background font-cairo">
-        <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50 bg-background/80 dark:bg-black/80 backdrop-blur-md">
+        <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50">
           <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>

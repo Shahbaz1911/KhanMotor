@@ -126,7 +126,7 @@ export default function HappyCustomersPage() {
   return (
     <>
         <div ref={pageRef} className="bg-background">
-          <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50 bg-background/80 dark:bg-black/80 backdrop-blur-md">
+          <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50">
             <div className="relative flex justify-between items-center">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>

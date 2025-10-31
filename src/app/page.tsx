@@ -200,7 +200,7 @@ export default function ConsolidatedPage() {
       </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50 bg-background/80 dark:bg-black/80 backdrop-blur-md">
+        <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50">
            <div className="relative flex justify-between items-center">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
