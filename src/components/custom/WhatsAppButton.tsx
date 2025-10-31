@@ -42,8 +42,11 @@ export function WhatsAppButton() {
 
   useEffect(() => {
     setMounted(true);
-
-    // Initialize GSAP timeline
+  }, []);
+  
+  useEffect(() => {
+    if (!mounted) return;
+    
     gsap.set(closeIconRef.current, { rotation: 180, opacity: 0, scale: 0.5 });
     tl.current = gsap.timeline({ paused: true, reversed: true });
 
@@ -52,15 +55,17 @@ export function WhatsAppButton() {
         .to(whatsappIconRef.current, { rotation: -180, opacity: 0, scale: 0.5, duration: 0.3, ease: "power2.in" })
         .to(closeIconRef.current, { rotation: 0, opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, "-=0.2");
     }
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
+    if (!mounted) return;
+
     if (isOpen) {
       tl.current?.play();
     } else {
       tl.current?.reverse();
     }
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   const handleServiceClick = (serviceText: string) => {
     const message = `Hello! I'm interested in your ${serviceText}.`;
