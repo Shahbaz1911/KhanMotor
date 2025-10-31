@@ -12,26 +12,26 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const expertiseItems = [
     {
         startText: "Expert",
-        image: (placeholderImages as any).expertise1,
+        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/car-washing.mp4",
         endText: "Detailing",
     },
     {
         startText: "Certified",
-        image: (placeholderImages as any).expertise2,
+        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/carintrowash.mp4",
         endText: "Sales",
     },
     {
         startText: "Classic",
-        image: (placeholderImages as any).expertise3,
+        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/car-restoration.mp4",
         endText: "Restoration",
     },
 ];
 
-const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
+const LineItem = ({ startText, video, endText }: typeof expertiseItems[0]) => {
     const triggerRef = useRef<HTMLDivElement>(null);
     const startTextRef = useRef<HTMLSpanElement>(null);
     const endTextRef = useRef<HTMLSpanElement>(null);
-    const imageRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
@@ -39,17 +39,16 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: triggerRef.current,
-                start: "top 80%", // Start animation when 80% of the element is in view
-                toggleActions: "play none none none", // Play animation once on enter
+                start: "top 80%",
+                toggleActions: "play none none none",
             },
         });
         
         const textOffset = window.innerWidth > 768 ? 150 : 50;
 
-        // Animate from an offset position to the final position
         tl.from(startTextRef.current, { x: textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, 0)
           .from(endTextRef.current, { x: -textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, 0)
-          .from(imageRef.current, { scale: 0.5, opacity: 0, ease: "power2.out", duration: 1 }, 0.2); // Slightly delay image for effect
+          .from(videoRef.current, { scale: 0.5, opacity: 0, ease: "power2.out", duration: 1 }, 0.2);
         
         return () => {
             tl.kill();
@@ -65,13 +64,14 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
     return (
         <div ref={triggerRef} className="flex items-center justify-center flex-nowrap overflow-hidden py-2">
             <span ref={startTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{startText}</span>
-             <div ref={imageRef} className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
-                <Image
-                    src={image.url}
-                    alt={image.aiHint}
-                    fill
-                    className="object-cover"
-                    data-ai-hint={image.aiHint}
+             <div ref={videoRef} className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
+                <video
+                    src={video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
                 />
             </div>
             <span ref={endTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{endText}</span>
