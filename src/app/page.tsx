@@ -50,6 +50,7 @@ export default function ConsolidatedPage() {
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const innerHeaderRef = useRef<HTMLDivElement>(null);
   
   
   const aboutCarouselImages = [
@@ -70,17 +71,17 @@ export default function ConsolidatedPage() {
 
   // GSAP Animation useEffect
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !innerHeaderRef.current) return;
     
     gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
-      const showAnim = gsap.from(headerRef.current, { 
+    const showAnim = gsap.from(innerHeaderRef.current, { 
         yPercent: -100,
         paused: true,
         duration: 0.2
       }).progress(1);
 
+    const ctx = gsap.context(() => {
       ScrollTrigger.create({
         start: "top top",
         end: 99999,
@@ -188,7 +189,6 @@ export default function ConsolidatedPage() {
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
       : (theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
 
-
   return (
     <>
       <Head>
@@ -207,11 +207,11 @@ export default function ConsolidatedPage() {
       </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <header ref={headerRef} className="fixed top-0 w-full z-50">
-           <div className="relative flex justify-between items-center px-4 pt-4">
+        <header ref={headerRef} className="fixed top-0 w-full z-50 bg-transparent">
+          <div ref={innerHeaderRef} className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", heroMode && "text-white hover:bg-white/10 hover:text-white")}>
+                <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", mounted && heroMode && "text-white hover:bg-white/10 hover:text-white")}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -244,7 +244,7 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", heroMode && "text-white hover:bg-white/10 hover:text-white")} onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", mounted && heroMode && "text-white hover:bg-white/10 hover:text-white")} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
