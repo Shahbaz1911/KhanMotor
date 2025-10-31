@@ -86,5 +86,17 @@
   "customer6": {
     "url": "https://picsum.photos/seed/customer6/600/400",
     "aiHint": "woman with convertible"
+  },
+  "expertise1": {
+    "url": "https://picsum.photos/seed/detailing/600/400",
+    "aiHint": "car detailing"
+  },
+  "expertise2": {
+    "url": "https://picsum.photos/seed/certified/600/400",
+    "aiHint": "car key handshake"
+  },
+  "expertise3": {
+    "url": "https://picsum.photos/seed/restoration/600/400",
+    "aiHint": "classic car"
   }
 }

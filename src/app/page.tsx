@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -34,6 +33,7 @@ import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import { LinkPreview } from "@/components/ui/link-preview";
+import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
 
 
 export default function ConsolidatedPage() {
@@ -260,6 +260,10 @@ export default function ConsolidatedPage() {
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <AchievementsSection />
         
+        <TextMarquee />
+        
+        <ExpertiseSection />
+
         {/* Section 2: About Us */}
         <section id="about-us" className="container mx-auto px-4 py-16 md:py-24">
           <motion.div 
@@ -332,7 +336,7 @@ export default function ConsolidatedPage() {
           </ScrollReveal>
         </section>
 
-        <TextMarquee />
+        
         <ServicesSection />
 
         <CallToAction />
@@ -381,5 +385,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
