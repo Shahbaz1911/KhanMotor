@@ -1,17 +1,14 @@
 
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import {
   Wrench,
   Paintbrush,
   Repeat,
   ShieldCheck,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { LinkPreview } from "@/components/ui/link-preview";
 
 const services = [
@@ -19,52 +16,69 @@ const services = [
     icon: Wrench,
     title: "Car Repair & Servicing",
     description: "Comprehensive <a href='/contact'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
+    area: "md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/7]"
   },
   {
     icon: Paintbrush,
     title: "Denting, Painting & Detailing",
     description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact'>car detailing</a>.",
+    area: "md:[grid-area:1/7/2/13] xl:[grid-area:1/7/2/13]"
   },
   {
     icon: Repeat,
     title: "Buy & Sell Used Cars",
     description: "Explore our car marketplace to <a href='/gallery'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
+    area: "md:[grid-area:2/1/3/7] xl:[grid-area:2/1/3/7]"
   },
   {
     icon: ShieldCheck,
     title: "Car Maintenance",
     description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact'>air conditioning repair</a>.",
+    area: "md:[grid-area:2/7/3/13] xl:[grid-area:2/7/3/13]"
   },
 ];
 
-export function ServicesSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+interface GridItemProps {
+  area: string;
+  icon: React.ReactNode;
+  title: string;
+  description: React.ReactNode;
+}
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      gsap.from(cardsRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        opacity: 0,
-        scale: 0.9,
-        y: 50,
-        duration: 0.6,
-        stagger: 0.2,
-        ease: "power3.out",
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+const GridItem = ({ area, icon, title, description }: GridItemProps) => {
   return (
-    <section ref={sectionRef} id="services" className="py-16 md:py-24 bg-background">
+    <li className={`min-h-[14rem] list-none ${area}`}>
+      <div className="relative h-full rounded-2xl border p-2 md:rounded-3xl md:p-3">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+        />
+        <div className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+          <div className="relative flex flex-1 flex-col justify-between gap-3">
+            <div className="w-fit rounded-lg border border-gray-600 p-2">
+              {icon}
+            </div>
+            <div className="space-y-3">
+              <h3 className="-tracking-4 pt-0.5 font-sans text-xl/[1.375rem] font-semibold text-balance text-black md:text-2xl/[1.875rem] dark:text-white">
+                {title}
+              </h3>
+              <div className="font-sans text-sm/[1.125rem] text-black md:text-base/[1.375rem] dark:text-neutral-400 [&_b]:md:font-semibold [&_strong]:md:font-semibold lowercase">
+                {description}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+export function ServicesSection() {
+  return (
+    <section id="services" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="text-4xl tracking-tight lg:text-5xl text-foreground font-black uppercase">
@@ -74,45 +88,43 @@ export function ServicesSection() {
             from classic car restoration to routine car maintenance, we are the best car mechanic for all your needs.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-2 lg:gap-4 xl:max-h-[34rem]">
           {services.map((service, index) => (
-            <div key={index} ref={el => cardsRef.current[index] = el}>
-              <Card className="h-full flex flex-col items-center text-center bg-card/50 backdrop-blur-md border-border shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-destructive/30">
-                <CardHeader className="items-center">
-                  <div className="p-4 bg-destructive/20 rounded-full border border-destructive/30 mb-4">
-                    <service.icon className="h-8 w-8 text-destructive" />
-                  </div>
-                  <CardTitle className="text-2xl font-black uppercase">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="lowercase">
-                    {service.title === "Car Repair & Servicing" && (
-                       <>
-                        Comprehensive <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair and car servicing</LinkPreview> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.
-                       </>
-                    )}
-                     {service.title === "Denting, Painting & Detailing" && (
-                        <>
-                        Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">car detailing</LinkPreview>.
-                        </>
-                    )}
-                    {service.title === "Buy & Sell Used Cars" && (
-                        <>
-                        Explore our car marketplace to <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">buy used cars</LinkPreview> or sell your car. We are a top used car dealer for certified pre-owned cars.
-                        </>
-                    )}
-                    {service.title === "Car Maintenance" && (
-                        <>
-                        Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">air conditioning repair</LinkPreview>.
-                        </>
-                    )}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </div>
+            <GridItem
+              key={index}
+              area={service.area}
+              icon={<service.icon className="h-4 w-4 text-black dark:text-neutral-400" />}
+              title={service.title}
+              description={
+                <>
+                  {service.title === "Car Repair & Servicing" && (
+                     <>
+                      Comprehensive <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair and car servicing</LinkPreview> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.
+                     </>
+                  )}
+                   {service.title === "Denting, Painting & Detailing" && (
+                      <>
+                      Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">car detailing</LinkPreview>.
+                      </>
+                  )}
+                  {service.title === "Buy & Sell Used Cars" && (
+                      <>
+                      Explore our car marketplace to <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">buy used cars</LinkPreview> or sell your car. We are a top used car dealer for certified pre-owned cars.
+                      </>
+                  )}
+                  {service.title === "Car Maintenance" && (
+                      <>
+                      Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">air conditioning repair</LinkPreview>.
+                      </>
+                  )}
+                </>
+              }
+            />
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
 }
+
+    
