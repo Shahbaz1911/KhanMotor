@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -34,8 +35,6 @@ export const Tabs = ({
     setActive(newTabs[0]);
   };
 
-  const [hovering, setHovering] = useState(false);
-
   return (
     <>
       <div
@@ -50,8 +49,6 @@ export const Tabs = ({
             onClick={() => {
               moveSelectedTabToTop(idx);
             }}
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
             className={cn("relative px-4 py-2 rounded-full", tabClassName)}
             style={{
               transformStyle: "preserve-3d",
@@ -78,7 +75,6 @@ export const Tabs = ({
         tabs={tabs}
         active={active}
         key={active.value}
-        hovering={hovering}
         className={cn("mt-32", contentClassName)}
       />
     </>
@@ -88,13 +84,11 @@ export const Tabs = ({
 export const FadeInDiv = ({
   className,
   tabs,
-  hovering,
 }: {
   className?: string;
   key?: string;
   tabs: Tab[];
   active: Tab;
-  hovering?: boolean;
 }) => {
   const isActive = (tab: Tab) => {
     return tab.value === tabs[0].value;
@@ -107,7 +101,7 @@ export const FadeInDiv = ({
           layoutId={tab.value}
           style={{
             scale: 1 - idx * 0.1,
-            top: hovering ? idx * -50 : 0,
+            top: idx * -50,
             zIndex: -idx,
             opacity: idx < 3 ? 1 - idx * 0.1 : 0,
           }}
@@ -122,4 +116,3 @@ export const FadeInDiv = ({
     </div>
   );
 };
-    
