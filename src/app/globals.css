@@ -123,12 +123,3 @@
     opacity: 0.8;
   }
 }
-
-@layer utilities {
-  .bg-footer-gradient {
-    @apply bg-gradient-to-br from-red-500 via-red-600 to-red-800;
-  }
-  .bg-footer-gradient-blurred {
-    @apply bg-gradient-to-br from-red-500 via-red-600 to-red-800 blur-lg;
-  }
-}
