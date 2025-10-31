@@ -20,7 +20,7 @@ export function WhyChooseUs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-foreground bg-background border">
           <p className="uppercase">Selection</p>
-          <div className="text-sm font-normal mt-4 lowercase text-muted-foreground">
+          <div className="text-sm md:text-base lg:text-lg font-normal mt-4 lowercase text-muted-foreground">
             Handpicked luxury and performance cars. <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">Find your next car for sale</LinkPreview> from our curated collection at our car dealership.
           </div>
           <Car className="absolute -bottom-10 -right-10 h-48 w-48 text-foreground/10" strokeWidth={1.5} />
@@ -33,7 +33,7 @@ export function WhyChooseUs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-foreground bg-background border">
           <p className="uppercase">Verified Quality</p>
-           <div className="text-sm font-normal mt-4 lowercase text-muted-foreground">
+           <div className="text-sm md:text-base lg:text-lg font-normal mt-4 lowercase text-muted-foreground">
             Each vehicle undergoes a rigorous quality check. We offer <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">certified pre-owned cars</LinkPreview> for your peace of mind.
           </div>
           <ShieldCheck className="absolute -bottom-10 -right-10 h-48 w-48 text-foreground/10" strokeWidth={1.5} />
@@ -46,7 +46,7 @@ export function WhyChooseUs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-foreground bg-background border">
           <p className="uppercase">Expert Auto Maintenance</p>
-           <div className="text-sm font-normal mt-4 lowercase text-muted-foreground">
+           <div className="text-sm md:text-base lg:text-lg font-normal mt-4 lowercase text-muted-foreground">
             State-of-the-art <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair shop</LinkPreview> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.
           </div>
           <Wrench className="absolute -bottom-10 -right-10 h-48 w-48 text-foreground/10" strokeWidth={1.5} />
@@ -59,7 +59,7 @@ export function WhyChooseUs() {
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-foreground bg-background border">
           <p className="uppercase">Personalized Service</p>
-          <div className="text-sm font-normal mt-4 lowercase text-muted-foreground">
+          <div className="text-sm md:text-base lg:text-lg font-normal mt-4 lowercase text-muted-foreground">
             Our trusted car workshop offers dedicated consultants to guide you. We even offer a <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">mobile mechanic</LinkPreview> for your convenience.
           </div>
           <MessageSquareHeart className="absolute -bottom-10 -right-10 h-48 w-48 text-foreground/10" strokeWidth={1.5} />
