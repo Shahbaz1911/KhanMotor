@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -103,7 +104,7 @@ const CircularText: React.FC<CircularTextProps> = ({
                     )}
                     style={{ transform: `rotate(${rotationDeg}deg)`, transformOrigin: 'center 80px' }} // 80px is half of 160px width/height
                 >
-                    {letter === '✦' ? <span>{letter}</span> : letter}
+                    {letter === '✧' ? <span>{letter}</span> : letter}
                 </motion.span>
                 );
             })}

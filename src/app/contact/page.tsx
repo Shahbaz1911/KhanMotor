@@ -183,7 +183,7 @@ export default function ContactPage() {
               <motion.div variants={itemVariants} className="mt-8 flex justify-center lg:justify-start">
                   <Link href="/#contact">
                     <CircularText
-                      text="GET✦IN✦TOUCH✦"
+                      text="GET✧IN✧TOUCH✧"
                       onHover="speedUp"
                       spinDuration={20}
                       className="text-sm text-foreground"

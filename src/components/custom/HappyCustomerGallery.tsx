@@ -122,7 +122,7 @@ export function HappyCustomerGallery() {
                  <div className="mt-12 flex justify-center">
                     <Link href="/happy-customers">
                       <CircularText
-                        text="VIEW✦FULL✦GALLERY✦"
+                        text="VIEW✧FULL✧GALLERY✧"
                         onHover="speedUp"
                         spinDuration={20}
                         className="text-sm text-foreground"
