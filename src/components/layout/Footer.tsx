@@ -39,7 +39,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="bg-[#202020] py-12 md:py-20 px-4">
+    <footer ref={footerRef} className="bg-background py-12 md:py-20 px-4">
       <div className="container mx-auto bg-black text-gray-300 rounded-2xl shadow-2xl p-8 md:p-12">
         <div className="flex flex-col md:grid md:grid-cols-12 gap-y-10 md:gap-8">
           
