@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -42,11 +43,13 @@ export function WhatsAppButton() {
   useEffect(() => {
     setMounted(true);
 
-    tl.current = gsap.timeline({ paused: true });
+    // Initialize GSAP timeline
+    gsap.set(closeIconRef.current, { rotation: 180, opacity: 0, scale: 0.5 });
+    tl.current = gsap.timeline({ paused: true, reversed: true });
 
     if (whatsappIconRef.current && closeIconRef.current) {
       tl.current
-        .to(whatsappIconRef.current, { rotation: 180, opacity: 0, scale: 0.5, duration: 0.3, ease: "power2.in" })
+        .to(whatsappIconRef.current, { rotation: -180, opacity: 0, scale: 0.5, duration: 0.3, ease: "power2.in" })
         .to(closeIconRef.current, { rotation: 0, opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, "-=0.2");
     }
   }, []);
@@ -90,8 +93,12 @@ export function WhatsAppButton() {
           aria-label="Chat on WhatsApp"
         >
           <div className="relative w-6 h-6 flex items-center justify-center">
-            <WhatsAppIcon ref={whatsappIconRef} className="absolute" />
-            <X ref={closeIconRef} className="absolute h-6 w-6 opacity-0 scale-50" style={{ transform: 'rotate(-180deg)' }} />
+            <div ref={whatsappIconRef} className="absolute">
+              <WhatsAppIcon />
+            </div>
+            <div ref={closeIconRef} className="absolute">
+                <X className="h-6 w-6" />
+            </div>
           </div>
         </Button>
       </PopoverTrigger>
