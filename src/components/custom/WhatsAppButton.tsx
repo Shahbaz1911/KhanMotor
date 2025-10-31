@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useState, useRef, useEffect } from "react";
 import { Wrench, Paintbrush, Repeat, ShieldCheck, MessageCircle, X } from "lucide-react";
 import { gsap } from "gsap";
+import { useTheme } from "next-themes";
 
 const WhatsAppIcon = ({ className, ...props }: { className?: string, [key: string]: any }) => (
     <svg
@@ -30,6 +31,7 @@ const services = [
 ];
 
 export function WhatsAppButton() {
+  const { theme } = useTheme();
   const phoneNumber = "918595853918";
   const [isOpen, setIsOpen] = useState(false);
   
@@ -72,7 +74,12 @@ export function WhatsAppButton() {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full bg-black text-white shadow-lg transition-all duration-300 hover:bg-white hover:text-black hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          className={cn(
+            "fixed bottom-6 right-6 z-50 h-16 w-16 rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+            theme === 'dark'
+              ? "bg-white text-black hover:bg-neutral-200"
+              : "bg-black text-white hover:bg-neutral-800"
+          )}
           aria-label="Chat on WhatsApp"
         >
           <div className="relative w-6 h-6 flex items-center justify-center">
