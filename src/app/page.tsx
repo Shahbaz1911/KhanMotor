@@ -199,7 +199,7 @@ export default function ConsolidatedPage() {
       </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <div ref={headerRef} className="fixed top-0 w-full z-50">
+        <header ref={headerRef} className="fixed top-0 w-full z-50">
            <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
@@ -230,7 +230,7 @@ export default function ConsolidatedPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-18 h-auto"
+                      className="w-16 md:w-20 h-auto"
                   />
                 )}
               </Link>
@@ -241,7 +241,7 @@ export default function ConsolidatedPage() {
                 GALLERY
             </Button>
           </div>
-        </div>
+        </header>
 
         {/* Section 1: Home */}
         <section id="home" className="relative w-full h-screen overflow-hidden">

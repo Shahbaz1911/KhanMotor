@@ -125,7 +125,7 @@ export default function HappyCustomersPage() {
   return (
     <>
         <div ref={pageRef} className="bg-background">
-          <div ref={headerRef} className="fixed top-0 w-full z-50">
+          <header ref={headerRef} className="fixed top-0 w-full z-50">
             <div className="relative flex justify-between items-center px-4 pt-4">
               <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
@@ -155,7 +155,7 @@ export default function HappyCustomersPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-18 h-auto"
+                      className="w-16 md:w-20 h-auto"
                   />
                 </Link>
               </div>
@@ -165,7 +165,7 @@ export default function HappyCustomersPage() {
                   VEHICLES
               </Button>
             </div>
-          </div>
+          </header>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <div className="text-center">
                 <Button variant="outline" onClick={() => router.push('/#customer-gallery')} className="mb-8">

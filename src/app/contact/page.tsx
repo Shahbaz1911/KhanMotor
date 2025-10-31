@@ -89,7 +89,7 @@ export default function ContactPage() {
 
   return (
     <div ref={pageRef} className="bg-background font-cairo">
-        <div ref={headerRef} className="fixed top-0 w-full z-50">
+        <header ref={headerRef} className="fixed top-0 w-full z-50">
           <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                     alt="Motor Khan Logo"
                     width={150}
                     height={150}
-                    className="w-18 h-auto"
+                    className="w-16 md:w-20 h-auto"
                 />
               </Link>
             </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                 GALLERY
             </Button>
           </div>
-        </div>
+        </header>
         <div className="container mx-auto px-4 py-16 md:py-24 flex items-center justify-center mt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
             <motion.div

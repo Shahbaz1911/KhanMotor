@@ -69,7 +69,7 @@ export default function BookAppointmentPage() {
 
   return (
     <div ref={pageRef} className="bg-background">
-        <div ref={headerRef} className="fixed top-0 w-full z-50">
+        <header ref={headerRef} className="fixed top-0 w-full z-50">
           <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
@@ -99,7 +99,7 @@ export default function BookAppointmentPage() {
                     alt="Motor Khan Logo"
                     width={150}
                     height={150}
-                    className="w-18 h-auto"
+                    className="w-16 md:w-20 h-auto"
                 />
               </Link>
             </div>
@@ -109,7 +109,7 @@ export default function BookAppointmentPage() {
                 GALLERY
             </Button>
           </div>
-        </div>
+        </header>
       <div className="container mx-auto px-4 py-8 md:py-16 flex flex-col items-center min-h-screen justify-center mt-16">
         <Card ref={cardRef} className="w-full max-w-3xl shadow-xl">
           <CardHeader className="text-center">
