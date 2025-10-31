@@ -22,6 +22,9 @@ import { FirestorePermissionError } from "@/firebase/errors";
 
 type EditableVehicle = Omit<Vehicle, 'features'> & { features: string };
 
+// This type helps distinguish between an existing URL string and a new file to be uploaded.
+type ImageSource = string | { file: File; url: string };
+
 export default function EditVehiclePage() {
     const { user, loading: authLoading } = useAuth();
     const router = useRouter();
@@ -33,9 +36,10 @@ export default function EditVehiclePage() {
 
     const [vehicle, setVehicle] = useState<EditableVehicle | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isUploading, setIsUploading] = useState(false);
-    const [imageFiles, setImageFiles] = useState<File[]>([]);
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // Unified state for both existing image URLs (string) and new image files (object).
+    const [imageSources, setImageSources] = useState<ImageSource[]>([]);
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -49,24 +53,34 @@ export default function EditVehiclePage() {
         const fetchVehicle = async () => {
             setIsLoading(true);
             const vehicleRef = doc(firestore, "vehicles", id);
-            const docSnap = await getDoc(vehicleRef);
+            try {
+                const docSnap = await getDoc(vehicleRef);
 
-            if (docSnap.exists()) {
-                const data = { id: docSnap.id, ...docSnap.data() } as Vehicle;
-                setVehicle({
-                    ...data,
-                    features: Array.isArray(data.features) ? data.features.join('\n') : '',
-                });
-                setImageUrls(data.imageUrls || []);
-            } else {
-                toast({
+                if (docSnap.exists()) {
+                    const data = { id: docSnap.id, ...docSnap.data() } as Vehicle;
+                    setVehicle({
+                        ...data,
+                        features: Array.isArray(data.features) ? data.features.join('\n') : '',
+                    });
+                    // Initialize imageSources with existing URLs from Firestore
+                    setImageSources(data.imageUrls || []);
+                } else {
+                    toast({
+                        title: "Error",
+                        description: "Vehicle not found.",
+                        variant: "destructive"
+                    });
+                    router.push('/admin/dashboard');
+                }
+            } catch (error) {
+                 toast({
                     title: "Error",
-                    description: "Vehicle not found.",
+                    description: "Failed to fetch vehicle data.",
                     variant: "destructive"
                 });
-                router.push('/admin/dashboard');
+            } finally {
+                setIsLoading(false);
             }
-            setIsLoading(false);
         };
 
         fetchVehicle();
@@ -74,74 +88,77 @@ export default function EditVehiclePage() {
 
     const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
-        if (imageUrls.length + imageFiles.length + files.length > 8) {
+        if (imageSources.length + files.length > 8) {
           toast({ title: "Too many files", description: "You can upload a maximum of 8 images.", variant: "destructive" });
           return;
         }
-        setImageFiles(prev => [...prev, ...files]);
-        const newUrls = files.map(file => URL.createObjectURL(file));
-        setImageUrls(prev => [...prev, ...newUrls]);
+        
+        // Map new files to the ImageSource object format
+        const newImageSources: ImageSource[] = files.map(file => ({
+          file,
+          url: URL.createObjectURL(file)
+        }));
+        
+        setImageSources(prev => [...prev, ...newImageSources]);
     };
   
-    const removeImage = (index: number, isExisting: boolean) => {
-      if (isExisting) {
-        setImageUrls(prev => prev.filter((_, i) => i !== index));
-      } else {
-        const fileIndex = index - (vehicle?.imageUrls?.length || 0);
-        setImageFiles(prev => prev.filter((_, i) => i !== fileIndex));
-        setImageUrls(prev => prev.filter((_, i) => i !== index));
-      }
+    const removeImage = (index: number) => {
+      setImageSources(prev => prev.filter((_, i) => i !== index));
     };
     
     const handleUpdateVehicle = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!firestore || !vehicle || !user) return;
+        
+        setIsSubmitting(true);
 
-        let finalImageUrls = imageUrls.slice(0, vehicle.imageUrls?.length || 0);
+        try {
+            const existingUrls = imageSources.filter(source => typeof source === 'string') as string[];
+            const newFiles = imageSources.filter(source => typeof source === 'object') as { file: File; url: string }[];
+            
+            let uploadedUrls: string[] = [];
 
-        if (imageFiles.length > 0) {
-            setIsUploading(true);
-            const uploadedUrls = await Promise.all(
-                imageFiles.map(async (file) => {
+            if (newFiles.length > 0) {
+                const uploadPromises = newFiles.map(async (source) => {
                     const formData = new FormData();
-                    formData.append('file', file);
+                    formData.append('file', source.file);
                     const result = await uploadToCloudinary(formData);
+                    if (!result.success || !result.url) {
+                        throw new Error(`Failed to upload image: ${source.file.name}`);
+                    }
                     return result.url;
-                })
-            );
-
-            if (uploadedUrls.some(url => !url)) {
-                toast({ title: "Image upload failed", description: "One or more new images failed to upload.", variant: "destructive" });
-                setIsUploading(false);
-                return;
-            }
-            finalImageUrls = [...finalImageUrls, ...uploadedUrls.filter(Boolean) as string[]];
-            setIsUploading(false);
-        }
-        
-        const vehicleData = {
-            ...vehicle,
-            year: Number(vehicle.year),
-            price: Number(vehicle.price),
-            mileage: Number(vehicle.mileage),
-            features: typeof vehicle.features === 'string' ? vehicle.features.split('\n').filter(f => f.trim() !== "") : [],
-            imageUrls: finalImageUrls,
-        };
-        
-        const vehicleRef = doc(firestore, "vehicles", vehicle.id);
-        updateDoc(vehicleRef, vehicleData)
-            .then(() => {
-                toast({ title: "Vehicle Updated", description: `${vehicle.make} ${vehicle.model} has been updated.` });
-                router.push('/admin/dashboard');
-            })
-            .catch(async (serverError) => {
-                const permissionError = new FirestorePermissionError({
-                    path: vehicleRef.path,
-                    operation: 'update',
-                    requestResourceData: vehicleData,
                 });
-                errorEmitter.emit('permission-error', permissionError);
-            });
+                
+                uploadedUrls = await Promise.all(uploadPromises);
+            }
+
+            const finalImageUrls = [...existingUrls, ...uploadedUrls];
+            
+            const vehicleData = {
+                ...vehicle,
+                year: Number(vehicle.year),
+                price: Number(vehicle.price),
+                mileage: Number(vehicle.mileage),
+                features: typeof vehicle.features === 'string' ? vehicle.features.split('\n').filter(f => f.trim() !== "") : [],
+                imageUrls: finalImageUrls,
+            };
+            
+            const vehicleRef = doc(firestore, "vehicles", vehicle.id);
+            await updateDoc(vehicleRef, vehicleData);
+            
+            toast({ title: "Vehicle Updated", description: `${vehicle.make} ${vehicle.model} has been updated.` });
+            router.push('/admin/inventory');
+        } catch (error) {
+            console.error("Update error:", error);
+            const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+             toast({ title: "Update Failed", description: errorMessage, variant: "destructive" });
+
+             if (error instanceof FirestorePermissionError) {
+                 errorEmitter.emit('permission-error', error);
+             }
+        } finally {
+             setIsSubmitting(false);
+        }
     }
 
     if (isLoading || authLoading || !user || !firestore) {
@@ -156,11 +173,13 @@ export default function EditVehiclePage() {
         return null;
     }
 
+    const getImageUrl = (source: ImageSource) => (typeof source === 'string' ? source : source.url);
+
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-black">
             <header className="bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 sticky top-0 z-30">
                 <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-                     <Button variant="outline" size="icon" onClick={() => router.push('/admin/dashboard')}>
+                     <Button variant="outline" size="icon" onClick={() => router.push('/admin/inventory')}>
                         <ArrowLeft className="h-4 w-4" />
                      </Button>
                     <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200 uppercase">Edit Vehicle</h1>
@@ -283,35 +302,35 @@ export default function EditVehiclePage() {
                                <div className="space-y-2">
                                     <Label>Car Images (up to 8)</Label>
                                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                                      {imageUrls.map((url, index) => (
+                                      {imageSources.map((source, index) => (
                                         <div key={index} className="relative group">
-                                          <Image src={url} alt={`Uploaded vehicle ${index + 1}`} width={120} height={90} className="w-full h-auto aspect-video rounded-lg object-cover" />
-                                          <Button type="button" size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100" onClick={() => removeImage(index, index < (vehicle.imageUrls?.length || 0))}>
+                                          <Image src={getImageUrl(source)} alt={`Uploaded vehicle ${index + 1}`} width={120} height={90} className="w-full h-auto aspect-video rounded-lg object-cover" />
+                                          <Button type="button" size="icon" variant="destructive" className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100" onClick={() => removeImage(index)}>
                                             <X className="h-4 w-4" />
                                           </Button>
                                         </div>
                                       ))}
                                     </div>
-                                    {isUploading && (
+                                    {isSubmitting && (
                                         <div className="flex items-center gap-2 text-muted-foreground">
                                             <Loader2 className="h-5 w-5 animate-spin" />
                                             <span>Uploading images... Please wait.</span>
                                         </div>
                                     )}
-                                    {imageUrls.length < 8 && (
+                                    {imageSources.length < 8 && (
                                       <div className="flex-1 space-y-2">
                                           <Label htmlFor="edit-car-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                                               <Upload className="h-5 w-5" />
-                                              <span>{imageUrls.length > 0 ? "Add more files" : "Click to upload"}</span>
+                                              <span>{imageSources.length > 0 ? "Add more files" : "Click to upload"}</span>
                                           </Label>
-                                          <Input id="edit-car-image-upload" type="file" accept="image/*" multiple onChange={handleFilesChange} className="sr-only" disabled={isUploading} />
-                                          <p className="text-xs text-muted-foreground">You can upload up to {8 - imageUrls.length} more images.</p>
+                                          <Input id="edit-car-image-upload" type="file" accept="image/*" multiple onChange={handleFilesChange} className="sr-only" disabled={isSubmitting} />
+                                          <p className="text-xs text-muted-foreground">You can upload up to {8 - imageSources.length} more images.</p>
                                       </div>
                                     )}
                                 </div>
                                 <div className="flex justify-end gap-2">
-                                     <Button type="button" variant="secondary" onClick={() => router.push('/admin/dashboard')}>Cancel</Button>
-                                     <Button type="submit" disabled={isUploading}>{isUploading ? 'Uploading...' : 'Save Changes'}</Button>
+                                     <Button type="button" variant="secondary" onClick={() => router.push('/admin/inventory')}>Cancel</Button>
+                                     <Button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</Button>
                                 </div>
                             </form>
                         </CardContent>
@@ -321,3 +340,5 @@ export default function EditVehiclePage() {
         </div>
     );
 }
+
+    

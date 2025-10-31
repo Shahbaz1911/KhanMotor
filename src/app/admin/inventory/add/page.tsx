@@ -36,7 +36,7 @@ export default function AddVehiclePage() {
     const [newVehicle, setNewVehicle] = useState(initialVehicleState);
     const [vehicleImageFiles, setVehicleImageFiles] = useState<File[]>([]);
     const [vehicleImageUrls, setVehicleImageUrls] = useState<string[]>([]);
-    const [isVehicleUploading, setIsVehicleUploading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
@@ -94,46 +94,45 @@ export default function AddVehiclePage() {
             return;
         }
 
-        setIsVehicleUploading(true);
-        const uploadedUrls = await Promise.all(vehicleImageFiles.map(handleFileUpload));
-        
-        if (uploadedUrls.some(url => url === null)) {
-            toast({ title: "Image upload failed", description: "One or more images failed to upload. Could not add vehicle.", variant: "destructive" });
-            setIsVehicleUploading(false);
-            return;
+        setIsSubmitting(true);
+        try {
+            const uploadedUrls = await Promise.all(vehicleImageFiles.map(handleFileUpload));
+            
+            if (uploadedUrls.some(url => url === null)) {
+                throw new Error("One or more images failed to upload. Could not add vehicle.");
+            }
+            
+            const vehicleData = {
+                ...newVehicle,
+                year: Number(newVehicle.year),
+                price: Number(newVehicle.price),
+                mileage: Number(newVehicle.mileage),
+                features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
+                imageUrls: uploadedUrls as string[],
+                aiHint: 'new vehicle',
+                createdAt: serverTimestamp(),
+            };
+            
+            const vehiclesCollection = collection(firestore, "vehicles");
+            await addDoc(vehiclesCollection, vehicleData);
+            
+            toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
+            setIsSuccess(true);
+            setTimeout(() => {
+                router.push('/admin/inventory');
+            }, 2000); 
+
+        } catch (error) {
+            console.error("Add vehicle error:", error);
+            const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+            toast({ title: "Submission Failed", description: errorMessage, variant: "destructive" });
+
+            if (error instanceof FirestorePermissionError) {
+                errorEmitter.emit('permission-error', error);
+            }
+        } finally {
+            setIsSubmitting(false);
         }
-        
-        const vehicleData = {
-            ...newVehicle,
-            year: Number(newVehicle.year),
-            price: Number(newVehicle.price),
-            mileage: Number(newVehicle.mileage),
-            features: newVehicle.features.split('\n').filter(f => f.trim() !== ""),
-            imageUrls: uploadedUrls as string[],
-            aiHint: 'new vehicle',
-            createdAt: serverTimestamp(),
-        };
-        
-        const vehiclesCollection = collection(firestore, "vehicles");
-        addDoc(vehiclesCollection, vehicleData)
-            .then(() => {
-                toast({ title: "Vehicle Added", description: `${newVehicle.make} ${newVehicle.model} has been added to inventory.` });
-                setIsSuccess(true);
-                setTimeout(() => {
-                    router.push('/admin/inventory');
-                }, 2000); 
-            })
-            .catch(async (serverError) => {
-                const permissionError = new FirestorePermissionError({
-                    path: vehiclesCollection.path,
-                    operation: 'create',
-                    requestResourceData: vehicleData,
-                });
-                errorEmitter.emit('permission-error', permissionError);
-            })
-            .finally(() => {
-                setIsVehicleUploading(false);
-            });
     }
 
     if (authLoading || !user || !firestore) {
@@ -295,7 +294,7 @@ export default function AddVehiclePage() {
                                         </div>
                                     ))}
                                     </div>
-                                    {isVehicleUploading && (
+                                    {isSubmitting && vehicleImageFiles.length > 0 && (
                                         <div className="flex items-center gap-2 text-muted-foreground">
                                             <Loader2 className="h-5 w-5 animate-spin" />
                                             <span>Uploading images... Please wait.</span>
@@ -307,7 +306,7 @@ export default function AddVehiclePage() {
                                             <Upload className="h-5 w-5" />
                                             <span>{vehicleImageFiles.length > 0 ? "Add more files" : "Click to upload"}</span>
                                         </Label>
-                                        <Input id="car-image-upload" type="file" accept="image/*" multiple onChange={handleVehicleFilesChange} className="sr-only" disabled={isVehicleUploading} />
+                                        <Input id="car-image-upload" type="file" accept="image/*" multiple onChange={handleVehicleFilesChange} className="sr-only" disabled={isSubmitting} />
                                         <p className="text-xs text-muted-foreground">You can upload up to {8 - vehicleImageFiles.length} more images.</p>
                                     </div>
                                     )}
@@ -329,8 +328,8 @@ export default function AddVehiclePage() {
 
                                 <div className="flex justify-end gap-2">
                                      <Button type="button" variant="secondary" onClick={() => router.push('/admin/inventory')}>Cancel</Button>
-                                     <Button type="submit" disabled={isVehicleUploading}>
-                                        {isVehicleUploading ? 'Please wait...' : 'Add Vehicle'}
+                                     <Button type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Please wait...' : 'Add Vehicle'}
                                     </Button>
                                 </div>
                             </form>
@@ -341,4 +340,5 @@ export default function AddVehiclePage() {
         </div>
     );
 }
+    
     
