@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
-import { ArrowLeft, GalleryThumbnails, Loader2, Star } from "lucide-react";
+import { GalleryThumbnails, Loader2, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
@@ -42,7 +42,7 @@ export default function HappyCustomersPage() {
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
@@ -155,7 +155,7 @@ export default function HappyCustomersPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-16 md:w-18 h-auto"
+                      className="w-18 h-auto"
                   />
                 </Link>
               </div>
@@ -168,10 +168,6 @@ export default function HappyCustomersPage() {
           </header>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <div className="text-center">
-                <Button variant="outline" onClick={() => router.push('/#customer-gallery')} className="mb-8">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Home
-                </Button>
                 <h1 ref={titleRef} className="mb-12 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
                     Our Happy Customers
                 </h1>
