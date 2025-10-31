@@ -119,11 +119,15 @@ export function HappyCustomerGallery() {
                       no customer photos have been uploaded yet. be the first!
                   </div>
                 )}
-                 <div className="mt-12 text-center">
-                    <Button onClick={() => router.push('/happy-customers')} size="lg">
-                        View Full Gallery
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                 <div className="mt-12 flex justify-center">
+                    <Link href="/happy-customers">
+                        <CircularText
+                            text="VIEW✧GALLERY✧"
+                            onHover="speedUp"
+                            spinDuration={20}
+                            className="text-sm text-foreground"
+                        />
+                    </Link>
                 </div>
             </>
         )}
