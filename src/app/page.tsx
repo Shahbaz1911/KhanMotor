@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -274,10 +275,10 @@ export default function ConsolidatedPage() {
               </h2>
               <div className="text-lg text-muted-foreground my-5 space-y-4">
                   <span>
-                    Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <LinkPreview url="/gallery" className="font-bold text-primary">certified pre-owned vehicles</LinkPreview>, ensuring quality and reliability. We are the <LinkPreview url="/contact" className="font-bold text-primary">mechanic near you</LinkPreview> that you can trust for everything from a simple oil change service to complex transmission repair.
+                    Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <span><LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">certified pre-owned vehicles</LinkPreview></span>, ensuring quality and reliability. We are the <span><LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">mechanic near you</LinkPreview></span> that you can trust for everything from a simple oil change service to complex transmission repair.
                   </span>
                   <span>
-                    We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <LinkPreview url="/contact" className="font-bold text-primary">sell your car</LinkPreview>, our team is here to provide affordable car repair and exceptional service.
+                    We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <span><LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">sell your car</LinkPreview></span>, our team is here to provide affordable car repair and exceptional service.
                   </span>
               </div>
 
