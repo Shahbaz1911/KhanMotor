@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -53,9 +54,9 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
 
     return (
         <div ref={lineRef} className="flex items-center justify-center flex-wrap">
-            <span className="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-center">{startText}</span>
+            <span className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center">{startText}</span>
             <motion.div 
-                className="relative inline-block h-16 w-32 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-4 rounded-2xl overflow-hidden shadow-lg"
+                className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
             >
@@ -67,7 +68,7 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
                     data-ai-hint={image.aiHint}
                 />
             </motion.div>
-            <span className="text-4xl md:text-6xl lg:text-7xl font-black uppercase text-center">{endText}</span>
+            <span className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center">{endText}</span>
         </div>
     );
 };
