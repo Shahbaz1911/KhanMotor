@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -27,16 +28,39 @@ const expertiseItems = [
 ];
 
 const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
+    const triggerRef = useRef<HTMLDivElement>(null);
+    const startTextRef = useRef<HTMLSpanElement>(null);
+    const endTextRef = useRef<HTMLSpanElement>(null);
+    const imageRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: triggerRef.current,
+                start: "top 80%",
+                toggleActions: "play none none none",
+            },
+        });
+
+        const textOffset = window.innerWidth > 768 ? 150 : 50;
+
+        tl.from(triggerRef.current, { opacity: 0, y: 50, duration: 0.5 })
+          .from(startTextRef.current, { x: textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.2")
+          .from(endTextRef.current, { x: -textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, "<")
+          .from(imageRef.current, { scale: 0.5, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.6");
+        
+        return () => {
+            tl.kill();
+        }
+
+    }, []);
+
     return (
-        <div className="flex items-center justify-center flex-wrap">
-            <span className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center">{startText}</span>
-             <motion.div 
-                className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-             >
+        <div ref={triggerRef} className="flex items-center justify-center flex-nowrap overflow-hidden py-2">
+            <span ref={startTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{startText}</span>
+             <div ref={imageRef} className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
                 <Image
                     src={image.url}
                     alt={image.aiHint}
@@ -44,16 +68,17 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
                     className="object-cover"
                     data-ai-hint={image.aiHint}
                 />
-            </motion.div>
-            <span className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center">{endText}</span>
+            </div>
+            <span ref={endTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{endText}</span>
         </div>
     );
 };
 
 
 export function ExpertiseSection() {
+    const sectionRef = useRef<HTMLElement>(null);
     return (
-        <section id="expertise" className="py-16 md:py-24 bg-background">
+        <section ref={sectionRef} id="expertise" className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col gap-8">
                     {expertiseItems.map((item, index) => (
