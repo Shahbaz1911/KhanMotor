@@ -31,7 +31,7 @@ export default function GalleryPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
@@ -116,7 +116,7 @@ export default function GalleryPage() {
               <div className="relative flex justify-between items-center px-4 pt-4">
                 <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" className="text-foreground text-sm">
+                    <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent">
                       MENU
                       <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                     </Button>
@@ -142,12 +142,12 @@ export default function GalleryPage() {
                         alt="Motor Khan Logo"
                         width={150}
                         height={150}
-                        className="w-16 md:w-20 h-auto"
+                        className="w-16 md:w-18 h-auto"
                     />
                   </Link>
                 </div>
               
-                <Button variant="ghost" className="text-foreground text-sm" onClick={() => router.push('/gallery')}>
+                <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/gallery')}>
                     <GalleryThumbnails className="mr-2 h-4 w-4" />
                     GALLERY
                 </Button>
