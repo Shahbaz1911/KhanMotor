@@ -119,11 +119,11 @@ export function HappyCustomerGallery() {
                       no customer photos have been uploaded yet. be the first!
                   </div>
                 )}
-                 <div className="mt-12 flex justify-center">
-                    <Link href="/happy-customers" className="group text-2xl font-black uppercase text-foreground inline-flex items-center gap-2 hover:text-destructive transition-colors duration-300">
+                 <div className="mt-12 text-center">
+                    <Button onClick={() => router.push('/happy-customers')} size="lg">
                         View Full Gallery
-                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
-                    </Link>
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                 </div>
             </>
         )}
