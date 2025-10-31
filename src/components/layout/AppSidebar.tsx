@@ -45,7 +45,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
   }, [theme]);
 
   const handleLogout = async () => {

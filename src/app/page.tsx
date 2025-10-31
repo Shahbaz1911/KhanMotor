@@ -199,8 +199,8 @@ export default function ConsolidatedPage() {
       </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
-        <div className="fixed top-0 w-full z-50">
-           <div ref={headerRef} className="relative flex justify-between items-center px-4 pt-4">
+        <div ref={headerRef} className="fixed top-0 w-full z-50">
+           <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
@@ -226,11 +226,11 @@ export default function ConsolidatedPage() {
               <Link href="/">
                 {mounted && (
                   <Image 
-                      src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png"}
+                      src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png"}
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-16 md:w-18 h-auto"
+                      className="w-18 h-auto"
                   />
                 )}
               </Link>

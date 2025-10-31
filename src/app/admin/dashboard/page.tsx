@@ -32,12 +32,12 @@ export default function AdminDashboardPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
       ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+      : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
   }, [theme]);
 
 
@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
                     alt="Motor Khan Logo"
                     width={150}
                     height={150}
-                    className="w-16 md:w-18 h-auto"
+                    className="w-18 h-auto"
                 />
               </Link>
             </div>
