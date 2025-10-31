@@ -16,14 +16,14 @@ const expertiseItems = [
         endText: "Detailing",
     },
     {
-        startText: "Certified",
+        startText: "Quality",
         video: "https://armanautoxperts-in.vercel.app/armanautoxperts/carintrowash.mp4",
-        endText: "Sales",
+        endText: "Servicing",
     },
     {
         startText: "Classic",
         video: "https://armanautoxperts-in.vercel.app/armanautoxperts/car-restoration.mp4",
-        endText: "Restoration",
+        endText: "Repair",
     },
 ];
 
