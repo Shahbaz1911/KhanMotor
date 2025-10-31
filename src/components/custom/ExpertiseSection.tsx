@@ -63,8 +63,8 @@ const LineItem = ({ startText, video, endText }: typeof expertiseItems[0]) => {
 
     return (
         <div ref={triggerRef} className="flex items-center justify-center flex-nowrap overflow-hidden py-2">
-            <span ref={startTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{startText}</span>
-             <div ref={videoRef} className="relative inline-block h-12 w-24 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-2 md:mx-4 rounded-xl md:rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
+            <span ref={startTextRef} className="text-2xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{startText}</span>
+             <div ref={videoRef} className="relative inline-block h-10 w-20 md:h-20 md:w-48 lg:h-24 lg:w-56 mx-1 md:mx-4 rounded-lg md:rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
                 <video
                     src={video}
                     autoPlay
@@ -74,7 +74,7 @@ const LineItem = ({ startText, video, endText }: typeof expertiseItems[0]) => {
                     className="absolute inset-0 w-full h-full object-cover"
                 />
             </div>
-            <span ref={endTextRef} className="text-3xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{endText}</span>
+            <span ref={endTextRef} className="text-2xl md:text-6xl lg:text-7xl font-black uppercase text-center whitespace-nowrap">{endText}</span>
         </div>
     );
 };
