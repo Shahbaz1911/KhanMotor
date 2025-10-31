@@ -21,7 +21,7 @@ const expertiseItems = [
         endText: "Sales",
     },
     {
-        startText: "Classic Car",
+        startText: "Classic",
         image: (placeholderImages as any).expertise3,
         endText: "Restoration",
     },
