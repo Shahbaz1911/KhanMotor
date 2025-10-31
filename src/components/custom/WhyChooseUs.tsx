@@ -69,7 +69,7 @@ export function WhyChooseUs() {
   ];
 
   return (
-    <div className="h-[26rem] md:h-[40rem] [perspective:1000px] relative flex flex-col max-w-5xl mx-auto w-full  items-start justify-start">
+    <div className="h-[30rem] md:h-[40rem] [perspective:1000px] relative flex flex-col max-w-5xl mx-auto w-full  items-start justify-start">
       <Tabs tabs={tabs} />
     </div>
   );
