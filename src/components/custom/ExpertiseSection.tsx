@@ -39,18 +39,17 @@ const LineItem = ({ startText, image, endText }: typeof expertiseItems[0]) => {
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: triggerRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1, // Link animation to scroll progress
+                start: "top 80%", // Start animation when 80% of the element is in view
+                toggleActions: "play none none none", // Play animation once on enter
             },
         });
         
         const textOffset = window.innerWidth > 768 ? 150 : 50;
 
         // Animate from an offset position to the final position
-        tl.from(startTextRef.current, { x: textOffset, opacity: 0 }, 0)
-          .from(endTextRef.current, { x: -textOffset, opacity: 0 }, 0)
-          .from(imageRef.current, { scale: 0.5, opacity: 0, ease: "power2.out" }, 0);
+        tl.from(startTextRef.current, { x: textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, 0)
+          .from(endTextRef.current, { x: -textOffset, opacity: 0, duration: 0.8, ease: "power3.out" }, 0)
+          .from(imageRef.current, { scale: 0.5, opacity: 0, ease: "power2.out", duration: 1 }, 0.2); // Slightly delay image for effect
         
         return () => {
             tl.kill();
