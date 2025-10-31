@@ -73,7 +73,7 @@ export default function BookAppointmentPage() {
           <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
+                <Button variant="ghost" className="text-foreground text-sm">
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -104,7 +104,7 @@ export default function BookAppointmentPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className="text-foreground text-sm" onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
