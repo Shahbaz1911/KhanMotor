@@ -11,9 +11,17 @@ import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import axios from 'axios';
 
+// Load environment variables on the server
 if (typeof window === 'undefined') {
   require('dotenv').config();
 }
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true
+});
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
@@ -314,14 +322,6 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
       console.error("Cloudinary environment variables are not configured.");
       return { success: false, error: 'Server configuration error: Image hosting is not set up.' };
   }
-
-  // Configure Cloudinary inside the function to ensure env vars are loaded.
-  cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
-  });
 
   try {
     const fileBuffer = await file.arrayBuffer();
