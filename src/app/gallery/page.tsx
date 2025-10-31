@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import Image from "next/image";
-import { GalleryThumbnails, Loader2 } from "lucide-react";
+import { Users, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -147,9 +147,9 @@ export default function GalleryPage() {
                   </Link>
                 </div>
               
-                <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/gallery')}>
-                    <GalleryThumbnails className="mr-2 h-4 w-4" />
-                    GALLERY
+                <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/happy-customers')}>
+                    <Users className="mr-2 h-4 w-4" />
+                    CUSTOMERS
                 </Button>
               </div>
           </header>
