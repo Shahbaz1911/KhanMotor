@@ -1,191 +1,77 @@
 
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
+import Image from "next/image";
+import { Tabs } from "@/components/ui/tabs";
 import {
   Car,
   ShieldCheck,
   Wrench,
   MessageSquareHeart,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/link-preview";
 
-const highlightItems = [
-  {
-    icon: Car,
-    title: "Premium Vehicle Selection",
-    description: "Handpicked luxury and performance cars. <a href='/gallery'>Find your next car for sale</a> from our curated collection at our car dealership.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Verified Quality",
-    description: "Each vehicle undergoes a rigorous quality check. We offer <a href='/gallery'>certified pre-owned cars</a> for your peace of mind.",
-  },
-  {
-    icon: Wrench,
-    title: "Expert Auto Maintenance",
-    description: "State-of-the-art <a href='/contact'>auto repair shop</a> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
-  },
-  {
-    icon: MessageSquareHeart,
-    title: "Personalized Service",
-    description: "Our trusted car workshop offers dedicated consultants to guide you. We even offer a <a href='/contact'>mobile mechanic</a> for your convenience.",
-  },
-];
-
-const TimelineItem = ({
-  item,
-  isLeft,
-  progress,
-}: {
-  item: (typeof highlightItems)[0];
-  isLeft: boolean;
-  progress: any;
-}) => {
-  
-  const borderColor = useTransform(
-    progress,
-    [0.45, 0.5, 0.55],
-    ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
-  );
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: isLeft ? -50 : 50, scale: 0.95 }}
-      whileInView={{ opacity: 1, x: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.7 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      whileHover={{ scale: 1.03, y: -5 }}
-      className="w-full relative group"
-    >
-      <motion.div
-        style={{ borderColor }}
-        className="bg-card/90 backdrop-blur-md shadow-lg w-full h-full relative overflow-hidden rounded-lg border-2 transition-all duration-300 group-hover:border-destructive group-hover:shadow-destructive/20 group-hover:shadow-lg"
-      >
-        <CardHeader>
-            <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <div className="text-muted-foreground lowercase">
-              {item.title === "Premium Vehicle Selection" && <>Handpicked luxury and performance cars. <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">Find your next car for sale</LinkPreview> from our curated collection at our car dealership.</>}
-              {item.title === "Verified Quality" && <>Each vehicle undergoes a rigorous quality check. We offer <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">certified pre-owned cars</LinkPreview> for your peace of mind.</>}
-              {item.title === "Expert Auto Maintenance" && <>State-of-the-art <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair shop</LinkPreview> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.</>}
-              {item.title === "Personalized Service" && <>Our trusted car workshop offers dedicated consultants to guide you. We even offer a <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">mobile mechanic</LinkPreview> for your convenience.</>}
-            </div>
-        </CardContent>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-
 export function WhyChooseUs() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const scaleY = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
-  };
-  
+   const tabs = [
+    {
+      title: "Premium Selection",
+      value: "selection",
+      content: (
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-red-700 to-red-900">
+          <p className="uppercase">Premium Vehicle Selection</p>
+          <div className="text-sm font-normal mt-4 lowercase">
+            Handpicked luxury and performance cars. <LinkPreview url="/gallery" className="font-bold text-white" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">Find your next car for sale</LinkPreview> from our curated collection at our car dealership.
+          </div>
+          <Car className="absolute -bottom-10 -right-10 h-48 w-48 text-white/10" strokeWidth={1.5} />
+        </div>
+      ),
+    },
+    {
+      title: "Quality",
+      value: "quality",
+      content: (
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-blue-700 to-blue-900">
+          <p className="uppercase">Verified Quality</p>
+           <div className="text-sm font-normal mt-4 lowercase">
+            Each vehicle undergoes a rigorous quality check. We offer <LinkPreview url="/gallery" className="font-bold text-white" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">certified pre-owned cars</LinkPreview> for your peace of mind.
+          </div>
+          <ShieldCheck className="absolute -bottom-10 -right-10 h-48 w-48 text-white/10" strokeWidth={1.5} />
+        </div>
+      ),
+    },
+    {
+      title: "Expertise",
+      value: "expertise",
+      content: (
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-emerald-700 to-emerald-900">
+          <p className="uppercase">Expert Auto Maintenance</p>
+           <div className="text-sm font-normal mt-4 lowercase">
+            State-of-the-art <LinkPreview url="/contact" className="font-bold text-white" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair shop</LinkPreview> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.
+          </div>
+          <Wrench className="absolute -bottom-10 -right-10 h-48 w-48 text-white/10" strokeWidth={1.5} />
+        </div>
+      ),
+    },
+    {
+      title: "Service",
+      value: "service",
+      content: (
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-amber-700 to-amber-900">
+          <p className="uppercase">Personalized Service</p>
+          <div className="text-sm font-normal mt-4 lowercase">
+            Our trusted car workshop offers dedicated consultants to guide you. We even offer a <LinkPreview url="/contact" className="font-bold text-white" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">mobile mechanic</LinkPreview> for your convenience.
+          </div>
+          <MessageSquareHeart className="absolute -bottom-10 -right-10 h-48 w-48 text-white/10" strokeWidth={1.5} />
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <section ref={sectionRef} id="highlights" className="py-16 md:py-24 bg-background overflow-x-hidden">
-      <div className="container mx-auto px-4">
-        <motion.div
-            className="mb-16 text-center"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.7 }}
-            variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
-        >
-            <motion.h2
-                variants={titleVariants}
-                className="text-4xl tracking-tight lg:text-5xl font-black uppercase"
-            >
-                Why Choose Motor Khan?
-            </motion.h2>
-            <motion.p
-                variants={textVariants}
-                className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto lowercase"
-            >
-                experience the difference at our auto service center, where every detail is crafted for your satisfaction.
-            </motion.p>
-        </motion.div>
-        
-        <div className="relative w-full max-w-4xl mx-auto">
-            {/* The vertical line */}
-            <div className="absolute left-6 md:left-1/2 top-0 h-full w-0.5 bg-border md:-translate-x-1/2" aria-hidden="true">
-                 <motion.div 
-                    className="h-full w-full bg-destructive origin-top"
-                    style={{ scaleY: scaleY }}
-                 />
-            </div>
-            
-            <div className="relative flex flex-col gap-12">
-                {highlightItems.map((item, index) => {
-                    const itemRef = useRef<HTMLDivElement>(null);
-                    const { scrollYProgress: itemScrollYProgress } = useScroll({
-                        target: itemRef,
-                        offset: ["start end", "start center"]
-                    });
-
-                     const iconBorderColor = useTransform(
-                        itemScrollYProgress,
-                        [0.45, 0.5, 0.55],
-                        ["hsl(var(--border))", "hsl(var(--destructive))", "hsl(var(--border))"]
-                    );
-
-                    return (
-                        <div key={item.title} ref={itemRef} className={cn("relative flex items-center min-h-[150px]", "md:justify-start")}>
-                            {/* Icon on the timeline */}
-                            <div className="absolute left-6 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                                <motion.div
-                                     style={{ 
-                                        backgroundColor: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--background))", "hsl(var(--destructive))"]),
-                                        color: useTransform(itemScrollYProgress, [0.4, 0.5], ["hsl(var(--destructive))", "hsl(var(--primary-foreground))"]),
-                                        scale: useTransform(itemScrollYProgress, [0.4, 0.5, 0.6], [1, 1.2, 1]),
-                                        borderColor: iconBorderColor
-                                     }}
-                                     className="flex h-12 w-12 items-center justify-center rounded-full border-2 bg-background"
-                                >
-                                    <item.icon className="h-6 w-6" />
-                                </motion.div>
-                            </div>
-
-                            {/* Mobile layout: all cards on the right of the timeline */}
-                             <div className="w-full pl-20 md:hidden">
-                                <TimelineItem item={item} isLeft={false} progress={itemScrollYProgress} />
-                            </div>
-                            
-                            {/* Desktop layout: alternating cards */}
-                             <div className={cn("hidden md:flex w-full", index % 2 === 0 ? "justify-start" : "justify-end")}>
-                                <div className="w-[calc(50%-4rem)]">
-                                    <TimelineItem item={item} isLeft={index % 2 === 0} progress={itemScrollYProgress}/>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-      </div>
-    </section>
+    <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative flex flex-col max-w-5xl mx-auto w-full  items-start justify-start">
+      <Tabs tabs={tabs} />
+    </div>
   );
 }
+    

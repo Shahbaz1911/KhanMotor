@@ -42,7 +42,7 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanblack-2.png");
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -337,7 +337,31 @@ export default function ConsolidatedPage() {
 
         <CallToAction />
 
-        <WhyChooseUs />
+        <section id="why-choose-us" className="py-16 md:py-24 bg-background overflow-x-hidden">
+          <div className="container mx-auto px-4">
+              <motion.div
+                  className="mb-16 text-center"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.7 }}
+                  variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+              >
+                  <motion.h2
+                      variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+                      className="text-4xl tracking-tight lg:text-5xl font-black uppercase"
+                  >
+                      Why Choose Motor Khan?
+                  </motion.h2>
+                  <motion.p
+                      variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } } }}
+                      className="text-lg text-muted-foreground md:text-xl mt-4 max-w-3xl mx-auto lowercase"
+                  >
+                      experience the difference at our auto service center, where every detail is crafted for your satisfaction.
+                  </motion.p>
+              </motion.div>
+              <WhyChooseUs />
+          </div>
+        </section>
         
         {/* Section 4: Testimonials */}
         <section id="testimonials" className="py-16 md:py-24 bg-background">
@@ -357,3 +381,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
