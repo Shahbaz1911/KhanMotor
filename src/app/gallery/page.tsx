@@ -76,7 +76,6 @@ export default function GalleryPage() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Header show/hide on scroll
       const showAnim = gsap.from(headerRef.current, { 
         yPercent: -100,
         paused: true,
@@ -113,8 +112,8 @@ export default function GalleryPage() {
   return (
     <>
         <div ref={pageRef}>
-          <div ref={headerRef} className="fixed top-0 w-full px-4 pt-4 z-50">
-              <div className="relative flex justify-between items-center">
+          <div className="fixed top-0 w-full z-50">
+              <div ref={headerRef} className="relative flex justify-between items-center px-4 pt-4">
                 <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                   <SheetTrigger asChild>
                     <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
@@ -143,7 +142,7 @@ export default function GalleryPage() {
                         alt="Motor Khan Logo"
                         width={150}
                         height={150}
-                        className="w-16 md:w-24 h-auto"
+                        className="w-16 h-auto"
                     />
                   </Link>
                 </div>
@@ -189,3 +188,5 @@ export default function GalleryPage() {
     </>
   );
 }
+
+    
