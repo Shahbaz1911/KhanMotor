@@ -185,9 +185,12 @@ export default function ConsolidatedPage() {
   };
 
   const heroMode = isHeroVisible && theme === 'light';
-  const logoSrc = heroMode 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : (theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+  const logoSrc = heroMode
+    ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png"
+    : (theme === 'dark' 
+        ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
+        : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+
 
   return (
     <>
@@ -238,7 +241,7 @@ export default function ConsolidatedPage() {
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-16 md:w-18 h-auto"
+                      className="w-16 md:w-20 h-auto"
                   />
                 )}
               </Link>
@@ -397,3 +400,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
