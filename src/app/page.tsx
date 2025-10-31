@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -33,6 +32,7 @@ import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
 import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
 import { motion } from "framer-motion";
 import Head from "next/head";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 
 export default function ConsolidatedPage() {
@@ -273,10 +273,10 @@ export default function ConsolidatedPage() {
                 Your Trusted Auto Repair Shop & Car Dealership
               </h2>
               <p className="text-lg text-muted-foreground my-5">
-                Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <Link href="/gallery" className="text-primary font-bold hover:text-primary/80 transition-colors">certified pre-owned vehicles</Link>, ensuring quality and reliability. We are the <Link href="/contact" className="text-primary font-bold hover:text-primary/80 transition-colors">mechanic near you</Link> that you can trust for everything from a simple oil change service to complex transmission repair.
+                Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <LinkPreview url="/gallery" className="text-primary font-bold">certified pre-owned vehicles</LinkPreview>, ensuring quality and reliability. We are the <LinkPreview url="/contact" className="text-primary font-bold">mechanic near you</LinkPreview> that you can trust for everything from a simple oil change service to complex transmission repair.
               </p>
               <p className="text-lg text-muted-foreground my-5">
-                We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <Link href="/contact" className="text-primary font-bold hover:text-primary/80 transition-colors">sell your car</Link>, our team is here to provide affordable car repair and exceptional service.
+                We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <LinkPreview url="/contact" className="text-primary font-bold">sell your car</LinkPreview>, our team is here to provide affordable car repair and exceptional service.
               </p>
 
               <Button 

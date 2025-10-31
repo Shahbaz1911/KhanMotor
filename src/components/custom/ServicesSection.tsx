@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useRef, useEffect } from "react";
@@ -12,28 +11,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 const services = [
   {
     icon: Wrench,
     title: "Car Repair & Servicing",
-    description: "Comprehensive <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
+    description: "Comprehensive <a href='/contact'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
   },
   {
     icon: Paintbrush,
     title: "Denting, Painting & Detailing",
-    description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>car detailing</a>.",
+    description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact'>car detailing</a>.",
   },
   {
     icon: Repeat,
     title: "Buy & Sell Used Cars",
-    description: "Explore our car marketplace to <a href='/gallery' class='text-primary font-bold hover:text-primary/80 transition-colors'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
+    description: "Explore our car marketplace to <a href='/gallery'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
   },
   {
     icon: ShieldCheck,
     title: "Car Maintenance",
-    description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>air conditioning repair</a>.",
+    description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact'>air conditioning repair</a>.",
   },
 ];
 
@@ -85,7 +84,28 @@ export function ServicesSection() {
                   <CardTitle className="text-2xl font-black uppercase">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="lowercase" dangerouslySetInnerHTML={{ __html: service.description.toLowerCase() }} />
+                  <CardDescription className="lowercase">
+                    {service.title === "Car Repair & Servicing" && (
+                       <>
+                        Comprehensive <LinkPreview url="/contact" className="text-primary font-bold">auto repair and car servicing</LinkPreview> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.
+                       </>
+                    )}
+                     {service.title === "Denting, Painting & Detailing" && (
+                        <>
+                        Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <LinkPreview url="/contact" className="text-primary font-bold">car detailing</LinkPreview>.
+                        </>
+                    )}
+                    {service.title === "Buy & Sell Used Cars" && (
+                        <>
+                        Explore our car marketplace to <LinkPreview url="/gallery" className="text-primary font-bold">buy used cars</LinkPreview> or sell your car. We are a top used car dealer for certified pre-owned cars.
+                        </>
+                    )}
+                    {service.title === "Car Maintenance" && (
+                        <>
+                        Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <LinkPreview url="/contact" className="text-primary font-bold">air conditioning repair</LinkPreview>.
+                        </>
+                    )}
+                  </CardDescription>
                 </CardContent>
               </Card>
             </div>

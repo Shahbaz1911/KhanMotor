@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useRef } from "react";
@@ -11,28 +10,28 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { LinkPreview } from "@/components/ui/link-preview";
 
 const highlightItems = [
   {
     icon: Car,
     title: "Premium Vehicle Selection",
-    description: "Handpicked luxury and performance cars. <a href='/gallery' class='text-primary font-bold hover:text-primary/80 transition-colors'>Find your next car for sale</a> from our curated collection at our car dealership.",
+    description: "Handpicked luxury and performance cars. <a href='/gallery'>Find your next car for sale</a> from our curated collection at our car dealership.",
   },
   {
     icon: ShieldCheck,
     title: "Verified Quality",
-    description: "Each vehicle undergoes a rigorous quality check. We offer <a href='/gallery' class='text-primary font-bold hover:text-primary/80 transition-colors'>certified pre-owned cars</a> for your peace of mind.",
+    description: "Each vehicle undergoes a rigorous quality check. We offer <a href='/gallery'>certified pre-owned cars</a> for your peace of mind.",
   },
   {
     icon: Wrench,
     title: "Expert Auto Maintenance",
-    description: "State-of-the-art <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>auto repair shop</a> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
+    description: "State-of-the-art <a href='/contact'>auto repair shop</a> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.",
   },
   {
     icon: MessageSquareHeart,
     title: "Personalized Service",
-    description: "Our trusted car workshop offers dedicated consultants to guide you. We even offer a <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>mobile mechanic</a> for your convenience.",
+    description: "Our trusted car workshop offers dedicated consultants to guide you. We even offer a <a href='/contact'>mobile mechanic</a> for your convenience.",
   },
 ];
 
@@ -69,7 +68,12 @@ const TimelineItem = ({
             <CardTitle className="uppercase text-xl font-black">{item.title}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground lowercase" dangerouslySetInnerHTML={{ __html: item.description.toLowerCase() }} />
+            <p className="text-muted-foreground lowercase">
+              {item.title === "Premium Vehicle Selection" && <>Handpicked luxury and performance cars. <LinkPreview url="/gallery" className="text-primary font-bold">Find your next car for sale</LinkPreview> from our curated collection at our car dealership.</>}
+              {item.title === "Verified Quality" && <>Each vehicle undergoes a rigorous quality check. We offer <LinkPreview url="/gallery" className="text-primary font-bold">certified pre-owned cars</LinkPreview> for your peace of mind.</>}
+              {item.title === "Expert Auto Maintenance" && <>State-of-the-art <LinkPreview url="/contact" className="text-primary font-bold">auto repair shop</LinkPreview> with certified technicians for all your auto maintenance needs, from oil change service to transmission repair.</>}
+              {item.title === "Personalized Service" && <>Our trusted car workshop offers dedicated consultants to guide you. We even offer a <LinkPreview url="/contact" className="text-primary font-bold">mobile mechanic</LinkPreview> for your convenience.</>}
+            </p>
         </CardContent>
       </motion.div>
     </motion.div>
