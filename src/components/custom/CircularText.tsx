@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -111,8 +110,7 @@ const CircularText: React.FC<CircularTextProps> = ({
         </motion.div>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="flex items-center justify-center h-32 w-32 rounded-full bg-background text-destructive transition-colors duration-300 group-hover:bg-destructive/10">
-                <span className="text-2xl font-black uppercase">Click</span>
-                <ArrowUpRight className="w-6 h-6 ml-1" />
+                <ArrowUpRight className="w-12 h-12" />
             </div>
       </div>
     </div>
