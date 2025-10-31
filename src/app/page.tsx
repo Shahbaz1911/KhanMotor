@@ -44,18 +44,8 @@ export default function ConsolidatedPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
   const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    // The logo is now static, so we don't need to update it based on theme
-  }, []);
-
-
-  const aboutText1 = "since 1995, motor khan has been your trusted car workshop for premium used cars and expert auto repair. as a leading car dealership in rithala, delhi, we specialize in certified pre-owned vehicles, ensuring quality and reliability. we are the mechanic near you that you can trust for everything from a simple oil change service to complex transmission repair.";
-  const aboutText2 = "we aim to make buying a car or servicing your current one a transparent and personal experience. whether you need brake repair, car detailing, or are looking to sell your car, our team is here to provide affordable car repair and exceptional service.";
-
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
@@ -73,6 +63,10 @@ export default function ConsolidatedPage() {
     aiHint: img.aiHint
   }));
 
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // GSAP Animation useEffect
   useEffect(() => {
@@ -94,6 +88,15 @@ export default function ConsolidatedPage() {
           self.direction === -1 ? showAnim.play() : showAnim.reverse()
         }
       });
+
+      // ScrollTrigger for hero section visibility
+      ScrollTrigger.create({
+        trigger: "#home",
+        start: "top top",
+        end: "bottom top",
+        onToggle: ({ isActive }) => setIsHeroVisible(isActive),
+      });
+
     }, pageRef);
 
     return () => {
@@ -180,6 +183,11 @@ export default function ConsolidatedPage() {
     ]
   };
 
+  const heroMode = isHeroVisible && theme === 'light';
+  const logoSrc = heroMode 
+      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
+      : (theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+
 
   return (
     <>
@@ -203,7 +211,7 @@ export default function ConsolidatedPage() {
            <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm">
+                <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", heroMode && "text-white hover:bg-white/10 hover:text-white")}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -226,17 +234,17 @@ export default function ConsolidatedPage() {
               <Link href="/">
                 {mounted && (
                   <Image 
-                      src={theme === 'dark' ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png"}
+                      src={logoSrc}
                       alt="Motor Khan Logo"
                       width={150}
                       height={150}
-                      className="w-16 md:w-20 h-auto"
+                      className="w-16 md:w-18 h-auto"
                   />
                 )}
               </Link>
             </div>
           
-            <Button variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground text-sm" onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className={cn("text-foreground hover:bg-accent hover:text-accent-foreground text-sm", heroMode && "text-white hover:bg-white/10 hover:text-white")} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
