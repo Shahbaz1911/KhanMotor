@@ -74,20 +74,20 @@ export default function ConsolidatedPage() {
     
     gsap.registerPlugin(ScrollTrigger);
 
-    const showAnim = gsap.from(headerRef.current, { 
-        yPercent: -100,
-        paused: true,
-        duration: 0.2
-      }).progress(1);
-
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        start: "top top",
-        end: 99999,
-        onUpdate: (self) => {
-          self.direction === -1 ? showAnim.play() : showAnim.reverse()
-        }
-      });
+        const showAnim = gsap.from(headerRef.current, { 
+            yPercent: -100,
+            paused: true,
+            duration: 0.2
+        }).progress(1);
+    
+        ScrollTrigger.create({
+            start: "top top",
+            end: 99999,
+            onUpdate: (self) => {
+                self.direction === -1 ? showAnim.play() : showAnim.reverse()
+            }
+        });
 
       // ScrollTrigger for hero section visibility
       ScrollTrigger.create({
@@ -210,10 +210,10 @@ export default function ConsolidatedPage() {
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
         <header ref={headerRef} className="fixed top-0 w-full z-50">
-          <div className="relative flex justify-between items-center px-4 pt-4">
+           <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className={cn("text-foreground text-sm", heroMode && "text-white")}>
+                <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent", mounted && heroMode && "text-white")}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -246,7 +246,7 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className={cn("text-foreground text-sm", heroMode && "text-white")} onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent", mounted && heroMode && "text-white")} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
@@ -399,3 +399,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
