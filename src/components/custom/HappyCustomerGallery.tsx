@@ -120,13 +120,9 @@ export function HappyCustomerGallery() {
                   </div>
                 )}
                  <div className="mt-12 flex justify-center">
-                    <Link href="/happy-customers">
-                      <CircularText
-                        text="VIEW✧FULL✧GALLERY✧"
-                        onHover="speedUp"
-                        spinDuration={20}
-                        className="text-sm text-foreground"
-                      />
+                    <Link href="/happy-customers" className="group text-2xl font-black uppercase text-foreground inline-flex items-center gap-2 hover:text-destructive transition-colors duration-300">
+                        View Full Gallery
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
                     </Link>
                 </div>
             </>
