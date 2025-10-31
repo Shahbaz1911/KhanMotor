@@ -18,22 +18,22 @@ const services = [
   {
     icon: Wrench,
     title: "Car Repair & Servicing",
-    description: "Comprehensive <a href='/contact' class='text-primary underline'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
+    description: "Comprehensive <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>auto repair and car servicing</a> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.",
   },
   {
     icon: Paintbrush,
     title: "Denting, Painting & Detailing",
-    description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact' class='text-primary underline'>car detailing</a>.",
+    description: "Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>car detailing</a>.",
   },
   {
     icon: Repeat,
     title: "Buy & Sell Used Cars",
-    description: "Explore our car marketplace to <a href='/gallery' class='text-primary underline'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
+    description: "Explore our car marketplace to <a href='/gallery' class='text-primary font-bold hover:text-primary/80 transition-colors'>buy used cars</a> or sell your car. We are a top used car dealer for certified pre-owned cars.",
   },
   {
     icon: ShieldCheck,
     title: "Car Maintenance",
-    description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact' class='text-primary underline'>air conditioning repair</a>.",
+    description: "Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <a href='/contact' class='text-primary font-bold hover:text-primary/80 transition-colors'>air conditioning repair</a>.",
   },
 ];
 
@@ -95,5 +95,3 @@ export function ServicesSection() {
     </section>
   );
 }
-
-    
