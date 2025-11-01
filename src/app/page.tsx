@@ -292,61 +292,6 @@ export default function ConsolidatedPage() {
         
         <ExpertiseSection />
 
-        {/* Section 2: About Us */}
-        <section id="about-us" className="container mx-auto px-4 py-16 md:py-24">
-          <motion.div 
-            initial={{ opacity: 0, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
-          >
-            <div>
-              <h2 className="mb-6 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
-                Your Trusted Auto Repair Shop & Car Dealership
-              </h2>
-              <div className="text-lg text-muted-foreground my-5 space-y-4">
-                  <span>
-                    Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair. As a leading car dealership in Rithala, Delhi, we specialize in <span><LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-gallery.png">certified pre-owned vehicles</LinkPreview></span>, ensuring quality and reliability. We are the <span><LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-contact.png">mechanic near you</LinkPreview></span> that you can trust for everything from a simple oil change service to complex transmission repair.
-                  </span>
-                  <span>
-                    We aim to make buying a car or servicing your current one a transparent and personal experience. Whether you need brake repair, car detailing, or are looking to <span><LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-contact.png">sell your car</LinkPreview></span>, our team is here to provide affordable car repair and exceptional service.
-                  </span>
-              </div>
-
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="group bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive" 
-                onClick={() => router.push('/contact')}
-              >
-                Meet Our Team
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </div>
-            <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
-               <video
-                src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-about.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-               />
-            </div>
-          </motion.div>
-        </section>
-        
-        <section className="container mx-auto px-4 py-16 md:py-24">
-          <ScrollReveal>
-              At Motor Khan, we don't just sell and service cars—we build relationships. Our passion for automotive excellence is matched only by our commitment to customer satisfaction.
-          </ScrollReveal>
-          <ScrollReveal>
-              For over two decades, we've been the go-to destination in Rithala for those who demand quality, transparency, and a personal touch.
-          </ScrollReveal>
-        </section>
-
-        
         <ServicesSection />
 
         <CallToAction />

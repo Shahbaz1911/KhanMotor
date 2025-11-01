@@ -21,7 +21,7 @@ interface AppSidebarProps {
 
 const mainNavItems = [
   { id: "home", label: "Home", href: "/#home" }, 
-  { id: "about-us", label: "About Us", href: "/#about-us" },
+  { id: "about-us", label: "About Us", href: "/about" },
   { id: "gallery", label: "Our Cars", href: "/gallery" },
   { id: "happy-customers", label: "Happy Customers", href: "/happy-customers" },
   { id: "testimonials", label: "Reviews", href: "/#testimonials" },
