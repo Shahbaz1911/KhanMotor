@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -19,6 +18,7 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import Head from "next/head";
 
 export default function GalleryPage() {
   const pageRef = useRef<HTMLDivElement>(null);
@@ -31,63 +31,66 @@ export default function GalleryPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
-  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
+  const [logoSrc, setLogoSrc] = useState(
+    "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png"
+  );
 
   useEffect(() => {
-    setLogoSrc(theme === 'dark' 
-      ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" 
-      : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
+    setLogoSrc(
+      theme === "dark"
+        ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png"
+        : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png"
+    );
   }, [theme]);
-
 
   useEffect(() => {
     if (!firestore) return;
     setLoading(true);
 
     const vehiclesCollection = collection(firestore, "vehicles");
-    const unsubscribe = onSnapshot(vehiclesCollection, 
-        (snapshot) => {
-            const vehiclesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Vehicle));
-            setVehicles(vehiclesData);
-            setLoading(false);
-            // Using a timeout to ensure DOM is updated before refreshing ScrollTrigger
-            setTimeout(() => {
-                ScrollTrigger.refresh();
-            }, 100);
-        }, 
-        (error) => {
-            console.error("Error fetching vehicles:", error);
-            const permissionError = new FirestorePermissionError({
-                path: vehiclesCollection.path,
-                operation: 'list',
-            });
-            errorEmitter.emit('permission-error', permissionError);
-            setLoading(false);
-        }
+    const unsubscribe = onSnapshot(
+      vehiclesCollection,
+      (snapshot) => {
+        const vehiclesData = snapshot.docs.map(
+          (doc) => ({ id: doc.id, ...doc.data() } as Vehicle)
+        );
+        setVehicles(vehiclesData);
+        setLoading(false);
+        setTimeout(() => ScrollTrigger.refresh(), 100);
+      },
+      (error) => {
+        console.error("Error fetching vehicles:", error);
+        const permissionError = new FirestorePermissionError({
+          path: vehiclesCollection.path,
+          operation: "list",
+        });
+        errorEmitter.emit("permission-error", permissionError);
+        setLoading(false);
+      }
     );
-    
+
     return () => unsubscribe();
   }, [firestore]);
 
-
   useEffect(() => {
     if (loading) return;
-    
+
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const showAnim = gsap.from(headerRef.current, { 
-        yPercent: -100,
-        paused: true,
-        duration: 0.2
-      }).progress(1);
+      const showAnim = gsap
+        .from(headerRef.current, {
+          yPercent: -100,
+          paused: true,
+          duration: 0.2,
+        })
+        .progress(1);
 
       ScrollTrigger.create({
         start: "top top",
         end: 99999,
-        onUpdate: (self) => {
-          self.direction === -1 ? showAnim.play() : showAnim.reverse()
-        }
+        onUpdate: (self) =>
+          self.direction === -1 ? showAnim.play() : showAnim.reverse(),
       });
 
       gsap.from(titleRef.current, {
@@ -97,94 +100,182 @@ export default function GalleryPage() {
         delay: 0.4,
       });
 
-      // The animations for the cards are now inside the VehicleShowcaseCard component
-      // We just need to make sure ScrollTrigger is aware of the layout changes.
       ScrollTrigger.refresh();
-
     }, pageRef);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       ctx.revert();
-    }
+    };
   }, [loading]);
 
   return (
     <>
-        <div ref={pageRef}>
-          <header ref={headerRef} className="fixed top-0 w-full z-50">
-              <div className="relative flex justify-between items-center px-4 pt-4">
-                <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent">
-                      MENU
-                      <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
-                    <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
-                    <Button 
-                        variant="ghost" 
-                        onClick={() => setIsSheetOpen(false)} 
-                        className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
-                        aria-label="Close menu"
-                      >
-                        CLOSE
-                        <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
-                    </Button>
-                  </SheetContent>
-                </Sheet>
+      {/* ✅ SEO META TAGS + SCHEMA */}
+      <Head>
+        <title>
+          Used Cars for Sale in Rohini, Delhi | Certified Pre-Owned Cars |
+          Motor Khan
+        </title>
+        <meta
+          name="description"
+          content="Explore a wide range of certified pre-owned cars for sale in Rohini, Delhi. Motor Khan offers trusted used cars, full vehicle history, and affordable prices since 1995."
+        />
+        <meta
+          name="keywords"
+          content="used cars in Rohini, pre-owned cars Delhi, buy used car Rohini, second hand cars Delhi, affordable used cars Rohini, car showroom Rohini Delhi, used car dealers Rohini, car resale Delhi, used car sale Rohini, best used car showroom Delhi"
+        />
+        <meta
+          property="og:title"
+          content="Used Cars for Sale in Rohini, Delhi | Motor Khan"
+        />
+        <meta
+          property="og:description"
+          content="Find top-quality used cars and certified pre-owned vehicles at Motor Khan, Rohini Delhi. Trusted car dealer since 1995."
+        />
+        <meta
+          property="og:image"
+          content="https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png"
+        />
+        <meta
+          property="og:url"
+          content="https://delhi.motorkhan.com/gallery"
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://delhi.motorkhan.com/gallery" />
 
-                <div className="absolute left-1/2 -translate-x-1/2">
-                  <Link href="/">
-                    <Image 
-                        src={logoSrc}
-                        alt="Motor Khan Logo"
-                        width={150}
-                        height={150}
-                        className="w-16 md:w-18 h-auto"
-                    />
-                  </Link>
-                </div>
-              
-                <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/happy-customers')}>
-                    <Users className="mr-2 h-4 w-4" />
-                    CUSTOMERS
+        {/* ✅ JSON-LD SCHEMA MARKUP */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "AutoDealer",
+              name: "Motor Khan",
+              url: "https://delhi.motorkhan.com/gallery",
+              logo: "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png",
+              image:
+                "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png",
+              telephone: "+91-9999999999",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "Rithala, Rohini",
+                addressLocality: "Delhi",
+                postalCode: "110085",
+                addressRegion: "Delhi",
+                addressCountry: "IN",
+              },
+              openingHours: "Mo-Su 09:00-20:00",
+              description:
+                "Buy certified pre-owned cars in Rohini Delhi from Motor Khan. Verified used cars with inspection reports, warranty options, and hassle-free documentation.",
+              makesOffered: ["Maruti", "Hyundai", "Honda", "Tata", "Toyota"],
+              sameAs: [
+                "https://www.facebook.com/motorkhan",
+                "https://www.instagram.com/motorkhan",
+              ],
+            }),
+          }}
+        />
+      </Head>
+
+      {/* MAIN PAGE */}
+      <div ref={pageRef}>
+        {/* HEADER */}
+        <header ref={headerRef} className="fixed top-0 w-full z-50">
+          <div className="relative flex justify-between items-center px-4 pt-4">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-foreground text-sm hover:bg-transparent"
+                >
+                  MENU
+                  <AnimatedMenuIcon
+                    isOpen={isSheetOpen}
+                    className="ml-2 h-4 w-4"
+                  />
                 </Button>
-              </div>
-          </header>
-          <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
-            <h1 ref={titleRef} className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase">
-              Used Cars for Sale
-            </h1>
-            
-            {loading || !firestore ? (
-                <div className="flex justify-center items-center h-64">
-                    <Loader2 className="h-8 w-8 animate-spin" />
-                </div>
-            ) : (
-                <div className="flex flex-col gap-16 md:gap-24">
-                  {vehicles.length > 0 ? (
-                    vehicles.map((vehicle, index) => (
-                      <VehicleShowcaseCard 
-                        key={vehicle.id} 
-                        vehicle={vehicle} 
-                        align={index % 2 === 0 ? 'left' : 'right'} 
-                      />
-                    ))
-                  ) : (
-                    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
-                      <div className="mb-4 text-5xl">🚗</div>
-                      <h3 className="text-2xl font-semibold uppercase">No Cars for Sale</h3>
-                      <p className="text-muted-foreground lowercase">
-                        our car dealership is always updating our car marketplace. check back soon to find certified pre-owned cars!
-                      </p>
-                    </div>
-                  )}
-                </div>
-            )}
+              </SheetTrigger>
+              <SheetContent
+                side="bottom"
+                className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0"
+                srTitle="Navigation Menu"
+              >
+                <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+                <Button
+                  variant="ghost"
+                  onClick={() => setIsSheetOpen(false)}
+                  className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
+                  aria-label="Close menu"
+                >
+                  CLOSE
+                  <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
+                </Button>
+              </SheetContent>
+            </Sheet>
+
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <Link href="/">
+                <Image
+                  src={logoSrc}
+                  alt="Motor Khan Logo"
+                  width={150}
+                  height={150}
+                  className="w-16 md:w-18 h-auto"
+                />
+              </Link>
+            </div>
+
+            <Button
+              variant="ghost"
+              className="text-foreground text-sm hover:bg-transparent"
+              onClick={() => router.push("/happy-customers")}
+            >
+              <Users className="mr-2 h-4 w-4" />
+              CUSTOMERS
+            </Button>
           </div>
+        </header>
+
+        {/* GALLERY SECTION */}
+        <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
+          <h1
+            ref={titleRef}
+            className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase"
+          >
+            Used Cars for Sale
+          </h1>
+
+          {loading || !firestore ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-16 md:gap-24">
+              {vehicles.length > 0 ? (
+                vehicles.map((vehicle, index) => (
+                  <VehicleShowcaseCard
+                    key={vehicle.id}
+                    vehicle={vehicle}
+                    align={index % 2 === 0 ? "left" : "right"}
+                  />
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center bg-card">
+                  <div className="mb-4 text-5xl">🚗</div>
+                  <h3 className="text-2xl font-semibold uppercase">
+                    No Cars for Sale
+                  </h3>
+                  <p className="text-muted-foreground lowercase">
+                    Our car dealership is always updating our marketplace. Check
+                    back soon for new listings!
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+      </div>
     </>
   );
 }

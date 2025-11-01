@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   title: 'Motor Khan - Car Denting, Painting & Restoration in Rohini, Rithala, Delhi',
   description:
     'Motor Khan offers expert car denting painting, auto body repair, and full car restoration services in Rohini, Rithala, Vijay Vihar, Budh Vihar, and across Delhi. Trusted car body shop for paintless dent repair, used car sales, and premium car service center in Delhi.',
+  keywords:
+    'car denting painting in Rohini, car restoration services Rohini Delhi, car body shop in Rohini, auto body repair Rohini Delhi, paintless dent repair Rohini, car paint shop Rohini, car repair shops in Rohini Delhi, vehicle restoration Rohini Delhi, car service center Rohini, used cars for sale Rohini Delhi, buy used car in Rohini, sell car in Rohini Delhi, second hand car dealers Rohini, car buyers Rohini Delhi, old car sale Rohini, pre-owned car purchase Rohini, car trade-in Rohini Delhi, affordable car denting painting in Rohini, expert car restoration Delhi Rohini, best car repair shop Rohini, instant dent repair Rohini Delhi, multi-brand car service Rohini, premium car painting Rohini, trusted used car dealer Rohini, quick car sale Rohini Delhi',
 };
 
 export default function RootLayout({
@@ -50,8 +52,8 @@ export default function RootLayout({
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 28.7369,
-      "longitude": 77.1209
+      "latitude": 28.71634404381768,
+      "longitude": 77.0963242650032
     },
     "openingHours": "Mo-Su 09:00-21:00",
     "areaServed": [
@@ -59,34 +61,83 @@ export default function RootLayout({
       { "@type": "Place", "name": "Rithala, Delhi" },
       { "@type": "Place", "name": "Vijay Vihar, Delhi" },
       { "@type": "Place", "name": "Budh Vihar, Delhi" }
-    ],
-    "serviceType": [
-      "Car denting painting in Rohini",
-      "Car restoration services Rohini Delhi",
-      "Car body shop in Rohini",
-      "Auto body repair Rohini Delhi",
-      "Paintless dent repair Rohini",
-      "Car paint shop Rohini",
-      "Car repair shops in Rohini Delhi",
-      "Vehicle restoration Rohini Delhi",
-      "Car service center Rohini",
-      "Used cars for sale Rohini Delhi",
-      "Buy used car in Rohini",
-      "Sell car in Rohini Delhi",
-      "Second hand car dealers Rohini",
-      "Car buyers Rohini Delhi",
-      "Old car sale Rohini",
-      "Pre-owned car purchase Rohini",
-      "Car trade-in Rohini Delhi",
-      "Affordable car denting painting in Rohini",
-      "Expert car restoration Delhi Rohini",
-      "Best car repair shop Rohini",
-      "Instant dent repair Rohini Delhi",
-      "Multi-brand car service Rohini",
-      "Premium car painting Rohini",
-      "Trusted used car dealer Rohini",
-      "Quick car sale Rohini Delhi"
     ]
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do you offer car denting and painting in Rohini?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Motor Khan specializes in professional car denting and painting services in Rohini, Rithala, and nearby Delhi areas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I sell my old car at Motor Khan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely! Motor Khan offers a trusted platform for buying and selling used cars in Rohini and across Delhi."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you provide car restoration services for classic cars?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we provide complete restoration services for vintage and classic cars with expert craftsmanship and attention to detail."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are your workshop hours?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Motor Khan is open seven days a week from 9 AM to 9 PM."
+        }
+      }
+    ]
+  };
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": [
+      "Car Denting and Painting",
+      "Paintless Dent Repair",
+      "Auto Body Repair",
+      "Car Restoration",
+      "Used Car Sales and Purchase",
+      "Premium Car Painting",
+      "Multi-brand Car Service"
+    ],
+    "provider": {
+      "@type": "AutoRepair",
+      "name": "Motor Khan",
+      "url": "https://motorkhan.com"
+    },
+    "areaServed": "Rohini, Rithala, Vijay Vihar, Budh Vihar, Delhi"
+  };
+
+  const featureSnippet = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Motor Khan - Car Workshop in Rohini, Delhi",
+    "description": "Trusted car denting, painting, and restoration service in Rohini, Delhi. Expert mechanics, affordable prices, and quick service for all car brands.",
+    "mainEntity": {
+      "@type": "Product",
+      "name": "Car Repair & Restoration Services",
+      "brand": "Motor Khan",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "280"
+      }
+    }
   };
 
   return (
@@ -100,22 +151,21 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&family=Bebas+Neue&display=swap"
           rel="stylesheet"
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap"
           rel="stylesheet"
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-        />
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featureSnippet) }} />
       </head>
+
       <body className="font-body antialiased">
         <FirebaseProvider>
           <AuthProvider>

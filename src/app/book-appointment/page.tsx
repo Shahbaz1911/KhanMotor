@@ -1,6 +1,6 @@
-
 "use client";
 
+import Head from "next/head";
 import { AppointmentForm } from "@/components/forms/AppointmentForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useRef, useEffect, useState } from "react";
@@ -30,7 +30,6 @@ export default function BookAppointmentPage() {
       ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" 
       : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
   }, [theme]);
-
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -69,53 +68,83 @@ export default function BookAppointmentPage() {
 
   return (
     <div ref={pageRef} className="bg-background">
-        <header ref={headerRef} className="fixed top-0 w-full z-50">
-          <div className="relative flex justify-between items-center px-4 pt-4">
-            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" className="text-foreground text-sm">
-                  MENU
-                  <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
-                <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
-                 <Button 
-                    variant="ghost" 
-                    onClick={() => setIsSheetOpen(false)} 
-                    className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
-                    aria-label="Close menu"
-                  >
-                    CLOSE
-                    <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
-                 </Button>
-              </SheetContent>
-            </Sheet>
+      {/* ✅ SEO META TAGS */}
+      <Head>
+        <title>Book Appointment – Motor Khan | Car Repair & Test Drive in Rithala, Rohini Delhi</title>
+        <meta
+          name="description"
+          content="Book your car repair or restoration appointment at Motor Khan – Rithala, Rohini, Delhi. Schedule test drives, denting painting, restoration, or regular maintenance with expert car mechanics near Vijay Vihar and Budh Vihar."
+        />
+        <meta
+          name="keywords"
+          content="car repair appointment Delhi, car service booking Rohini, schedule test drive Rithala, car restoration Vijay Vihar, car denting painting Budh Vihar, auto repair booking Delhi, car mechanic near me, Motor Khan car workshop, book car service Rohini, car maintenance Delhi"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Book Appointment – Motor Khan | Rithala, Rohini Delhi" />
+        <meta
+          property="og:description"
+          content="Schedule your car repair, test drive, or restoration service with Motor Khan – your trusted auto workshop in Rithala and Rohini, Delhi."
+        />
+        <meta property="og:image" content="https://delhi.motorkhan.com/images/og/motor-khan-rithala-rohini-delhi.jpg" />
+        <meta property="og:url" content="https://delhi.motorkhan.com/appointment" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Book Appointment – Motor Khan | Car Service in Delhi" />
+        <meta
+          name="twitter:description"
+          content="Book a car service, denting painting, or test drive at Motor Khan – trusted car repair shop in Rohini, Rithala, Delhi."
+        />
+        <meta name="twitter:image" content="https://delhi.motorkhan.com/images/og/motor-khan-rithala-rohini-delhi.jpg" />
+        <link rel="canonical" href="https://delhi.motorkhan.com/appointment" />
+      </Head>
 
-            <div className="absolute left-1/2 -translate-x-1/2">
-              <Link href="/">
-                <Image 
-                    src={logoSrc}
-                    alt="Motor Khan Logo"
-                    width={150}
-                    height={150}
-                    className="w-16 md:w-20 h-auto"
-                />
-              </Link>
-            </div>
-          
-            <Button variant="ghost" className="text-foreground text-sm" onClick={() => router.push('/gallery')}>
-                <GalleryThumbnails className="mr-2 h-4 w-4" />
-                GALLERY
-            </Button>
+      <header ref={headerRef} className="fixed top-0 w-full z-50">
+        <div className="relative flex justify-between items-center px-4 pt-4">
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="text-foreground text-sm">
+                MENU
+                <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-full bg-white dark:bg-black/80 dark:backdrop-blur-lg border-t dark:border-white/10 p-0" srTitle="Navigation Menu">
+              <AppSidebar onNavigate={() => setIsSheetOpen(false)} />
+              <Button 
+                variant="ghost" 
+                onClick={() => setIsSheetOpen(false)} 
+                className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
+                aria-label="Close menu"
+              >
+                CLOSE
+                <AnimatedMenuIcon isOpen={true} className="ml-2 h-4 w-4" />
+              </Button>
+            </SheetContent>
+          </Sheet>
+
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <Link href="/">
+              <Image 
+                src={logoSrc}
+                alt="Motor Khan Logo"
+                width={150}
+                height={150}
+                className="w-16 md:w-20 h-auto"
+              />
+            </Link>
           </div>
-        </header>
+
+          <Button variant="ghost" className="text-foreground text-sm" onClick={() => router.push('/gallery')}>
+            <GalleryThumbnails className="mr-2 h-4 w-4" />
+            GALLERY
+          </Button>
+        </div>
+      </header>
+
       <div className="container mx-auto px-4 py-8 md:py-16 flex flex-col items-center min-h-screen justify-center mt-16">
         <Card ref={cardRef} className="w-full max-w-3xl shadow-xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl md:text-4xl uppercase">Schedule Your Test Drive</CardTitle>
             <CardDescription>
-              choose your preferred date and time. we&apos;re excited to get you behind the wheel!
+              Choose your preferred date and time. We&apos;re excited to get you behind the wheel!
             </CardDescription>
           </CardHeader>
           <CardContent>
