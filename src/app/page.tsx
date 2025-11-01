@@ -285,6 +285,36 @@ export default function ConsolidatedPage() {
           <HeroSpotlightBanner isLoaded={isLoaded} />
         </section>
 
+        {/* Short About Section */}
+        <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <h2 className="text-4xl tracking-tight lg:text-5xl font-black uppercase">
+                A Legacy of Automotive Passion
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground lowercase">
+                Since 1995, Motor Khan has been the trusted name in Delhi for exceptional car care and sales. We combine decades of experience with a passion for perfection, ensuring every vehicle that leaves our workshop is a testament to our commitment to quality.
+              </p>
+              <Button
+                variant="outline"
+                size="lg"
+                className="group mt-8 bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive"
+                onClick={() => router.push('/about')}
+              >
+                Explore Our Story
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </motion.div>
+          </div>
+        </section>
+
+
         {/* These sections are part of the "Home" experience but don't have direct nav links */}
         <AchievementsSection />
         
