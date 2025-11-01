@@ -223,8 +223,8 @@ export default function ConsolidatedPage() {
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" className={cn(
-                  "text-sm hover:bg-transparent text-foreground",
-                  mounted && heroInView && theme === 'light' && "text-white"
+                  "text-sm hover:bg-transparent",
+                  mounted && heroInView && theme === 'light' ? "text-white" : "text-foreground"
                 )}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
@@ -260,8 +260,8 @@ export default function ConsolidatedPage() {
             </div>
           
             <Button variant="ghost" className={cn(
-                "text-sm hover:bg-transparent text-foreground",
-                mounted && heroInView && theme === 'light' && "text-white"
+                "text-sm hover:bg-transparent",
+                mounted && heroInView && theme === 'light' ? "text-white" : "text-foreground"
               )} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
@@ -277,7 +277,7 @@ export default function ConsolidatedPage() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="https://delhi.motorkhan.com/videos/motorkhan.mp4"
+            src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi.mp4"
           >
             Your browser does not support the video tag.
           </video>
