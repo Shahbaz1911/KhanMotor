@@ -32,12 +32,12 @@ export default function AdminDashboardPage() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+      ? "https://delhi.motorkhan.com/images/motorkhandarktheme.png" 
+      : "https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
   }, [theme]);
 
 

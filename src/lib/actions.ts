@@ -116,7 +116,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     });
 
     // --- Header ---
-    const logoUrl = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
+    const logoUrl = "https://delhi.motorkhan.com/images/motorkhandarktheme.png";
     const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
     const logoDims = logoImage.scale(0.25);

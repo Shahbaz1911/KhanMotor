@@ -5,18 +5,31 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTheme } from 'next-themes';
+
+const socialLinks = [
+  { icon: Instagram, href: 'https://www.instagram.com/motorkhan', label: 'Instagram' },
+  { icon: Facebook, href: 'https://www.facebook.com/motorkhan', label: 'Facebook' },
+];
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const logoSrc = "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png";
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState('https://delhi.motorkhan.com/images/motorkhandarktheme.png');
+  const [mounted, setMounted] = useState(false);
 
-  const socialLinks = [
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
-  ];
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      setLogoSrc(theme === 'dark' ? 'https://delhi.motorkhan.com/images/motorkhandarktheme.png' : 'https://delhi.motorkhan.com/images/motorkhandarktheme.png');
+    }
+  }, [theme, mounted]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -25,7 +38,7 @@ export function Footer() {
       gsap.from(footerRef.current, {
         scrollTrigger: {
           trigger: footerRef.current,
-          start: 'top bottom', // Start animation when footer top enters bottom of viewport
+          start: 'top bottom',
           toggleActions: 'play none none none',
         },
         opacity: 0,
@@ -90,13 +103,15 @@ export function Footer() {
             {/* Logo and About */}
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
-              <Image
-                src={logoSrc}
-                alt="Motor Khan Logo"
-                width={150}
-                height={150}
-                className="w-48 h-auto"
-              />
+              {mounted && logoSrc && (
+                <Image
+                  src={logoSrc}
+                  alt="Motor Khan Logo"
+                  width={150}
+                  height={150}
+                  className="w-48 h-auto"
+                />
+              )}
             </Link>
           </div>
 

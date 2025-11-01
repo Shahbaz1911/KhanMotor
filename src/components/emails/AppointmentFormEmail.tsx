@@ -49,7 +49,7 @@ export const AppointmentFormEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src="https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack.png"
+          src="https://delhi.motorkhan.com/images/motorkhandarktheme.png"
           width="150"
           height="auto"
           alt="Motor Khan"

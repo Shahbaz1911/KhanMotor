@@ -35,12 +35,12 @@ export default function ContactPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+      ? "https://delhi.motorkhan.com/images/motorkhandarktheme.png" 
+      : "https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
   }, [theme]);
   
   useEffect(() => {

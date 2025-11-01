@@ -64,7 +64,7 @@ export default function ConsolidatedPage() {
     aiHint: img.aiHint
   }));
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
 
   useEffect(() => {
     setMounted(true);
@@ -75,11 +75,11 @@ export default function ConsolidatedPage() {
     if (mounted) {
       const isDark = theme === 'dark';
       if (heroInView && !isDark) {
-        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/motorkhandarktheme.png");
       } else if (isDark) {
-        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/motorkhandarktheme.png");
       } else {
-        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
       }
     }
   }, [theme, mounted, heroInView]);
@@ -277,7 +277,7 @@ export default function ConsolidatedPage() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="https://media-alpha-green.vercel.app/video/car.mp4"
+            src="https://delhi.motorkhan.com/videos/motorkhan.mp4"
           >
             Your browser does not support the video tag.
           </video>

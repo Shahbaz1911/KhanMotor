@@ -52,7 +52,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const { theme, systemTheme } = useTheme();
 
-  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/motokhanwhite.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
   const [effectiveTheme, setEffectiveTheme] = useState('light');
 
 
@@ -61,8 +61,8 @@ export function Preloader({ onLoaded }: PreloaderProps) {
     const currentTheme = theme === 'system' ? systemTheme : theme;
     setEffectiveTheme(currentTheme || 'light');
     setLogoSrc(currentTheme === 'dark' 
-      ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-      : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+      ? "https://delhi.motorkhan.com/images/motorkhandarktheme.png" 
+      : "https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
   }, [theme, systemTheme]);
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
         </div>
 
          {/* Center pin */}
-        <div className={cn("absolute w-4 h-4 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isLight ? "bg-zinc-200 border border-zinc-400" : "bg-zinc-800 border border-zinc-600")}></div>
+        <div className={cn("absolute w-4 h-4 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isLight ? "bg-zinc-200 border-zinc-400" : "bg-zinc-800 border border-zinc-600")}></div>
       </div>
        <div className={cn("mt-4 text-center font-cairo", isLight ? "text-black" : "text-white")}>
             <span ref={speedNumberRef} className="text-5xl font-black tabular-nums">0</span>
