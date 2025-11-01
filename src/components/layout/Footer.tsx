@@ -5,10 +5,9 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useTheme } from 'next-themes';
 
 const socialLinks = [
   { icon: Instagram, href: 'https://www.instagram.com/motorkhan', label: 'Instagram' },
@@ -17,19 +16,7 @@ const socialLinks = [
 
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
-  const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState('https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      setLogoSrc(theme === 'dark' ? 'https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png' : 'https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png');
-    }
-  }, [theme, mounted]);
+  const logoSrc = "https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-black.png";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -103,7 +90,6 @@ export function Footer() {
             {/* Logo and About */}
           <div className="md:col-span-4 text-center md:text-right order-1 md:order-2 flex flex-col items-center md:items-end">
              <Link href="/#home" className="mb-4 inline-block">
-              {mounted && logoSrc && (
                 <Image
                   src={logoSrc}
                   alt="Motor Khan Logo"
@@ -111,7 +97,6 @@ export function Footer() {
                   height={150}
                   className="w-48 h-auto"
                 />
-              )}
             </Link>
           </div>
 
