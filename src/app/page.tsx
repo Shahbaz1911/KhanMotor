@@ -45,10 +45,12 @@ export default function ConsolidatedPage() {
   const { theme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const heroSectionRef = useRef<HTMLElement>(null);
   
   
   const aboutCarouselImages = [
@@ -68,14 +70,19 @@ export default function ConsolidatedPage() {
     setMounted(true);
   }, []);
 
-  // Set logo based on theme
+  // Set logo based on theme and hero section visibility
   useEffect(() => {
     if (mounted) {
-      setLogoSrc(theme === 'dark' 
-        ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-        : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+      const isDark = theme === 'dark';
+      if (heroInView && !isDark) {
+        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+      } else if (isDark) {
+        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png");
+      } else {
+        setLogoSrc("https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+      }
     }
-  }, [theme, mounted]);
+  }, [theme, mounted, heroInView]);
 
   // GSAP Animation useEffect
   useEffect(() => {
@@ -96,6 +103,14 @@ export default function ConsolidatedPage() {
             onUpdate: (self) => {
                 self.direction === -1 ? showAnim.play() : showAnim.reverse()
             }
+        });
+
+        // Trigger for hero section visibility
+        ScrollTrigger.create({
+          trigger: heroSectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          onToggle: ({ isActive }) => setHeroInView(isActive),
         });
 
     }, pageRef);
@@ -207,7 +222,10 @@ export default function ConsolidatedPage() {
            <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent")}>
+                <Button variant="ghost" className={cn(
+                  "text-sm hover:bg-transparent",
+                  heroInView && theme === 'light' ? "text-white" : "text-foreground"
+                )}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -235,12 +253,16 @@ export default function ConsolidatedPage() {
                       width={150}
                       height={150}
                       className="w-16 md:w-20 h-auto"
+                      priority
                   />
                 )}
               </Link>
             </div>
           
-            <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent")} onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className={cn(
+                "text-sm hover:bg-transparent",
+                heroInView && theme === 'light' ? "text-white" : "text-foreground"
+              )} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
@@ -248,7 +270,7 @@ export default function ConsolidatedPage() {
         </header>
 
         {/* Section 1: Home */}
-        <section id="home" className="relative w-full h-screen overflow-hidden">
+        <section ref={heroSectionRef} id="home" className="relative w-full h-screen overflow-hidden">
            <video
             autoPlay
             loop
