@@ -94,7 +94,7 @@ export function AchievementsSection() {
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-4xl text-center">
             <h2 className="mb-4 text-4xl font-black tracking-tight lg:text-5xl uppercase">
-                A Legacy of Trust and Excellence
+                Excellence by the Numbers
             </h2>
             <p className="text-lg text-muted-foreground md:text-xl lowercase">
                 our numbers speak for themselves. we are committed to providing unparalleled service and building lasting relationships.

@@ -296,7 +296,7 @@ export default function ConsolidatedPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <h2 className="text-4xl tracking-tight lg:text-5xl font-black uppercase">
-                A Legacy of Automotive Passion
+                Driven by Passion Since 1995
               </h2>
               <p className="mt-4 text-lg text-muted-foreground lowercase">
                 Since 1995, Motor Khan has been the trusted name in Delhi for exceptional car care and sales. We combine decades of experience with a passion for perfection, ensuring every vehicle that leaves our workshop is a testament to our commitment to quality.
