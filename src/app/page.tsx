@@ -301,15 +301,16 @@ export default function ConsolidatedPage() {
               <p className="mt-4 text-lg text-muted-foreground lowercase">
                 Since 1995, Motor Khan has been the trusted name in Delhi for exceptional car care and sales. We combine decades of experience with a passion for perfection, ensuring every vehicle that leaves our workshop is a testament to our commitment to quality.
               </p>
-              <Button
-                variant="outline"
-                size="lg"
-                className="group mt-8 bg-transparent border-destructive/50 text-destructive hover:bg-destructive/10 hover:border-destructive"
-                onClick={() => router.push('/about')}
-              >
-                Explore Our Story
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <div className="mt-8 flex justify-center">
+                  <Link href="/about">
+                      <CircularText
+                          text="EXPLORE✧OUR✧STORY✧"
+                          onHover="speedUp"
+                          spinDuration={20}
+                          className="text-sm text-foreground"
+                      />
+                  </Link>
+              </div>
             </motion.div>
           </div>
         </section>
