@@ -277,7 +277,7 @@ export default function ConsolidatedPage() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="https://delhi.motorkhan.com/videos/motorkhan.mp4"
+            src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi.mp4"
           >
             Your browser does not support the video tag.
           </video>
@@ -397,3 +397,5 @@ export default function ConsolidatedPage() {
     </>
   );
 }
+
+    
