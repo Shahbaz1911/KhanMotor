@@ -325,32 +325,14 @@ export default function ConsolidatedPage() {
               </Button>
             </div>
             <div className="relative h-80 md:h-[450px] w-full overflow-hidden rounded-lg shadow-xl">
-               <Carousel 
-                className="w-full h-full"
-                plugins={[
-                    Autoplay({
-                      delay: 2000,
-                      stopOnInteraction: false,
-                      stopOnMouseEnter: true,
-                    }),
-                  ]}
-               >
-                <CarouselContent>
-                  {aboutCarouselImages.map((img, index) => (
-                    <CarouselItem key={index}>
-                      <div className="w-full h-80 md:h-[450px] relative">
-                         <Image 
-                            src={img.src} 
-                            alt={img.title} 
-                            fill
-                            className="object-cover"
-                            data-ai-hint={img.aiHint}
-                         />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
+               <video
+                src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-about.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+               />
             </div>
           </motion.div>
         </section>
