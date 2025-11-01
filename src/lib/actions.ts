@@ -116,7 +116,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     });
 
     // --- Header ---
-    const logoUrl = "https://delhi.motorkhan.com/images/motorkhandarktheme.png";
+    const logoUrl = "https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-black.png";
     const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
     const logoDims = logoImage.scale(0.25);
@@ -246,7 +246,9 @@ export async function submitAppointmentForm(
   formData: FormData
 ): Promise<AppointmentFormState> {
   const rawDate = formData.get('preferredDate');
-  const dateToValidate = rawDate ? new Date(`${rawDate}T00:00:00`) : undefined;
+  // Handle the date string correctly. The browser sends it in 'yyyy-MM-dd' format.
+  // Appending 'T00:00:00' ensures it's parsed in the local timezone, not UTC.
+  const dateToValidate = typeof rawDate === 'string' ? new Date(`${rawDate}T00:00:00`) : undefined;
 
   const validatedFields = appointmentFormSchema.safeParse({
     name: formData.get("name"),
