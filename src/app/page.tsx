@@ -64,7 +64,7 @@ export default function ConsolidatedPage() {
     aiHint: img.aiHint
   }));
 
-  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
 
   useEffect(() => {
     setMounted(true);
@@ -75,11 +75,11 @@ export default function ConsolidatedPage() {
     if (mounted) {
       const isDark = theme === 'dark';
       if (heroInView && !isDark) {
-        setLogoSrc("https://delhi.motorkhan.com/images/motorkhandarktheme.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png");
       } else if (isDark) {
-        setLogoSrc("https://delhi.motorkhan.com/images/motorkhandarktheme.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png");
       } else {
-        setLogoSrc("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
+        setLogoSrc("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
       }
     }
   }, [theme, mounted, heroInView]);
@@ -277,7 +277,7 @@ export default function ConsolidatedPage() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi.mp4"
+            src="https://delhi.motorkhan.com/videos/motorkhan.mp4"
           >
             Your browser does not support the video tag.
           </video>

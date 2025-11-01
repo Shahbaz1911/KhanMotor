@@ -23,12 +23,12 @@ export default function BookAppointmentPage() {
   const router = useRouter();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
+  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
 
   useEffect(() => {
     setLogoSrc(theme === 'dark' 
-      ? "https://delhi.motorkhan.com/images/motorkhandarktheme.png" 
-      : "https://delhi.motorkhan.com/images/motorkhanlighttheme.png");
+      ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" 
+      : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
   }, [theme]);
 
 

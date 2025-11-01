@@ -18,7 +18,7 @@ const socialLinks = [
 export function Footer() {
   const footerRef = useRef<HTMLElement>(null);
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState('https://delhi.motorkhan.com/images/motorkhandarktheme.png');
+  const [logoSrc, setLogoSrc] = useState('https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export function Footer() {
 
   useEffect(() => {
     if (mounted) {
-      setLogoSrc(theme === 'dark' ? 'https://delhi.motorkhan.com/images/motorkhandarktheme.png' : 'https://delhi.motorkhan.com/images/motorkhandarktheme.png');
+      setLogoSrc(theme === 'dark' ? 'https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png' : 'https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png');
     }
   }, [theme, mounted]);
 

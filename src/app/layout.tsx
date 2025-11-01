@@ -26,7 +26,7 @@ export default function RootLayout({
     "@type": "Organization",
     "name": "Motor Khan",
     "url": "https://motorkhan.com",
-    "logo": "https://delhi.motorkhan.com/images/motorkhandarktheme.png",
+    "logo": "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png",
     "sameAs": [
       "https://www.instagram.com/motorkhan",
       "https://www.facebook.com/motorkhan"
@@ -37,7 +37,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "AutoRepair",
     "name": "Motor Khan",
-    "image": "https://delhi.motorkhan.com/images/motorkhandarktheme.png",
+    "image": "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png",
     "url": "https://motorkhan.com",
     "telephone": "+918595853918",
     "priceRange": "₹₹",
@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="https://delhi.motorkhan.com/images/motorkhandarktheme.png" sizes="any" />
+        <link rel="icon" href="https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap" rel="stylesheet" />

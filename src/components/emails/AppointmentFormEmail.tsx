@@ -49,7 +49,7 @@ export const AppointmentFormEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src="https://delhi.motorkhan.com/images/motorkhandarktheme.png"
+          src="https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png"
           width="150"
           height="auto"
           alt="Motor Khan"
