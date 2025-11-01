@@ -12,17 +12,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const expertiseItems = [
     {
         startText: "Expert",
-        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/car-washing.mp4",
+        video: "https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-car-washing.mp4",
         endText: "Detailing",
     },
     {
         startText: "Quality",
-        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/redcarintro.mp4",
+        video: "https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-red%20-car.mp4",
         endText: "Servicing",
     },
     {
         startText: "Classic",
-        video: "https://armanautoxperts-in.vercel.app/armanautoxperts/car-restoration.mp4",
+        video: "https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-car-repair.mp4",
         endText: "Repair",
     },
 ];
