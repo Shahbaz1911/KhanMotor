@@ -45,7 +45,6 @@ export default function ConsolidatedPage() {
   const { theme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
-  const [isHeroVisible, setIsHeroVisible] = useState(true);
 
   // GSAP Animation Refs
   const pageRef = useRef<HTMLDivElement>(null);
@@ -63,10 +62,20 @@ export default function ConsolidatedPage() {
     aiHint: img.aiHint
   }));
 
+  const [logoSrc, setLogoSrc] = useState("https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Set logo based on theme
+  useEffect(() => {
+    if (mounted) {
+      setLogoSrc(theme === 'dark' 
+        ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
+        : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
+    }
+  }, [theme, mounted]);
 
   // GSAP Animation useEffect
   useEffect(() => {
@@ -88,14 +97,6 @@ export default function ConsolidatedPage() {
                 self.direction === -1 ? showAnim.play() : showAnim.reverse()
             }
         });
-
-      // ScrollTrigger for hero section visibility
-      ScrollTrigger.create({
-        trigger: "#home",
-        start: "top top",
-        end: "bottom top",
-        onToggle: ({ isActive }) => setIsHeroVisible(isActive),
-      });
 
     }, pageRef);
 
@@ -183,13 +184,6 @@ export default function ConsolidatedPage() {
     ]
   };
 
-  const heroMode = isHeroVisible && theme === 'light';
-  const logoSrc = heroMode
-    ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png"
-    : (theme === 'dark' 
-        ? "https://armanautoxperts-in.vercel.app/armanautoxperts/motorkhanblack-2.png" 
-        : "https://armanautoxperts-in.vercel.app/armanautoxperts/whitelogomotorkhan.png");
-
 
   return (
     <>
@@ -213,7 +207,7 @@ export default function ConsolidatedPage() {
            <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent", mounted && heroMode && "text-white")}>
+                <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent")}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
                 </Button>
@@ -246,7 +240,7 @@ export default function ConsolidatedPage() {
               </Link>
             </div>
           
-            <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent", mounted && heroMode && "text-white")} onClick={() => router.push('/gallery')}>
+            <Button variant="ghost" className={cn("text-sm text-foreground hover:bg-transparent")} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
             </Button>
@@ -399,5 +393,3 @@ export default function ConsolidatedPage() {
     </>
   );
 }
-
-    
