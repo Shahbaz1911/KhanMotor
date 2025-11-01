@@ -223,8 +223,8 @@ export default function ConsolidatedPage() {
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" className={cn(
-                  "text-sm hover:bg-transparent",
-                  heroInView && theme === 'light' ? "text-white" : "text-foreground"
+                  "text-sm hover:bg-transparent text-foreground",
+                  mounted && heroInView && theme === 'light' && "text-white"
                 )}>
                   MENU
                   <AnimatedMenuIcon isOpen={isSheetOpen} className="ml-2 h-4 w-4" />
@@ -260,8 +260,8 @@ export default function ConsolidatedPage() {
             </div>
           
             <Button variant="ghost" className={cn(
-                "text-sm hover:bg-transparent",
-                heroInView && theme === 'light' ? "text-white" : "text-foreground"
+                "text-sm hover:bg-transparent text-foreground",
+                mounted && heroInView && theme === 'light' && "text-white"
               )} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
                 GALLERY
