@@ -99,22 +99,22 @@ export function ServicesSection() {
                 <>
                   {service.title === "Car Repair & Servicing" && (
                      <>
-                      Comprehensive <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">auto repair and car servicing</LinkPreview> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.
+                      Comprehensive <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-contact.png">auto repair and car servicing</LinkPreview> from a trusted car workshop. We handle brake repair, transmission repair, and car engine diagnostics.
                      </>
                   )}
                    {service.title === "Denting, Painting & Detailing" && (
                       <>
-                      Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">car detailing</LinkPreview>.
+                      Our auto body shop offers expert denting and painting services, paintless dent repair, scratch removal, and professional <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-contact.png">car detailing</LinkPreview>.
                       </>
                   )}
                   {service.title === "Buy & Sell Used Cars" && (
                       <>
-                      Explore our car marketplace to <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/gallerypage.png">buy used cars</LinkPreview> or sell your car. We are a top used car dealer for certified pre-owned cars.
+                      Explore our car marketplace to <LinkPreview url="/gallery" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-gallery.png">buy used cars</LinkPreview> or sell your car. We are a top used car dealer for certified pre-owned cars.
                       </>
                   )}
                   {service.title === "Car Maintenance" && (
                       <>
-                      Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://armanautoxperts-in.vercel.app/armanautoxperts/contactpage.png">air conditioning repair</LinkPreview>.
+                      Scheduled auto maintenance, including oil change service, tire replacement, wheel alignment, and <LinkPreview url="/contact" className="font-bold text-primary" isStatic imageSrc="https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-contact.png">air conditioning repair</LinkPreview>.
                       </>
                   )}
                 </>
@@ -127,4 +127,3 @@ export function ServicesSection() {
   );
 }
 
-    
