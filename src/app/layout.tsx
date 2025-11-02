@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   const organizationSchema = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "AutoRepair"],
     "name": "Motor Khan",
     "url": "https://motorkhan.com",
     "logo": "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png",
@@ -34,29 +34,6 @@ export default function RootLayout({
       "https://www.instagram.com/motorkhan",
       "https://www.facebook.com/motorkhan"
     ],
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini",
-      "addressLocality": "Delhi",
-      "postalCode": "110085",
-      "addressCountry": "IN"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+918595853918",
-      "contactType": "customer service",
-      "areaServed": "IN",
-      "availableLanguage": ["English", "Hindi"]
-    }
-  };
-  
-
-  const localBusinessSchema = {
-    "@context": "https://schema.org",
-    "@type": "AutoRepair",
-    "name": "Motor Khan",
-    "image": "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png",
-    "url": "https://motorkhan.com",
     "telephone": "+918595853918",
     "priceRange": "₹₹",
     "address": {
@@ -72,13 +49,17 @@ export default function RootLayout({
       "longitude": 77.0963242650032
     },
     "openingHours": "Mo-Su 09:00-21:00",
-    "areaServed": [
-      { "@type": "Place", "name": "Rohini, Delhi" },
-      { "@type": "Place", "name": "Rithala, Delhi" },
-      { "@type": "Place", "name": "Vijay Vihar, Delhi" },
-      { "@type": "Place", "name": "Budh Vihar, Delhi" }
-    ]
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+918595853918",
+      "contactType": "customer service",
+      "areaServed": "IN",
+      "availableLanguage": ["English", "Hindi"]
+    }
   };
+  
+
+  
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -173,7 +154,6 @@ export default function RootLayout({
         />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featureSnippet) }} />
