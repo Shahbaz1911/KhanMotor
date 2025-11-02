@@ -57,9 +57,6 @@ export default function RootLayout({
       "availableLanguage": ["English", "Hindi"]
     }
   };
-  
-
-  
 
   const faqSchema = {
     "@context": "https://schema.org",
