@@ -42,13 +42,15 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
       
       tl.from(imageRef.current, { 
           opacity: 0, 
-          x: imageX, 
+          x: imageX,
+          filter: "blur(4px)",
           duration: 0.8, 
           ease: "power3.out" 
       })
       .from(contentRef.current?.querySelectorAll(".gsap-reveal"), { 
           opacity: 0, 
           x: contentX, 
+          filter: "blur(4px)",
           duration: 0.6, 
           stagger: 0.1, 
           ease: "power3.out" 
@@ -172,5 +174,3 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
     </div>
   );
 }
-
-    

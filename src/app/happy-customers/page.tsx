@@ -101,6 +101,7 @@ export default function HappyCustomersPage() {
       gsap.from(titleRef.current, {
         opacity: 0,
         y: 50,
+        filter: "blur(4px)",
         duration: 0.6,
         delay: 0.2,
       });
@@ -108,6 +109,7 @@ export default function HappyCustomersPage() {
       gsap.from(gridRef.current?.children || [], {
           opacity: 0,
           y: 50,
+          filter: "blur(4px)",
           duration: 0.8,
           stagger: 0.1,
           ease: "power3.out",

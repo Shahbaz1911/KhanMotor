@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -96,6 +97,7 @@ export default function GalleryPage() {
       gsap.from(titleRef.current, {
         opacity: 0,
         y: 50,
+        filter: "blur(4px)",
         duration: 0.6,
         delay: 0.4,
       });
