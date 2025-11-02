@@ -340,7 +340,7 @@ export default function ConsolidatedPage() {
                       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
                       className="text-4xl tracking-tight lg:text-5xl font-black uppercase"
                   >
-                      Why Choose Motor Khan?
+                      The Motor Khan Advantage
                   </motion.h2>
                   <motion.p
                       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } } }}
