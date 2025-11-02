@@ -50,22 +50,25 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const logoRef = useRef<HTMLDivElement>(null);
   const speedNumberRef = useRef<HTMLSpanElement>(null);
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
-  const { theme, systemTheme } = useTheme();
+  const { theme, systemTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
-  const [effectiveTheme, setEffectiveTheme] = useState('light');
+  // This ensures we don't render until the client has mounted and the theme is resolved
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const effectiveTheme = resolvedTheme || theme;
+  const isLight = effectiveTheme === 'light';
+  const logoSrc = isLight 
+    ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png"
+    : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png";
 
 
   useEffect(() => {
-    // Determine the effective theme, considering system preference
-    const currentTheme = theme === 'system' ? systemTheme : theme;
-    setEffectiveTheme(currentTheme || 'light');
-    setLogoSrc(currentTheme === 'dark' 
-      ? "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" 
-      : "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
-  }, [theme, systemTheme]);
+    // Don't start the animation until the component is mounted
+    if (!mounted) return;
 
-  useEffect(() => {
     const speedCounter = { val: 0 };
     const tl = gsap.timeline({
       onComplete: () => {
@@ -99,8 +102,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       // Hold for a moment
       .to({}, {duration: 0.5});
 
-
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
     if (isAnimationComplete) {
@@ -117,8 +119,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       });
     }
   }, [isAnimationComplete, onLoaded]);
-
-  const isLight = effectiveTheme === 'light';
 
   const SpeedMark = ({ value, rotation }: { value: number, rotation: number }) => (
     <div
@@ -138,6 +138,10 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const totalDegrees = 270;
   const degreeStep = totalDegrees / totalMarks;
   const startAngle = -135;
+
+  if (!mounted) {
+    return null; // Render nothing until the theme is resolved to prevent flash
+  }
 
 
   return (
