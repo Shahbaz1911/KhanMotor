@@ -22,49 +22,31 @@ interface VehicleShowcaseCardProps {
 export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps) {
   const router = useRouter();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      const imageX = align === 'left' ? -50 : 50;
-      const contentX = align === 'left' ? 50 : -50;
-      
-      tl.from(imageRef.current, { 
-          opacity: 0, 
-          x: imageX,
-          filter: "blur(4px)",
-          duration: 0.8, 
-          ease: "power3.out" 
-      })
-      .from(contentRef.current?.querySelectorAll(".gsap-reveal"), { 
-          opacity: 0, 
-          x: contentX, 
-          filter: "blur(4px)",
-          duration: 0.6, 
-          stagger: 0.1, 
-          ease: "power3.out" 
-      }, "-=0.6");
-
+        gsap.from(sectionRef.current, {
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+            },
+            opacity: 0,
+            y: 60,
+            filter: 'blur(8px)',
+            duration: 1,
+            ease: 'power3.out',
+        });
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [align]);
+  }, []);
 
   return (
     <div ref={sectionRef} className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12">
       <div 
-        ref={imageRef} 
         className={cn(
           "relative w-full overflow-hidden rounded-lg shadow-xl",
           align === 'right' && "md:order-last"
@@ -123,7 +105,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
         )}
       </div>
 
-      <div ref={contentRef}>
+      <div>
         <p className="gsap-reveal text-sm font-semibold uppercase tracking-widest text-muted-foreground font-cairo">{vehicle.year} • {vehicle.color}</p>
         <h3 className="gsap-reveal mt-2 text-3xl font-black tracking-tight md:text-4xl uppercase">
           {vehicle.make} {vehicle.model}
