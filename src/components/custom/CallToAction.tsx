@@ -8,7 +8,6 @@ import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import placeholderImages from "@/lib/placeholder-images.json";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export function CallToAction() {
@@ -52,11 +51,11 @@ export function CallToAction() {
       className="relative py-24 md:py-32 bg-black text-white overflow-hidden"
     >
       <Image 
-        src={placeholderImages.cta.url}
+        src="https://delhi.motorkhan.com/images/about/motor-khan-rithala-rohini-delhi-black-car.jpg"
         alt="Luxury car interior"
         fill
         className="object-cover opacity-20"
-        data-ai-hint={placeholderImages.cta.aiHint}
+        data-ai-hint="black sportscar"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
 
