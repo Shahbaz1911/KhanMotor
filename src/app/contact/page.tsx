@@ -8,6 +8,16 @@ export const metadata: Metadata = {
   description:
     "Get in touch with Motor Khan for expert car repair, denting painting, restoration, and used car deals in Rohini, Rithala, Vijay Vihar, Budh Vihar & Delhi. Visit our workshop or call +91 8595853918 today!",
   keywords: [
+    "car repair near me",
+    "car repair in rithala",
+    "car repair in rohini",
+    "car repair in vijay vihar",
+    "car repair in budh vihar",
+    "car denting painting in rohini",
+    "car restoration services rohini delhi",
+    "car body shop in rohini",
+    "auto body repair rohini delhi",
+    "paintless dent repair rohini",
     "contact car repair rohini",
     "motor khan contact",
     "auto repair rohini",

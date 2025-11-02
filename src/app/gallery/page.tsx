@@ -156,7 +156,7 @@ export default function GalleryPage() {
               logo: "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png",
               image:
                 "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png",
-              telephone: "+91-9999999999",
+              telephone: "+91-9871358670",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Rithala, Rohini",
