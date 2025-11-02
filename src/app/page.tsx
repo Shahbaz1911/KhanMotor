@@ -235,7 +235,7 @@ export default function ConsolidatedPage() {
                  <Button 
                     variant="ghost" 
                     onClick={() => setIsSheetOpen(false)} 
-                    className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
+                    className="absolute top-4 right-4 text-black dark:text-white hover:bg-transparent text-sm"
                     aria-label="Close menu"
                   >
                     CLOSE
@@ -296,7 +296,7 @@ export default function ConsolidatedPage() {
               className="max-w-3xl mx-auto text-center"
             >
               <h2 className="text-4xl tracking-tight lg:text-5xl font-black uppercase">
-                Driven by Passion Since 1995
+                A Legacy of Automotive Passion
               </h2>
               <p className="mt-4 text-lg text-muted-foreground lowercase">
                 Since 1995, Motor Khan has been the trusted name in Delhi for exceptional car care and sales. We combine decades of experience with a passion for perfection, ensuring every vehicle that leaves our workshop is a testament to our commitment to quality.

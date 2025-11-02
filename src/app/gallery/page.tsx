@@ -205,7 +205,7 @@ export default function GalleryPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setIsSheetOpen(false)}
-                  className="absolute top-4 right-4 text-black dark:text-white hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white text-sm"
+                  className="absolute top-4 right-4 text-black dark:text-white hover:bg-transparent text-sm"
                   aria-label="Close menu"
                 >
                   CLOSE
