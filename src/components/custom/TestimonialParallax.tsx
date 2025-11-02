@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import { HeroParallax } from "@/components/ui/hero-parallax";
@@ -33,7 +34,7 @@ export function TestimonialParallax() {
       name: "Arjun Kumar",
       title: "Repeat Customer",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial4/600/400",
+      thumbnail: placeholderImages.userAvatar.url,
       quote: "My third car from Motor Khan, and they continue to exceed my expectations. The best in the business, period.",
       rating: 5,
     },
@@ -41,7 +42,7 @@ export function TestimonialParallax() {
       name: "Zoya Ahmed",
       title: "Performance Driving Fan",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial5/600/400",
+      thumbnail: placeholderImages.customer2.url,
       quote: "They sourced the exact high-performance model I was looking for. The entire process was flawless.",
       rating: 5,
     },
@@ -49,7 +50,7 @@ export function TestimonialParallax() {
       name: "Vikram Singh",
       title: "Sports Car Owner",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial6/600/400",
+      thumbnail: placeholderImages.customer1.url,
       quote: "The attention to detail on my classic car restoration was incredible. It looks better than new!",
       rating: 5,
     },
@@ -57,7 +58,7 @@ export function TestimonialParallax() {
       name: "Imran Khan",
       title: "Truck Enthusiast",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial7/600/400",
+      thumbnail: placeholderImages.customer5.url,
       quote: "I trust them with all my truck's maintenance. Fair pricing and honest work every time.",
       rating: 5,
     },
@@ -65,7 +66,7 @@ export function TestimonialParallax() {
       name: "Sunita Gupta",
       title: "Daily Commuter",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial8/600/400",
+      thumbnail: placeholderImages.customer3.url,
       quote: "Quick, efficient, and friendly service. My car always feels great after a visit to Motor Khan.",
       rating: 5,
     },
@@ -73,7 +74,7 @@ export function TestimonialParallax() {
       name: "The Mehra Family",
       title: "Family Van Owners",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial9/600/400",
+      thumbnail: placeholderImages.customer4.url,
       quote: "They helped us find the perfect, safe, and reliable van for our growing family. A wonderful experience.",
       rating: 5,
     },
@@ -89,7 +90,7 @@ export function TestimonialParallax() {
       name: "Priya Singh",
       title: "Happy with their new ride",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial11/600/400",
+      thumbnail: placeholderImages.testimonial1.url,
       quote: "Found a fantastic deal on a low-mileage car. The team was super helpful and not pushy at all.",
       rating: 5,
     },
@@ -97,7 +98,7 @@ export function TestimonialParallax() {
       name: "Deepak Chauhan",
       title: "A fresh new look",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial12/600/400",
+      thumbnail: placeholderImages.testimonial2.url,
       quote: "The paint and detailing work they did on my car was flawless. It looks absolutely stunning!",
       rating: 5,
     },
@@ -105,7 +106,7 @@ export function TestimonialParallax() {
       name: "Aditya Mehta",
       title: "Ready for the road",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial13/600/400",
+      thumbnail: placeholderImages.customer1.url,
       quote: "Excellent service from start to finish. I'm so happy with my purchase and will be back for servicing.",
       rating: 5,
     },
@@ -113,7 +114,7 @@ export function TestimonialParallax() {
       name: "Sneha Reddy",
       title: "Quality service",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial14/600/400",
+      thumbnail: placeholderImages.customer2.url,
       quote: "Honest, reliable, and professional. The best car workshop in Delhi, without a doubt.",
       rating: 5,
     },
@@ -121,7 +122,7 @@ export function TestimonialParallax() {
       name: "Karan Malhotra",
       title: "Thrilled with the result",
       link: "#",
-      thumbnail: "https://picsum.photos/seed/testimonial15/600/400",
+      thumbnail: placeholderImages.customer5.url,
       quote: "I came in for a major repair and they handled it perfectly. My bike runs better than ever.",
       rating: 5,
     },
@@ -129,4 +130,3 @@ export function TestimonialParallax() {
   
   return <HeroParallax products={products as any} />;
 }
-    

@@ -227,7 +227,7 @@ export default function InventoryClientPage() {
                                         )) : (
                                             <CarouselItem>
                                                 <div className="relative aspect-video w-full">
-                                                    <Image src="https://picsum.photos/seed/placeholder/600/400" alt="Placeholder" fill objectFit="cover" />
+                                                    <Image src="https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png" alt="Placeholder" fill objectFit="cover" />
                                                 </div>
                                             </CarouselItem>
                                         )}
