@@ -15,7 +15,7 @@ interface VideoPageProps {
 
 // Find the video data based on the slug
 const getVideoData = (slug: string) => {
-  return videos.find((video) => video.slug === slug);
+  return videos.find((video) => video.slug === slug) as (typeof videos)[0] | undefined;
 };
 
 // Generate static pages for each video at build time
@@ -33,9 +33,11 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
     return {};
   }
 
+  const defaultDescription = `Watch how Motor Khan provides professional car denting, painting, and body restoration services in Rohini, Delhi. Call us for affordable car repair today.`;
+
   return {
     title: video.title,
-    description: video.description,
+    description: video.description || defaultDescription,
     openGraph: {
       title: video.title,
       description: video.description,
@@ -49,10 +51,15 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
           alt: video.title,
         },
       ],
+      videos: video.embedUrl ? [{ url: video.embedUrl }] : [],
     },
     alternates: {
       canonical: `https://motorkhan.com/videos/${video.slug}`,
-    }
+    },
+    twitter: video.embedUrl ? {
+        card: "player",
+        player: video.embedUrl,
+    } : undefined,
   };
 }
 
@@ -71,6 +78,7 @@ export default function VideoPage({ params }: VideoPageProps) {
     thumbnailUrl: video.thumbnailUrl,
     uploadDate: video.uploadDate,
     contentUrl: video.contentUrl,
+    embedUrl: video.embedUrl,
     duration: video.duration,
     publisher: {
       '@type': 'Organization',
@@ -100,18 +108,27 @@ export default function VideoPage({ params }: VideoPageProps) {
 
         <Card className="overflow-hidden shadow-2xl">
             <div className="relative aspect-video w-full">
-                <video
-                    src={video.contentUrl}
-                    poster={video.thumbnailUrl}
-                    controls
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                >
-                    Your browser does not support the video tag.
-                </video>
-                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none opacity-100 group-focus-within:opacity-0 group-hover:opacity-0 transition-opacity">
-                    <PlayCircle className="h-20 w-20 text-white/80" />
-                </div>
+               {video.embedUrl ? (
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src={`${video.embedUrl}?si=Ghw7Ar8R1xlteTTf&autoplay=1&modestbranding=1`}
+                    title={video.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <video
+                      src={video.contentUrl}
+                      poster={video.thumbnailUrl}
+                      controls
+                      autoPlay
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover"
+                  >
+                      Your browser does not support the video tag.
+                  </video>
+                )}
             </div>
             <CardHeader>
                 <CardTitle className="text-2xl md:text-3xl uppercase">{video.title}</CardTitle>
