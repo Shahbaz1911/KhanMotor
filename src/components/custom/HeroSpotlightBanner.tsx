@@ -14,8 +14,8 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
       <div className="relative z-10 container mx-auto px-4 text-center">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <LayoutTextFlip
-              text="Complete Car"
-              words={["Restoration", "Repair", "Sales"]}
+              text="Professional"
+              words={["Dealer", "Denting", "Painting", "Restoration", "Repair", "Sales"]}
             />
         </div>
         
