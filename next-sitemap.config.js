@@ -1,5 +1,5 @@
 
-const {เว็บไซต์} = require('path');
+const path = require('path');
 const {glob} = require('glob');
 const fs = require('fs');
 
@@ -7,7 +7,7 @@ const siteUrl = 'https://motorkhan.com';
 
 // Function to generate video sitemap entries
 const generateVideoSitemap = () => {
-  const videosPath =เว็บไซต์.join(process.cwd(), 'src', 'lib', 'videos.json');
+  const videosPath = path.join(process.cwd(), 'src', 'lib', 'videos.json');
   try {
     const videosData = fs.readFileSync(videosPath, 'utf8');
     const videos = JSON.parse(videosData);
@@ -46,13 +46,13 @@ const generateVideoSitemap = () => {
 
 // Function to generate image sitemap entries from placeholder-images.json
 const generateImageSitemap = () => {
-  const imagesPath =เว็บไซต์.join(process.cwd(), 'src', 'lib', 'placeholder-images.json');
+  const imagesPath = path.join(process.cwd(), 'src', 'lib', 'placeholder-images.json');
   try {
     const imagesData = fs.readFileSync(imagesPath, 'utf8');
     const images = JSON.parse(imagesData);
 
-    if (typeof images !== 'object' || images === null) {
-      console.warn('Sitemap: placeholder-images.json is not an object. Skipping image sitemap.');
+    if (typeof images !== 'object' || images === null || Object.keys(images).length === 0) {
+      console.warn('Sitemap: placeholder-images.json is not a valid, non-empty object. Skipping image sitemap.');
       return '';
     }
 
@@ -129,7 +129,7 @@ module.exports = {
   },
   // After the build, we take our generated XML and write it to the file
   afterBuild: async (config) => {
-    const sitemapPath =เว็บไซต์.join(config.destDir, 'server-sitemap.xml');
+    const sitemapPath = path.join(config.destDir, 'server-sitemap.xml');
     const sitemapResult = await config.transform(config, '/server-sitemap.xml');
     if (sitemapResult && sitemapResult.__sitemapContent) {
       fs.writeFileSync(sitemapPath, sitemapResult.__sitemapContent);
