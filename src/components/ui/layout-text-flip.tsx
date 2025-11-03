@@ -4,11 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const LayoutTextFlip = ({
-  text = "Build Amazing",
+  text = ["Build", "Amazing"],
   words = ["Landing Pages", "Component Blocks", "Page Sections", "3D Shaders"],
   duration = 3000,
 }: {
-  text: string;
+  text: string[];
   words: string[];
   duration?: number;
 }) => {
@@ -24,13 +24,15 @@ export const LayoutTextFlip = ({
 
   return (
     <>
-      <motion.span
+      <motion.div
         layoutId="subtext"
-        className="text-4xl tracking-tight sm:text-6xl md:text-7xl font-black uppercase text-white drop-shadow-lg"
+        className="flex flex-col items-center sm:flex-row sm:gap-x-4 text-4xl tracking-tight sm:text-6xl md:text-7xl font-black uppercase text-white drop-shadow-lg"
         style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}
       >
-        {text}
-      </motion.span>
+        {text.map((word, index) => (
+          <span key={index}>{word}</span>
+        ))}
+      </motion.div>
 
       <motion.span
         layout

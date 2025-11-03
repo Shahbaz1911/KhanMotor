@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -13,9 +12,9 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
   return (
     <section ref={sectionRef} className="relative z-20 w-full h-full flex items-center justify-center overflow-hidden text-white">
       <div className="relative z-10 container mx-auto px-4 text-center">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-x-4">
             <LayoutTextFlip
-              text="Professional Car"
+              text={["Professional", "Car"]}
               words={["Dealer", "Denting", "Painting", "Restoration", "Repair", "Sales"]}
             />
         </div>
