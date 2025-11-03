@@ -18,6 +18,16 @@ export const metadata: Metadata = {
     'Motor Khan offers expert car denting painting, auto body repair, and full car restoration services in Rohini, Rithala, Vijay Vihar, Budh Vihar, and across Delhi. Trusted car body shop for paintless dent repair, used car sales, and premium car service center in Delhi.',
   keywords:
     'car repair near me,car repair in rithala ,car repair in rohini,car repair in vijay vihar ,car repair in budh vihar ,car denting painting in Rohini, car restoration services Rohini Delhi, car body shop in Rohini, auto body repair Rohini Delhi, paintless dent repair Rohini, car paint shop Rohini, car repair shops in Rohini Delhi, vehicle restoration Rohini Delhi, car service center Rohini, used cars for sale Rohini Delhi, buy used car in Rohini, sell car in Rohini Delhi, second hand car dealers Rohini, car buyers Rohini Delhi, old car sale Rohini, pre-owned car purchase Rohini, car trade-in Rohini Delhi, affordable car denting painting in Rohini, expert car restoration Delhi Rohini, best car repair shop Rohini, instant dent repair Rohini Delhi, multi-brand car service Rohini, premium car painting Rohini, trusted used car dealer Rohini, quick car sale Rohini Delhi',
+  icons: {
+    icon: [
+      { url: 'https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-white.png', sizes: 'any', type: 'image/png' },
+      { url: 'https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-white.png', sizes: '16x16', type: 'image/png' },
+      { url: 'https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-white.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: 'https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-white.png', sizes: '180x180', type: 'image/png' },
+    ],
+  }
 };
 
 export default function RootLayout({
@@ -130,8 +140,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
