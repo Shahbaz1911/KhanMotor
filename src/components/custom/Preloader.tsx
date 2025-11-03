@@ -93,8 +93,8 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       }, 0)
       .to(logoRef.current, {
         keyframes: {
-          "50%": { filter: 'drop-shadow(0 0 15px hsla(var(--destructive), 0.7))' },
-          "0%, 100%": { filter: 'drop-shadow(0 0 0 hsla(var(--destructive), 0))' }
+            "50%": { scale: 1.05, boxShadow: "0 0 25px rgba(189, 42, 54, 0.7)" },
+            "0%, 100%": { scale: 1, boxShadow: "0 0 0 rgba(189, 42, 54, 0)" }
         },
         duration: 0.5,
         repeat: 1,
@@ -156,7 +156,7 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       <div className="relative w-64 h-32 flex items-end justify-center">
         <div className="absolute bottom-0 w-full h-[128px] border-[8px] border-b-0 border-destructive/50 rounded-t-full"></div>
         <div className={cn("absolute bottom-0 w-[calc(100%-16px)] h-[120px] border-[1px] border-b-0 rounded-t-full", isLight ? "border-black/20" : "border-white/20")}></div>
-        <div className={cn("absolute bottom-0 w-[calc(100%-32px)] h-[112px] border-[8px] border-b-0 rounded-t-full", isLight ? "border-white" : "border-black")}></div>
+        <div className={cn("absolute bottom-0 w-[calc(100%-32px)] h-[112px] border-[8px] border-b-0 rounded-t-full", isLight ? "bg-white" : "border-black")}></div>
         
         <div className="absolute bottom-0 w-[calc(100%-48px)] h-[104px]">
           {Array.from({length: totalMarks + 1}).map((_, i) => (
