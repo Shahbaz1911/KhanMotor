@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,7 @@ export function HeroSpotlightBanner({ isLoaded }: { isLoaded: boolean }) {
           size="lg" 
           variant="outline"
           className="group bg-transparent hover:bg-white hover:text-black border-2 border-white text-lg text-white px-8 py-6 rounded-full transition-all duration-300 transform hover:scale-105 font-black mt-10"
-          onClick={() => router.push('/#featured-gallery')}
+          onClick={() => router.push('/about')}
         >
           DISCOVER
         </Button>
