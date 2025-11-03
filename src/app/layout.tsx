@@ -95,6 +95,37 @@ export default function RootLayout({
     }
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What services does Motor Khan offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We specialize in car restoration, detailing, denting and painting, car repair, servicing, and buying/selling certified pre-owned cars."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is Motor Khan located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MotorKhan is located at Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini, Delhi, 110085."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer financing options?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we work with multiple partners to provide flexible financing options for your vehicle purchase."
+        }
+      }
+    ]
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -114,6 +145,7 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featureSnippet) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       </head>
 
       <body className="font-body antialiased">

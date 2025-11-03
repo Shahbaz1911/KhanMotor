@@ -36,6 +36,7 @@ import Head from "next/head";
 import { LinkPreview } from "@/components/ui/link-preview";
 import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
 import { LocationMap } from "@/components/custom/LocationMap";
+import { FaqSection } from "@/components/custom/FaqSection";
 
 
 export default function ConsolidatedPage() {
@@ -121,101 +122,8 @@ export default function ConsolidatedPage() {
     }
   }, [isLoaded]);
 
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": "Car Restoration & Detailing",
-    "provider": {
-      "@type": "AutoRepair",
-      "name": "Motor Khan",
-      "url": "https://motorkhan.com"
-    },
-    "areaServed": {
-      "@type": "Place",
-      "name": "Delhi, India"
-    },
-    "description": "MotorKhan offers expert car restoration, detailing, polishing, and interior care services in Delhi."
-  };
-
-  const reviewSchema = {
-    "@context": "https://schema.org",
-    "@type": "AutoRepair",
-    "name": "MotorKhan",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "150"
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": "Sarah L.",
-        "reviewBody": "Motor Khan provided an unparalleled buying experience. Their attention to detail and customer service is top-notch. I found my dream car!",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5"
-        }
-      },
-      {
-        "@type": "Review",
-        "author": "John B.",
-        "reviewBody": "The team at Motor Khan made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure.",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5"
-        }
-      }
-    ]
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What services does Motor Khan offer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We specialize in car restoration, detailing, denting and painting, car repair, servicing, and buying/selling certified pre-owned cars."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Where is Motor Khan located?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "MotorKhan is located at Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini, Delhi, 110085."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you offer financing options?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, we work with multiple partners to provide flexible financing options for your vehicle purchase."
-        }
-      }
-    ]
-  };
-
-
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      </Head>
       <Preloader onLoaded={() => setIsLoaded(true)} />
       <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
         <header ref={headerRef} className="fixed top-0 w-full z-50">
@@ -363,6 +271,9 @@ export default function ConsolidatedPage() {
         <GoogleGeminiEffectDemo />
 
         <LocationMap />
+
+        {/* Section 5: FAQ */}
+        <FaqSection />
 
         {/* Section 6: Contact Us */}
         <section id="contact" className="container mx-auto min-h-screen px-4 py-16 md:py-24 flex items-center justify-center">
