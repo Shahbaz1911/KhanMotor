@@ -31,7 +31,7 @@ import CircularText from "@/components/custom/CircularText";
 import ScrollReveal from "@/components/custom/ScrollReveal";
 import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
 import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Head from "next/head";
 import { LinkPreview } from "@/components/ui/link-preview";
 import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
@@ -124,8 +124,16 @@ export default function ConsolidatedPage() {
 
   return (
     <>
-      <Preloader onLoaded={() => setIsLoaded(true)} />
-      <div ref={pageRef} className={cn("flex flex-col relative bg-background", !isLoaded && "opacity-0 invisible")}>
+      <AnimatePresence>
+        {!isLoaded && <Preloader onLoaded={() => setIsLoaded(true)} />}
+      </AnimatePresence>
+      <motion.div 
+        ref={pageRef} 
+        className={cn("flex flex-col relative bg-background")}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoaded ? 1 : 0 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      >
         <header ref={headerRef} className="fixed top-0 w-full z-50">
            <div className="relative flex justify-between items-center px-4 pt-4">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -280,7 +288,7 @@ export default function ConsolidatedPage() {
           <ContactForm />
         </section>
 
-      </div>
+      </motion.div>
     </>
   );
 }

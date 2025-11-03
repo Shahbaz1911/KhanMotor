@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface PreloaderProps {
   onLoaded: () => void;
@@ -34,6 +35,7 @@ const TickMark = ({ rotation, large, isLight }: { rotation: number, large?: bool
         style={{
           width: '1px',
           height: large ? '6px' : '3px',
+          animationName: 'tick',
           animationDirection: 'alternate',
           animationIterationCount: 'infinite',
           ...animationStyle
@@ -53,7 +55,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const { theme, systemTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // This ensures we don't render until the client has mounted and the theme is resolved
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -66,7 +67,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
 
 
   useEffect(() => {
-    // Don't start the animation until the component is mounted
     if (!mounted) return;
 
     const speedCounter = { val: 0 };
@@ -76,7 +76,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       },
     });
 
-    // Animate speed number and needle simultaneously
     tl.to(speedCounter, {
       val: 350,
       duration: 1.5,
@@ -88,35 +87,26 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       },
     })
     .to(needleRef.current, {
-        rotation: 270, // -135 (start) + 270 = 135 deg (end)
+        rotation: 270,
         duration: 1.5,
         ease: 'power3.inOut',
-      }, 0) // Start at the same time as the number counter
-      // Logo glow at peak
+      }, 0)
       .to(logoRef.current, {
-        animation: 'logo-glow 0.5s ease-in-out',
+        keyframes: {
+          "50%": { filter: 'drop-shadow(0 0 15px hsla(var(--destructive), 0.7))' },
+          "0%, 100%": { filter: 'drop-shadow(0 0 0 hsla(var(--destructive), 0))' }
+        },
         duration: 0.5,
         repeat: 1,
         yoyo: true,
       }, '-=0.25')
-      // Hold for a moment
       .to({}, {duration: 0.5});
 
   }, [mounted]);
 
   useEffect(() => {
     if (isAnimationComplete) {
-      const revealTl = gsap.timeline({
-        onComplete: () => {
-          if (preloaderRef.current) preloaderRef.current.style.display = 'none';
-          onLoaded();
-        },
-      });
-      revealTl.to(preloaderRef.current, {
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.inOut',
-      });
+      onLoaded();
     }
   }, [isAnimationComplete, onLoaded]);
 
@@ -140,16 +130,18 @@ export function Preloader({ onLoaded }: PreloaderProps) {
   const startAngle = -135;
 
   if (!mounted) {
-    return null; // Render nothing until the theme is resolved to prevent flash
+    return null; 
   }
 
-
   return (
-    <div ref={preloaderRef} className={cn(
-      "fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden",
-      isLight ? "bg-white" : "bg-black"
-    )}>
-      {/* Logo above the speedometer */}
+    <motion.div 
+        ref={preloaderRef} 
+        className={cn(
+            "fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden",
+            isLight ? "bg-white" : "bg-black"
+        )}
+        exit={{ opacity: 0, transition: { duration: 0.8, ease: 'easeInOut' } }}
+    >
       <div ref={logoRef} className="mb-8">
            <Image
               src={logoSrc}
@@ -162,12 +154,10 @@ export function Preloader({ onLoaded }: PreloaderProps) {
       </div>
 
       <div className="relative w-64 h-32 flex items-end justify-center">
-        {/* Speedometer Dial - more layers for realism */}
         <div className="absolute bottom-0 w-full h-[128px] border-[8px] border-b-0 border-destructive/50 rounded-t-full"></div>
         <div className={cn("absolute bottom-0 w-[calc(100%-16px)] h-[120px] border-[1px] border-b-0 rounded-t-full", isLight ? "border-black/20" : "border-white/20")}></div>
         <div className={cn("absolute bottom-0 w-[calc(100%-32px)] h-[112px] border-[8px] border-b-0 rounded-t-full", isLight ? "border-white" : "border-black")}></div>
         
-        {/* Speed Markings */}
         <div className="absolute bottom-0 w-[calc(100%-48px)] h-[104px]">
           {Array.from({length: totalMarks + 1}).map((_, i) => (
              <TickMark key={i} rotation={startAngle + (i * degreeStep)} large={i % 10 === 0} isLight={isLight} />
@@ -182,7 +172,6 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           <SpeedMark value={350} rotation={150.2} />
         </div>
 
-        {/* Needle - redesigned for realism */}
         <div
           className="absolute bottom-0 w-32 h-32 origin-bottom-left"
           style={{ transform: 'translateX(6px)' }}
@@ -196,13 +185,12 @@ export function Preloader({ onLoaded }: PreloaderProps) {
           </div>
         </div>
 
-         {/* Center pin */}
         <div className={cn("absolute w-4 h-4 rounded-full z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2", isLight ? "bg-zinc-200 border-zinc-400" : "bg-zinc-800 border border-zinc-600")}></div>
       </div>
        <div className={cn("mt-4 text-center font-cairo", isLight ? "text-black" : "text-white")}>
             <span ref={speedNumberRef} className="text-5xl font-black tabular-nums">0</span>
             <span className="ml-2 text-lg">mph</span>
         </div>
-    </div>
+    </motion.div>
   );
 }

@@ -10,6 +10,7 @@ import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
 import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 import { CookieConsentBanner } from '@/components/custom/CookieConsentBanner';
+import { AnimatePresence } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: 'Motor Khan - Car Denting, Painting & Restoration in Rohini, Rithala, Delhi',
@@ -159,13 +160,13 @@ export default function RootLayout({
             >
               <SmoothScroll>
                 <FirebaseErrorListener />
-                <div className="flex min-h-screen flex-col">
-                  <main className="flex-grow">{children}</main>
-                  <Footer />
-                </div>
-                <WhatsAppButton />
-                <CookieConsentBanner />
-                <Toaster />
+                  <div className="flex min-h-screen flex-col">
+                    <main className="flex-grow">{children}</main>
+                    <Footer />
+                  </div>
+                  <WhatsAppButton />
+                  <CookieConsentBanner />
+                  <Toaster />
               </SmoothScroll>
             </ThemeProvider>
           </AuthProvider>
