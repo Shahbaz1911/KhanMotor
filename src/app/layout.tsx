@@ -58,45 +58,6 @@ export default function RootLayout({
     }
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Do you offer car denting and painting in Rohini?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, Motor Khan specializes in professional car denting and painting services in Rohini, Rithala, and nearby Delhi areas."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I sell my old car at Motor Khan?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Absolutely! Motor Khan offers a trusted platform for buying and selling used cars in Rohini and across Delhi."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you provide car restoration services for classic cars?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, we provide complete restoration services for vintage and classic cars with expert craftsmanship and attention to detail."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are your workshop hours?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Motor Khan is open seven days a week from 9 AM to 9 PM."
-        }
-      }
-    ]
-  };
-
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -151,7 +112,6 @@ export default function RootLayout({
         />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featureSnippet) }} />
       </head>
