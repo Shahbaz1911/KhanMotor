@@ -77,7 +77,7 @@ export function ContactPageClient() {
     },
     { icon: Phone, text: "+91 8595853918", href: "tel:+918595853918" },
     { icon: Phone, text: "+91 9871358670", href: "tel:+919871358670" },
-    { icon: Mail, text: "info@motorkhan.com", href: "mailto:info@motorkhan.com" },
+    { icon: Mail, text: "motorkhandelhi@gmail.com", href: "mailto:motorkhandelhi@gmail.com" },
   ];
 
   const listVariants = {
