@@ -36,7 +36,6 @@ module.exports = {
       }
     ],
     additionalSitemaps: [
-      `${siteUrl}/sitemap.xml`,
       `${siteUrl}/server-sitemap.xml`,
     ],
   },
