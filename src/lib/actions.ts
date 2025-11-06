@@ -11,11 +11,6 @@ import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import axios from 'axios';
 
-// Load environment variables on the server
-if (typeof window === 'undefined') {
-  require('dotenv').config();
-}
-
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
   api_key: process.env.CLOUDINARY_API_KEY, 
