@@ -7,74 +7,13 @@ const siteUrl = 'https://motorkhan.com';
 
 // Function to generate video sitemap entries
 const generateVideoSitemap = () => {
-  const videosPath = path.join(process.cwd(), 'src', 'lib', 'videos.json');
-  try {
-    const videosData = fs.readFileSync(videosPath, 'utf8');
-    const videos = JSON.parse(videosData);
-
-    if (!Array.isArray(videos)) {
-      console.warn('Sitemap: videos.json is not an array. Skipping video sitemap.');
-      return '';
-    }
-
-    return videos
-      .map(video => {
-        if (!video.slug || !video.thumbnailUrl || !video.title || !video.description || !video.contentUrl) {
-          return ''; // Skip invalid entries
-        }
-        return `
-    <url>
-      <loc>${siteUrl}/videos/${video.slug}</loc>
-      <video:video>
-        <video:thumbnail_loc>${video.thumbnailUrl}</video:thumbnail_loc>
-        <video:title>${video.title.replace(/&/g, '&amp;')}</video:title>
-        <video:description>${video.description.replace(/&/g, '&amp;')}</video:description>
-        <video:content_loc>${video.contentUrl}</video:content_loc>
-        ${video.uploadDate ? `<video:publication_date>${video.uploadDate}</video:publication_date>` : ''}
-        ${video.duration ? `<video:duration>${video.duration.replace('PT', '').replace('M', '0').replace('S', '')}</video:duration>` : ''}
-      </video:video>
-    </url>
-    `;
-      })
-      .join('');
-  } catch (error) {
-    console.error("Sitemap: Error reading or parsing videos.json", error);
-    return '';
-  }
+  return '';
 };
 
 
 // Function to generate image sitemap entries from placeholder-images.json
 const generateImageSitemap = () => {
-  const imagesPath = path.join(process.cwd(), 'src', 'lib', 'placeholder-images.json');
-  try {
-    const imagesData = fs.readFileSync(imagesPath, 'utf8');
-    const images = JSON.parse(imagesData);
-
-    if (typeof images !== 'object' || images === null) {
-      console.warn('Sitemap: placeholder-images.json is not an object. Skipping image sitemap.');
-      return '';
-    }
-
-    return Object.values(images)
-      .map(image => {
-        if (typeof image !== 'object' || image === null || !image.url) {
-          return ''; // Skip invalid entries
-        }
-        return `
-    <url>
-      <loc>${image.url}</loc>
-      <image:image>
-        <image:loc>${image.url}</image:loc>
-      </image:image>
-    </url>
-    `;
-      })
-      .join('');
-  } catch (error) {
-    console.error("Sitemap: Error reading or parsing placeholder-images.json", error);
-    return '';
-  }
+  return '';
 };
 
 
