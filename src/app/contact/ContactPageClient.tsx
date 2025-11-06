@@ -72,7 +72,7 @@ export function ContactPageClient() {
   const contactDetails = [
     {
       icon: MapPin,
-      text: "Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini, Delhi, 110085",
+      text: "Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini, Delhi 110085, India",
       href: "https://maps.app.goo.gl/WaAMeWr8BsjWmhhe8",
     },
     { icon: Phone, text: "+91 8595853918", href: "tel:+918595853918" },

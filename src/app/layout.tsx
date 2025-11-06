@@ -49,7 +49,7 @@ export default function RootLayout({
     "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini",
+      "streetAddress": "Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini",
       "addressLocality": "Delhi",
       "postalCode": "110085",
       "addressCountry": "IN"
@@ -123,7 +123,7 @@ export default function RootLayout({
         "name": "Where is Motor Khan located?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "MotorKhan is located at Shop No 12, Vijay Vihar Phase I, Block B, Near Rice Mill, Rithala, Rohini, Delhi, 110085."
+          "text": "MotorKhan is located at Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini, Delhi, 110085, India."
         }
       },
       {
