@@ -61,7 +61,7 @@ export function LocationMap() {
             scrolling="no"
             marginHeight={0}
             marginWidth={0}
-            src="https://maps.google.com/maps?width=100%&amp;height=100%&amp;hl=en&amp;q=Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini, Delhi 110085, India&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+            src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=Motor Khan ,Shop No 12, near Rice Mill, Vijay vihar Phase I, Phase 1, Block B, Rithala, Rohini, New Delhi, Delhi, 110085&amp;t=k&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
             title="Motor Khan Location"
           ></iframe>
         </div>
