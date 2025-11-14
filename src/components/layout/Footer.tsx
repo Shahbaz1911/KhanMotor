@@ -5,9 +5,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const socialLinks = [
   { icon: Instagram, href: 'https://www.instagram.com/motorkhan', label: 'Instagram' },
@@ -15,31 +12,10 @@ const socialLinks = [
 ];
 
 export function Footer() {
-  const footerRef = useRef<HTMLElement>(null);
   const logoSrc = "https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-black.png";
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      gsap.from(footerRef.current, {
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top bottom',
-          toggleActions: 'play none none none',
-        },
-        opacity: 0,
-        y: 100,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <footer ref={footerRef} className="bg-background py-12 md:py-20 px-4">
+    <footer className="bg-background py-12 md:py-20 px-4">
       <div className="container mx-auto bg-black text-gray-300 rounded-2xl shadow-2xl p-8 md:p-12">
         <div className="flex flex-col md:grid md:grid-cols-12 gap-y-10 md:gap-8">
           
