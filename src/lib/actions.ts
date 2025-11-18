@@ -10,25 +10,9 @@ import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import ImageKit from "imagekit";
 
-// Check for Resend API key at the start of the file.
-if (!process.env.RESEND_API_KEY) {
-  console.warn("Resend API key is missing. Email sending will fail. Make sure RESEND_API_KEY is set in your environment variables.");
-}
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
 
-// Check for ImageKit credentials
-if (
-  !process.env.IMAGEKIT_PUBLIC_KEY ||
-  !process.env.IMAGEKIT_PRIVATE_KEY ||
-  !process.env.IMAGEKIT_URL_ENDPOINT
-) {
-  console.warn(
-    "ImageKit credentials are not fully configured in your environment variables. File uploads will fail."
-  );
-}
-
+// Initialize ImageKit
 const imagekit = new ImageKit({
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
@@ -51,6 +35,14 @@ export async function submitContactForm(
   prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Resend API key is missing. Cannot send email.");
+    return {
+      message: "Server configuration error: Email service is not available.",
+      success: false,
+    };
+  }
+
   const validatedFields = contactFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -67,6 +59,8 @@ export async function submitContactForm(
   }
 
   const { name, email, phone, message } = validatedFields.data;
+  
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { data, error } = await resend.emails.send({
@@ -254,6 +248,14 @@ export async function submitAppointmentForm(
   prevState: AppointmentFormState,
   formData: FormData
 ): Promise<AppointmentFormState> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Resend API key is missing. Cannot send email.");
+    return {
+      message: "Server configuration error: Email service is not available.",
+      success: false,
+    };
+  }
+
   const rawDate = formData.get('preferredDate');
   const dateToValidate = typeof rawDate === 'string' ? new Date(`${rawDate}T00:00:00`) : undefined;
 
@@ -276,6 +278,8 @@ export async function submitAppointmentForm(
 
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
 
