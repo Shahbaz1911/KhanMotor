@@ -151,21 +151,17 @@ export default function EditVehiclePage() {
             const existingUrls = imageSources.filter(source => typeof source === 'string') as string[];
             const newFiles = imageSources.filter(source => typeof source === 'object') as { file: File; url: string }[];
             
-            let uploadedUrls: string[] = [];
+            let uploadedUrls: (string | null)[] = [];
 
             if (newFiles.length > 0) {
-                const uploadPromises = newFiles.map(async (source) => {
-                    const uploadedUrl = await handleFileUpload(source.file);
-                    if (!uploadedUrl) {
-                        throw new Error(`Failed to upload image: ${source.file.name}`);
-                    }
-                    return uploadedUrl;
-                });
-                
-                uploadedUrls = await Promise.all(uploadPromises);
+                uploadedUrls = await Promise.all(newFiles.map(source => handleFileUpload(source.file)));
             }
 
-            const finalImageUrls = [...existingUrls, ...uploadedUrls];
+            if (uploadedUrls.some(url => url === null)) {
+                 throw new Error(`Failed to upload one or more images.`);
+            }
+
+            const finalImageUrls = [...existingUrls, ...uploadedUrls as string[]];
             
             const vehicleData = {
                 ...vehicle,
@@ -381,3 +377,5 @@ export default function EditVehiclePage() {
         </div>
     );
 }
+
+    

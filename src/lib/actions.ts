@@ -14,7 +14,6 @@ const fromEmail = "noreply@updates.motorkhan.com";
 
 // Check for ImageKit credentials and log a warning if they are missing.
 if (
-  !process.env.IMAGEKIT_PUBLIC_KEY ||
   !process.env.IMAGEKIT_PRIVATE_KEY ||
   !process.env.IMAGEKIT_URL_ENDPOINT
 ) {
@@ -371,17 +370,15 @@ export async function submitAppointmentForm(
  */
 export async function getIKAuth() {
   if (
-    !process.env.IMAGEKIT_PUBLIC_KEY ||
     !process.env.IMAGEKIT_PRIVATE_KEY ||
     !process.env.IMAGEKIT_URL_ENDPOINT
   ) {
-    console.error("ImageKit credentials are not configured.");
-    // In a real app, you might want to return a proper error response
-    return { success: false, error: "File upload service is not configured." };
+    console.error("ImageKit server credentials are not configured.");
+    return { success: false, error: "File upload service is not configured on the server." };
   }
 
   const imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
     urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
   });
@@ -395,3 +392,5 @@ export async function getIKAuth() {
     return { success: false, error: errorMessage };
   }
 }
+
+    
