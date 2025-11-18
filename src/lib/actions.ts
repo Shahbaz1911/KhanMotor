@@ -3,25 +3,16 @@
 
 import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
-import { v2 as cloudinary } from "cloudinary";
 import { Resend } from "resend";
 import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
 import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
-// Check for Cloudinary configuration at the start of the file.
-if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-  console.warn("Cloudinary configuration is missing. Image uploads will fail. Make sure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are set in your environment variables.");
-} else {
-  cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
-  });
+// Check for Resend API key at the start of the file.
+if (!process.env.RESEND_API_KEY) {
+  console.warn("Resend API key is missing. Email sending will fail. Make sure RESEND_API_KEY is set in your environment variables.");
 }
-
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
@@ -320,46 +311,22 @@ export async function submitAppointmentForm(
   }
 }
 
-export async function uploadToCloudinary(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
+
+export async function uploadFile(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
   const file = formData.get('file') as File;
 
   if (!file) {
     return { success: false, error: 'No file provided.' };
   }
   
-  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      console.error("Cloudinary environment variables are not configured.");
-      return { success: false, error: 'Server configuration error: Image hosting is not set up.' };
-  }
-
-  try {
-    const fileBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(fileBuffer);
-
-    return await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-            {
-                folder: 'arman-autoxperts',
-                resource_type: 'auto',
-            },
-            (error, result) => {
-                if (error) {
-                    console.error('Cloudinary upload error:', error);
-                    resolve({ success: false, error: error.message });
-                } else if (result) {
-                    resolve({ success: true, url: result.secure_url });
-                } else {
-                    resolve({ success: false, error: "Cloudinary upload failed without an error." });
-                }
-            }
-        );
-        uploadStream.end(buffer);
-    });
-  } catch (error) {
-      console.error('Error processing file for upload:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during file processing.';
-      return { success: false, error: errorMessage };
-  }
+  // TODO: Implement your ImageKit upload logic here.
+  // This is a placeholder that simulates a successful upload.
+  console.log(`Simulating upload for file: ${file.name}`);
+  
+  // Replace this with your actual ImageKit upload call.
+  // For now, we'll return a placeholder URL.
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+  const mockUrl = `https://ik.imagekit.io/your-imagekit-id/temp/${Date.now()}-${file.name}`;
+  
+  return { success: true, url: "https://picsum.photos/seed/placeholder/600/400" };
 }
-
-    

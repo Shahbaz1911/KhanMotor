@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { uploadToCloudinary } from "@/lib/actions";
+import { uploadFile } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { motion } from "framer-motion";
@@ -71,12 +71,12 @@ export default function AddVehiclePage() {
             const formData = new FormData();
             formData.append('file', file);
             
-            const result = await uploadToCloudinary(formData);
+            const result = await uploadFile(formData);
 
             if (result.success && result.url) {
                 return result.url;
             } else {
-                throw new Error(result.error || "Cloudinary upload failed.");
+                throw new Error(result.error || "ImageKit upload failed.");
             }
         } catch (error) {
             console.error("Upload failed:", error);
@@ -340,5 +340,3 @@ export default function AddVehiclePage() {
         </div>
     );
 }
-    
-    

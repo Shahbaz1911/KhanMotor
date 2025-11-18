@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import type { Vehicle } from "@/types";
-import { uploadToCloudinary } from "@/lib/actions";
+import { uploadFile } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 
@@ -122,7 +122,7 @@ export default function EditVehiclePage() {
                 const uploadPromises = newFiles.map(async (source) => {
                     const formData = new FormData();
                     formData.append('file', source.file);
-                    const result = await uploadToCloudinary(formData);
+                    const result = await uploadFile(formData);
                     if (!result.success || !result.url) {
                         throw new Error(`Failed to upload image: ${source.file.name}`);
                     }
@@ -340,5 +340,3 @@ export default function EditVehiclePage() {
         </div>
     );
 }
-
-    

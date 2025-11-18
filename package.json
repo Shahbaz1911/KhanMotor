@@ -43,7 +43,6 @@
     "@tabler/icons-react": "^3.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cloudinary": "^2.3.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.5.0",
     "embla-carousel-autoplay": "^8.1.5",
@@ -78,5 +77,3 @@
     "typescript": "^5"
   }
 }
-
-    
