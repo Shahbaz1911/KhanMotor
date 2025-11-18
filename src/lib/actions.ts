@@ -11,16 +11,17 @@ import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 // Check for Cloudinary configuration at the start of the file.
-if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+  console.warn("Cloudinary configuration is missing. Image uploads will fail. Make sure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are set in your environment variables.");
+} else {
   cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
     api_key: process.env.CLOUDINARY_API_KEY, 
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true
   });
-} else {
-  console.warn("Cloudinary configuration is missing. Image uploads will fail.");
 }
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
@@ -331,24 +332,34 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
       return { success: false, error: 'Server configuration error: Image hosting is not set up.' };
   }
 
-  try {
-    const fileBuffer = await file.arrayBuffer();
-    const mimeType = file.type;
-    const encoding = 'base64';
-    const base64Data = Buffer.from(fileBuffer).toString('base64');
-    const fileUri = 'data:' + mimeType + ';' + encoding + ',' + base64Data;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const fileBuffer = await file.arrayBuffer();
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'arman-autoxperts',
+          resource_type: 'image',
+        },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary upload error:', error);
+            return resolve({ success: false, error: error.message });
+          }
+          if (result) {
+            return resolve({ success: true, url: result.secure_url });
+          }
+        }
+      );
 
-    const result = await cloudinary.uploader.upload(fileUri, {
-      folder: 'arman-autoxperts',
-      resource_type: 'image',
-    });
+      const readableStream = require('stream').Readable.from(Buffer.from(fileBuffer));
+      readableStream.pipe(uploadStream);
 
-    return { success: true, url: result.secure_url };
-  } catch (error) {
-    console.error('Cloudinary upload error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during upload.';
-    return { success: false, error: errorMessage };
-  }
+    } catch (error) {
+        console.error('Error processing file for upload:', error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during file processing.';
+        return resolve({ success: false, error: errorMessage });
+    }
+  });
 }
 
     
