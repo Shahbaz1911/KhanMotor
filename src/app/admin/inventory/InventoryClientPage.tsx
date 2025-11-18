@@ -141,6 +141,13 @@ export default function InventoryClientPage() {
             });
     }
 
+    const getImageUrl = (url: string, seed: string) => {
+        if (url && url.includes("res.cloudinary.com")) {
+            return `https://picsum.photos/seed/${seed}/600/400`;
+        }
+        return url || `https://picsum.photos/seed/${seed}/600/400`;
+    }
+
     if (authLoading || !user || !firestore) {
         return (
             <div className="flex min-h-screen items-center justify-center">
@@ -231,7 +238,7 @@ export default function InventoryClientPage() {
                                         {vehicle.imageUrls?.length > 0 ? vehicle.imageUrls.map((url, i) => (
                                             <CarouselItem key={i}>
                                                 <div className="relative aspect-video w-full">
-                                                    <Image src={url} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
+                                                    <Image src={getImageUrl(url, vehicle.id || `v${i}`)} alt={`${vehicle.make} ${vehicle.model}`} fill objectFit="cover" />
                                                 </div>
                                             </CarouselItem>
                                         )) : (
@@ -324,5 +331,3 @@ export default function InventoryClientPage() {
     </div>
   )
 }
-
-    
