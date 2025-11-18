@@ -1,4 +1,3 @@
-
 "use server";
 
 import { z } from "zod";
@@ -11,14 +10,6 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import ImageKit from "imagekit";
 
 const fromEmail = "noreply@updates.motorkhan.com";
-
-// Initialize ImageKit
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || "",
-});
-
 
 export type ContactFormState = {
   message: string;
@@ -35,14 +26,6 @@ export async function submitContactForm(
   prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
-  if (!process.env.RESEND_API_KEY) {
-    console.error("Resend API key is missing. Cannot send email.");
-    return {
-      message: "Server configuration error: Email service is not available.",
-      success: false,
-    };
-  }
-
   const validatedFields = contactFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
@@ -55,6 +38,14 @@ export async function submitContactForm(
       message: "Validation failed. Please check your input.",
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Resend API key is missing. Cannot send email.");
+    return {
+      message: "Server configuration error: Email service is not available.",
+      success: false,
     };
   }
 
@@ -77,6 +68,19 @@ export async function submitContactForm(
         success: false,
       };
     }
+
+    // Also send a notification to the admin
+    await resend.emails.send({
+        from: `New Inquiry <${fromEmail}>`,
+        to: ['motorkhandelhi@gmail.com'],
+        subject: `New Inquiry from ${name}`,
+        html: `<p>You have a new contact form submission from:</p>
+               <p><strong>Name:</strong> ${name}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Phone:</strong> ${phone}</p>
+               <p><strong>Message:</strong></p>
+               <p>${message}</p>`,
+    });
 
     return {
       message: "Thank you for your message! We will get back to you soon.",
@@ -185,6 +189,8 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     let currentY = contentYStart;
     drawDetailRow(currentY, 'Client Name:', data.name);
     currentY -= 40;
+    drawDetailRow(currentY, 'Client Phone:', data.phone);
+    currentY -= 40;
     drawDetailRow(currentY, 'Appointment Date:', format(data.preferredDate, 'EEEE, MMMM d, yyyy'));
     currentY -= 40;
     drawDetailRow(currentY, 'Appointment Time:', formatTime(data.preferredTime));
@@ -248,14 +254,6 @@ export async function submitAppointmentForm(
   prevState: AppointmentFormState,
   formData: FormData
 ): Promise<AppointmentFormState> {
-  if (!process.env.RESEND_API_KEY) {
-    console.error("Resend API key is missing. Cannot send email.");
-    return {
-      message: "Server configuration error: Email service is not available.",
-      success: false,
-    };
-  }
-
   const rawDate = formData.get('preferredDate');
   const dateToValidate = typeof rawDate === 'string' ? new Date(`${rawDate}T00:00:00`) : undefined;
 
@@ -276,6 +274,14 @@ export async function submitAppointmentForm(
     };
   }
 
+  if (!process.env.RESEND_API_KEY) {
+    console.error("Resend API key is missing. Cannot send email.");
+    return {
+      message: "Server configuration error: Email service is not available.",
+      success: false,
+    };
+  }
+
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
   const resend = new Resend(process.env.RESEND_API_KEY);
@@ -283,7 +289,8 @@ export async function submitAppointmentForm(
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
 
-     const { data, error } = await resend.emails.send({
+     // Send email to the user
+     await resend.emails.send({
       from: `Motor Khan <${fromEmail}>`,
       to: [email],
       subject: "Your Test Drive Appointment Request at Motor Khan",
@@ -302,13 +309,26 @@ export async function submitAppointmentForm(
       ],
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return {
-        message: "An error occurred while sending your request. Please try again later.",
-        success: false,
-      };
-    }
+    // Send notification email to admin
+     await resend.emails.send({
+        from: `New Appointment <${fromEmail}>`,
+        to: ['motorkhandelhi@gmail.com'],
+        subject: `New Test Drive Request from ${name}`,
+        html: `<p>You have a new test drive request:</p>
+               <p><strong>Name:</strong> ${name}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Phone:</strong> ${phone}</p>
+               <p><strong>Preferred Date:</strong> ${format(preferredDate, 'PPP')}</p>
+               <p><strong>Preferred Time:</strong> ${preferredTime}</p>
+               <p><strong>Vehicle:</strong> ${vehicleOfInterest || 'Not specified'}</p>`,
+        attachments: [
+        {
+          filename: 'Appointment_Slip_Motor_Khan.pdf',
+          content: pdfBuffer,
+        },
+      ],
+    });
+
 
     return {
       message: "Thank you for your appointment request! We will contact you shortly to confirm.",
@@ -323,7 +343,6 @@ export async function submitAppointmentForm(
     };
   }
 }
-
 
 export async function uploadFile(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
   const file = formData.get('file') as File;
@@ -341,13 +360,20 @@ export async function uploadFile(formData: FormData): Promise<{ success: boolean
     return { success: false, error: 'File upload service is not configured.' };
   }
 
+  const imagekit = new ImageKit({
+      publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+      privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+  });
+
   try {
-    const fileBuffer = Buffer.from(await file.arrayBuffer());
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
     const response = await imagekit.upload({
-        file: fileBuffer,
+        file: buffer,
         fileName: file.name,
-        folder: "/motorkhan-uploads", // Optional: specify a folder
+        folder: "/motorkhan-uploads", 
     });
 
     return { success: true, url: response.url };
