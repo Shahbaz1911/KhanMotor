@@ -1,4 +1,3 @@
-
 "use server";
 
 import { z } from "zod";
@@ -10,12 +9,18 @@ import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-  api_key: process.env.CLOUDINARY_API_KEY, 
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true
-});
+// Check for Cloudinary configuration at the start of the file.
+if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+  cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+  });
+} else {
+  console.warn("Cloudinary configuration is missing. Image uploads will fail.");
+}
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
@@ -110,10 +115,10 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     });
 
     // --- Header ---
-    const logoUrl = "https://delhi.motorkhan.com/images/about/motor-khan-rithala-rohini-delhi-black-car.jpg";
+    const logoUrl = "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png";
     const logoImageResponse = await fetch(logoUrl);
     const logoImageBytes = await logoImageResponse.arrayBuffer();
-    const logoImage = await pdfDoc.embedJpg(logoImageBytes);
+    const logoImage = await pdfDoc.embedPng(logoImageBytes);
     const logoDims = logoImage.scale(0.25);
     
     // Header is white, so no background rectangle needed
@@ -339,5 +344,3 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
     return { success: false, error: errorMessage };
   }
 }
-
-    
