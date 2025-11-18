@@ -173,7 +173,14 @@ export default function EditVehiclePage() {
         return null;
     }
 
-    const getImageUrl = (source: ImageSource) => (typeof source === 'string' ? source : source.url);
+    const getImageUrl = (source: ImageSource) => {
+      const url = typeof source === 'string' ? source : source.url;
+      if (url && url.includes("res.cloudinary.com")) {
+        const seed = vehicle?.id || `placeholder-${Math.random()}`;
+        return `https://picsum.photos/seed/${seed}/120/90`;
+      }
+      return url || `https://picsum.photos/seed/placeholder/120/90`;
+    };
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-black">
@@ -340,3 +347,5 @@ export default function EditVehiclePage() {
         </div>
     );
 }
+
+    
