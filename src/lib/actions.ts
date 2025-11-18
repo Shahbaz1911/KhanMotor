@@ -335,10 +335,12 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
   return new Promise(async (resolve, reject) => {
     try {
       const fileBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(fileBuffer);
+
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder: 'arman-autoxperts',
-          resource_type: 'image',
+          resource_type: 'auto',
         },
         (error, result) => {
           if (error) {
@@ -351,8 +353,7 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
         }
       );
 
-      const readableStream = require('stream').Readable.from(Buffer.from(fileBuffer));
-      readableStream.pipe(uploadStream);
+      uploadStream.end(buffer);
 
     } catch (error) {
         console.error('Error processing file for upload:', error);
