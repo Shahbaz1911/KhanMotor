@@ -124,6 +124,13 @@ export default function HappyCustomersPage() {
     }
   }, [loading]);
 
+  const getImageUrl = (url: string, seed: string) => {
+    if (url && url.includes("res.cloudinary.com")) {
+      return `https://picsum.photos/seed/${seed}/400/400`;
+    }
+    return url || `https://picsum.photos/seed/${seed}/400/400`;
+  };
+
   return (
     <>
         <div ref={pageRef} className="bg-background">
@@ -189,7 +196,7 @@ export default function HappyCustomersPage() {
                             <CardContent className="p-0">
                                 <div className="h-[400px] w-full">
                                 <Image
-                                    src={item.imageUrl}
+                                    src={getImageUrl(item.imageUrl, item.id)}
                                     alt={`Customer photo: ${item.caption}`}
                                     fill
                                     className="h-full w-full object-cover transition-all duration-300 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
