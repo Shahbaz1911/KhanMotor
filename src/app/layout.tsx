@@ -2,15 +2,13 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from "@/components/theme-provider";
-import { AuthProvider } from "@/contexts/AuthContext";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SmoothScroll } from '@/components/custom/SmoothScroll';
 import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
-import { FirebaseProvider } from '@/firebase/provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 import { CookieConsentBanner } from '@/components/custom/CookieConsentBanner';
-import { AnimatePresence } from 'framer-motion';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
   title: 'Motor Khan - Car Denting, Painting & Restoration in Rohini, Rithala, Delhi',
@@ -49,8 +47,8 @@ export default function RootLayout({
     "priceRange": "₹₹",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini",
-      "addressLocality": "Delhi",
+      "streetAddress": "Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B",
+      "addressLocality": "Rithala, Rohini, Delhi",
       "postalCode": "110085",
       "addressCountry": "IN"
     },
@@ -158,8 +156,7 @@ export default function RootLayout({
       </head>
 
       <body className="font-body antialiased">
-        <FirebaseProvider>
-          <AuthProvider>
+        <FirebaseClientProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="dark"
@@ -177,8 +174,7 @@ export default function RootLayout({
                   <Toaster />
               </SmoothScroll>
             </ThemeProvider>
-          </AuthProvider>
-        </FirebaseProvider>
+        </FirebaseClientProvider>
       </body>
     </html>
   );
