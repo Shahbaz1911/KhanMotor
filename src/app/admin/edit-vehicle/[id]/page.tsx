@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import type { Vehicle } from "@/types";
-import { uploadFile } from "@/lib/actions";
+import { getIKAuth } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 
@@ -105,6 +105,41 @@ export default function EditVehiclePage() {
     const removeImage = (index: number) => {
       setImageSources(prev => prev.filter((_, i) => i !== index));
     };
+
+    const handleFileUpload = async (file: File) => {
+        try {
+          const authResult = await getIKAuth();
+          if (!authResult.success) {
+            throw new Error(authResult.error || "Failed to get upload authentication.");
+          }
+    
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("fileName", file.name);
+          formData.append("publicKey", process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!);
+          formData.append("signature", authResult.signature!);
+          formData.append("expire", authResult.expire!.toString());
+          formData.append("token", authResult.token!);
+    
+          const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+            method: "POST",
+            body: formData,
+          });
+    
+          const result = await response.json();
+    
+          if (!response.ok) {
+            throw new Error(result.message || "ImageKit upload failed");
+          }
+    
+          return result.url;
+        } catch (error) {
+          console.error("Upload failed:", error);
+          const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
+          toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+          return null;
+        }
+      };
     
     const handleUpdateVehicle = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -120,13 +155,11 @@ export default function EditVehiclePage() {
 
             if (newFiles.length > 0) {
                 const uploadPromises = newFiles.map(async (source) => {
-                    const formData = new FormData();
-                    formData.append('file', source.file);
-                    const result = await uploadFile(formData);
-                    if (!result.success || !result.url) {
+                    const uploadedUrl = await handleFileUpload(source.file);
+                    if (!uploadedUrl) {
                         throw new Error(`Failed to upload image: ${source.file.name}`);
                     }
-                    return result.url;
+                    return uploadedUrl;
                 });
                 
                 uploadedUrls = await Promise.all(uploadPromises);
@@ -175,6 +208,7 @@ export default function EditVehiclePage() {
 
     const getImageUrl = (source: ImageSource) => {
       const url = typeof source === 'string' ? source : source.url;
+      // This is a robust fallback for old data
       if (url && url.includes("res.cloudinary.com")) {
         const seed = vehicle?.id || `placeholder-${Math.random()}`;
         return `https://picsum.photos/seed/${seed}/120/90`;
@@ -347,5 +381,3 @@ export default function EditVehiclePage() {
         </div>
     );
 }
-
-    

@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { uploadFile } from "@/lib/actions";
+import { getIKAuth } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { motion } from "framer-motion";
@@ -47,15 +47,39 @@ export default function AddGalleryItemPage() {
     };
     
     const handleFileUpload = async (file: File) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        const result = await uploadFile(formData);
-        if (!result.success) {
-            toast({ title: "Upload Failed", description: result.error || "Could not upload image.", variant: "destructive" });
-            return null;
+        try {
+          const authResult = await getIKAuth();
+          if (!authResult.success) {
+            throw new Error(authResult.error || "Failed to get upload authentication.");
+          }
+    
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("fileName", file.name);
+          formData.append("publicKey", process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!);
+          formData.append("signature", authResult.signature!);
+          formData.append("expire", authResult.expire!.toString());
+          formData.append("token", authResult.token!);
+    
+          const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+            method: "POST",
+            body: formData,
+          });
+    
+          const result = await response.json();
+    
+          if (!response.ok) {
+            throw new Error(result.message || "ImageKit upload failed");
+          }
+    
+          return result.url;
+        } catch (error) {
+          console.error("Upload failed:", error);
+          const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
+          toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+          return null;
         }
-        return result.url;
-    };
+      };
 
     const handleAddGalleryItem = async (e: React.FormEvent) => {
         e.preventDefault();

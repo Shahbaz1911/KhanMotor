@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -10,6 +11,25 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import ImageKit from "imagekit";
 
 const fromEmail = "noreply@updates.motorkhan.com";
+
+// Check for ImageKit credentials and log a warning if they are missing.
+if (
+  !process.env.IMAGEKIT_PUBLIC_KEY ||
+  !process.env.IMAGEKIT_PRIVATE_KEY ||
+  !process.env.IMAGEKIT_URL_ENDPOINT
+) {
+  console.warn(
+    "ImageKit credentials are not fully configured in environment variables. File uploads will not work."
+  );
+}
+
+// Check for Resend API key and log a warning if it is missing.
+if (!process.env.RESEND_API_KEY) {
+  console.warn(
+    "Resend API key is not configured in environment variables. Email sending will not work."
+  );
+}
+
 
 export type ContactFormState = {
   message: string;
@@ -344,42 +364,34 @@ export async function submitAppointmentForm(
   }
 }
 
-export async function uploadFile(formData: FormData): Promise<{ success: boolean; url?: string; error?: string }> {
-  const file = formData.get('file') as File;
-
-  if (!file) {
-    return { success: false, error: 'No file provided.' };
-  }
-
+/**
+ * Retrieves authentication parameters from ImageKit for client-side uploads.
+ * This server action should be called by the client to get the necessary token,
+ * expiry timestamp, and signature required to perform a direct upload to ImageKit.
+ */
+export async function getIKAuth() {
   if (
     !process.env.IMAGEKIT_PUBLIC_KEY ||
     !process.env.IMAGEKIT_PRIVATE_KEY ||
     !process.env.IMAGEKIT_URL_ENDPOINT
   ) {
     console.error("ImageKit credentials are not configured.");
-    return { success: false, error: 'File upload service is not configured.' };
+    // In a real app, you might want to return a proper error response
+    return { success: false, error: "File upload service is not configured." };
   }
 
   const imagekit = new ImageKit({
-      publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-      privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
   });
 
   try {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const response = await imagekit.upload({
-        file: buffer,
-        fileName: file.name,
-        folder: "/motorkhan-uploads", 
-    });
-
-    return { success: true, url: response.url };
+    const authParams = imagekit.getAuthenticationParameters();
+    return { success: true, ...authParams };
   } catch (error) {
-      console.error("ImageKit upload error:", error);
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during upload.";
-      return { success: false, error: errorMessage };
+    console.error("ImageKit authentication error:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during authentication.";
+    return { success: false, error: errorMessage };
   }
 }

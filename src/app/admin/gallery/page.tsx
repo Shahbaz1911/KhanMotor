@@ -27,7 +27,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { collection, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, Timestamp } from "firebase/firestore";
-import { uploadFile } from "@/lib/actions";
+import { getIKAuth } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { format } from "date-fns";
@@ -121,22 +121,37 @@ export default function GalleryPage() {
     }
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const result = await uploadFile(formData);
-
-      if (result.success && result.url) {
+        const authResult = await getIKAuth();
+        if (!authResult.success) {
+          throw new Error(authResult.error || "Failed to get upload authentication.");
+        }
+  
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", file.name);
+        formData.append("publicKey", process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!);
+        formData.append("signature", authResult.signature!);
+        formData.append("expire", authResult.expire!.toString());
+        formData.append("token", authResult.token!);
+  
+        const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
+        const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.message || "ImageKit upload failed");
+        }
+  
         return result.url;
-      } else {
-        throw new Error(result.error || "ImageKit upload failed.");
+      } catch (error) {
+        console.error("Upload failed:", error);
+        const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
+        toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+        return null;
       }
-    } catch (error) {
-      console.error("Upload failed:", error);
-      const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
-      toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
-      return null;
-    }
   };
 
   const handleUpdateGalleryItem = async (e: React.FormEvent) => {
