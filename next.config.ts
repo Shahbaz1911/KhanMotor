@@ -42,8 +42,12 @@ const nextConfig: NextConfig = {
         hostname: 'armanautoxperts-in.vercel.app',
       },
       {
-        protocol: 'https',
+        protocol: 'https://',
         hostname: 'delhi.motorkhan.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
       }
     ],
   },

@@ -8,6 +8,7 @@ import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
 import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import ImageKit from "imagekit";
 
 // Check for Resend API key at the start of the file.
 if (!process.env.RESEND_API_KEY) {
@@ -16,6 +17,24 @@ if (!process.env.RESEND_API_KEY) {
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
+
+// Check for ImageKit credentials
+if (
+  !process.env.IMAGEKIT_PUBLIC_KEY ||
+  !process.env.IMAGEKIT_PRIVATE_KEY ||
+  !process.env.IMAGEKIT_URL_ENDPOINT
+) {
+  console.warn(
+    "ImageKit credentials are not fully configured in your environment variables. File uploads will fail."
+  );
+}
+
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || "",
+});
+
 
 export type ContactFormState = {
   message: string;
@@ -97,7 +116,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const blackColor = rgb(0, 0, 0);
     const grayColor = rgb(0.3, 0.3, 0.3);
 
-    // Draw a white background for the main content
     page.drawRectangle({
         x: 0,
         y: 0,
@@ -106,7 +124,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         color: whiteColor,
     });
 
-    // --- Header ---
     const logoUrl = "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png";
     try {
         const logoImageResponse = await fetch(logoUrl);
@@ -137,7 +154,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         color: blackColor,
     });
     
-    // --- Red Separator Line ---
     page.drawLine({
         start: { x: 50, y: height - 150 },
         end: { x: width - 50, y: height - 150 },
@@ -145,7 +161,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         color: redColor,
     });
 
-    // --- Appointment Details Section ---
     const contentYStart = height - 200;
     
     page.drawRectangle({
@@ -184,7 +199,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         drawDetailRow(currentY, 'Vehicle of Interest:', data.vehicleOfInterest);
     }
 
-    // --- Black Footer ---
     const footerHeight = 120;
     page.drawRectangle({
         x: 0,
@@ -200,7 +214,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     const leftX = 50;
     const rightX = width - 50;
 
-    // --- Left Column ---
     let leftY = footerStartY;
     page.drawText('Phone Number', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
@@ -214,7 +227,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     leftY -= footerLineHeight;
     page.drawText('Facebook / Instagram', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     
-    // --- Center Column ---
     const website = 'www.motorkhan.com';
     const websiteWidth = helveticaBoldFont.widthOfTextAtSize(website, 10);
     page.drawText(website, {
@@ -225,7 +237,6 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
         color: redColor,
     });
 
-    // --- Right Column ---
     let rightY = footerStartY;
     page.drawText('Address', { x: rightX - helveticaBoldFont.widthOfTextAtSize('Address', footerTextSize), y: rightY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     rightY -= footerLineHeight;
@@ -244,8 +255,6 @@ export async function submitAppointmentForm(
   formData: FormData
 ): Promise<AppointmentFormState> {
   const rawDate = formData.get('preferredDate');
-  // Handle the date string correctly. The browser sends it in 'yyyy-MM-dd' format.
-  // Appending 'T00:00:00' ensures it's parsed in the local timezone, not UTC.
   const dateToValidate = typeof rawDate === 'string' ? new Date(`${rawDate}T00:00:00`) : undefined;
 
   const validatedFields = appointmentFormSchema.safeParse({
@@ -318,15 +327,29 @@ export async function uploadFile(formData: FormData): Promise<{ success: boolean
   if (!file) {
     return { success: false, error: 'No file provided.' };
   }
-  
-  // TODO: Implement your ImageKit upload logic here.
-  // This is a placeholder that simulates a successful upload.
-  console.log(`Simulating upload for file: ${file.name}`);
-  
-  // Replace this with your actual ImageKit upload call.
-  // For now, we'll return a placeholder URL.
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-  const mockUrl = `https://ik.imagekit.io/your-imagekit-id/temp/${Date.now()}-${file.name}`;
-  
-  return { success: true, url: "https://picsum.photos/seed/placeholder/600/400" };
+
+  if (
+    !process.env.IMAGEKIT_PUBLIC_KEY ||
+    !process.env.IMAGEKIT_PRIVATE_KEY ||
+    !process.env.IMAGEKIT_URL_ENDPOINT
+  ) {
+    console.error("ImageKit credentials are not configured.");
+    return { success: false, error: 'File upload service is not configured.' };
+  }
+
+  try {
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
+
+    const response = await imagekit.upload({
+        file: fileBuffer,
+        fileName: file.name,
+        folder: "/motorkhan-uploads", // Optional: specify a folder
+    });
+
+    return { success: true, url: response.url };
+  } catch (error) {
+      console.error("ImageKit upload error:", error);
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during upload.";
+      return { success: false, error: errorMessage };
+  }
 }
