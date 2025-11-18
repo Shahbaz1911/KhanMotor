@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -20,7 +21,6 @@ if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && proce
 } else {
   console.warn("Cloudinary configuration is missing. Image uploads will fail.");
 }
-
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fromEmail = "noreply@updates.motorkhan.com";
@@ -116,18 +116,24 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
 
     // --- Header ---
     const logoUrl = "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png";
-    const logoImageResponse = await fetch(logoUrl);
-    const logoImageBytes = await logoImageResponse.arrayBuffer();
-    const logoImage = await pdfDoc.embedPng(logoImageBytes);
-    const logoDims = logoImage.scale(0.25);
-    
-    // Header is white, so no background rectangle needed
-    page.drawImage(logoImage, {
-        x: (width / 2) - (logoDims.width / 2),
-        y: height - 100, // Adjusted Y position for better spacing
-        width: logoDims.width,
-        height: logoDims.height,
-    });
+    try {
+        const logoImageResponse = await fetch(logoUrl);
+        if (logoImageResponse.ok) {
+            const logoImageBytes = await logoImageResponse.arrayBuffer();
+            const logoImage = await pdfDoc.embedPng(logoImageBytes);
+            const logoDims = logoImage.scale(0.25);
+            page.drawImage(logoImage, {
+                x: (width / 2) - (logoDims.width / 2),
+                y: height - 100,
+                width: logoDims.width,
+                height: logoDims.height,
+            });
+        } else {
+            console.warn(`Failed to fetch logo for PDF: ${logoImageResponse.statusText}`);
+        }
+    } catch (e) {
+        console.error("Error fetching or embedding logo for PDF:", e);
+    }
     
     const title = 'Test Drive Appointment';
     const titleWidth = helveticaBoldFont.widthOfTextAtSize(title, 20);
@@ -344,3 +350,5 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
     return { success: false, error: errorMessage };
   }
 }
+
+    
