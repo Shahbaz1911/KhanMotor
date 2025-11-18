@@ -9,7 +9,6 @@ import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
 import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import axios from 'axios';
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
@@ -112,7 +111,8 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
 
     // --- Header ---
     const logoUrl = "https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-black.png";
-    const logoImageBytes = await axios.get(logoUrl, { responseType: 'arraybuffer' }).then(res => res.data);
+    const logoImageResponse = await fetch(logoUrl);
+    const logoImageBytes = await logoImageResponse.arrayBuffer();
     const logoImage = await pdfDoc.embedPng(logoImageBytes);
     const logoDims = logoImage.scale(0.25);
     
@@ -205,7 +205,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Email', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
-    page.drawText('info@motorkhan.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
+    page.drawText('motorkhandelhi@gmail.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Socials', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
@@ -226,8 +226,8 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     let rightY = footerStartY;
     page.drawText('Address', { x: rightX - helveticaBoldFont.widthOfTextAtSize('Address', footerTextSize), y: rightY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     rightY -= footerLineHeight;
-    const addressLine1 = 'Shop No 12, Vijay Vihar Phase I, Block B';
-    const addressLine2 = 'Rithala, Rohini, Delhi, 110085';
+    const addressLine1 = 'Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B';
+    const addressLine2 = 'Rithala, Rohini, Delhi 110085, India';
     page.drawText(addressLine1, { x: rightX - helveticaFont.widthOfTextAtSize(addressLine1, footerTextSize), y: rightY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     rightY -= footerLineHeight;
     page.drawText(addressLine2, { x: rightX - helveticaFont.widthOfTextAtSize(addressLine2, footerTextSize), y: rightY, font: helveticaFont, size: footerTextSize, color: whiteColor });
@@ -339,3 +339,5 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
     return { success: false, error: errorMessage };
   }
 }
+
+    
