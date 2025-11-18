@@ -332,35 +332,34 @@ export async function uploadToCloudinary(formData: FormData): Promise<{ success:
       return { success: false, error: 'Server configuration error: Image hosting is not set up.' };
   }
 
-  return new Promise(async (resolve, reject) => {
-    try {
-      const fileBuffer = await file.arrayBuffer();
-      const buffer = Buffer.from(fileBuffer);
+  try {
+    const fileBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(fileBuffer);
 
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: 'arman-autoxperts',
-          resource_type: 'auto',
-        },
-        (error, result) => {
-          if (error) {
-            console.error('Cloudinary upload error:', error);
-            return resolve({ success: false, error: error.message });
-          }
-          if (result) {
-            return resolve({ success: true, url: result.secure_url });
-          }
-        }
-      );
-
-      uploadStream.end(buffer);
-
-    } catch (error) {
-        console.error('Error processing file for upload:', error);
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during file processing.';
-        return resolve({ success: false, error: errorMessage });
-    }
-  });
+    return await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: 'arman-autoxperts',
+                resource_type: 'auto',
+            },
+            (error, result) => {
+                if (error) {
+                    console.error('Cloudinary upload error:', error);
+                    resolve({ success: false, error: error.message });
+                } else if (result) {
+                    resolve({ success: true, url: result.secure_url });
+                } else {
+                    resolve({ success: false, error: "Cloudinary upload failed without an error." });
+                }
+            }
+        );
+        uploadStream.end(buffer);
+    });
+  } catch (error) {
+      console.error('Error processing file for upload:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during file processing.';
+      return { success: false, error: errorMessage };
+  }
 }
 
     
