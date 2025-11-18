@@ -206,6 +206,13 @@ export default function GalleryPage() {
     setCustomerImageFile(null);
   };
 
+  const getImageUrl = (url: string, seed: string) => {
+    if (url && url.includes("res.cloudinary.com")) {
+      return `https://picsum.photos/seed/${seed}/400/300`;
+    }
+    return url || `https://picsum.photos/seed/${seed}/400/300`;
+  };
+
   if (authLoading || !user || !firestore) {
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -287,7 +294,7 @@ export default function GalleryPage() {
                             {galleryItems.map(item => (
                                 <Card key={item.id} className="overflow-hidden">
                                     <div className="relative h-48 w-full">
-                                        <Image src={item.imageUrl} alt={item.caption} fill objectFit="cover" />
+                                        <Image src={getImageUrl(item.imageUrl, item.id)} alt={item.caption} fill objectFit="cover" />
                                     </div>
                                     <CardContent className="p-4">
                                         <p className="text-sm text-muted-foreground truncate">{item.caption}</p>
@@ -364,7 +371,7 @@ export default function GalleryPage() {
                              <div className="space-y-2">
                                 <Label>Gallery Image</Label>
                                  <div className="flex items-center gap-4">
-                                    {editingGalleryItem.imageUrl && !isCustomerUploading && <Image src={editingGalleryItem.imageUrl} alt="Current gallery item" width={120} height={90} className="rounded-lg object-cover" />}
+                                    {editingGalleryItem.imageUrl && !isCustomerUploading && <Image src={getImageUrl(editingGalleryItem.imageUrl, editingGalleryItem.id)} alt="Current gallery item" width={120} height={90} className="rounded-lg object-cover" />}
                                     {isCustomerUploading && <div className="flex w-32 h-[90px] items-center justify-center rounded-lg bg-muted"><Loader2 className="h-5 w-5 animate-spin" /></div>}
                                      <div className="flex-1 space-y-2">
                                          <Label htmlFor="edit-gallery-image-upload" className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 p-4 text-center text-sm text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800/50">
