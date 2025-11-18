@@ -44,6 +44,14 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
     return () => ctx.revert();
   }, []);
 
+  const getImageUrl = (url: string) => {
+    if (url.includes("res.cloudinary.com")) {
+        const seed = vehicle.id || 'placeholder';
+        return `https://picsum.photos/seed/${seed}/1080/810`;
+    }
+    return url;
+  }
+
   return (
     <div ref={sectionRef} className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12">
       <div 
@@ -59,7 +67,7 @@ export function VehicleShowcaseCard({ vehicle, align }: VehicleShowcaseCardProps
                         <CarouselItem key={index}>
                              <div className="relative h-80 w-full md:h-[450px]">
                                 <Image
-                                    src={url}
+                                    src={getImageUrl(url)}
                                     alt={`${vehicle.make} ${vehicle.model} image ${index + 1}`}
                                     fill
                                     className="rounded-lg object-cover"
