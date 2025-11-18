@@ -110,10 +110,10 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     });
 
     // --- Header ---
-    const logoUrl = "https://delhi.motorkhan.com/images/motor-khan-rithala-rohini-delhi-black.png";
+    const logoUrl = "https://delhi.motorkhan.com/images/about/motor-khan-rithala-rohini-delhi-black-car.jpg";
     const logoImageResponse = await fetch(logoUrl);
     const logoImageBytes = await logoImageResponse.arrayBuffer();
-    const logoImage = await pdfDoc.embedPng(logoImageBytes);
+    const logoImage = await pdfDoc.embedJpg(logoImageBytes);
     const logoDims = logoImage.scale(0.25);
     
     // Header is white, so no background rectangle needed
