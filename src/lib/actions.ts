@@ -56,22 +56,15 @@ export async function submitContactForm(
   const resend = new Resend(apiKey);
 
   try {
-    const { data, error } = await resend.emails.send({
+    // Send confirmation to the user
+    await resend.emails.send({
       from: `Motor Khan <${fromEmail}>`,
       to: [email],
       subject: "Thank You for Contacting Motor Khan!",
       react: ContactFormEmail({ name, userEmail: email }),
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      return {
-        message: "An error occurred while sending your message. Please try again later.",
-        success: false,
-      };
-    }
-
-    // Also send a notification to the admin
+    // Send notification to the owner
     await resend.emails.send({
         from: `New Inquiry <${fromEmail}>`,
         to: ['motorkhandelhi@gmail.com'],
@@ -292,27 +285,7 @@ export async function submitAppointmentForm(
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
 
-     // Send email to the user
-     await resend.emails.send({
-      from: `Motor Khan <${fromEmail}>`,
-      to: [email],
-      subject: "Your Test Drive Appointment Request at Motor Khan",
-      react: AppointmentFormEmail({ 
-        name,
-        preferredDate,
-        preferredTime,
-        vehicleOfInterest,
-        userEmail: email 
-      }),
-      attachments: [
-        {
-          filename: 'Appointment_Slip_Motor_Khan.pdf',
-          content: pdfBuffer,
-        },
-      ],
-    });
-
-    // Send notification email to admin
+    // Send notification email to admin only
      await resend.emails.send({
         from: `New Appointment <${fromEmail}>`,
         to: ['motorkhandelhi@gmail.com'],
@@ -347,13 +320,7 @@ export async function submitAppointmentForm(
   }
 }
 
-/**
- * Retrieves authentication parameters from ImageKit for client-side uploads.
- * This server action should be called by the client to get the necessary token,
- * expiry timestamp, and signature required to perform a direct upload to ImageKit.
- */
 export async function getIKAuth() {
-  // Check for server-side credentials
   if (
     !process.env.IMAGEKIT_PUBLIC_KEY ||
     !process.env.IMAGEKIT_PRIVATE_KEY ||
@@ -364,14 +331,12 @@ export async function getIKAuth() {
   }
 
   const imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
   });
 
   try {
-    // Generate authentication parameters. The SDK uses the keys it was configured
-    // with to generate the signature. No need to pass the public key here.
     const authParams = imagekit.getAuthenticationParameters();
     return { success: true, ...authParams };
   } catch (error) {
