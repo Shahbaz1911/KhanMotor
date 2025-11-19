@@ -285,26 +285,33 @@ export async function submitAppointmentForm(
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
 
-    // Send notification email to admin only
-     await resend.emails.send({
+    // Send confirmation email to client with PDF
+    await resend.emails.send({
+        from: `Motor Khan <${fromEmail}>`,
+        to: [email],
+        subject: `Your Test Drive Appointment at Motor Khan`,
+        react: AppointmentFormEmail({ name, userEmail: email, preferredDate, preferredTime, vehicleOfInterest }),
+        attachments: [
+            {
+              filename: 'Appointment_Slip_Motor_Khan.pdf',
+              content: pdfBuffer,
+            },
+        ],
+    });
+
+    // Send text-based notification to owner
+    await resend.emails.send({
         from: `New Appointment <${fromEmail}>`,
         to: ['motorkhandelhi@gmail.com'],
         subject: `New Test Drive Request from ${name}`,
         html: `<p>You have a new test drive request:</p>
-               <p><strong>Name:</strong> ${name}</p>
-               <p><strong>Email:</strong> ${email}</p>
-               <p><strong>Phone:</strong> ${phone}</p>
-               <p><strong>Preferred Date:</strong> ${format(preferredDate, 'PPP')}</p>
-               <p><strong>Preferred Time:</strong> ${preferredTime}</p>
-               <p><strong>Vehicle:</strong> ${vehicleOfInterest || 'Not specified'}</p>`,
-        attachments: [
-        {
-          filename: 'Appointment_Slip_Motor_Khan.pdf',
-          content: pdfBuffer,
-        },
-      ],
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Preferred Date:</strong> ${format(preferredDate, 'PPP')}</p>
+                <p><strong>Preferred Time:</strong> ${preferredTime}</p>
+                <p><strong>Vehicle:</strong> ${vehicleOfInterest || 'Not specified'}</p>`,
     });
-
 
     return {
       message: "Thank you for your appointment request! We will contact you shortly to confirm.",
@@ -345,3 +352,5 @@ export async function getIKAuth() {
     return { success: false, error: errorMessage };
   }
 }
+
+    
