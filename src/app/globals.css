@@ -19,7 +19,7 @@
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%; /* Same as secondary for a consistent feel */
     --accent-foreground: 240 5.9% 10%;
-    --destructive: 355 63% 45%; /* #BD2A36 */
+    --destructive: 358 71% 47%; /* #CF2326 */
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%; /* A soft border color */
     --input: 240 5.9% 90%;
@@ -54,7 +54,7 @@
     --muted-foreground: 0 0% 70%; /* light grey */
     --accent: 0 0% 25%; /* darker grey for accents */
     --accent-foreground: 0 0% 98%; /* white */
-    --destructive: 355 63% 45%; /* #BD2A36 */
+    --destructive: 358 71% 47%; /* #CF2326 */
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 22%; /* dark grey border */
     --input: 0 0% 22%; /* dark grey input */
