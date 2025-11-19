@@ -14,6 +14,7 @@ const fromEmail = "noreply@updates.motorkhan.com";
 
 // Check for ImageKit credentials and log a warning if they are missing.
 if (
+  !process.env.IMAGEKIT_PUBLIC_KEY ||
   !process.env.IMAGEKIT_PRIVATE_KEY ||
   !process.env.IMAGEKIT_URL_ENDPOINT
 ) {
@@ -21,14 +22,6 @@ if (
     "ImageKit credentials are not fully configured in environment variables. File uploads will not work."
   );
 }
-
-// Check for Resend API key and log a warning if it is missing.
-if (!process.env.RESEND_API_KEY) {
-  console.warn(
-    "Resend API key is not configured in environment variables. Email sending will not work."
-  );
-}
-
 
 export type ContactFormState = {
   message: string;
@@ -370,6 +363,7 @@ export async function submitAppointmentForm(
  */
 export async function getIKAuth() {
   if (
+    !process.env.IMAGEKIT_PUBLIC_KEY ||
     !process.env.IMAGEKIT_PRIVATE_KEY ||
     !process.env.IMAGEKIT_URL_ENDPOINT
   ) {
@@ -378,9 +372,9 @@ export async function getIKAuth() {
   }
 
   const imagekit = new ImageKit({
-    publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!,
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
   });
 
   try {
@@ -392,5 +386,3 @@ export async function getIKAuth() {
     return { success: false, error: errorMessage };
   }
 }
-
-    
