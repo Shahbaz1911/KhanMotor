@@ -9,6 +9,7 @@ import { WhatsAppButton } from '@/components/custom/WhatsAppButton';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 import { CookieConsentBanner } from '@/components/custom/CookieConsentBanner';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { ScrollProgressBar } from '@/components/custom/ScrollProgressBar';
 
 export const metadata: Metadata = {
   title: 'Motor Khan - Car Denting, Painting & Restoration in Rohini, Rithala, Delhi',
@@ -171,6 +172,7 @@ export default function RootLayout({
                   </div>
                   <WhatsAppButton />
                   <CookieConsentBanner />
+                  <ScrollProgressBar />
                   <Toaster />
               </SmoothScroll>
             </ThemeProvider>
