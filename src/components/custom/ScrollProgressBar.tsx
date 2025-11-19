@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion, useScroll, useAnimation } from "framer-motion";
@@ -38,7 +39,7 @@ export function ScrollProgressBar() {
 
   return (
     <motion.div
-      className="fixed top-1/2 right-4 -translate-y-1/2 h-36 w-0.5 bg-muted rounded-full z-50"
+      className="fixed top-1/2 right-4 -translate-y-1/2 h-36 w-1.5 bg-muted rounded-full z-50"
       initial={{ opacity: 0 }}
       animate={controls}
     >
