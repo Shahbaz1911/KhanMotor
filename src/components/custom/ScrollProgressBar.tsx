@@ -1,4 +1,3 @@
-
 "use client";
 
 import { motion, useScroll, useAnimation } from "framer-motion";
