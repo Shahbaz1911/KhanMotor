@@ -1,0 +1,120 @@
+{
+    "makes": [
+      {
+        "name": "Maruti Suzuki",
+        "models": [
+          {
+            "name": "Swift",
+            "years": [
+              {"year": 2024, "variants": ["LXi", "VXi", "VXi (O)", "ZXi", "ZXi+"]},
+              {"year": 2023, "variants": ["LXi", "VXi", "ZXi", "ZXi+"]},
+              {"year": 2022, "variants": ["LXi", "VXi", "ZXi", "ZXi+"]},
+              {"year": 2021, "variants": ["LXi", "VXi", "ZXi", "ZXi+"]}
+            ]
+          },
+          {
+            "name": "Baleno",
+            "years": [
+              {"year": 2024, "variants": ["Sigma", "Delta", "Zeta", "Alpha"]},
+              {"year": 2023, "variants": ["Sigma", "Delta", "Zeta", "Alpha"]},
+              {"year": 2022, "variants": ["Sigma", "Delta", "Zeta", "Alpha"]}
+            ]
+          },
+          {
+            "name": "Wagon R",
+            "years": [
+                {"year": 2024, "variants": ["LXI", "VXI", "ZXI", "ZXI+"]},
+                {"year": 2023, "variants": ["LXI", "VXI", "ZXI"]},
+                {"year": 2022, "variants": ["LXI", "VXI"]}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Hyundai",
+        "models": [
+          {
+            "name": "i20",
+            "years": [
+              {"year": 2024, "variants": ["Magna", "Sportz", "Asta", "Asta (O)"]},
+              {"year": 2023, "variants": ["Magna", "Sportz", "Asta", "Asta (O)"]},
+              {"year": 2022, "variants": ["Magna", "Sportz", "Asta"]}
+            ]
+          },
+          {
+            "name": "Creta",
+            "years": [
+              {"year": 2024, "variants": ["E", "EX", "S", "SX", "SX (O)"]},
+              {"year": 2023, "variants": ["E", "EX", "S", "SX", "SX (O)"]},
+              {"year": 2022, "variants": ["E", "EX", "S", "SX"]}
+            ]
+          },
+           {
+            "name": "Venue",
+            "years": [
+              {"year": 2024, "variants": ["E", "S", "S+", "SX", "SX(O)"]},
+              {"year": 2023, "variants": ["E", "S", "S+", "SX"]},
+              {"year": 2022, "variants": ["E", "S", "SX"]}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tata",
+        "models": [
+          {
+            "name": "Nexon",
+            "years": [
+              {"year": 2024, "variants": ["XE", "XM", "XZ+", "XZ+ (O)"]},
+              {"year": 2023, "variants": ["XE", "XM", "XZ+", "XZ+ (O)"]},
+              {"year": 2022, "variants": ["XE", "XM", "XZ+"]}
+            ]
+          },
+          {
+            "name": "Punch",
+            "years": [
+              {"year": 2024, "variants": ["Pure", "Adventure", "Accomplished", "Creative"]},
+              {"year": 2023, "variants": ["Pure", "Adventure", "Accomplished", "Creative"]},
+              {"year": 2022, "variants": ["Pure", "Adventure", "Accomplished"]}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Mahindra",
+        "models": [
+            {
+                "name": "XUV700",
+                "years": [
+                    {"year": 2024, "variants": ["MX", "AX3", "AX5", "AX7", "AX7L"]},
+                    {"year": 2023, "variants": ["MX", "AX3", "AX5", "AX7"]},
+                    {"year": 2022, "variants": ["MX", "AX3", "AX5"]}
+                ]
+            },
+            {
+                "name": "Thar",
+                "years": [
+                    {"year": 2024, "variants": ["AX (O)", "LX"]},
+                    {"year": 2023, "variants": ["AX (O)", "LX"]},
+                    {"year": 2022, "variants": ["AX", "LX"]}
+                ]
+            }
+        ]
+      },
+      {
+        "name": "Kia",
+        "models": [
+            {
+                "name": "Seltos",
+                "years": [
+                    {"year": 2024, "variants": ["HTE", "HTK", "HTK+", "HTX", "GTX+", "X-Line"]},
+                    {"year": 2023, "variants": ["HTE", "HTK", "HTK+", "HTX"]},
+                    {"year": 2022, "variants": ["HTE", "HTK", "HTK+"]}
+                ]
+            }
+        ]
+      }
+    ]
+}
+
+    

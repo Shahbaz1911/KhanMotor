@@ -3,14 +3,14 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, ArrowLeft, Upload, X, Check } from "lucide-react";
+import { Loader2, ArrowLeft, Upload, X, Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
@@ -19,6 +19,23 @@ import { getIKAuth } from "@/lib/actions";
 import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { motion } from "framer-motion";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import carData from "@/lib/car-data.json";
+
+interface CarMake {
+  name: string;
+  models: CarModel[];
+}
+interface CarModel {
+  name: string;
+  years: CarYear[];
+}
+interface CarYear {
+  year: number;
+  variants: string[];
+}
 
 const initialVehicleState = {
     make: "", model: "", year: "", variant: "", color: "", 
@@ -39,12 +56,23 @@ export default function AddVehiclePage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    // State for cascading dropdowns
+    const [selectedMake, setSelectedMake] = useState<CarMake | null>(null);
+    const [selectedModel, setSelectedModel] = useState<CarModel | null>(null);
+    const [selectedYear, setSelectedYear] = useState<CarYear | null>(null);
+
+    const [makePopoverOpen, setMakePopoverOpen] = useState(false);
+    const [modelPopoverOpen, setModelPopoverOpen] = useState(false);
+    const [yearPopoverOpen, setYearPopoverOpen] = useState(false);
+    const [variantPopoverOpen, setVariantPopoverOpen] = useState(false);
+
+
     useEffect(() => {
         if (!authLoading && !user) {
         router.push("/admin");
         }
     }, [user, authLoading, router]);
-    
+
     const handleVehicleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         if (vehicleImageFiles.length + files.length > 8) {
@@ -63,38 +91,38 @@ export default function AddVehiclePage() {
 
     const handleFileUpload = async (file: File) => {
         try {
-          const authResult = await getIKAuth();
-          if (!authResult.success) {
-            throw new Error(authResult.error || "Failed to get upload authentication.");
+            const authResult = await getIKAuth();
+            if (!authResult.success) {
+                throw new Error(authResult.error || "Failed to get upload authentication.");
+            }
+      
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("fileName", file.name);
+            formData.append("publicKey", process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!);
+            formData.append("signature", authResult.signature!);
+            formData.append("expire", authResult.expire!.toString());
+            formData.append("token", authResult.token!);
+      
+            const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+              method: "POST",
+              body: formData,
+            });
+      
+            const result = await response.json();
+      
+            if (!response.ok) {
+              throw new Error(result.message || "ImageKit upload failed");
+            }
+      
+            return result.url;
+          } catch (error) {
+            console.error("Upload failed:", error);
+            const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
+            toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
+            return null;
           }
-    
-          const formData = new FormData();
-          formData.append("file", file);
-          formData.append("fileName", file.name);
-          formData.append("publicKey", process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY!);
-          formData.append("signature", authResult.signature!);
-          formData.append("expire", authResult.expire!.toString());
-          formData.append("token", authResult.token!);
-    
-          const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
-            method: "POST",
-            body: formData,
-          });
-    
-          const result = await response.json();
-    
-          if (!response.ok) {
-            throw new Error(result.message || "ImageKit upload failed");
-          }
-    
-          return result.url;
-        } catch (error) {
-          console.error("Upload failed:", error);
-          const errorMessage = error instanceof Error ? error.message : "Could not upload the image.";
-          toast({ title: "Upload Failed", description: errorMessage, variant: "destructive" });
-          return null;
-        }
-      };
+    };
 
     const handleAddVehicle = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -138,12 +166,17 @@ export default function AddVehiclePage() {
             toast({ title: "Submission Failed", description: errorMessage, variant: "destructive" });
 
             if (error instanceof FirestorePermissionError) {
-                errorEmitter.emit('permission-error', error);
+                // errorEmitter.emit('permission-error', error);
             }
         } finally {
             setIsSubmitting(false);
         }
     }
+    
+    // Cascading data logic
+    const models = useMemo(() => selectedMake?.models || [], [selectedMake]);
+    const years = useMemo(() => selectedModel?.years || [], [selectedModel]);
+    const variants = useMemo(() => selectedYear?.variants || [], [selectedYear]);
 
     if (authLoading || !user || !firestore) {
         return (
@@ -193,23 +226,141 @@ export default function AddVehiclePage() {
                             <form onSubmit={handleAddVehicle} className="grid gap-6">
                                 {/* Basic Info */}
                                 <h3 className="text-lg font-semibold border-b pb-2 uppercase">Basic Info</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Make */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="make">Make</Label>
-                                        <Input id="make" placeholder="e.g., Honda" value={newVehicle.make} onChange={e => setNewVehicle({...newVehicle, make: e.target.value})} required/>
+                                        <Label>Make</Label>
+                                        <Popover open={makePopoverOpen} onOpenChange={setMakePopoverOpen}>
+                                            <PopoverTrigger asChild>
+                                                <Button variant="outline" role="combobox" aria-expanded={makePopoverOpen} className="w-full justify-between">
+                                                    {newVehicle.make || "Select make..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search make..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>No make found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {carData.makes.map((make) => (
+                                                                <CommandItem key={make.name} value={make.name} onSelect={() => {
+                                                                    setNewVehicle({ ...initialVehicleState, make: make.name });
+                                                                    setSelectedMake(make);
+                                                                    setSelectedModel(null);
+                                                                    setSelectedYear(null);
+                                                                    setMakePopoverOpen(false);
+                                                                }}>
+                                                                    <Check className={cn("mr-2 h-4 w-4", newVehicle.make === make.name ? "opacity-100" : "opacity-0")} />
+                                                                    {make.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
                                     </div>
+                                    
+                                    {/* Model */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="model">Model</Label>
-                                        <Input id="model" placeholder="e.g., City" value={newVehicle.model} onChange={e => setNewVehicle({...newVehicle, model: e.target.value})} required/>
+                                        <Label>Model</Label>
+                                        <Popover open={modelPopoverOpen} onOpenChange={setModelPopoverOpen}>
+                                            <PopoverTrigger asChild disabled={!selectedMake}>
+                                                <Button variant="outline" role="combobox" aria-expanded={modelPopoverOpen} className="w-full justify-between">
+                                                    {newVehicle.model || "Select model..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search model..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>No model found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {models.map((model) => (
+                                                                <CommandItem key={model.name} value={model.name} onSelect={() => {
+                                                                    setNewVehicle(prev => ({ ...prev, model: model.name, year: "", variant: "" }));
+                                                                    setSelectedModel(model);
+                                                                    setSelectedYear(null);
+                                                                    setModelPopoverOpen(false);
+                                                                }}>
+                                                                    <Check className={cn("mr-2 h-4 w-4", newVehicle.model === model.name ? "opacity-100" : "opacity-0")} />
+                                                                    {model.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
                                     </div>
+
+                                    {/* Year */}
+                                     <div className="space-y-2">
+                                        <Label>Year of Manufacture</Label>
+                                         <Popover open={yearPopoverOpen} onOpenChange={setYearPopoverOpen}>
+                                            <PopoverTrigger asChild disabled={!selectedModel}>
+                                                <Button variant="outline" role="combobox" aria-expanded={yearPopoverOpen} className="w-full justify-between">
+                                                    {newVehicle.year || "Select year..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search year..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>No year found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {years.map((y) => (
+                                                                <CommandItem key={y.year} value={String(y.year)} onSelect={() => {
+                                                                    setNewVehicle(prev => ({ ...prev, year: String(y.year), variant: "" }));
+                                                                    setSelectedYear(y);
+                                                                    setYearPopoverOpen(false);
+                                                                }}>
+                                                                    <Check className={cn("mr-2 h-4 w-4", newVehicle.year === String(y.year) ? "opacity-100" : "opacity-0")} />
+                                                                    {y.year}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+
+                                    {/* Variant */}
                                     <div className="space-y-2">
-                                        <Label htmlFor="year">Year of Manufacture</Label>
-                                        <Input id="year" type="number" placeholder="e.g., 2019" value={newVehicle.year} onChange={e => setNewVehicle({...newVehicle, year: e.target.value})} required/>
+                                        <Label>Variant / Trim</Label>
+                                         <Popover open={variantPopoverOpen} onOpenChange={setVariantPopoverOpen}>
+                                            <PopoverTrigger asChild disabled={!selectedYear}>
+                                                <Button variant="outline" role="combobox" aria-expanded={variantPopoverOpen} className="w-full justify-between">
+                                                    {newVehicle.variant || "Select variant..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search variant..." />
+                                                    <CommandList>
+                                                        <CommandEmpty>No variant found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {variants.map((v) => (
+                                                                <CommandItem key={v} value={v} onSelect={() => {
+                                                                    setNewVehicle(prev => ({ ...prev, variant: v }));
+                                                                    setVariantPopoverOpen(false);
+                                                                }}>
+                                                                    <Check className={cn("mr-2 h-4 w-4", newVehicle.variant === v ? "opacity-100" : "opacity-0")} />
+                                                                    {v}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="variant">Variant / Trim</Label>
-                                        <Input id="variant" placeholder="e.g., ZXI+" value={newVehicle.variant} onChange={e => setNewVehicle({...newVehicle, variant: e.target.value})} required/>
-                                    </div>
+
                                     <div className="space-y-2">
                                         <Label htmlFor="color">Color</Label>
                                         <Input id="color" placeholder="e.g., Red" value={newVehicle.color} onChange={e => setNewVehicle({...newVehicle, color: e.target.value})} required/>
@@ -350,5 +501,4 @@ export default function AddVehiclePage() {
         </div>
     );
 }
-
     
