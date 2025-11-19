@@ -154,13 +154,15 @@ export default function EditVehiclePage() {
             let uploadedUrls: (string | null)[] = [];
 
             if (newFiles.length > 0) {
-                uploadedUrls = await Promise.all(newFiles.map(source => handleFileUpload(source.file)));
-            }
+                 const uploadPromises = newFiles.map(source => handleFileUpload(source.file));
+                uploadedUrls = await Promise.all(uploadPromises);
 
-            if (uploadedUrls.some(url => url === null)) {
-                 throw new Error(`Failed to upload one or more images.`);
+                if (uploadedUrls.some(url => url === null)) {
+                    const failedFile = newFiles[uploadedUrls.findIndex(url => url === null)].file.name;
+                    throw new Error(`Failed to upload image: ${failedFile}`);
+                }
             }
-
+            
             const finalImageUrls = [...existingUrls, ...uploadedUrls as string[]];
             
             const vehicleData = {

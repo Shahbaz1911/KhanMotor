@@ -12,17 +12,6 @@ import ImageKit from "imagekit";
 
 const fromEmail = "noreply@updates.motorkhan.com";
 
-// Check for ImageKit credentials and log a warning if they are missing.
-if (
-  !process.env.IMAGEKIT_PUBLIC_KEY ||
-  !process.env.IMAGEKIT_PRIVATE_KEY ||
-  !process.env.IMAGEKIT_URL_ENDPOINT
-) {
-  console.warn(
-    "ImageKit credentials are not fully configured in environment variables. File uploads will not work."
-  );
-}
-
 export type ContactFormState = {
   message: string;
   success: boolean;
@@ -53,7 +42,8 @@ export async function submitContactForm(
     };
   }
   
-  if (!process.env.RESEND_API_KEY) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
     console.error("Resend API key is missing. Cannot send email.");
     return {
       message: "Server configuration error: Email service is not available.",
@@ -63,7 +53,7 @@ export async function submitContactForm(
 
   const { name, email, phone, message } = validatedFields.data;
   
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(apiKey);
 
   try {
     const { data, error } = await resend.emails.send({
@@ -286,7 +276,8 @@ export async function submitAppointmentForm(
     };
   }
 
-  if (!process.env.RESEND_API_KEY) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
     console.error("Resend API key is missing. Cannot send email.");
     return {
       message: "Server configuration error: Email service is not available.",
@@ -296,7 +287,7 @@ export async function submitAppointmentForm(
 
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(apiKey);
 
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
@@ -362,6 +353,7 @@ export async function submitAppointmentForm(
  * expiry timestamp, and signature required to perform a direct upload to ImageKit.
  */
 export async function getIKAuth() {
+  // Check for server-side credentials
   if (
     !process.env.IMAGEKIT_PUBLIC_KEY ||
     !process.env.IMAGEKIT_PRIVATE_KEY ||
@@ -378,6 +370,8 @@ export async function getIKAuth() {
   });
 
   try {
+    // Generate authentication parameters. The SDK uses the keys it was configured
+    // with to generate the signature. No need to pass the public key here.
     const authParams = imagekit.getAuthenticationParameters();
     return { success: true, ...authParams };
   } catch (error) {
