@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
@@ -167,7 +166,6 @@ export function AboutPageClient() {
             <ScrollExpandMedia
                 mediaType="video"
                 mediaSrc="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-about.mp4"
-                title="About Motor Khan"
                 textBlend
             />
             <div className="container mx-auto px-4">
