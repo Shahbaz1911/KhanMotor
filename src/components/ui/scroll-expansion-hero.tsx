@@ -44,7 +44,7 @@ const ScrollExpandMedia = ({
     gsap.registerPlugin(ScrollTrigger);
 
     const initialWidth = isMobile ? '90vw' : '300px';
-    const initialHeight = isMobile ? '60vh' : '400px';
+    const initialHeight = isMobile ? '45vh' : '400px';
     
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({

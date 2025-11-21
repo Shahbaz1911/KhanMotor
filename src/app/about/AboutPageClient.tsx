@@ -168,8 +168,6 @@ export function AboutPageClient() {
                 mediaType="video"
                 mediaSrc="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi-about.mp4"
                 title="About Motor Khan"
-                date="Since 1995"
-                scrollToExpand="Scroll to Explore"
                 textBlend
             />
             <div className="container mx-auto px-4">
