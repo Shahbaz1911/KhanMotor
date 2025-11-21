@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef, useState, ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@/lib/utils';
@@ -15,7 +15,6 @@ interface ScrollExpandMediaProps {
   date?: string;
   scrollToExpand?: string;
   textBlend?: boolean;
-  children?: ReactNode;
 }
 
 const ScrollExpandMedia = ({
@@ -26,12 +25,10 @@ const ScrollExpandMedia = ({
   date,
   scrollToExpand,
   textBlend,
-  children,
 }: ScrollExpandMediaProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
   const titleContainerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -42,7 +39,7 @@ const ScrollExpandMedia = ({
   }, []);
 
   useEffect(() => {
-    if (!sectionRef.current || !mediaContainerRef.current || !titleContainerRef.current || !contentRef.current) return;
+    if (!sectionRef.current || !mediaContainerRef.current || !titleContainerRef.current) return;
   
     gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +51,7 @@ const ScrollExpandMedia = ({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '+=2000',
+          end: '+=1000', // Shorter duration, just for the expansion
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -63,7 +60,6 @@ const ScrollExpandMedia = ({
 
       // Set initial states
       gsap.set(mediaContainerRef.current, { width: initialWidth, height: initialHeight });
-      gsap.set(contentRef.current, { opacity: 0, y: 100 });
       gsap.set(titleContainerRef.current, { scale: 1 });
 
       // Animate media expansion
@@ -80,17 +76,39 @@ const ScrollExpandMedia = ({
         opacity: 0,
         ease: 'power2.inOut',
       }, 0);
-
-      // Animate content fading in after expansion
-      tl.to(contentRef.current, {
-        opacity: 1,
-        y: 0,
-        ease: 'power2.out',
-      }, '+=0.25'); 
     
     }, sectionRef);
 
+    // This handles the reset logic when navigating back to the page
+    const handleReset = () => {
+        if (ctx) {
+            ctx.revert();
+        }
+        window.scrollTo(0, 0);
+        // We re-run the effect to re-initialize the animation
+        const newCtx = gsap.context(() => {
+             const tl = gsap.timeline({
+                scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top top',
+                end: '+=1000',
+                scrub: 1,
+                pin: true,
+                anticipatePin: 1,
+                },
+            });
+            gsap.set(mediaContainerRef.current, { width: initialWidth, height: initialHeight });
+            gsap.set(titleContainerRef.current, { scale: 1, opacity: 1 });
+            tl.to(mediaContainerRef.current, { width: '100vw', height: '100vh', borderRadius: 0, ease: 'power2.inOut' }, 0);
+            tl.to(titleContainerRef.current, { scale: 1.5, opacity: 0, ease: 'power2.inOut' }, 0);
+        }, sectionRef);
+    };
+
+    window.addEventListener('resetSection', handleReset);
+
+
     return () => {
+        window.removeEventListener('resetSection', handleReset);
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         ctx.revert();
     };
@@ -152,13 +170,6 @@ const ScrollExpandMedia = ({
          {scrollToExpand && (
             <p className="mt-4 text-base md:text-lg font-medium">{scrollToExpand}</p>
         )}
-      </div>
-
-       {/* Content that fades in */}
-      <div ref={contentRef} className="absolute inset-0 z-30 flex items-center justify-center opacity-0">
-          <div className="container mx-auto px-4">
-            {children}
-          </div>
       </div>
     </div>
   );

@@ -171,9 +171,10 @@ export function AboutPageClient() {
                 date="Since 1995"
                 scrollToExpand="Scroll to Explore"
                 textBlend
-            >
-                <AboutContent />
-            </ScrollExpandMedia>
+            />
+            <div className="container mx-auto px-4">
+              <AboutContent />
+            </div>
         </div>
     );
 }
