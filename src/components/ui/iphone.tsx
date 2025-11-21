@@ -1,7 +1,7 @@
 "use client";
 import type { HTMLAttributes } from "react";
 import { Wifi, Battery, Signal } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export interface IphoneProps extends HTMLAttributes<HTMLDivElement> {
   imgUrl?: string;
@@ -28,11 +28,18 @@ export function Iphone({
 
   const notchHeight = ((67 - 19.25) / 843.5) * 100;
 
-  const currentTime = new Date().toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    // This code runs only on the client, after hydration
+    setCurrentTime(
+      new Date().toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+    );
+  }, []);
 
   return (
     <div
