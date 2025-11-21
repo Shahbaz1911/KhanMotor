@@ -10,16 +10,19 @@ const stats = [
     value: 50000,
     label: "Cars Serviced",
     suffix: "+",
+    icon: Car,
   },
   {
     value: 25000,
     label: "Happy Customers",
     suffix: "+",
+    icon: Smile,
   },
   {
     value: 30,
     label: "Years in Business",
     suffix: "+",
+    icon: Calendar,
   },
 ];
 

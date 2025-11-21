@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +15,7 @@ interface StatItem {
   suffix?: string;
   label: string;
   duration?: number;
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
 interface StatsCountProps {
@@ -54,12 +54,14 @@ function AnimatedCounter({
   duration = 1,
   delay = 0,
   label,
+  icon: Icon,
 }: {
   value: number;
   suffix?: string;
   duration?: number;
   delay?: number;
   label: string;
+  icon?: React.ComponentType<{ className?: string }>;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { margin: "-50px" });
@@ -109,9 +111,18 @@ function AnimatedCounter({
         stiffness: 80,
       }}
       className={cn(
-        "text-center flex-1 min-w-0 flex flex-col justify-center h-full"
+        "text-center flex-1 min-w-0 flex flex-col items-center justify-center h-full"
       )}
     >
+      {Icon && (
+         <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={isInView ? { scale: 1, opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: delay * 0.2 + 0.2 }}
+        >
+          <Icon className="h-8 w-8 sm:h-10 sm:w-10 text-destructive mb-2" />
+        </motion.div>
+      )}
       <motion.div
         className={cn(
           "text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-2 sm:mb-4 whitespace-nowrap font-cairo"
@@ -181,14 +192,14 @@ export default function StatsCount({
       <div className={cn("w-full max-w-6xl mx-auto")}>
         <div
           className={cn(
-            "flex flex-row items-stretch justify-between gap-2 sm:gap-4 lg:gap-8 w-full min-h-[120px] sm:min-h-[140px]"
+            "flex flex-col md:flex-row items-stretch justify-between gap-8 md:gap-4 lg:gap-8 w-full min-h-[120px] sm:min-h-[140px]"
           )}
         >
           {stats.map((stat, index) => (
             <div
               key={index}
               className={cn(
-                "relative flex-1 min-w-0 flex flex-col justify-center h-full"
+                "relative flex-1 min-w-0 flex flex-col justify-center h-full py-4 md:py-0"
               )}
             >
               <AnimatedCounter
@@ -197,11 +208,12 @@ export default function StatsCount({
                 duration={stat.duration}
                 delay={index}
                 label={stat.label}
+                icon={stat.icon}
               />
               {index < stats.length - 1 && showDividers && (
                 <motion.div
                   className={cn(
-                    "absolute -right-1 sm:-right-2 lg:-right-4 top-1/2 transform -translate-y-1/2 h-12 sm:h-16 lg:h-20 w-px bg-gray-200 dark:bg-gray-700"
+                    "absolute -bottom-4 md:bottom-auto md:-right-2 lg:-right-4 left-1/2 md:left-auto md:top-1/2 w-20 md:w-px h-px md:h-12 lg:h-20 transform -translate-x-1/2 md:translate-x-0 md:-translate-y-1/2 bg-gray-200 dark:bg-gray-700"
                   )}
                   initial={{ opacity: 0, scaleY: 0 }}
                   animate={
