@@ -37,6 +37,7 @@ import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
 import { LocationMap } from "@/components/custom/LocationMap";
 import { FaqSection } from "@/components/custom/FaqSection";
 import { ServicesSection } from "@/components/custom/ServicesSection";
+import IphoneDemo from "@/components/custom/IphoneDemo";
 
 
 export default function ConsolidatedPage() {
@@ -273,6 +274,12 @@ export default function ConsolidatedPage() {
         </section>
 
         <HappyCustomerGallery />
+
+        <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+             <IphoneDemo />
+          </div>
+        </section>
         
         <GoogleGeminiEffectDemo />
 
