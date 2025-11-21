@@ -7,40 +7,7 @@ const siteUrl = 'https://motorkhan.com';
 
 // Function to generate video sitemap entries
 const generateVideoSitemap = () => {
-  const videosPath = path.join(process.cwd(), 'src', 'lib', 'videos.json');
-  try {
-    const videosData = fs.readFileSync(videosPath, 'utf8');
-    const videos = JSON.parse(videosData);
-
-    if (!Array.isArray(videos)) {
-      console.warn('Sitemap: videos.json is not an array. Skipping video sitemap.');
-      return '';
-    }
-
-    return videos
-      .map(video => {
-        if (!video.slug || !video.thumbnailUrl || !video.title || !video.description || !video.contentUrl) {
-          return ''; // Skip invalid entries
-        }
-        return `
-    <url>
-      <loc>${siteUrl}/videos/${video.slug}</loc>
-      <video:video>
-        <video:thumbnail_loc>${video.thumbnailUrl}</video:thumbnail_loc>
-        <video:title>${video.title.replace(/&/g, '&amp;')}</video:title>
-        <video:description>${video.description.replace(/&/g, '&amp;')}</video:description>
-        <video:content_loc>${video.contentUrl}</video:content_loc>
-        ${video.uploadDate ? `<video:publication_date>${video.uploadDate}</video:publication_date>` : ''}
-        ${video.duration ? `<video:duration>${video.duration.replace('PT', '').replace('M', '0').replace('S', '')}</video:duration>` : ''}
-      </video:video>
-    </url>
-    `;
-      })
-      .join('');
-  } catch (error) {
-    console.error("Sitemap: Error reading or parsing videos.json", error);
-    return '';
-  }
+  return '';
 };
 
 
@@ -97,7 +64,6 @@ module.exports = {
       }
     ],
     additionalSitemaps: [
-      `${siteUrl}/sitemap.xml`,
       `${siteUrl}/server-sitemap.xml`,
     ],
   },
@@ -108,13 +74,11 @@ module.exports = {
       return null;
     }
 
-    const videoSitemap = generateVideoSitemap();
     const imageSitemap = generateImageSitemap();
     
     // Combine video and image sitemap into one string
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  ${videoSitemap}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   ${imageSitemap}
 </urlset>`;
 

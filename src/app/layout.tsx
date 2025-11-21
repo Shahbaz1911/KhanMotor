@@ -68,41 +68,54 @@ export default function RootLayout({
     }
   };
 
-  const serviceSchema = {
+  const localBusinessSchema = {
     "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": [
-      "Car Denting and Painting",
-      "Paintless Dent Repair",
-      "Auto Body Repair",
-      "Car Restoration",
-      "Used Car Sales and Purchase",
-      "Premium Car Painting",
-      "Multi-brand Car Service"
-    ],
-    "provider": {
-      "@type": "AutoRepair",
-      "name": "Motor Khan",
-      "url": "https://motorkhan.com"
+    "@type": "LocalBusiness",
+    "name": "Motor Khan",
+    "image": "https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-darktheme.png",
+    "url": "https://motorkhan.com",
+    "telephone": "+918595853918",
+    "priceRange": "₹₹",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B",
+      "addressLocality": "Rithala, Rohini, Delhi",
+      "postalCode": "110085",
+      "addressCountry": "IN"
     },
-    "areaServed": "Rohini, Rithala, Vijay Vihar, Budh Vihar, Delhi"
-  };
-
-  const featureSnippet = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Motor Khan - Car Workshop in Rohini, Delhi",
-    "description": "Trusted car denting, painting, and restoration service in Rohini, Delhi. Expert mechanics, affordable prices, and quick service for all car brands.",
-    "mainEntity": {
-      "@type": "Product",
-      "name": "Car Repair & Restoration Services",
-      "brand": "Motor Khan",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "280"
-      }
-    }
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "280"
+    },
+    "review": [
+        {
+        "@type": "Review",
+        "author": {
+            "@type": "Person",
+            "name": "Ayesha Khan"
+        },
+        "datePublished": "2024-04-15",
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5"
+        },
+        "reviewBody": "Motor Khan provided an unparalleled buying experience. Their attention to detail and customer service is top-notch."
+        },
+        {
+        "@type": "Review",
+        "author": {
+            "@type": "Person",
+            "name": "Rohan Sharma"
+        },
+        "datePublished": "2024-03-22",
+        "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5"
+        },
+        "reviewBody": "The team at Motor Khan made my first luxury car purchase seamless and enjoyable. Highly knowledgeable and no pressure."
+        }
+    ]
   };
 
   const faqSchema = {
@@ -151,8 +164,7 @@ export default function RootLayout({
         />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(featureSnippet) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       </head>
 
