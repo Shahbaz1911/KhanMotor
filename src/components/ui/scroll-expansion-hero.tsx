@@ -77,38 +77,36 @@ const ScrollExpandMedia = ({
     };
 
     const handleTouchStart = (e: globalThis.TouchEvent) => {
-      setTouchStartY(e.touches[0].clientY);
+      if (!mediaFullyExpanded) {
+        setTouchStartY(e.touches[0].clientY);
+      }
     };
 
     const handleTouchMove = (e: globalThis.TouchEvent) => {
-      if (!touchStartY) return;
+      if (!touchStartY || mediaFullyExpanded) return;
 
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
-        setMediaFullyExpanded(false);
-        e.preventDefault();
-      } else if (!mediaFullyExpanded) {
-        e.preventDefault();
-        // Increase sensitivity for mobile, especially when scrolling back
-        const scrollFactor = deltaY < 0 ? 0.008 : 0.005; // Higher sensitivity for scrolling back
-        const scrollDelta = deltaY * scrollFactor;
-        const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
-          1
-        );
-        setScrollProgress(newProgress);
+      
+      e.preventDefault();
+      // Increase sensitivity for mobile, especially when scrolling back
+      const scrollFactor = deltaY < 0 ? 0.008 : 0.005; // Higher sensitivity for scrolling back
+      const scrollDelta = deltaY * scrollFactor;
+      const newProgress = Math.min(
+        Math.max(scrollProgress + scrollDelta, 0),
+        1
+      );
+      setScrollProgress(newProgress);
 
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
-
-        setTouchStartY(touchY);
+      if (newProgress >= 1) {
+        setMediaFullyExpanded(true);
+        setShowContent(true);
+      } else if (newProgress < 0.75) {
+        setShowContent(false);
       }
+
+      setTouchStartY(touchY);
     };
 
     const handleTouchEnd = (): void => {
