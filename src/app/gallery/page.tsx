@@ -230,10 +230,10 @@ export default function GalleryPage() {
             <Button
               variant="ghost"
               className="text-foreground text-sm hover:bg-transparent"
-              onClick={() => router.push("/happy-customers")}
+              onClick={() => router.push('/customers')}
             >
               <Users className="mr-2 h-4 w-4" />
-              HAPPY CUSTOMERS
+              CUSTOMERS
             </Button>
           </div>
         </header>

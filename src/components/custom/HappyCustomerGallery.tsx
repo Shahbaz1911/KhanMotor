@@ -1,3 +1,4 @@
+
 "use client";
 
 import { ArrowRight, Loader2 } from "lucide-react";
@@ -130,7 +131,7 @@ export function HappyCustomerGallery() {
                   </div>
                 )}
                  <div className="mt-12 flex justify-center">
-                    <Link href="/happy-customers">
+                    <Link href="/customers">
                         <CircularText
                             text="VIEW✧GALLERY✧"
                             onHover="speedUp"
