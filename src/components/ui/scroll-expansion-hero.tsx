@@ -41,13 +41,20 @@ const ScrollExpandMedia = ({
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setScrollProgress(0);
-    setShowContent(false);
-    setMediaFullyExpanded(false);
-  }, [mediaType]);
+    const handleReset = () => {
+      setScrollProgress(0);
+      setShowContent(false);
+      setMediaFullyExpanded(false);
+    };
+
+    window.addEventListener('resetSection', handleReset);
+    return () => {
+      window.removeEventListener('resetSection', handleReset);
+    };
+  }, []);
 
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
+    const handleWheel = (e: globalThis.WheelEvent) => {
       if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 5) {
         setMediaFullyExpanded(false);
         e.preventDefault();
@@ -69,11 +76,11 @@ const ScrollExpandMedia = ({
       }
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
+    const handleTouchStart = (e: globalThis.TouchEvent) => {
       setTouchStartY(e.touches[0].clientY);
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = (e: globalThis.TouchEvent) => {
       if (!touchStartY) return;
 
       const touchY = e.touches[0].clientY;
