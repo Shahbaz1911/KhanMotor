@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -112,7 +112,7 @@ function AnimatedCounter({
         stiffness: 80,
       }}
       className={cn(
-        "text-center flex-1 min-w-0 flex flex-col items-center justify-center h-full"
+        "text-center flex-1 min-w-0 flex flex-col items-center justify-center h-full px-2"
       )}
     >
       {Icon && (
@@ -142,7 +142,7 @@ function AnimatedCounter({
       </motion.div>
       <motion.p
         className={cn(
-          "text-muted-foreground text-xs sm:text-sm leading-relaxed px-1 sm:px-2 hyphens-auto break-words lowercase"
+          "text-muted-foreground text-xs sm:text-sm leading-relaxed hyphens-auto break-words lowercase"
         )}
         style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
         initial={{ opacity: 0 }}
@@ -193,53 +193,34 @@ export default function StatsCount({
       <div className={cn("w-full max-w-6xl mx-auto")}>
         <div
           className={cn(
-            "flex flex-col md:flex-row items-stretch justify-between gap-8 md:gap-4 lg:gap-8 w-full"
+            "flex flex-col md:flex-row items-center justify-center gap-y-8 md:gap-x-8 w-full"
           )}
         >
           {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={cn(
-                "relative flex-1 min-w-0 flex flex-col justify-center h-full pb-8 md:pb-0"
-              )}
-            >
-              <AnimatedCounter
-                value={stat.value}
-                suffix={stat.suffix}
-                duration={stat.duration}
-                delay={index}
-                label={stat.label}
-                icon={stat.icon}
-              />
+            <React.Fragment key={index}>
+              <div
+                className={cn(
+                  "relative flex-1 min-w-0 flex flex-col justify-center h-full w-full"
+                )}
+              >
+                <AnimatedCounter
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  duration={stat.duration}
+                  delay={index}
+                  label={stat.label}
+                  icon={stat.icon}
+                />
+              </div>
               {index < stats.length - 1 && showDividers && (
-                <motion.div
-                  className={cn(
-                    "absolute -bottom-4 md:bottom-auto md:hidden left-1/2 w-20 h-px transform -translate-x-1/2 bg-gray-200 dark:bg-gray-700"
-                  )}
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={
-                    isInView
-                      ? { opacity: 1, scaleX: 1 }
-                      : { opacity: 0, scaleX: 0 }
-                  }
-                  transition={{ delay: 1.5 + index * 0.2, duration: 0.6 }}
-                />
+                <>
+                  {/* Mobile Divider */}
+                  <div className="w-20 h-px bg-border md:hidden" />
+                  {/* Desktop Divider */}
+                  <div className="h-20 w-px bg-border hidden md:block" />
+                </>
               )}
-               {index < stats.length - 1 && showDividers && (
-                 <motion.div
-                  className={cn(
-                    "absolute hidden md:block -right-2 lg:-right-4 top-1/2 h-12 lg:h-20 w-px transform -translate-y-1/2 bg-gray-200 dark:bg-gray-700"
-                  )}
-                  initial={{ opacity: 0, scaleY: 0 }}
-                  animate={
-                    isInView
-                      ? { opacity: 1, scaleY: 1 }
-                      : { opacity: 0, scaleY: 0 }
-                  }
-                  transition={{ delay: 1.5 + index * 0.2, duration: 0.6 }}
-                />
-              )}
-            </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
