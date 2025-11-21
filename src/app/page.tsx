@@ -18,7 +18,6 @@ import { AnimatedMenuIcon } from "@/components/custom/AnimatedMenuIcon";
 import { cn } from "@/lib/utils";
 import { Preloader } from "@/components/custom/Preloader";
 import placeholderImages from '@/lib/placeholder-images.json';
-import { ServicesSection } from "@/components/custom/ServicesSection";
 import { AchievementsSection } from "@/components/custom/AchievementsSection";
 import { HappyCustomerGallery } from "@/components/custom/HappyCustomerGallery";
 import { CallToAction } from "@/components/custom/CallToAction";
@@ -238,8 +237,6 @@ export default function ConsolidatedPage() {
         <TextMarquee />
         
         <ExpertiseSection />
-
-        <ServicesSection />
 
         <CallToAction />
 

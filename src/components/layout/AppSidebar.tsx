@@ -21,12 +21,13 @@ interface AppSidebarProps {
 
 const mainNavItems = [
   { id: "home", label: "Home", href: "/#home" }, 
-  { id: "about-us", label: "About Us", href: "/about" },
+  { id: "about", label: "About Us", href: "/about" },
+  { id: "services", label: "Services", href: "/services" },
   { id: "gallery", label: "Our Cars", href: "/gallery" },
   { id: "happy-customers", label: "Happy Customers", href: "/happy-customers" },
-  { id: "testimonials", label: "Reviews", href: "/#testimonials" },
+  { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
   { id: "location", label: "Location", href: "/#location" },
-  { id: "book-appointment", label: "Book Drive", href: "/book-appointment" },
+  { id: "book-appointment", label: "Book a Test Drive", href: "/book-appointment" },
   { id: "contact", label: "Contact Us", href: "/contact" },
 ];
 

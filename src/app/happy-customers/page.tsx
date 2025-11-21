@@ -19,6 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import Head from "next/head";
 
 interface GalleryItem {
   id: string;
@@ -133,6 +134,10 @@ export default function HappyCustomersPage() {
 
   return (
     <>
+      <Head>
+        <title>Happy Customers | Motor Khan Reviews</title>
+        <meta name="description" content="See photos and read testimonials from our happy customers at Motor Khan. Discover why we are Delhi's trusted car workshop for repair, restoration, and sales." />
+      </Head>
         <div ref={pageRef} className="bg-background">
           <header ref={headerRef} className="fixed top-0 w-full z-50">
             <div className="relative flex justify-between items-center px-4 pt-4">
@@ -178,7 +183,7 @@ export default function HappyCustomersPage() {
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <div className="text-center">
                 <h1 ref={titleRef} className="mb-12 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
-                    Our Happy Customers
+                    Happy Customers
                 </h1>
             </div>
             

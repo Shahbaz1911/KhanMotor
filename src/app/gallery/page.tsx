@@ -116,8 +116,7 @@ export default function GalleryPage() {
       {/* ✅ SEO META TAGS + SCHEMA */}
       <Head>
         <title>
-          Used Cars for Sale in Rohini, Delhi | Certified Pre-Owned Cars |
-          Motor Khan
+          Our Cars | Certified Pre-Owned Cars For Sale in Rohini, Delhi | Motor Khan
         </title>
         <meta
           name="description"
@@ -245,7 +244,7 @@ export default function GalleryPage() {
             ref={titleRef}
             className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase"
           >
-            Used Cars for Sale
+            Our Cars
           </h1>
 
           {loading || !firestore ? (
