@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ArrowRight, Loader2 } from "lucide-react";
@@ -11,11 +10,9 @@ import { errorEmitter } from "@/firebase/error-emitter";
 import { FirestorePermissionError } from "@/firebase/errors";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import Carousel from "@/components/ui/carousel";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
 import CircularText from "./CircularText";
 import Link from "next/link";
+import { Carousel as AppleCarousel, Card as AppleCard } from "@/components/ui/apple-cards-carousel";
 
 interface GalleryItem {
   id: string;
@@ -25,6 +22,16 @@ interface GalleryItem {
   rating?: number;
   aiHint?: string;
 }
+
+const DummyContent = () => {
+    return (
+      <div className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4">
+        <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
+          More details about this happy customer&apos;s experience will be available soon.
+        </p>
+      </div>
+    );
+  };
 
 export function HappyCustomerGallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -86,11 +93,16 @@ export function HappyCustomerGallery() {
     return () => ctx.revert();
   }, [loading]);
   
-  const carouselSlides = galleryItems.map(item => ({
-    title: item.customerName || item.caption,
-    button: "View Details",
-    src: item.imageUrl,
-  }));
+  const cards = galleryItems.map((item, index) => {
+    const cardData = {
+        src: item.imageUrl,
+        title: item.caption,
+        category: item.customerName || "Happy Customer",
+        content: <DummyContent />,
+    }
+    return <AppleCard key={item.id} card={cardData} index={index} />;
+  });
+
 
   return (
     <section ref={sectionRef} id="customer-gallery" className="bg-background relative py-16 md:py-24">
@@ -111,9 +123,7 @@ export function HappyCustomerGallery() {
         ) : (
             <>
                 {galleryItems.length > 0 ? (
-                  <div className="relative overflow-hidden w-full h-full py-20">
-                      <Carousel slides={carouselSlides} />
-                  </div>
+                    <AppleCarousel items={cards} />
                 ) : (
                   <div className="text-center text-muted-foreground p-12 border border-dashed rounded-lg lowercase">
                       no customer photos have been uploaded yet. be the first!
