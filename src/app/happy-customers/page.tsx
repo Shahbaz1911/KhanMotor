@@ -175,8 +175,8 @@ export default function HappyCustomersPage() {
               </div>
             
               <Button variant="ghost" className="text-foreground text-sm hover:bg-transparent" onClick={() => router.push('/gallery')}>
-                  <Car className="mr-2 h-4 w-4" />
-                  VEHICLES
+                  <GalleryThumbnails className="mr-2 h-4 w-4" />
+                  GALLERY
               </Button>
             </div>
           </header>

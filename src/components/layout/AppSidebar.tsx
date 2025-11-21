@@ -23,7 +23,7 @@ const mainNavItems = [
   { id: "home", label: "Home", href: "/#home" }, 
   { id: "about", label: "About Us", href: "/about" },
   { id: "services", label: "Services", href: "/services" },
-  { id: "gallery", label: "Our Cars", href: "/gallery" },
+  { id: "gallery", label: "Gallery", href: "/gallery" },
   { id: "happy-customers", label: "Happy Customers", href: "/happy-customers" },
   { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
   { id: "location", label: "Location", href: "/#location" },

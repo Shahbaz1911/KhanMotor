@@ -104,11 +104,11 @@ export function AboutPageClient() {
 
           <Button
             variant="ghost"
-            className="text-foreground text-sm hover:bg-transparent"
+            className="text-foreground text-sm hover:bg-transparent uppercase"
             onClick={() => router.push("/gallery")}
           >
             <GalleryThumbnails className="mr-2 h-4 w-4" />
-            GALLERY
+            Gallery
           </Button>
         </div>
       </header>

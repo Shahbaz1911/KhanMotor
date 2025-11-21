@@ -36,6 +36,7 @@ import { LinkPreview } from "@/components/ui/link-preview";
 import { ExpertiseSection } from "@/components/custom/ExpertiseSection";
 import { LocationMap } from "@/components/custom/LocationMap";
 import { FaqSection } from "@/components/custom/FaqSection";
+import { ServicesSection } from "@/components/custom/ServicesSection";
 
 
 export default function ConsolidatedPage() {
@@ -175,11 +176,11 @@ export default function ConsolidatedPage() {
             </div>
           
             <Button variant="ghost" className={cn(
-                "text-sm hover:bg-transparent",
+                "text-sm hover:bg-transparent uppercase",
                 mounted && heroInView && theme === 'light' ? "text-white" : "text-foreground"
               )} onClick={() => router.push('/gallery')}>
                 <GalleryThumbnails className="mr-2 h-4 w-4" />
-                GALLERY
+                Gallery
             </Button>
           </div>
         </header>

@@ -116,7 +116,7 @@ export default function GalleryPage() {
       {/* ✅ SEO META TAGS + SCHEMA */}
       <Head>
         <title>
-          Our Cars | Certified Pre-Owned Cars For Sale in Rohini, Delhi | Motor Khan
+          Gallery | Certified Pre-Owned Cars For Sale in Rohini, Delhi | Motor Khan
         </title>
         <meta
           name="description"
@@ -233,7 +233,7 @@ export default function GalleryPage() {
               onClick={() => router.push("/happy-customers")}
             >
               <Users className="mr-2 h-4 w-4" />
-              CUSTOMERS
+              HAPPY CUSTOMERS
             </Button>
           </div>
         </header>
@@ -244,7 +244,7 @@ export default function GalleryPage() {
             ref={titleRef}
             className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase"
           >
-            Our Cars
+            Gallery
           </h1>
 
           {loading || !firestore ? (
