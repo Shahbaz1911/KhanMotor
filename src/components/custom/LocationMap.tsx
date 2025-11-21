@@ -55,23 +55,11 @@ export function LocationMap() {
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            <div className="lg:col-span-1 flex justify-center">
-                <IphoneDemo />
-            </div>
-            <div className="lg:col-span-2 relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl border">
-                <iframe
-                    className="absolute inset-0 w-full h-full"
-                    frameBorder="0"
-                    scrolling="no"
-                    marginHeight={0}
-                    marginWidth={0}
-                    src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=Motor Khan ,Shop No 12, near Rice Mill, Vijay vihar Phase I, Phase 1, Block B, Rithala, Rohini, New Delhi, Delhi, 110085&amp;t=k&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                    title="Motor Khan Location"
-                ></iframe>
-            </div>
+        <div className="flex justify-center">
+            <IphoneDemo />
         </div>
       </div>
     </section>
   );
 }
+
