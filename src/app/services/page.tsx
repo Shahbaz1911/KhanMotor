@@ -78,6 +78,10 @@ export default function ServicesPage() {
           name="description"
           content="Discover the comprehensive auto services at Motor Khan in Rohini, Delhi. From expert car denting and painting to certified used car sales, we have you covered."
         />
+        <meta
+          name="keywords"
+          content="car repair near me, rithala car repair, car shop, car service delhi, car denting painting, used car sales rohini, auto repair shop"
+        />
       </Head>
       <div ref={pageRef} className="bg-background">
         <header ref={headerRef} className="fixed top-0 w-full z-50">

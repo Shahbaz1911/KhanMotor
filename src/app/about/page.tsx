@@ -36,7 +36,10 @@ export const metadata: Metadata = {
     "vijay vihar car repair",
     "budh vihar car restoration",
     "rithala car service center",
-    "delhi auto repair workshop"
+    "delhi auto repair workshop",
+    "car repair near me",
+    "rithala car repair",
+    "car shop"
   ],
   openGraph: {
     title:

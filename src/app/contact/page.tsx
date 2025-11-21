@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   description:
     "Get in touch with Motor Khan for expert car repair, denting painting, restoration, and used car deals in Rohini, Rithala, Vijay Vihar, Budh Vihar & Delhi. Visit our workshop or call +91 8595853918 today!",
   keywords: [
-    "car repair near me",
     "car repair in rithala",
     "car repair in rohini",
     "car repair in vijay vihar",
@@ -48,7 +47,10 @@ export const metadata: Metadata = {
     "vijay vihar car repair",
     "budh vihar car restoration",
     "rithala car service center",
-    "delhi auto repair workshop"
+    "delhi auto repair workshop",
+    "car repair near me",
+    "rithala car repair",
+    "car shop"
   ],
   openGraph: {
     title: "Contact Motor Khan - Trusted Car Workshop in Delhi (Rohini, Rithala, Vijay Vihar, Budh Vihar)",
