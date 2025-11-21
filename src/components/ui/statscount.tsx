@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -192,14 +193,14 @@ export default function StatsCount({
       <div className={cn("w-full max-w-6xl mx-auto")}>
         <div
           className={cn(
-            "flex flex-col md:flex-row items-stretch justify-between gap-8 md:gap-4 lg:gap-8 w-full min-h-[120px] sm:min-h-[140px]"
+            "flex flex-col md:flex-row items-stretch justify-between gap-8 md:gap-4 lg:gap-8 w-full"
           )}
         >
           {stats.map((stat, index) => (
             <div
               key={index}
               className={cn(
-                "relative flex-1 min-w-0 flex flex-col justify-center h-full py-4 md:py-0"
+                "relative flex-1 min-w-0 flex flex-col justify-center h-full pb-8 md:pb-0"
               )}
             >
               <AnimatedCounter
@@ -213,7 +214,21 @@ export default function StatsCount({
               {index < stats.length - 1 && showDividers && (
                 <motion.div
                   className={cn(
-                    "absolute -bottom-4 md:bottom-auto md:-right-2 lg:-right-4 left-1/2 md:left-auto md:top-1/2 w-20 md:w-px h-px md:h-12 lg:h-20 transform -translate-x-1/2 md:translate-x-0 md:-translate-y-1/2 bg-gray-200 dark:bg-gray-700"
+                    "absolute -bottom-4 md:bottom-auto md:hidden left-1/2 w-20 h-px transform -translate-x-1/2 bg-gray-200 dark:bg-gray-700"
+                  )}
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={
+                    isInView
+                      ? { opacity: 1, scaleX: 1 }
+                      : { opacity: 0, scaleX: 0 }
+                  }
+                  transition={{ delay: 1.5 + index * 0.2, duration: 0.6 }}
+                />
+              )}
+               {index < stats.length - 1 && showDividers && (
+                 <motion.div
+                  className={cn(
+                    "absolute hidden md:block -right-2 lg:-right-4 top-1/2 h-12 lg:h-20 w-px transform -translate-y-1/2 bg-gray-200 dark:bg-gray-700"
                   )}
                   initial={{ opacity: 0, scaleY: 0 }}
                   animate={
