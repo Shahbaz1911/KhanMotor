@@ -228,11 +228,11 @@ export default function GalleryPage() {
 
             <Button
               variant="ghost"
-              className="text-foreground text-sm hover:bg-transparent"
+              className="text-foreground text-sm hover:bg-transparent uppercase"
               onClick={() => router.push('/customers')}
             >
               <Users className="mr-2 h-4 w-4" />
-              CUSTOMERS
+              Customers
             </Button>
           </div>
         </header>
@@ -247,7 +247,7 @@ export default function GalleryPage() {
               Our Vehicle Gallery
             </h1>
             <p className="mt-4 max-w-3xl mx-auto text-muted-foreground lowercase">
-              Welcome to the Motor Khan showroom. Each vehicle in our collection has been meticulously inspected, serviced, and detailed to meet our rigorous standards of quality and performance. Below, you'll find a curated selection of certified pre-owned cars currently available at our Delhi dealership. From luxury sedans to rugged SUVs, every car represents our commitment to excellence. Explore our inventory and find the perfect vehicle that matches your style and needs.
+              Welcome to the Motor Khan showroom. Each vehicle in our collection has been meticulously inspected, serviced, and detailed to meet our rigorous standards of quality and performance. Below, you'll find a curated selection of certified pre-owned cars currently available at our Delhi dealership. From luxury sedans to rugged SUVs, every car represents our commitment to excellence. Explore our inventory and find the perfect vehicle that matches your style and needs. Our diverse range of makes and models ensures that there is something for every discerning driver.
             </p>
           </div>
 

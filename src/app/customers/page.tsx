@@ -182,9 +182,12 @@ export default function CustomersPage() {
           </header>
           <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
             <div className="text-center">
-                <h1 ref={titleRef} className="mb-12 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
+                <h1 ref={titleRef} className="mb-4 scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase">
                     Our Customers
                 </h1>
+                <p className="mt-4 max-w-3xl mx-auto text-muted-foreground lowercase">
+                    Welcome to our gallery of happy customers! At Motor Khan, we take pride in the relationships we build and the satisfaction we deliver. This space is dedicated to the individuals and families who have trusted us with their automotive needs, whether it's purchasing a certified pre-owned vehicle or servicing their prized possession. Each photo tells a story of a dream fulfilled, a problem solved, and a journey made better. We are honored to be a part of their automotive lives and share these moments with you.
+                </p>
             </div>
             
             {loading || !firestore ? (
@@ -192,7 +195,7 @@ export default function CustomersPage() {
                     <Loader2 className="h-8 w-8 animate-spin" />
                 </div>
             ) : (
-                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
                     {galleryItems.length > 0 ? galleryItems.map((item, index) => (
                         <Card key={item.id} className={cn(
                           "group relative block overflow-hidden rounded-lg shadow-lg border-0 transition-transform duration-300 ease-in-out hover:z-10 hover:scale-105",

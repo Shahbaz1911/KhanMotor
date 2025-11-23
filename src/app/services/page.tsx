@@ -135,6 +135,12 @@ export default function ServicesPage() {
         </header>
 
         <main className="py-16 md:py-24 mt-16">
+            <div className="container mx-auto px-4 text-center mb-12">
+                <h1 className="text-4xl lg:text-5xl font-black uppercase">Our Services</h1>
+                <p className="text-lg text-muted-foreground mt-4 max-w-3xl mx-auto lowercase">
+                    At Motor Khan, we offer a comprehensive suite of automotive services designed to meet all your needs. From routine maintenance to complete restorations, our expert team in Delhi is equipped with the skills and technology to deliver unparalleled results. We are your one-stop destination for car repair, denting, painting, and premium used car sales.
+                </p>
+            </div>
           <div ref={titleRef} className="container mx-auto px-4">
             <ServicesSection />
           </div>
