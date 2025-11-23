@@ -119,7 +119,7 @@ export default function GalleryPage() {
         </title>
         <meta
           name="description"
-          content="Explore a wide range of certified pre-owned cars for sale in Rohini, Delhi. Motor Khan offers trusted used cars, full vehicle history, and affordable prices since 1995."
+          content="Explore our gallery of certified pre-owned cars for sale in Rohini, Delhi. Motor Khan is your trusted used car dealer in Vijay Vihar and Rithala, offering quality vehicles since 1995."
         />
         <meta
           name="keywords"
