@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
@@ -24,10 +25,9 @@ const AboutContent = () => {
             <h2 className="mb-6 text-4xl tracking-tight lg:text-5xl font-black uppercase text-foreground">
                 Your Trusted Auto Repair Shop & Car Dealership
             </h2>
-            <div className="text-lg text-muted-foreground my-5 space-y-4">
+            <div className="text-lg text-muted-foreground my-5 space-y-4 lowercase">
                 <span>
-                  Since 1995, Motor Khan has been your trusted car workshop for premium used cars and expert auto repair.
-                  As a leading car dealership in Rithala, Delhi, we specialize in{" "}
+                  Since our inception in 1995, Motor Khan has proudly served as Delhi’s premier car workshop, offering an unparalleled blend of services for premium used cars and expert auto repair. Our journey began with a simple mission: to provide vehicle owners with a reliable, trustworthy, and high-quality destination for all their automotive needs. As a leading car dealership headquartered in Rithala, we have built a reputation for our exceptional collection of{" "}
                   <LinkPreview
                     url="/gallery"
                     className="font-bold text-primary"
@@ -36,10 +36,10 @@ const AboutContent = () => {
                   >
                     certified pre-owned vehicles
                   </LinkPreview>
-                  , ensuring quality and reliability.
+                  , each meticulously inspected to ensure it meets our exacting standards of quality and reliability.
                 </span>
                 <span>
-                  Whether you need brake repair, denting, car painting, or{" "}
+                  Our expertise extends far beyond sales. Whether your vehicle requires routine brake repair, complex denting and painting, or you simply{" "}
                   <LinkPreview
                     url="/contact"
                     className="font-bold text-primary"
@@ -48,7 +48,7 @@ const AboutContent = () => {
                   >
                     want to sell your car
                   </LinkPreview>
-                  , our expert team ensures affordable and reliable service across Rohini, Rithala, Vijay Vihar, and Budh Vihar.
+                  , our team of seasoned technicians is dedicated to delivering affordable, transparent, and dependable service. We are proud to serve the communities of Rohini, Rithala, Vijay Vihar, and Budh Vihar, consistently setting the benchmark for automotive excellence in the region.
                 </span>
             </div>
 
@@ -64,11 +64,10 @@ const AboutContent = () => {
             
             <section className="py-16 md:py-24">
               <ScrollReveal>
-                At Motor Khan, we don’t just sell and service cars — we build relationships. Our passion for automotive
-                excellence drives us to deliver the best car repair and restoration services in Delhi NCR.
+                At Motor Khan, we don’t just sell and service cars — we build lasting relationships founded on trust and a shared passion for automotive excellence. This philosophy drives us to deliver the best car repair and restoration services in the entire Delhi NCR.
               </ScrollReveal>
               <ScrollReveal>
-                Visit us in Rohini or Rithala to experience top-tier craftsmanship, transparent pricing, and trusted service.
+                We invite you to visit our state-of-the-art facilities in Rohini or Rithala to experience top-tier craftsmanship, transparent pricing, and service that is second to none. Discover the Motor Khan difference today.
               </ScrollReveal>
             </section>
         </div>

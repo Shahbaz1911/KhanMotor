@@ -144,8 +144,8 @@ export function ContactPageClient() {
             <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl font-black mb-4 uppercase">
               Connect With Us
             </motion.h1>
-            <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 uppercase">
-              We&apos;re here to help with all your automotive needs. Reach out today and let us know how we can assist you.
+            <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 lowercase">
+              We are here to assist with all your automotive inquiries. Whether you're looking to purchase a certified pre-owned vehicle, schedule a major repair, or simply ask for advice, our team is ready to provide expert guidance. Your journey to automotive excellence starts with a conversation, so don't hesitate to reach out. We look forward to hearing from you.
             </motion.p>
             <motion.div variants={listVariants} className="space-y-6">
               {contactDetails.map((item, index) => (

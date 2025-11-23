@@ -239,12 +239,17 @@ export default function GalleryPage() {
 
         {/* GALLERY SECTION */}
         <div className="container mx-auto px-4 py-16 md:py-24 mt-16">
-          <h1
-            ref={titleRef}
-            className="mb-12 scroll-m-20 text-center text-4xl tracking-tight lg:text-5xl font-black uppercase"
-          >
-            Gallery
-          </h1>
+          <div className="text-center mb-12">
+            <h1
+              ref={titleRef}
+              className="scroll-m-20 text-4xl tracking-tight lg:text-5xl font-black uppercase"
+            >
+              Our Vehicle Gallery
+            </h1>
+            <p className="mt-4 max-w-3xl mx-auto text-muted-foreground lowercase">
+              Welcome to the Motor Khan showroom. Each vehicle in our collection has been meticulously inspected, serviced, and detailed to meet our rigorous standards of quality and performance. Below, you'll find a curated selection of certified pre-owned cars currently available at our Delhi dealership. From luxury sedans to rugged SUVs, every car represents our commitment to excellence. Explore our inventory and find the perfect vehicle that matches your style and needs.
+            </p>
+          </div>
 
           {loading || !firestore ? (
             <div className="flex justify-center items-center h-64">

@@ -219,7 +219,7 @@ export default function ConsolidatedPage() {
                 A Legacy of Automotive Passion
               </h2>
               <p className="mt-4 text-lg text-muted-foreground lowercase">
-                Since 1995, Motor Khan has been the trusted name in Delhi for exceptional car care and sales. We combine decades of experience with a passion for perfection, ensuring every vehicle that leaves our workshop is a testament to our commitment to quality.
+                Since 1995, Motor Khan has stood as a beacon of automotive excellence in Delhi, a trusted name for exceptional car care, meticulous restoration, and premium vehicle sales. Our journey began with a profound passion for automobiles and a commitment to perfection. Today, that passion continues to drive us, ensuring that every vehicle leaving our workshop is a testament to our unwavering dedication to quality, craftsmanship, and customer satisfaction. We don't just service cars; we celebrate them.
               </p>
               <div className="mt-8 flex justify-center">
                   <Link href="/about">
@@ -235,8 +235,8 @@ export default function ConsolidatedPage() {
           </div>
         </section>
 
-
-        {/* These sections are part of the "Home" experience but don't have direct nav links */}
+        <LocationMap />
+        
         <AchievementsSection />
         
         <TextMarquee />
@@ -279,8 +279,6 @@ export default function ConsolidatedPage() {
         <HappyCustomerGallery />
         
         <GoogleGeminiEffectDemo />
-
-        <LocationMap />
 
         {/* Section 5: FAQ */}
         <FaqSection />
