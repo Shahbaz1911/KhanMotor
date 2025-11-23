@@ -7,13 +7,64 @@ const siteUrl = 'https://motorkhan.com';
 
 // Function to generate video sitemap entries
 const generateVideoSitemap = () => {
-  return '';
+  const videosPath = path.join(process.cwd(), 'src', 'lib', 'videos.json');
+  try {
+    const videosData = fs.readFileSync(videosPath, 'utf8');
+    const videos = JSON.parse(videosData);
+    
+    return videos.map(video => `
+    <url>
+      <loc>${siteUrl}/videos/${video.slug}</loc>
+      <video:video>
+        <video:thumbnail_loc>${video.thumbnailUrl}</video:thumbnail_loc>
+        <video:title>${video.title}</video:title>
+        <video:description>${video.description}</video:description>
+        <video:content_loc>${video.contentUrl}</video:content_loc>
+        ${video.embedUrl ? `<video:player_loc>${video.embedUrl}</video:player_loc>` : ''}
+        <video:duration>${video.duration.match(/\d+/g).reduce((acc, time) => acc * 60 + +time, 0)}</video:duration>
+        <video:publication_date>${video.uploadDate}</video:publication_date>
+        <video:family_friendly>yes</video:family_friendly>
+      </video:video>
+    </url>
+    `).join('');
+  } catch (error) {
+    console.error("Sitemap: Error reading or parsing videos.json", error);
+    return '';
+  }
 };
 
 
 // Function to generate image sitemap entries from placeholder-images.json
 const generateImageSitemap = () => {
-  return '';
+  const imagesPath = path.join(process.cwd(), 'src', 'lib', 'placeholder-images.json');
+  try {
+    const imagesData = fs.readFileSync(imagesPath, 'utf8');
+    const images = JSON.parse(imagesData);
+
+    if (typeof images !== 'object' || images === null || Object.keys(images).length === 0) {
+      console.warn('Sitemap: placeholder-images.json is not a valid, non-empty object. Skipping image sitemap.');
+      return '';
+    }
+
+    return Object.values(images)
+      .map(image => {
+        if (typeof image !== 'object' || image === null || !image.url) {
+          return ''; // Skip invalid entries
+        }
+        return `
+    <url>
+      <loc>${image.url}</loc>
+      <image:image>
+        <image:loc>${image.url}</image:loc>
+      </image:image>
+    </url>
+    `;
+      })
+      .join('');
+  } catch (error) {
+    console.error("Sitemap: Error reading or parsing placeholder-images.json", error);
+    return '';
+  }
 };
 
 

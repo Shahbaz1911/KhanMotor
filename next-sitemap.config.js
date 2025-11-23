@@ -7,7 +7,30 @@ const siteUrl = 'https://motorkhan.com';
 
 // Function to generate video sitemap entries
 const generateVideoSitemap = () => {
-  return '';
+  const videosPath = path.join(process.cwd(), 'src', 'lib', 'videos.json');
+  try {
+    const videosData = fs.readFileSync(videosPath, 'utf8');
+    const videos = JSON.parse(videosData);
+    
+    return videos.map(video => `
+    <url>
+      <loc>${siteUrl}/videos/${video.slug}</loc>
+      <video:video>
+        <video:thumbnail_loc>${video.thumbnailUrl}</video:thumbnail_loc>
+        <video:title>${video.title}</video:title>
+        <video:description>${video.description}</video:description>
+        <video:content_loc>${video.contentUrl}</video:content_loc>
+        ${video.embedUrl ? `<video:player_loc>${video.embedUrl}</video:player_loc>` : ''}
+        <video:duration>${video.duration.match(/\d+/g).reduce((acc, time) => acc * 60 + +time, 0)}</video:duration>
+        <video:publication_date>${video.uploadDate}</video:publication_date>
+        <video:family_friendly>yes</video:family_friendly>
+      </video:video>
+    </url>
+    `).join('');
+  } catch (error) {
+    console.error("Sitemap: Error reading or parsing videos.json", error);
+    return '';
+  }
 };
 
 
@@ -74,11 +97,13 @@ module.exports = {
       return null;
     }
 
+    const videoSitemap = generateVideoSitemap();
     const imageSitemap = generateImageSitemap();
     
     // Combine video and image sitemap into one string
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  ${videoSitemap}
   ${imageSitemap}
 </urlset>`;
 
