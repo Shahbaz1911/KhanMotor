@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
@@ -22,9 +21,9 @@ const AboutContent = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-16 md:py-24">
-            <h2 className="mb-6 text-4xl tracking-tight lg:text-5xl font-black uppercase text-foreground">
+            <h1 className="mb-6 text-4xl tracking-tight lg:text-5xl font-black uppercase text-foreground">
                 Your Trusted Auto Repair Shop & Car Dealership
-            </h2>
+            </h1>
             <div className="text-lg text-muted-foreground my-5 space-y-4 lowercase">
                 <span>
                   Since our inception in 1995, Motor Khan has proudly served as Delhi’s premier car workshop, offering an unparalleled blend of services for premium used cars and expert auto repair. Our journey began with a simple mission: to provide vehicle owners with a reliable, trustworthy, and high-quality destination for all their automotive needs. As a leading car dealership headquartered in Rithala, we have built a reputation for our exceptional collection of{" "}
