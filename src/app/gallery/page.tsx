@@ -113,7 +113,6 @@ export default function GalleryPage() {
 
   return (
     <>
-      {/* ✅ SEO META TAGS + SCHEMA */}
       <Head>
         <title>
           Gallery | Certified Pre-Owned Cars For Sale in Rohini, Delhi | Motor Khan
@@ -140,10 +139,10 @@ export default function GalleryPage() {
         />
         <meta
           property="og:url"
-          content="https://delhi.motorkhan.com/gallery"
+          content="https://motorkhan.com/gallery"
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://delhi.motorkhan.com/gallery" />
+        <link rel="canonical" href="https://motorkhan.com/gallery" />
 
         {/* ✅ JSON-LD SCHEMA MARKUP */}
         <script
