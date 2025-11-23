@@ -235,6 +235,8 @@ export default function ConsolidatedPage() {
           </div>
         </section>
 
+        <ServicesSection />
+
         <LocationMap />
         
         <AchievementsSection />
