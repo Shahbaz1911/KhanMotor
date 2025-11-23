@@ -4,7 +4,7 @@ import { AboutPageClient } from "./AboutPageClient";
 
 // ✅ SEO Metadata - This now correctly resides in a Server Component.
 export const metadata: Metadata = {
-  title: "About Motor Khan - Expert Car Repair, Painting & Restoration in Delhi (Rohini, Rithala, Vijay Vihar, Budh Vihar)",
+  title: "About Motor Khan | Trusted Car Workshop in Delhi",
   description:
     "Learn about Motor Khan — Delhi’s trusted car workshop for denting, painting, restoration, and used car sales. Serving Rohini, Rithala, Vijay Vihar, Budh Vihar & nearby Delhi areas.",
   keywords: [

@@ -4,7 +4,7 @@ import { ContactPageClient } from "./ContactPageClient";
 
 // ✅ SEO Metadata
 export const metadata: Metadata = {
-  title: "Contact Motor Khan - Best Car Repair & Restoration in Delhi (Rohini, Rithala, Vijay Vihar, Budh Vihar)",
+  title: "Contact Motor Khan | Car Repair & Sales in Delhi",
   description:
     "Get in touch with Motor Khan for expert car repair, denting painting, restoration, and used car deals in Rohini, Rithala, Vijay Vihar, Budh Vihar & Delhi. Visit our workshop or call +91 8595853918 today!",
   keywords: [
