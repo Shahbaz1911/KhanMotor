@@ -125,6 +125,9 @@ export default function ConsolidatedPage() {
 
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://motorkhan.com/" />
+      </Head>
       <AnimatePresence>
         {!isLoaded && <Preloader onLoaded={() => setIsLoaded(true)} />}
       </AnimatePresence>
