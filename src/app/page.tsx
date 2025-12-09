@@ -28,8 +28,6 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/shadcn-
 import Autoplay from "embla-carousel-autoplay";
 import CircularText from "@/components/custom/CircularText";
 import ScrollReveal from "@/components/custom/ScrollReveal";
-import GoogleGeminiEffectDemo from "@/components/custom/GoogleGeminiEffectDemo";
-import { TestimonialParallax } from "@/components/custom/TestimonialParallax";
 import { motion, AnimatePresence } from "framer-motion";
 import Head from "next/head";
 import { LinkPreview } from "@/components/ui/link-preview";
@@ -38,6 +36,17 @@ import { LocationMap } from "@/components/custom/LocationMap";
 import { FaqSection } from "@/components/custom/FaqSection";
 import { ServicesSection } from "@/components/custom/ServicesSection";
 import IphoneDemo from "@/components/custom/IphoneDemo";
+import dynamic from "next/dynamic";
+
+const GoogleGeminiEffectDemo = dynamic(() => import("@/components/custom/GoogleGeminiEffectDemo"), {
+  ssr: false,
+  loading: () => <div className="h-[400vh] bg-black w-full" />,
+});
+
+const TestimonialParallax = dynamic(() => import("@/components/custom/TestimonialParallax").then(mod => mod.TestimonialParallax), {
+  ssr: false,
+  loading: () => <div className="h-[300vh] py-40 bg-background" />,
+});
 
 
 export default function ConsolidatedPage() {
@@ -67,6 +76,37 @@ export default function ConsolidatedPage() {
   }));
 
   const [logoSrc, setLogoSrc] = useState("https://delhi.motorkhan.com/images/logo/motor-khan-rithala-rohini-delhi-lighttheme.png");
+  
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What services does Motor Khan offer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We specialize in car restoration, detailing, denting and painting, car repair, servicing, and buying/selling certified pre-owned cars."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is Motor Khan located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MotorKhan is located at Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini, Delhi, 110085, India."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer financing options?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we work with multiple partners to provide flexible financing options for your vehicle purchase."
+        }
+      }
+    ]
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -123,36 +163,6 @@ export default function ConsolidatedPage() {
     }
   }, [isLoaded]);
   
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What services does Motor Khan offer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "We specialize in car restoration, detailing, denting and painting, car repair, servicing, and buying/selling certified pre-owned cars."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Where is Motor Khan located?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "MotorKhan is located at Shop No. 12, Near Rice Mill, Vijay Vihar Phase I, Block B, Rithala, Rohini, Delhi, 110085, India."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do you offer financing options?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, we work with multiple partners to provide flexible financing options for your vehicle purchase."
-        }
-      }
-    ]
-  };
 
   return (
     <>
@@ -230,6 +240,7 @@ export default function ConsolidatedPage() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover object-top md:object-center z-0"
             src="https://delhi.motorkhan.com/videos/motor-khan-rithala-rohini-delhi.mp4"
+            preload="none"
           >
             Your browser does not support the video tag.
           </video>
