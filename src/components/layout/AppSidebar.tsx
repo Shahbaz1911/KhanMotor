@@ -25,6 +25,7 @@ const mainNavItems = [
   { id: "services", label: "Services", href: "/services" },
   { id: "gallery", label: "Gallery", href: "/gallery" },
   { id: "customers", label: "Customers", href: "/customers" },
+  { id: "blog", label: "Blog", href: "/blog" },
   { id: "testimonials", label: "Testimonials", href: "/#testimonials" },
   { id: "location", label: "Location", href: "/#location" },
   { id: "book-appointment", label: "Book a Test Drive", href: "/book-appointment" },
