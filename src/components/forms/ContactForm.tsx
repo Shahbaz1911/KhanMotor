@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
@@ -78,6 +79,14 @@ export function ContactForm() {
       setFormStatus("idle"); // Reset loading state
       if (state.success) {
         setFormStatus("success");
+        // Track GTM event on success
+        if (typeof window !== 'undefined') {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'form_submit_success',
+            'form_name': 'contact_form'
+          });
+        }
         form.reset(); 
         if (formRef.current) {
            formRef.current.reset(); 
