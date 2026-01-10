@@ -21,8 +21,10 @@ module.exports = {
       }
     ],
     additionalSitemaps: [
+      `${siteUrl}/sitemap.xml`,
       `${siteUrl}/server-sitemap.xml`,
     ],
   },
-   exclude: ["/admin", "/admin/*", "/server-sitemap.xml"],
+  // Exclude server sitemap from the default generation, as we will create it manually.
+  exclude: ["/admin", "/admin/*", "/server-sitemap.xml"], 
 };
