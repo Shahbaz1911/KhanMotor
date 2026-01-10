@@ -1,33 +1,5 @@
 
 import type {NextConfig} from 'next';
-import withSitemap from 'next-sitemap';
-
-/** @type {import('next-sitemap').IConfig} */
-const nextSitemapConfig = {
-  siteUrl: 'https://motorkhan.com',
-  generateRobotsTxt: true,
-  robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: '*',
-        allow: '/',
-      },
-      {
-        userAgent: 'Googlebot-Image',
-        allow: '/',
-      },
-      {
-        userAgent: '*',
-        disallow: ['/admin/', '/api/'],
-      }
-    ],
-    additionalSitemaps: [
-      `https://motorkhan.com/server-sitemap.xml`,
-    ],
-  },
-   exclude: ["/admin", "/admin/*", "/server-sitemap.xml"], 
-};
-
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -94,4 +66,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSitemap(nextConfig, nextSitemapConfig);
+export default nextConfig;
