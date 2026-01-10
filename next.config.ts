@@ -1,7 +1,8 @@
 
 import type {NextConfig} from 'next';
-/** @type {import('next-sitemap').IConfig} */
+import withSitemap from 'next-sitemap';
 
+/** @type {import('next-sitemap').IConfig} */
 const nextSitemapConfig = {
   siteUrl: 'https://motorkhan.com',
   generateRobotsTxt: true,
@@ -93,5 +94,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withNextSitemap = require('next-sitemap')(nextSitemapConfig);
-module.exports = withNextSitemap(nextConfig);
+export default withSitemap(nextConfig, nextSitemapConfig);
