@@ -22,29 +22,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StatefulButton } from "@/components/ui/stateful-button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-
 
 const initialState: ContactFormState = {
   message: "",
   success: false,
 };
 
-const countries = [
-    { code: "+91", name: "India" },
-    { code: "+1", name: "USA" },
-    { code: "+44", name: "UK" },
-    { code: "+971", name: "UAE" },
-    { code: "+61", name: "Australia" },
-    { code: "+65", name: "Singapore" },
-];
-
 export function ContactForm() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success">("idle");
-
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -71,7 +59,6 @@ export function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
-      countryCode: "+91",
       phone: "",
       message: "",
     },
@@ -83,7 +70,6 @@ export function ContactForm() {
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("email", data.email);
-    formData.append("countryCode", data.countryCode);
     formData.append("phone", data.phone);
     formData.append("message", data.message);
 
@@ -161,41 +147,19 @@ export function ContactForm() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-4">
-                <FormField
-                    control={form.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="uppercase">Country Code *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                                <SelectTrigger>
-                                <SelectValue placeholder="Code" />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                {countries.map((c) => <SelectItem key={c.code} value={c.code}>{c.name} ({c.code})</SelectItem>)}
-                            </SelectContent>
-                        </Select>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                    <FormItem>
-                        <FormLabel className="uppercase">Phone Number *</FormLabel>
-                        <FormControl>
-                            <Input type="tel" placeholder="98765 43210" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    )}
-                />
-            </div>
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase">Phone Number *</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="98765 43210" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="message"
