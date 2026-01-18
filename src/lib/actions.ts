@@ -22,6 +22,7 @@ export async function submitContactForm(
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone"),
+    subject: formData.get("subject"),
     message: formData.get("message"),
   });
 
@@ -41,7 +42,7 @@ export async function submitContactForm(
     };
   }
 
-  const { name, email, phone, message } = validatedFields.data;
+  const { name, email, phone, subject, message } = validatedFields.data;
   
   try {
     // Send confirmation to the user
@@ -55,11 +56,12 @@ export async function submitContactForm(
     // Send notification to the owner
     await transporter.sendMail({
         ...mailOptions,
-        subject: `GET IN TOUCH – Motor Khan: ${name}`,
+        subject: `GET IN TOUCH – ${subject} from ${name}`,
         html: `<p>You have a new contact form submission from:</p>
                <p><strong>Name:</strong> ${name}</p>
                <p><strong>Email:</strong> ${email}</p>
                <p><strong>Phone:</strong> ${phone}</p>
+               <p><strong>Subject:</strong> ${subject}</p>
                <p><strong>Message:</strong></p>
                <p>${message}</p>`,
     });

@@ -22,6 +22,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { StatefulButton } from "@/components/ui/stateful-button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const initialState: ContactFormState = {
   message: "",
@@ -60,6 +61,7 @@ export function ContactForm() {
       name: "",
       email: "",
       phone: "",
+      subject: "",
       message: "",
     },
   });
@@ -71,6 +73,7 @@ export function ContactForm() {
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("phone", data.phone);
+    formData.append("subject", data.subject);
     formData.append("message", data.message);
 
     const result = await submitContactForm(initialState, formData);
@@ -156,6 +159,30 @@ export function ContactForm() {
                   <FormControl>
                     <Input type="tel" placeholder="98765 43210" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subject"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="uppercase">Subject *</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a subject" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Car repairing and servicing">Car repairing and servicing</SelectItem>
+                      <SelectItem value="Denting, painting, detailing">Denting, painting, detailing</SelectItem>
+                      <SelectItem value="Buy/Sell related">Buy/Sell related</SelectItem>
+                      <SelectItem value="Car maintenance">Car maintenance</SelectItem>
+                      <SelectItem value="General inquiry">General inquiry</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

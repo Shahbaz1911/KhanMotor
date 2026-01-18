@@ -45,6 +45,7 @@ export const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   phone: z.string().min(10, { message: "Phone number must be at least 10 digits." }),
+  subject: z.string({ required_error: "Please select a subject." }).min(1, { message: "Please select a subject." }),
   message: z.string().min(1, { message: "Message cannot be empty." }),
 });
 
