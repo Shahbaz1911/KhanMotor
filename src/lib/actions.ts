@@ -1,6 +1,7 @@
 
 "use server";
 
+import * as React from 'react';
 import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
 import { format } from 'date-fns';
@@ -48,7 +49,7 @@ export async function submitContactForm(
   const { name, email, phone, subject, message } = validatedFields.data;
   
   try {
-    const emailHtml = render(<ContactFormEmail name={name} userEmail={email} />);
+    const emailHtml = render(React.createElement(ContactFormEmail, { name: name, userEmail: email }));
 
     // Send confirmation to the user
     await transporter.sendMail({
@@ -275,7 +276,7 @@ export async function submitAppointmentForm(
   
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
-     const emailHtml = render(<AppointmentFormEmail name={name} userEmail={email} preferredDate={preferredDate} preferredTime={preferredTime} vehicleOfInterest={vehicleOfInterest} />);
+     const emailHtml = render(React.createElement(AppointmentFormEmail, { name, userEmail: email, preferredDate, preferredTime, vehicleOfInterest }));
 
     // Send confirmation email to client with PDF
     await transporter.sendMail({
