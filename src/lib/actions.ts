@@ -3,14 +3,10 @@
 
 import { z } from "zod";
 import { contactFormSchema, appointmentFormSchema } from "@/types";
-import { Resend } from "resend";
-import { ContactFormEmail } from "@/components/emails/ContactFormEmail";
-import { AppointmentFormEmail } from "@/components/emails/AppointmentFormEmail";
 import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import ImageKit from "imagekit";
-
-const fromEmail = "noreply@updates.motorkhan.com";
+import { transporter, mailOptions } from "@/lib/mail";
 
 export type ContactFormState = {
   message: string;
@@ -42,9 +38,8 @@ export async function submitContactForm(
     };
   }
   
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("Resend API key is missing. Cannot send email.");
+  if (!process.env.ZOHO_APP_PASSWORD) {
+    console.error("Zoho App Password is not set. Cannot send email.");
     return {
       message: "Server configuration error: Email service is not available.",
       success: false,
@@ -53,21 +48,18 @@ export async function submitContactForm(
 
   const { name, email, phone, message } = validatedFields.data;
   
-  const resend = new Resend(apiKey);
-
   try {
     // Send confirmation to the user
-    await resend.emails.send({
-      from: `Motor Khan <${fromEmail}>`,
-      to: [email],
+    await transporter.sendMail({
+      ...mailOptions,
+      to: email, // Override 'to' for the user
       subject: "Thank You for Contacting Motor Khan!",
-      react: ContactFormEmail({ name, userEmail: email }),
+      html: `<h1>Thank You for Contacting Us, ${name}!</h1><p>We have successfully received your message. Our team is reviewing your inquiry and will get back to you at ${email} as soon as possible.</p>`,
     });
 
     // Send notification to the owner
-    await resend.emails.send({
-        from: `New Inquiry <${fromEmail}>`,
-        to: ['motorkhandelhi@gmail.com'],
+    await transporter.sendMail({
+        ...mailOptions,
         subject: `New Inquiry from ${name}`,
         html: `<p>You have a new contact form submission from:</p>
                <p><strong>Name:</strong> ${name}</p>
@@ -82,7 +74,7 @@ export async function submitContactForm(
       success: true,
     };
   } catch (error) {
-    console.error("Resend execution error:", error);
+    console.error("Nodemailer execution error:", error);
     return {
       message: "An unexpected error occurred. Please try again later.",
       success: false,
@@ -216,7 +208,7 @@ async function generatePdfBuffer(data: z.infer<typeof appointmentFormSchema>): P
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Email', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
-    page.drawText('motorkhandelhi@gmail.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
+    page.drawText('contact@motorkhan.com', { x: leftX, y: leftY, font: helveticaFont, size: footerTextSize, color: whiteColor });
     leftY -= (footerLineHeight * 1.5);
     page.drawText('Socials', { x: leftX, y: leftY, font: helveticaBoldFont, size: footerTextSize, color: whiteColor });
     leftY -= footerLineHeight;
@@ -269,9 +261,8 @@ export async function submitAppointmentForm(
     };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("Resend API key is missing. Cannot send email.");
+  if (!process.env.ZOHO_APP_PASSWORD) {
+    console.error("Zoho App Password is not set. Cannot send email.");
     return {
       message: "Server configuration error: Email service is not available.",
       success: false,
@@ -280,29 +271,31 @@ export async function submitAppointmentForm(
 
   const { name, email, phone, preferredDate, preferredTime, vehicleOfInterest } = validatedFields.data;
   
-  const resend = new Resend(apiKey);
-
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
 
     // Send confirmation email to client with PDF
-    await resend.emails.send({
-        from: `Motor Khan <${fromEmail}>`,
-        to: [email],
+    await transporter.sendMail({
+        ...mailOptions,
+        to: email,
         subject: `Your Test Drive Appointment at Motor Khan`,
-        react: AppointmentFormEmail({ name, userEmail: email, preferredDate, preferredTime, vehicleOfInterest }),
+        html: `<h1>Thanks for Your Interest, ${name}!</h1><p>We've received your request for a test drive appointment. We're excited to get you behind the wheel! Our team will contact you shortly at ${email} to confirm your appointment details.</p>
+                <h3>Your Request Summary</h3>
+                <p><strong>Date:</strong> ${format(preferredDate, 'PPP')}</p>
+                <p><strong>Time:</strong> ${preferredTime}</p>
+                ${vehicleOfInterest ? `<p><strong>Vehicle of Interest:</strong> ${vehicleOfInterest}</p>` : ''}`,
         attachments: [
             {
               filename: 'Appointment_Slip_Motor_Khan.pdf',
               content: pdfBuffer,
+              contentType: 'application/pdf',
             },
         ],
     });
 
     // Send text-based notification to owner
-    await resend.emails.send({
-        from: `New Appointment <${fromEmail}>`,
-        to: ['motorkhandelhi@gmail.com'],
+    await transporter.sendMail({
+        ...mailOptions,
         subject: `New Test Drive Request from ${name}`,
         html: `<p>You have a new test drive request:</p>
                 <p><strong>Name:</strong> ${name}</p>
@@ -319,7 +312,7 @@ export async function submitAppointmentForm(
     };
 
   } catch (error) {
-    console.error("PDF or Resend execution error:", error);
+    console.error("PDF or Nodemailer execution error:", error);
      return {
       message: "An unexpected error occurred. Please try again later.",
       success: false,
@@ -352,5 +345,3 @@ export async function getIKAuth() {
     return { success: false, error: errorMessage };
   }
 }
-
-    
