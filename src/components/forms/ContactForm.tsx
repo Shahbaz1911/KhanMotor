@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -40,7 +40,6 @@ const countries = [
 ];
 
 export function ContactForm() {
-  const [state, formAction] = useActionState(submitContactForm, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -78,51 +77,52 @@ export function ContactForm() {
     },
   });
 
-  const handleFormAction = (payload: FormData) => {
+  const onSubmit = async (data: z.infer<typeof contactFormSchema>) => {
     setFormStatus("loading");
-    formAction(payload);
-  };
-  
-  useEffect(() => {
-    if (state.message) {
-      setFormStatus("idle"); // Reset loading state
-      if (state.success) {
-        setFormStatus("success");
-        // Track GTM event on success
-        if (typeof window !== 'undefined') {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'form_submit_success',
-            'form_name': 'contact_form'
-          });
-        }
-        form.reset(); 
-        if (formRef.current) {
-           formRef.current.reset(); 
-        }
-        setTimeout(() => setFormStatus("idle"), 3000);
-      } else {
-        toast({
-          title: "Error",
-          description: state.message || "Failed to send message.",
-          variant: "destructive",
+
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("countryCode", data.countryCode);
+    formData.append("phone", data.phone);
+    formData.append("message", data.message);
+
+    const result = await submitContactForm(initialState, formData);
+
+    if (result.success) {
+      setFormStatus("success");
+      // GTM event
+      if (typeof window !== 'undefined') {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'form_submit_success',
+          'form_name': 'contact_form'
         });
-        
-        if (state.errors) {
-            type FormSchema = z.infer<typeof contactFormSchema>;
-            for (const key in state.errors) {
-                if (Object.prototype.hasOwnProperty.call(state.errors, key)) {
-                    const formKey = key as keyof FormSchema;
-                    const errorMessages = (state.errors as any)[formKey];
-                    if (errorMessages && errorMessages.length > 0) {
-                        form.setError(formKey, { type: "server", message: errorMessages.join(", ") });
-                    }
-                }
+      }
+      form.reset();
+      setTimeout(() => setFormStatus("idle"), 3000);
+    } else {
+      setFormStatus("idle");
+      toast({
+        title: "Error",
+        description: result.message || "Failed to send message.",
+        variant: "destructive",
+      });
+
+      if (result.errors) {
+        type FormSchema = z.infer<typeof contactFormSchema>;
+        for (const key in result.errors) {
+          if (Object.prototype.hasOwnProperty.call(result.errors, key)) {
+            const formKey = key as keyof FormSchema;
+            const errorMessages = (result.errors as any)[formKey];
+            if (errorMessages && errorMessages.length > 0) {
+              form.setError(formKey, { type: "server", message: errorMessages.join(", ") });
             }
+          }
         }
       }
     }
-  }, [state, toast, form]);
+  };
 
   return (
     <Card ref={cardRef} className="w-full max-w-2xl mx-auto shadow-xl bg-card/50 dark:bg-background/50 backdrop-blur-md border-border">
@@ -134,7 +134,7 @@ export function ContactForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form ref={formRef} action={handleFormAction} className="space-y-6">
+          <form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
