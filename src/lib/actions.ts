@@ -7,6 +7,9 @@ import { format } from 'date-fns';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import ImageKit from "imagekit";
 import { transporter, mailOptions } from "@/lib/mail";
+import { render } from '@react-email/render';
+import { ContactFormEmail } from '@/components/emails/ContactFormEmail';
+import { AppointmentFormEmail } from '@/components/emails/AppointmentFormEmail';
 
 export type ContactFormState = {
   message: string;
@@ -45,12 +48,14 @@ export async function submitContactForm(
   const { name, email, phone, subject, message } = validatedFields.data;
   
   try {
+    const emailHtml = render(<ContactFormEmail name={name} userEmail={email} />);
+
     // Send confirmation to the user
     await transporter.sendMail({
       ...mailOptions,
       to: email, // Override 'to' for the user
       subject: "Thank You for Contacting Motor Khan!",
-      html: `<h1>Thank You for Contacting Us, ${name}!</h1><p>We have successfully received your message. Our team is reviewing your inquiry and will get back to you at ${email} as soon as possible.</p>`,
+      html: emailHtml,
     });
 
     // Send notification to the owner
@@ -270,17 +275,14 @@ export async function submitAppointmentForm(
   
   try {
      const pdfBuffer = await generatePdfBuffer(validatedFields.data);
+     const emailHtml = render(<AppointmentFormEmail name={name} userEmail={email} preferredDate={preferredDate} preferredTime={preferredTime} vehicleOfInterest={vehicleOfInterest} />);
 
     // Send confirmation email to client with PDF
     await transporter.sendMail({
         ...mailOptions,
         to: email,
         subject: `Your Test Drive Appointment at Motor Khan`,
-        html: `<h1>Thanks for Your Interest, ${name}!</h1><p>We've received your request for a test drive appointment. We're excited to get you behind the wheel! Our team will contact you shortly at ${email} to confirm your appointment details.</p>
-                <h3>Your Request Summary</h3>
-                <p><strong>Date:</strong> ${format(preferredDate, 'PPP')}</p>
-                <p><strong>Time:</strong> ${preferredTime}</p>
-                ${vehicleOfInterest ? `<p><strong>Vehicle of Interest:</strong> ${vehicleOfInterest}</p>` : ''}`,
+        html: emailHtml,
         attachments: [
             {
               filename: 'Appointment_Slip_Motor_Khan.pdf',
