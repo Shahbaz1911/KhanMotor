@@ -19,17 +19,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Send, Loader2, Check } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
 import { StatefulButton } from "@/components/ui/stateful-button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 
 const initialState: ContactFormState = {
   message: "",
   success: false,
 };
+
+const countries = [
+    { code: "+91", name: "India" },
+    { code: "+1", name: "USA" },
+    { code: "+44", name: "UK" },
+    { code: "+971", name: "UAE" },
+    { code: "+61", name: "Australia" },
+    { code: "+65", name: "Singapore" },
+];
 
 export function ContactForm() {
   const [state, formAction] = useActionState(submitContactForm, initialState);
@@ -64,6 +72,7 @@ export function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
+      countryCode: "+91",
       phone: "",
       message: "",
     },
@@ -100,10 +109,16 @@ export function ContactForm() {
         });
         
         if (state.errors) {
-          if (state.errors.name) form.setError("name", { type: "server", message: state.errors.name.join(", ") });
-          if (state.errors.email) form.setError("email", { type: "server", message: state.errors.email.join(", ") });
-          if (state.errors.phone) form.setError("phone", { type: "server", message: state.errors.phone.join(", ") });
-          if (state.errors.message) form.setError("message", { type: "server", message: state.errors.message.join(", ") });
+            type FormSchema = z.infer<typeof contactFormSchema>;
+            for (const key in state.errors) {
+                if (Object.prototype.hasOwnProperty.call(state.errors, key)) {
+                    const formKey = key as keyof FormSchema;
+                    const errorMessages = (state.errors as any)[formKey];
+                    if (errorMessages && errorMessages.length > 0) {
+                        form.setError(formKey, { type: "server", message: errorMessages.join(", ") });
+                    }
+                }
+            }
         }
       }
     }
@@ -125,7 +140,7 @@ export function ContactForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase">Full Name</FormLabel>
+                  <FormLabel className="uppercase">Full Name *</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
@@ -138,7 +153,7 @@ export function ContactForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase">Email Address</FormLabel>
+                  <FormLabel className="uppercase">Email Address *</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="john.doe@example.com" {...field} />
                   </FormControl>
@@ -146,25 +161,47 @@ export function ContactForm() {
                 </FormItem>
               )}
             />
-             <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="uppercase">Phone Number</FormLabel>
-                  <FormControl>
-                    <Input type="tel" placeholder="(123) 456-7890" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-4">
+                <FormField
+                    control={form.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel className="uppercase">Country Code *</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                <SelectValue placeholder="Code" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {countries.map((c) => <SelectItem key={c.code} value={c.code}>{c.name} ({c.code})</SelectItem>)}
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel className="uppercase">Phone Number *</FormLabel>
+                        <FormControl>
+                            <Input type="tel" placeholder="98765 43210" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+            </div>
             <FormField
               control={form.control}
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="uppercase">Your Message</FormLabel>
+                  <FormLabel className="uppercase">Your Message *</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell us how we can help you..."

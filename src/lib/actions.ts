@@ -11,12 +11,7 @@ import { transporter, mailOptions } from "@/lib/mail";
 export type ContactFormState = {
   message: string;
   success: boolean;
-  errors?: {
-    name?: string[];
-    email?: string[];
-    phone?: string[];
-    message?: string[];
-  };
+  errors?: { [K in keyof z.infer<typeof contactFormSchema>]?: string[] };
 };
 
 export async function submitContactForm(
@@ -26,6 +21,7 @@ export async function submitContactForm(
   const validatedFields = contactFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    countryCode: formData.get("countryCode"),
     phone: formData.get("phone"),
     message: formData.get("message"),
   });
@@ -46,7 +42,7 @@ export async function submitContactForm(
     };
   }
 
-  const { name, email, phone, message } = validatedFields.data;
+  const { name, email, countryCode, phone, message } = validatedFields.data;
   
   try {
     // Send confirmation to the user
@@ -60,11 +56,11 @@ export async function submitContactForm(
     // Send notification to the owner
     await transporter.sendMail({
         ...mailOptions,
-        subject: `New Inquiry from ${name}`,
+        subject: `GET IN TOUCH – Motor Khan: ${name}`,
         html: `<p>You have a new contact form submission from:</p>
                <p><strong>Name:</strong> ${name}</p>
                <p><strong>Email:</strong> ${email}</p>
-               <p><strong>Phone:</strong> ${phone}</p>
+               <p><strong>Phone:</strong> ${countryCode} ${phone}</p>
                <p><strong>Message:</strong></p>
                <p>${message}</p>`,
     });
@@ -296,7 +292,7 @@ export async function submitAppointmentForm(
     // Send text-based notification to owner
     await transporter.sendMail({
         ...mailOptions,
-        subject: `New Test Drive Request from ${name}`,
+        subject: `TEST DRIVE – Motor Khan: ${name}`,
         html: `<p>You have a new test drive request:</p>
                 <p><strong>Name:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>

@@ -44,7 +44,8 @@ export type VehicleSortOption = {
 export const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  phone: z.string().min(10, { message: "Please enter a valid phone number." }),
+  countryCode: z.string({ required_error: "Code is required." }),
+  phone: z.string().min(10, { message: "Phone number must be 10 digits." }).max(10, { message: "Phone number must be 10 digits." }),
   message: z.string().min(1, { message: "Message cannot be empty." }),
 });
 
